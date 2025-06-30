@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cursor_televideo/features/televideo_viewer/bloc/televideo_bloc.dart';
 import 'package:cursor_televideo/features/televideo_viewer/bloc/televideo_event.dart';
@@ -22,6 +23,7 @@ class _HomePageState extends State<HomePage> {
   bool _showControls = true;
   late TelevideoBloc _televideoBloc;
   late RegionBloc _regionBloc;
+  final TextEditingController _pageNumberController = TextEditingController();
 
   @override
   void initState() {
@@ -35,6 +37,7 @@ class _HomePageState extends State<HomePage> {
   void dispose() {
     _televideoBloc.close();
     _regionBloc.close();
+    _pageNumberController.dispose();
     super.dispose();
   }
 
@@ -44,12 +47,66 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  Future<void> _showPageNumberDialog(BuildContext context, bool isNationalMode, Region? selectedRegion) async {
+    _pageNumberController.clear();
+    return showDialog(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: const Text('Inserisci numero pagina'),
+        content: TextField(
+          controller: _pageNumberController,
+          keyboardType: TextInputType.number,
+          inputFormatters: [
+            FilteringTextInputFormatter.digitsOnly,
+            LengthLimitingTextInputFormatter(3),
+          ],
+          decoration: const InputDecoration(
+            hintText: 'Numero da 100 a 999',
+            border: OutlineInputBorder(),
+            errorMaxLines: 2,
+          ),
+          autofocus: true,
+          onSubmitted: (value) {
+            final pageNumber = int.tryParse(value);
+            if (pageNumber != null && pageNumber >= 100 && pageNumber <= 999) {
+              Navigator.of(dialogContext).pop();
+              _televideoBloc.add(TelevideoEvent.loadNationalPage(pageNumber));
+              if (!isNationalMode && selectedRegion != null) {
+                _televideoBloc.add(TelevideoEvent.loadRegionalPage(selectedRegion));
+              }
+            }
+          },
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(),
+            child: const Text('Annulla'),
+          ),
+          TextButton(
+            onPressed: () {
+              final pageNumber = int.tryParse(_pageNumberController.text);
+              if (pageNumber != null && pageNumber >= 100 && pageNumber <= 999) {
+                Navigator.of(dialogContext).pop();
+                _televideoBloc.add(TelevideoEvent.loadNationalPage(pageNumber));
+                if (!isNationalMode && selectedRegion != null) {
+                  _televideoBloc.add(TelevideoEvent.loadRegionalPage(selectedRegion));
+                }
+              }
+            },
+            child: const Text('OK'),
+          ),
+        ],
+      ),
+    );
+  }
+
   PreferredSizeWidget? _buildAppBar() {
     if (!_showControls) return null;
 
     return AppBar(
       title: BlocBuilder<RegionBloc, RegionState>(
         builder: (context, regionState) {
+          final isNationalMode = regionState.selectedRegion == null;
           return Row(
             children: [
               UnifiedSelector(
@@ -60,8 +117,11 @@ class _HomePageState extends State<HomePage> {
                   
                   // Poi carichiamo la pagina appropriata
                   if (region != null) {
+                    // Se selezioniamo una regione, carichiamo sempre la pagina 300
+                    context.read<TelevideoBloc>().add(const TelevideoEvent.loadNationalPage(300));
                     context.read<TelevideoBloc>().add(TelevideoEvent.loadRegionalPage(region));
                   } else {
+                    // Se torniamo alla modalità nazionale, carichiamo sempre la pagina 100
                     context.read<TelevideoBloc>().add(const TelevideoEvent.loadNationalPage(100));
                   }
                 },
@@ -71,12 +131,50 @@ class _HomePageState extends State<HomePage> {
                 builder: (context, state) {
                   return state.when(
                     initial: () => const SizedBox(),
-                    loading: () => const SizedBox(),
-                    loaded: (page) => Text(
-                      'Pag. ${page.pageNumber}',
-                      style: const TextStyle(fontSize: 16),
+                    loading: () => const Text(
+                      'Caricamento...',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                    error: (_) => const SizedBox(),
+                    loaded: (page) => GestureDetector(
+                      onTap: () => _showPageNumberDialog(context, isNationalMode, regionState.selectedRegion),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(4),
+                          color: Colors.white.withOpacity(0.1),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              'Pag. ${page.pageNumber}',
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                            const SizedBox(width: 4),
+                            const Icon(
+                              Icons.edit,
+                              size: 16,
+                              color: Colors.white,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    error: (message) => const Text(
+                      'Errore',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.red,
+                      ),
+                    ),
                   );
                 },
               ),

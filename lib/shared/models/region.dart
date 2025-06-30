@@ -33,12 +33,12 @@ class Region {
     Region(
       name: 'Emilia Romagna',
       code: 'Emilia',
-      imagePath: 'assets/images/regions/emilia.png',
+      imagePath: 'assets/images/regions/emilia_romagna.png',
     ),
     Region(
       name: 'Friuli Venezia Giulia',
       code: 'Friuli',
-      imagePath: 'assets/images/regions/friuli.png',
+      imagePath: 'assets/images/regions/friuli_venezia_giulia.png',
     ),
     Region(
       name: 'Lazio',
@@ -93,7 +93,7 @@ class Region {
     Region(
       name: 'Trentino Alto Adige',
       code: 'Trentino',
-      imagePath: 'assets/images/regions/trentino.png',
+      imagePath: 'assets/images/regions/trentino_alto_adige.png',
     ),
     Region(
       name: 'Umbria',
@@ -103,7 +103,7 @@ class Region {
     Region(
       name: "Valle d'Aosta",
       code: 'Valle',
-      imagePath: 'assets/images/regions/valle.png',
+      imagePath: 'assets/images/regions/valle_d_aosta.png',
     ),
     Region(
       name: 'Veneto',

@@ -20,11 +20,18 @@ class UnifiedSelector extends StatelessWidget {
         PopupMenuItem<Region?>(
           value: null,
           onTap: () => onSelectionChanged(null),
-          child: const Row(
+          child: Row(
             children: [
-              Icon(Icons.home),
-              SizedBox(width: 8),
-              Text('Nazionale'),
+              SizedBox(
+                width: 24,
+                height: 24,
+                child: Image.asset(
+                  'assets/images/italy.png',
+                  fit: BoxFit.contain,
+                ),
+              ),
+              const SizedBox(width: 8),
+              const Text('Nazionale'),
             ],
           ),
         ),
@@ -63,7 +70,14 @@ class UnifiedSelector extends StatelessWidget {
             const SizedBox(width: 8),
             Text(selectedRegion!.name),
           ] else ...[
-            const Icon(Icons.home),
+            SizedBox(
+              width: 24,
+              height: 24,
+              child: Image.asset(
+                'assets/images/italy.png',
+                fit: BoxFit.contain,
+              ),
+            ),
             const SizedBox(width: 8),
             const Text('Nazionale'),
           ],

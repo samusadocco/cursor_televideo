@@ -53,12 +53,10 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
   }
 
   void _onHorizontalDragStart(DragStartDetails details) {
-    if (!widget.isNationalMode) return;
     _dragStart = details.globalPosition;
   }
 
   void _onHorizontalDragUpdate(DragUpdateDetails details) {
-    if (!widget.isNationalMode) return;
     final dragDistance = details.globalPosition.dx - _dragStart.dx;
     final screenWidth = MediaQuery.of(context).size.width;
     final normalizedOffset = dragDistance / screenWidth;
@@ -75,7 +73,6 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
   }
 
   void _onHorizontalDragEnd(DragEndDetails details) {
-    if (!widget.isNationalMode) return;
     final velocity = details.primaryVelocity ?? 0;
     if (velocity.abs() > 300) {
       if (velocity > 0) {

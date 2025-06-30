@@ -11,6 +11,7 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
   final AdService _adService = AdService();
   final int defaultPage = 100;
   Region? _currentRegion;
+  int _currentPage = 100;
 
   TelevideoBloc({required TelevideoRepository repository})
       : _repository = repository,
@@ -26,9 +27,9 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
   }
 
   Future<void> _onLoadNationalPage(int pageNumber, Emitter<TelevideoState> emit) async {
-    // Reset completo dello stato
-    emit(const TelevideoState.initial());
+    emit(const TelevideoState.loading());
     _currentRegion = null;
+    _currentPage = pageNumber;
 
     try {
       final page = await _repository.getNationalPage(pageNumber);
@@ -38,8 +39,7 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
         region: null,
       )));
     } catch (e) {
-      // In caso di errore, manteniamo lo stato iniziale
-      emit(const TelevideoState.initial());
+      emit(TelevideoState.error(e.toString()));
     }
   }
 
@@ -47,6 +47,7 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
     emit(const TelevideoState.loading());
     try {
       _currentRegion = region;
+      _currentPage = 300;
       final page = await _repository.getRegionalPage(region.code);
       emit(TelevideoState.loaded(page));
     } catch (e) {
@@ -54,35 +55,65 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
     }
   }
 
-  Future<void> _onNextPage(int currentPage, Emitter<TelevideoState> emit) async {
-    final nextPage = currentPage + 1;
-    if (nextPage <= 899) {
-      if (_currentRegion != null) {
-        try {
-          final page = await _repository.getRegionalPage(_currentRegion!.code, pageNumber: nextPage);
+  Future<void> _findNextAvailablePage(int startPage, Emitter<TelevideoState> emit) async {
+    int currentPage = startPage;
+    while (currentPage <= 899) {
+      try {
+        if (_currentRegion != null) {
+          final page = await _repository.getRegionalPage(_currentRegion!.code, pageNumber: currentPage);
+          _currentPage = currentPage;
           emit(TelevideoState.loaded(page));
-        } catch (e) {
-          emit(TelevideoState.error(e.toString()));
+          return;
+        } else {
+          final page = await _repository.getNationalPage(currentPage);
+          _currentPage = currentPage;
+          emit(TelevideoState.loaded(page));
+          return;
         }
-      } else {
-        await _onLoadNationalPage(nextPage, emit);
+      } catch (e) {
+        if (currentPage >= 899) {
+          emit(TelevideoState.error('Nessuna pagina disponibile'));
+          return;
+        }
+        currentPage++;
       }
     }
   }
 
-  Future<void> _onPreviousPage(int currentPage, Emitter<TelevideoState> emit) async {
-    final previousPage = currentPage - 1;
-    if (previousPage >= 100) {
-      if (_currentRegion != null) {
-        try {
-          final page = await _repository.getRegionalPage(_currentRegion!.code, pageNumber: previousPage);
+  Future<void> _findPreviousAvailablePage(int startPage, Emitter<TelevideoState> emit) async {
+    int currentPage = startPage;
+    while (currentPage >= 100) {
+      try {
+        if (_currentRegion != null) {
+          final page = await _repository.getRegionalPage(_currentRegion!.code, pageNumber: currentPage);
+          _currentPage = currentPage;
           emit(TelevideoState.loaded(page));
-        } catch (e) {
-          emit(TelevideoState.error(e.toString()));
+          return;
+        } else {
+          final page = await _repository.getNationalPage(currentPage);
+          _currentPage = currentPage;
+          emit(TelevideoState.loaded(page));
+          return;
         }
-      } else {
-        await _onLoadNationalPage(previousPage, emit);
+      } catch (e) {
+        if (currentPage <= 100) {
+          emit(TelevideoState.error('Nessuna pagina disponibile'));
+          return;
+        }
+        currentPage--;
       }
+    }
+  }
+
+  Future<void> _onNextPage(int currentPage, Emitter<TelevideoState> emit) async {
+    if (currentPage < 899) {
+      await _findNextAvailablePage(currentPage + 1, emit);
+    }
+  }
+
+  Future<void> _onPreviousPage(int currentPage, Emitter<TelevideoState> emit) async {
+    if (currentPage > 100) {
+      await _findPreviousAvailablePage(currentPage - 1, emit);
     }
   }
 
