@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cursor_televideo/features/televideo_viewer/bloc/televideo_bloc.dart';
 import 'package:cursor_televideo/features/televideo_viewer/bloc/televideo_event.dart';
 import 'package:cursor_televideo/features/televideo_viewer/bloc/televideo_state.dart';
+import 'package:cursor_televideo/features/televideo_viewer/bloc/region_bloc.dart';
 import 'package:cursor_televideo/features/televideo_viewer/presentation/widgets/televideo_viewer.dart';
 import 'package:cursor_televideo/features/televideo_viewer/presentation/widgets/region_selector.dart';
 import 'package:cursor_televideo/features/settings/presentation/pages/settings_page.dart';
@@ -17,20 +18,23 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin {
-  late TabController _tabController;
+class _HomePageState extends State<HomePage> {
   bool _showControls = true;
-  Region _selectedRegion = Region.values.first;
+  late TelevideoBloc _televideoBloc;
+  late RegionBloc _regionBloc;
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 2, vsync: this);
+    _televideoBloc = TelevideoBloc(repository: TelevideoRepository())
+      ..add(const TelevideoEvent.loadNationalPage(100));
+    _regionBloc = RegionBloc();
   }
 
   @override
   void dispose() {
-    _tabController.dispose();
+    _televideoBloc.close();
+    _regionBloc.close();
     super.dispose();
   }
 
@@ -44,27 +48,39 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
     if (!_showControls) return null;
 
     return AppBar(
-      title: BlocBuilder<TelevideoBloc, TelevideoState>(
-        builder: (context, state) {
-          return state.when(
-            initial: () => const Text('Televideo RAI'),
-            loading: () => const Text('Televideo RAI'),
-            loaded: (page) => Row(
-              children: [
-                const Text('Televideo RAI'),
-                const SizedBox(width: 10),
-                Text(
-                  '- Pag. ${page.pageNumber}',
-                  style: const TextStyle(fontSize: 16),
-                ),
-                const SizedBox(width: 10),
-                Text(
-                  '(${page.region ?? 'Nazionale'})',
-                  style: const TextStyle(fontSize: 16),
-                ),
-              ],
-            ),
-            error: (_) => const Text('Televideo RAI'),
+      title: BlocBuilder<RegionBloc, RegionState>(
+        builder: (context, regionState) {
+          return Row(
+            children: [
+              UnifiedSelector(
+                selectedRegion: regionState.selectedRegion,
+                onSelectionChanged: (region) {
+                  // Prima aggiorniamo lo stato della regione
+                  context.read<RegionBloc>().add(RegionEvent.selectRegion(region));
+                  
+                  // Poi carichiamo la pagina appropriata
+                  if (region != null) {
+                    context.read<TelevideoBloc>().add(TelevideoEvent.loadRegionalPage(region));
+                  } else {
+                    context.read<TelevideoBloc>().add(const TelevideoEvent.loadNationalPage(100));
+                  }
+                },
+              ),
+              const SizedBox(width: 16),
+              BlocBuilder<TelevideoBloc, TelevideoState>(
+                builder: (context, state) {
+                  return state.when(
+                    initial: () => const SizedBox(),
+                    loading: () => const SizedBox(),
+                    loaded: (page) => Text(
+                      'Pag. ${page.pageNumber}',
+                      style: const TextStyle(fontSize: 16),
+                    ),
+                    error: (_) => const SizedBox(),
+                  );
+                },
+              ),
+            ],
           );
         },
       ),
@@ -79,40 +95,23 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
           },
         ),
       ],
-      bottom: TabBar(
-        controller: _tabController,
-        tabs: const [
-          Tab(text: 'Nazionale'),
-          Tab(text: 'Regionale'),
-        ],
-      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => TelevideoBloc(repository: TelevideoRepository())
-        ..add(const TelevideoEvent.loadNationalPage(100)),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider.value(value: _televideoBloc),
+        BlocProvider.value(value: _regionBloc),
+      ],
       child: Scaffold(
-        appBar: _showControls
-            ? AppBar(
-                title: const Text('Televideo RAI'),
-                bottom: TabBar(
-                  controller: _tabController,
-                  tabs: const [
-                    Tab(text: 'Nazionale'),
-                    Tab(text: 'Regionale'),
-                  ],
-                ),
-              )
-            : null,
+        appBar: _buildAppBar(),
         body: GestureDetector(
           onTap: _toggleControls,
-          child: TabBarView(
-            controller: _tabController,
-            children: [
-              BlocBuilder<TelevideoBloc, TelevideoState>(
+          child: BlocBuilder<RegionBloc, RegionState>(
+            builder: (context, regionState) {
+              return BlocBuilder<TelevideoBloc, TelevideoState>(
                 builder: (context, state) {
                   return state.when(
                     initial: () => const Center(child: CircularProgressIndicator()),
@@ -120,28 +119,18 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                     loaded: (page) => TelevideoViewer(
                       page: page,
                       onPageNumberSubmitted: (pageNumber) {
-                        context
-                            .read<TelevideoBloc>()
-                            .add(TelevideoEvent.loadNationalPage(pageNumber));
+                        context.read<TelevideoBloc>().add(TelevideoEvent.loadNationalPage(pageNumber));
                       },
                       showControls: _showControls,
+                      isNationalMode: regionState.selectedRegion == null,
                     ),
                     error: (message) => Center(
                       child: Text(message),
                     ),
                   );
                 },
-              ),
-              RegionSelector(
-                selectedRegion: _selectedRegion,
-                onRegionSelected: (region) {
-                  setState(() {
-                    _selectedRegion = region;
-                  });
-                  context.read<TelevideoBloc>().add(TelevideoEvent.loadRegionalPage(region));
-                },
-              ),
-            ],
+              );
+            },
           ),
         ),
         bottomNavigationBar: const AdBanner(),

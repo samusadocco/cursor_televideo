@@ -26,20 +26,27 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
   }
 
   Future<void> _onLoadNationalPage(int pageNumber, Emitter<TelevideoState> emit) async {
-    emit(const TelevideoState.loading());
+    // Reset completo dello stato
+    emit(const TelevideoState.initial());
+    _currentRegion = null;
+
     try {
-      _currentRegion = null; // Reset della regione corrente
       final page = await _repository.getNationalPage(pageNumber);
-      emit(TelevideoState.loaded(page));
+      emit(TelevideoState.loaded(TelevideoPage(
+        pageNumber: pageNumber,
+        imageUrl: page.imageUrl,
+        region: null,
+      )));
     } catch (e) {
-      emit(TelevideoState.error(e.toString()));
+      // In caso di errore, manteniamo lo stato iniziale
+      emit(const TelevideoState.initial());
     }
   }
 
   Future<void> _onLoadRegionalPage(Region region, Emitter<TelevideoState> emit) async {
     emit(const TelevideoState.loading());
     try {
-      _currentRegion = region; // Salva la regione corrente
+      _currentRegion = region;
       final page = await _repository.getRegionalPage(region.code);
       emit(TelevideoState.loaded(page));
     } catch (e) {
@@ -48,26 +55,34 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
   }
 
   Future<void> _onNextPage(int currentPage, Emitter<TelevideoState> emit) async {
-    if (_currentRegion != null) {
-      // Per le pagine regionali non facciamo nulla, poiché c'è solo la pagina 300
-      return;
-    }
-    
     final nextPage = currentPage + 1;
     if (nextPage <= 899) {
-      await _onLoadNationalPage(nextPage, emit);
+      if (_currentRegion != null) {
+        try {
+          final page = await _repository.getRegionalPage(_currentRegion!.code, pageNumber: nextPage);
+          emit(TelevideoState.loaded(page));
+        } catch (e) {
+          emit(TelevideoState.error(e.toString()));
+        }
+      } else {
+        await _onLoadNationalPage(nextPage, emit);
+      }
     }
   }
 
   Future<void> _onPreviousPage(int currentPage, Emitter<TelevideoState> emit) async {
-    if (_currentRegion != null) {
-      // Per le pagine regionali non facciamo nulla, poiché c'è solo la pagina 300
-      return;
-    }
-    
     final previousPage = currentPage - 1;
     if (previousPage >= 100) {
-      await _onLoadNationalPage(previousPage, emit);
+      if (_currentRegion != null) {
+        try {
+          final page = await _repository.getRegionalPage(_currentRegion!.code, pageNumber: previousPage);
+          emit(TelevideoState.loaded(page));
+        } catch (e) {
+          emit(TelevideoState.error(e.toString()));
+        }
+      } else {
+        await _onLoadNationalPage(previousPage, emit);
+      }
     }
   }
 

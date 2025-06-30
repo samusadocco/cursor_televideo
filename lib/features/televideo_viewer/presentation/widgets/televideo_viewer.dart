@@ -9,14 +9,16 @@ import 'package:cursor_televideo/shared/models/televideo_page.dart';
 
 class TelevideoViewer extends StatefulWidget {
   final TelevideoPage page;
-  final Function(int) onPageNumberSubmitted;
+  final Function(int)? onPageNumberSubmitted;
   final bool showControls;
+  final bool isNationalMode;
 
   const TelevideoViewer({
     super.key,
     required this.page,
     required this.onPageNumberSubmitted,
     required this.showControls,
+    required this.isNationalMode,
   });
 
   @override
@@ -51,10 +53,12 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
   }
 
   void _onHorizontalDragStart(DragStartDetails details) {
+    if (!widget.isNationalMode) return;
     _dragStart = details.globalPosition;
   }
 
   void _onHorizontalDragUpdate(DragUpdateDetails details) {
+    if (!widget.isNationalMode) return;
     final dragDistance = details.globalPosition.dx - _dragStart.dx;
     final screenWidth = MediaQuery.of(context).size.width;
     final normalizedOffset = dragDistance / screenWidth;
@@ -71,6 +75,7 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
   }
 
   void _onHorizontalDragEnd(DragEndDetails details) {
+    if (!widget.isNationalMode) return;
     final velocity = details.primaryVelocity ?? 0;
     if (velocity.abs() > 300) {
       if (velocity > 0) {
@@ -104,7 +109,7 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
   Widget build(BuildContext context) {
     return Column(
       children: [
-        if (widget.showControls)
+        if (widget.showControls && widget.isNationalMode)
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextField(
@@ -115,8 +120,8 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
               keyboardType: TextInputType.number,
               onSubmitted: (value) {
                 final pageNumber = int.tryParse(value);
-                if (pageNumber != null) {
-                  widget.onPageNumberSubmitted(pageNumber);
+                if (pageNumber != null && widget.onPageNumberSubmitted != null) {
+                  widget.onPageNumberSubmitted!(pageNumber);
                 }
               },
             ),
