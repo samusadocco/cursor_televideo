@@ -46,18 +46,29 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
   Future<void> _onLoadRegionalPage(Region region, Emitter<TelevideoState> emit) async {
     emit(const TelevideoState.loading());
     try {
+      final bool wasNational = _currentRegion == null;
       _currentRegion = region;
-      _currentPage = 300;
-      final page = await _repository.getRegionalPage(region.code);
+      
+      // Impostiamo la pagina 300 solo se veniamo dalla modalità nazionale
+      if (wasNational) {
+        _currentPage = 300;
+      }
+      
+      final page = await _repository.getRegionalPage(region.code, pageNumber: _currentPage);
       emit(TelevideoState.loaded(page));
     } catch (e) {
-      emit(TelevideoState.error(e.toString()));
+      // Se la pagina non è disponibile, cerca la prossima disponibile
+      await _findNextAvailablePage(_currentPage, emit);
     }
   }
 
   Future<void> _findNextAvailablePage(int startPage, Emitter<TelevideoState> emit) async {
+    emit(const TelevideoState.loading());
     int currentPage = startPage;
-    while (currentPage <= 899) {
+    int maxAttempts = 100; // Limita il numero di tentativi per evitare loop infiniti
+    int attempts = 0;
+
+    while (currentPage <= 899 && attempts < maxAttempts) {
       try {
         if (_currentRegion != null) {
           final page = await _repository.getRegionalPage(_currentRegion!.code, pageNumber: currentPage);
@@ -76,13 +87,19 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
           return;
         }
         currentPage++;
+        attempts++;
       }
     }
+    emit(TelevideoState.error('Nessuna pagina disponibile'));
   }
 
   Future<void> _findPreviousAvailablePage(int startPage, Emitter<TelevideoState> emit) async {
+    emit(const TelevideoState.loading());
     int currentPage = startPage;
-    while (currentPage >= 100) {
+    int maxAttempts = 100; // Limita il numero di tentativi per evitare loop infiniti
+    int attempts = 0;
+
+    while (currentPage >= 100 && attempts < maxAttempts) {
       try {
         if (_currentRegion != null) {
           final page = await _repository.getRegionalPage(_currentRegion!.code, pageNumber: currentPage);
@@ -101,8 +118,10 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
           return;
         }
         currentPage--;
+        attempts++;
       }
     }
+    emit(TelevideoState.error('Nessuna pagina disponibile'));
   }
 
   Future<void> _onNextPage(int currentPage, Emitter<TelevideoState> emit) async {

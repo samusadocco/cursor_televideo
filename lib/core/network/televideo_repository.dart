@@ -49,20 +49,12 @@ class TelevideoRepository {
         );
       }
       
-      // Se la pagina non esiste, prova con la pagina 300
-      if (pageNumber != 300) {
-        return getRegionalPage(region);
-      }
-      
-      throw Exception('Pagina regionale non trovata per $region');
+      throw Exception('Pagina regionale $pageNumber non trovata per $region');
     } catch (e) {
       if (e is DioException && e.response?.statusCode == 404) {
-        if (pageNumber != 300) {
-          return getRegionalPage(region);
-        }
-        throw Exception('Pagina regionale non trovata per $region');
+        throw Exception('Pagina regionale $pageNumber non trovata per $region');
       }
-      throw Exception('Errore nel caricamento della pagina regionale per $region: ${e.toString()}');
+      throw Exception('Errore nel caricamento della pagina regionale $pageNumber per $region: ${e.toString()}');
     }
   }
 } 

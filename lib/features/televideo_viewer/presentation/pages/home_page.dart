@@ -144,7 +144,7 @@ class _HomePageState extends State<HomePage> {
                         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(4),
-                          color: Colors.white.withOpacity(0.1),
+                          color: Colors.white.withOpacity(0.2),
                         ),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
@@ -155,6 +155,13 @@ class _HomePageState extends State<HomePage> {
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white,
+                                shadows: [
+                                  Shadow(
+                                    offset: Offset(1.0, 1.0),
+                                    blurRadius: 3.0,
+                                    color: Colors.black,
+                                  ),
+                                ],
                               ),
                             ),
                             const SizedBox(width: 4),
@@ -162,6 +169,13 @@ class _HomePageState extends State<HomePage> {
                               Icons.edit,
                               size: 16,
                               color: Colors.white,
+                              shadows: [
+                                Shadow(
+                                  offset: Offset(1.0, 1.0),
+                                  blurRadius: 3.0,
+                                  color: Colors.black,
+                                ),
+                              ],
                             ),
                           ],
                         ),
