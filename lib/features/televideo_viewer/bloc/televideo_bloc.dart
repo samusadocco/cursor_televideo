@@ -45,6 +45,7 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
           // Usa il maxSubPages della nuova pagina per validare la sottopagina
           final validSubPage = newSubPage <= newPage.maxSubPages ? newSubPage : 1;
           if (!emit.isDone) {
+            _adService.incrementPageView(isSubPage: true);
             emit(TelevideoState.loaded(newPage, currentSubPage: validSubPage));
           }
         } catch (e) {
@@ -79,6 +80,7 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
           // Usa il maxSubPages della nuova pagina per validare la sottopagina
           final validSubPage = newSubPage <= newPage.maxSubPages ? newSubPage : 1;
           if (!emit.isDone) {
+            _adService.incrementPageView(isSubPage: true);
             emit(TelevideoState.loaded(newPage, currentSubPage: validSubPage));
           }
         } catch (e) {
@@ -97,14 +99,19 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
   }
 
   Future<void> _onLoadNationalPage(int pageNumber, Emitter<TelevideoState> emit) async {
+    print('[TelevideoBloc] Loading national page: $pageNumber'); // Debug print
     emit(const TelevideoState.loading());
-    _currentRegion = null;
+    _currentRegion = null;  // Reset della regione corrente
     _currentPage = pageNumber;
 
     try {
+      print('[TelevideoBloc] Fetching national page from repository'); // Debug print
       final page = await _repository.getNationalPage(pageNumber);
+      _adService.incrementPageView();
+      print('[TelevideoBloc] National page loaded successfully'); // Debug print
       emit(TelevideoState.loaded(page, currentSubPage: 1));
     } catch (e) {
+      print('[TelevideoBloc] Error loading national page: $e'); // Debug print
       emit(TelevideoState.error(e.toString()));
     }
   }
@@ -121,6 +128,7 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
       }
       
       final page = await _repository.getRegionalPage(region.code, pageNumber: _currentPage);
+      _adService.incrementPageView();
       emit(TelevideoState.loaded(page, currentSubPage: 1));
     } catch (e) {
       // Se la pagina non è disponibile, cerca la prossima disponibile
@@ -139,11 +147,13 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
         if (_currentRegion != null) {
           final page = await _repository.getRegionalPage(_currentRegion!.code, pageNumber: currentPage);
           _currentPage = currentPage;
+          _adService.incrementPageView();
           emit(TelevideoState.loaded(page));
           return;
         } else {
           final page = await _repository.getNationalPage(currentPage);
           _currentPage = currentPage;
+          _adService.incrementPageView();
           emit(TelevideoState.loaded(page));
           return;
         }
@@ -170,11 +180,13 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
         if (_currentRegion != null) {
           final page = await _repository.getRegionalPage(_currentRegion!.code, pageNumber: currentPage);
           _currentPage = currentPage;
+          _adService.incrementPageView();
           emit(TelevideoState.loaded(page));
           return;
         } else {
           final page = await _repository.getNationalPage(currentPage);
           _currentPage = currentPage;
+          _adService.incrementPageView();
           emit(TelevideoState.loaded(page));
           return;
         }

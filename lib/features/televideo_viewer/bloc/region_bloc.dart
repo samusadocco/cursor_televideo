@@ -21,9 +21,12 @@ sealed class RegionState with _$RegionState {
 class RegionBloc extends Bloc<RegionEvent, RegionState> {
   RegionBloc() : super(RegionState.initial()) {
     on<RegionEvent>((event, emit) async {
+      print('[RegionBloc] Received event: $event'); // Debug print
       switch (event) {
         case _SelectRegion(:final region):
+          print('[RegionBloc] Emitting new state with region: $region'); // Debug print
           emit(RegionState(selectedRegion: region));
+          print('[RegionBloc] New state emitted'); // Debug print
       }
     });
   }

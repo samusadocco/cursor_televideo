@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:cursor_televideo/shared/models/region.dart';
+import 'package:cursor_televideo/core/location/location_service.dart';
 
-class UnifiedSelector extends StatelessWidget {
+class UnifiedSelector extends StatefulWidget {
   final Region? selectedRegion;
   final Function(Region?) onSelectionChanged;
 
@@ -12,14 +13,57 @@ class UnifiedSelector extends StatelessWidget {
   });
 
   @override
+  State<UnifiedSelector> createState() => _UnifiedSelectorState();
+}
+
+class _UnifiedSelectorState extends State<UnifiedSelector> {
+  final MenuController _menuController = MenuController();
+  Region? _currentRegion;
+  bool _isLoadingLocation = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _getCurrentRegion();
+  }
+
+  Future<void> _getCurrentRegion() async {
+    if (!mounted) return;
+    
+    setState(() {
+      _isLoadingLocation = true;
+    });
+
+    try {
+      final region = await LocationService.getCurrentRegion();
+      if (!mounted) return;
+      setState(() {
+        _currentRegion = region;
+      });
+    } catch (e) {
+      print('Errore nel recupero della regione: $e');
+    } finally {
+      if (!mounted) return;
+      setState(() {
+        _isLoadingLocation = false;
+      });
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return PopupMenuButton<Region?>(
-      initialValue: selectedRegion,
-      onSelected: onSelectionChanged,
-      itemBuilder: (BuildContext context) => [
-        PopupMenuItem<Region?>(
-          value: null,
-          onTap: () => onSelectionChanged(null),
+    print('[UnifiedSelector] Building with selectedRegion: ${widget.selectedRegion}'); // Debug print
+    
+    return MenuAnchor(
+      controller: _menuController,
+      menuChildren: [
+        // Opzione Nazionale
+        MenuItemButton(
+          onPressed: () {
+            print('[UnifiedSelector] Nazionale pressed'); // Debug print
+            widget.onSelectionChanged(null);
+            _menuController.close();
+          },
           child: Row(
             children: [
               SizedBox(
@@ -35,10 +79,43 @@ class UnifiedSelector extends StatelessWidget {
             ],
           ),
         ),
-        const PopupMenuDivider(),
-        ...Region.values.map((region) => PopupMenuItem<Region?>(
-          value: region,
-          onTap: () => onSelectionChanged(region),
+        if (_currentRegion != null) ...[
+          const MenuItemButton(
+            child: Divider(),
+          ),
+          // Regione corrente
+          MenuItemButton(
+            onPressed: () {
+              print('[UnifiedSelector] Current region ${_currentRegion!.name} pressed');
+              widget.onSelectionChanged(_currentRegion);
+              _menuController.close();
+            },
+            child: Row(
+              children: [
+                SizedBox(
+                  width: 24,
+                  height: 24,
+                  child: Image.asset(
+                    _currentRegion!.imagePath,
+                    fit: BoxFit.contain,
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Text('${_currentRegion!.name} (Posizione attuale)'),
+              ],
+            ),
+          ),
+        ],
+        const MenuItemButton(
+          child: Divider(),
+        ),
+        // Opzioni regioni
+        ...Region.values.map((region) => MenuItemButton(
+          onPressed: () {
+            print('[UnifiedSelector] Region ${region.name} pressed'); // Debug print
+            widget.onSelectionChanged(region);
+            _menuController.close();
+          },
           child: Row(
             children: [
               SizedBox(
@@ -49,42 +126,67 @@ class UnifiedSelector extends StatelessWidget {
                   fit: BoxFit.contain,
                 ),
               ),
-              SizedBox(width: 8),
+              const SizedBox(width: 8),
               Text(region.name),
             ],
           ),
         )),
       ],
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          if (selectedRegion != null) ...[
-            SizedBox(
-              width: 24,
-              height: 24,
-              child: Image.asset(
-                selectedRegion!.imagePath,
-                fit: BoxFit.contain,
-              ),
+      builder: (context, controller, child) {
+        return GestureDetector(
+          onTap: () {
+            print('[UnifiedSelector] Menu button tapped'); // Debug print
+            if (controller.isOpen) {
+              controller.close();
+            } else {
+              controller.open();
+            }
+          },
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              color: Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.3),
             ),
-            const SizedBox(width: 8),
-            Text(selectedRegion!.name),
-          ] else ...[
-            SizedBox(
-              width: 24,
-              height: 24,
-              child: Image.asset(
-                'assets/images/italy.png',
-                fit: BoxFit.contain,
-              ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                if (_isLoadingLocation)
+                  const SizedBox(
+                    width: 24,
+                    height: 24,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                    ),
+                  )
+                else if (widget.selectedRegion != null)
+                  SizedBox(
+                    width: 24,
+                    height: 24,
+                    child: Image.asset(
+                      widget.selectedRegion!.imagePath,
+                      fit: BoxFit.contain,
+                    ),
+                  )
+                else
+                  SizedBox(
+                    width: 24,
+                    height: 24,
+                    child: Image.asset(
+                      'assets/images/italy.png',
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                const SizedBox(width: 4),
+                const Icon(
+                  Icons.arrow_drop_down,
+                  size: 20,
+                ),
+              ],
             ),
-            const SizedBox(width: 8),
-            const Text('Nazionale'),
-          ],
-          const SizedBox(width: 4),
-          const Icon(Icons.arrow_drop_down),
-        ],
-      ),
+          ),
+        );
+      },
     );
   }
 } 

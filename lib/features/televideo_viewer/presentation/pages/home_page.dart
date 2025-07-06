@@ -112,64 +112,86 @@ class _HomePageState extends State<HomePage> {
               UnifiedSelector(
                 selectedRegion: regionState.selectedRegion,
                 onSelectionChanged: (region) {
+                  print('[HomePage] onSelectionChanged called with region: $region');
+                  
                   // Prima aggiorniamo lo stato della regione
+                  print('[HomePage] Dispatching RegionEvent.selectRegion');
                   context.read<RegionBloc>().add(RegionEvent.selectRegion(region));
                   
                   // Poi carichiamo la pagina appropriata
                   if (region != null) {
-                    // Se selezioniamo una regione, carichiamo sempre la pagina 300
-                    context.read<TelevideoBloc>().add(const TelevideoEvent.loadNationalPage(300));
+                    print('[HomePage] Loading regional page for: $region');
+                    // Se selezioniamo una regione, carichiamo direttamente la pagina regionale
                     context.read<TelevideoBloc>().add(TelevideoEvent.loadRegionalPage(region));
                   } else {
+                    print('[HomePage] Loading national page 100');
                     // Se torniamo alla modalità nazionale, carichiamo sempre la pagina 100
                     context.read<TelevideoBloc>().add(const TelevideoEvent.loadNationalPage(100));
                   }
                 },
               ),
-              const SizedBox(width: 16),
-              BlocBuilder<TelevideoBloc, TelevideoState>(
-                builder: (context, state) {
-                  return state.when(
-                    initial: () => const SizedBox(),
-                    loading: () => const Text(
-                      'Caricamento...',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    loaded: (page, currentSubPage) => GestureDetector(
-                      onTap: () => _showPageNumberDialog(context, isNationalMode, regionState.selectedRegion),
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(4),
-                          color: Colors.white.withOpacity(0.2),
+              Expanded(
+                child: BlocBuilder<TelevideoBloc, TelevideoState>(
+                  builder: (context, state) {
+                    return state.when(
+                      initial: () => const SizedBox(),
+                      loading: () => const Center(
+                        child: Text(
+                          'Caricamento...',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              'Pag. ${page.pageNumber}',
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                                shadows: [
-                                  Shadow(
-                                    offset: Offset(1.0, 1.0),
-                                    blurRadius: 3.0,
-                                    color: Colors.black,
+                      ),
+                      loaded: (page, currentSubPage) => Center(
+                        child: GestureDetector(
+                          onTap: () => _showPageNumberDialog(context, isNationalMode, regionState.selectedRegion),
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(4),
+                              color: Colors.white.withOpacity(0.2),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  'Pag. ${page.pageNumber}',
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                    shadows: [
+                                      Shadow(
+                                        offset: Offset(1.0, 1.0),
+                                        blurRadius: 3.0,
+                                        color: Colors.black,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                if (page.maxSubPages > 1) ...[
+                                  const SizedBox(width: 4),
+                                  Text(
+                                    '($currentSubPage/${page.maxSubPages})',
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.white,
+                                      shadows: [
+                                        Shadow(
+                                          offset: Offset(1.0, 1.0),
+                                          blurRadius: 3.0,
+                                          color: Colors.black,
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ],
-                              ),
-                            ),
-                            if (page.maxSubPages > 1) ...[
-                              const SizedBox(width: 4),
-                              Text(
-                                '($currentSubPage/${page.maxSubPages})',
-                                style: const TextStyle(
-                                  fontSize: 14,
+                                const SizedBox(width: 4),
+                                const Icon(
+                                  Icons.edit,
+                                  size: 16,
                                   color: Colors.white,
                                   shadows: [
                                     Shadow(
@@ -179,36 +201,27 @@ class _HomePageState extends State<HomePage> {
                                     ),
                                   ],
                                 ),
-                              ),
-                            ],
-                            const SizedBox(width: 4),
-                            const Icon(
-                              Icons.edit,
-                              size: 16,
-                              color: Colors.white,
-                              shadows: [
-                                Shadow(
-                                  offset: Offset(1.0, 1.0),
-                                  blurRadius: 3.0,
-                                  color: Colors.black,
-                                ),
                               ],
                             ),
-                          ],
+                          ),
                         ),
                       ),
-                    ),
-                    error: (message) => const Text(
-                      'Errore',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.red,
+                      error: (message) => const Center(
+                        child: Text(
+                          'Errore',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.red,
+                          ),
+                        ),
                       ),
-                    ),
-                  );
-                },
+                    );
+                  },
+                ),
               ),
+              // Aggiungiamo un SizedBox della stessa larghezza del selettore per bilanciare
+              SizedBox(width: 56), // Larghezza approssimativa del UnifiedSelector
             ],
           );
         },
