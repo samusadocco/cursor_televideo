@@ -22,8 +22,78 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
         loadRegionalPage: (region) => _onLoadRegionalPage(region, emit),
         nextPage: (currentPage) => _onNextPage(currentPage, emit),
         previousPage: (currentPage) => _onPreviousPage(currentPage, emit),
+        nextSubPage: () => _onNextSubPage(emit),
+        previousSubPage: () => _onPreviousSubPage(emit),
       );
     });
+  }
+
+  Future<void> _onNextSubPage(Emitter<TelevideoState> emit) async {
+    await state.maybeWhen(
+      loaded: (page, currentSubPage) async {
+        if (page.maxSubPages <= 1) return; // Non fare nulla se non ci sono sottopagine
+        
+        final nextSubPage = currentSubPage + 1;
+        final maxSubPages = page.maxSubPages;
+        final newSubPage = nextSubPage > maxSubPages ? 1 : nextSubPage;
+        
+        try {
+          final newPage = await _currentRegion != null
+              ? await _repository.getRegionalPage(_currentRegion!.code, pageNumber: page.pageNumber, subPage: newSubPage)
+              : await _repository.getNationalPage(page.pageNumber, subPage: newSubPage);
+          
+          // Usa il maxSubPages della nuova pagina per validare la sottopagina
+          final validSubPage = newSubPage <= newPage.maxSubPages ? newSubPage : 1;
+          if (!emit.isDone) {
+            emit(TelevideoState.loaded(newPage, currentSubPage: validSubPage));
+          }
+        } catch (e) {
+          // Se la sottopagina non esiste, torniamo alla prima
+          if (!emit.isDone) {
+            final fallbackPage = await _currentRegion != null
+                ? await _repository.getRegionalPage(_currentRegion!.code, pageNumber: page.pageNumber)
+                : await _repository.getNationalPage(page.pageNumber);
+            
+            emit(TelevideoState.loaded(fallbackPage, currentSubPage: 1));
+          }
+        }
+      },
+      orElse: () async {},
+    );
+  }
+
+  Future<void> _onPreviousSubPage(Emitter<TelevideoState> emit) async {
+    await state.maybeWhen(
+      loaded: (page, currentSubPage) async {
+        if (page.maxSubPages <= 1) return; // Non fare nulla se non ci sono sottopagine
+        
+        final prevSubPage = currentSubPage - 1;
+        final maxSubPages = page.maxSubPages;
+        final newSubPage = prevSubPage < 1 ? maxSubPages : prevSubPage;
+        
+        try {
+          final newPage = await _currentRegion != null
+              ? await _repository.getRegionalPage(_currentRegion!.code, pageNumber: page.pageNumber, subPage: newSubPage)
+              : await _repository.getNationalPage(page.pageNumber, subPage: newSubPage);
+          
+          // Usa il maxSubPages della nuova pagina per validare la sottopagina
+          final validSubPage = newSubPage <= newPage.maxSubPages ? newSubPage : 1;
+          if (!emit.isDone) {
+            emit(TelevideoState.loaded(newPage, currentSubPage: validSubPage));
+          }
+        } catch (e) {
+          // Se la sottopagina non esiste, torniamo alla prima
+          if (!emit.isDone) {
+            final fallbackPage = await _currentRegion != null
+                ? await _repository.getRegionalPage(_currentRegion!.code, pageNumber: page.pageNumber)
+                : await _repository.getNationalPage(page.pageNumber);
+            
+            emit(TelevideoState.loaded(fallbackPage, currentSubPage: 1));
+          }
+        }
+      },
+      orElse: () async {},
+    );
   }
 
   Future<void> _onLoadNationalPage(int pageNumber, Emitter<TelevideoState> emit) async {
@@ -33,11 +103,7 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
 
     try {
       final page = await _repository.getNationalPage(pageNumber);
-      emit(TelevideoState.loaded(TelevideoPage(
-        pageNumber: pageNumber,
-        imageUrl: page.imageUrl,
-        region: null,
-      )));
+      emit(TelevideoState.loaded(page, currentSubPage: 1));
     } catch (e) {
       emit(TelevideoState.error(e.toString()));
     }
@@ -55,7 +121,7 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
       }
       
       final page = await _repository.getRegionalPage(region.code, pageNumber: _currentPage);
-      emit(TelevideoState.loaded(page));
+      emit(TelevideoState.loaded(page, currentSubPage: 1));
     } catch (e) {
       // Se la pagina non è disponibile, cerca la prossima disponibile
       await _findNextAvailablePage(_currentPage, emit);

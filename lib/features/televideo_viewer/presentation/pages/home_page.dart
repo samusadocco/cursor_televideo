@@ -138,7 +138,7 @@ class _HomePageState extends State<HomePage> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    loaded: (page) => GestureDetector(
+                    loaded: (page, currentSubPage) => GestureDetector(
                       onTap: () => _showPageNumberDialog(context, isNationalMode, regionState.selectedRegion),
                       child: Container(
                         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
@@ -164,6 +164,23 @@ class _HomePageState extends State<HomePage> {
                                 ],
                               ),
                             ),
+                            if (page.maxSubPages > 1) ...[
+                              const SizedBox(width: 4),
+                              Text(
+                                '($currentSubPage/${page.maxSubPages})',
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.white,
+                                  shadows: [
+                                    Shadow(
+                                      offset: Offset(1.0, 1.0),
+                                      blurRadius: 3.0,
+                                      color: Colors.black,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
                             const SizedBox(width: 4),
                             const Icon(
                               Icons.edit,
@@ -228,7 +245,7 @@ class _HomePageState extends State<HomePage> {
                   return state.when(
                     initial: () => const Center(child: CircularProgressIndicator()),
                     loading: () => const Center(child: CircularProgressIndicator()),
-                    loaded: (page) => TelevideoViewer(
+                    loaded: (page, currentSubPage) => TelevideoViewer(
                       page: page,
                       onPageNumberSubmitted: (pageNumber) {
                         context.read<TelevideoBloc>().add(TelevideoEvent.loadNationalPage(pageNumber));

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:cursor_televideo/core/ads/ad_service.dart';
 
 class AdBanner extends StatefulWidget {
   const AdBanner({super.key});
@@ -15,7 +17,9 @@ class _AdBannerState extends State<AdBanner> {
   @override
   void initState() {
     super.initState();
-    _loadAd();
+    if (!kIsWeb) {
+      _loadAd();
+    }
   }
 
   @override
@@ -24,28 +28,19 @@ class _AdBannerState extends State<AdBanner> {
     super.dispose();
   }
 
-  void _loadAd() {
-    _bannerAd = BannerAd(
-      size: AdSize.banner,
-      adUnitId: 'ca-app-pub-3940256099942544/6300978111', // Test ad unit ID
-      listener: BannerAdListener(
-        onAdLoaded: (ad) {
-          setState(() {
-            _isLoaded = true;
-          });
-        },
-        onAdFailedToLoad: (ad, error) {
-          ad.dispose();
-        },
-      ),
-      request: const AdRequest(),
-    )..load();
+  Future<void> _loadAd() async {
+    _bannerAd = await AdService.createBannerAd();
+    if (_bannerAd != null) {
+      setState(() {
+        _isLoaded = true;
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    if (!_isLoaded || _bannerAd == null) {
-      return const SizedBox(height: 100);
+    if (kIsWeb || !_isLoaded || _bannerAd == null) {
+      return const SizedBox(height: 50);  // Altezza ridotta su web
     }
 
     return SizedBox(

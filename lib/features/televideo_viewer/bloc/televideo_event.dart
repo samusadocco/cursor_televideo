@@ -9,4 +9,6 @@ class TelevideoEvent with _$TelevideoEvent {
   const factory TelevideoEvent.loadRegionalPage(Region region) = _LoadRegionalPage;
   const factory TelevideoEvent.nextPage({required int currentPage}) = _NextPage;
   const factory TelevideoEvent.previousPage({required int currentPage}) = _PreviousPage;
+  const factory TelevideoEvent.nextSubPage() = _NextSubPage;
+  const factory TelevideoEvent.previousSubPage() = _PreviousSubPage;
 } 

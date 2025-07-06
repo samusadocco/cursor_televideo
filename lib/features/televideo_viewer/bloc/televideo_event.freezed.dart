@@ -22,6 +22,8 @@ mixin _$TelevideoEvent {
     required TResult Function(Region region) loadRegionalPage,
     required TResult Function(int currentPage) nextPage,
     required TResult Function(int currentPage) previousPage,
+    required TResult Function() nextSubPage,
+    required TResult Function() previousSubPage,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -30,6 +32,8 @@ mixin _$TelevideoEvent {
     TResult? Function(Region region)? loadRegionalPage,
     TResult? Function(int currentPage)? nextPage,
     TResult? Function(int currentPage)? previousPage,
+    TResult? Function()? nextSubPage,
+    TResult? Function()? previousSubPage,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -38,6 +42,8 @@ mixin _$TelevideoEvent {
     TResult Function(Region region)? loadRegionalPage,
     TResult Function(int currentPage)? nextPage,
     TResult Function(int currentPage)? previousPage,
+    TResult Function()? nextSubPage,
+    TResult Function()? previousSubPage,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -47,6 +53,8 @@ mixin _$TelevideoEvent {
     required TResult Function(_LoadRegionalPage value) loadRegionalPage,
     required TResult Function(_NextPage value) nextPage,
     required TResult Function(_PreviousPage value) previousPage,
+    required TResult Function(_NextSubPage value) nextSubPage,
+    required TResult Function(_PreviousSubPage value) previousSubPage,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -55,6 +63,8 @@ mixin _$TelevideoEvent {
     TResult? Function(_LoadRegionalPage value)? loadRegionalPage,
     TResult? Function(_NextPage value)? nextPage,
     TResult? Function(_PreviousPage value)? previousPage,
+    TResult? Function(_NextSubPage value)? nextSubPage,
+    TResult? Function(_PreviousSubPage value)? previousSubPage,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -63,6 +73,8 @@ mixin _$TelevideoEvent {
     TResult Function(_LoadRegionalPage value)? loadRegionalPage,
     TResult Function(_NextPage value)? nextPage,
     TResult Function(_PreviousPage value)? previousPage,
+    TResult Function(_NextSubPage value)? nextSubPage,
+    TResult Function(_PreviousSubPage value)? previousSubPage,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -163,6 +175,8 @@ class _$LoadNationalPageImpl implements _LoadNationalPage {
     required TResult Function(Region region) loadRegionalPage,
     required TResult Function(int currentPage) nextPage,
     required TResult Function(int currentPage) previousPage,
+    required TResult Function() nextSubPage,
+    required TResult Function() previousSubPage,
   }) {
     return loadNationalPage(pageNumber);
   }
@@ -174,6 +188,8 @@ class _$LoadNationalPageImpl implements _LoadNationalPage {
     TResult? Function(Region region)? loadRegionalPage,
     TResult? Function(int currentPage)? nextPage,
     TResult? Function(int currentPage)? previousPage,
+    TResult? Function()? nextSubPage,
+    TResult? Function()? previousSubPage,
   }) {
     return loadNationalPage?.call(pageNumber);
   }
@@ -185,6 +201,8 @@ class _$LoadNationalPageImpl implements _LoadNationalPage {
     TResult Function(Region region)? loadRegionalPage,
     TResult Function(int currentPage)? nextPage,
     TResult Function(int currentPage)? previousPage,
+    TResult Function()? nextSubPage,
+    TResult Function()? previousSubPage,
     required TResult orElse(),
   }) {
     if (loadNationalPage != null) {
@@ -200,6 +218,8 @@ class _$LoadNationalPageImpl implements _LoadNationalPage {
     required TResult Function(_LoadRegionalPage value) loadRegionalPage,
     required TResult Function(_NextPage value) nextPage,
     required TResult Function(_PreviousPage value) previousPage,
+    required TResult Function(_NextSubPage value) nextSubPage,
+    required TResult Function(_PreviousSubPage value) previousSubPage,
   }) {
     return loadNationalPage(this);
   }
@@ -211,6 +231,8 @@ class _$LoadNationalPageImpl implements _LoadNationalPage {
     TResult? Function(_LoadRegionalPage value)? loadRegionalPage,
     TResult? Function(_NextPage value)? nextPage,
     TResult? Function(_PreviousPage value)? previousPage,
+    TResult? Function(_NextSubPage value)? nextSubPage,
+    TResult? Function(_PreviousSubPage value)? previousSubPage,
   }) {
     return loadNationalPage?.call(this);
   }
@@ -222,6 +244,8 @@ class _$LoadNationalPageImpl implements _LoadNationalPage {
     TResult Function(_LoadRegionalPage value)? loadRegionalPage,
     TResult Function(_NextPage value)? nextPage,
     TResult Function(_PreviousPage value)? previousPage,
+    TResult Function(_NextSubPage value)? nextSubPage,
+    TResult Function(_PreviousSubPage value)? previousSubPage,
     required TResult orElse(),
   }) {
     if (loadNationalPage != null) {
@@ -317,6 +341,8 @@ class _$LoadRegionalPageImpl implements _LoadRegionalPage {
     required TResult Function(Region region) loadRegionalPage,
     required TResult Function(int currentPage) nextPage,
     required TResult Function(int currentPage) previousPage,
+    required TResult Function() nextSubPage,
+    required TResult Function() previousSubPage,
   }) {
     return loadRegionalPage(region);
   }
@@ -328,6 +354,8 @@ class _$LoadRegionalPageImpl implements _LoadRegionalPage {
     TResult? Function(Region region)? loadRegionalPage,
     TResult? Function(int currentPage)? nextPage,
     TResult? Function(int currentPage)? previousPage,
+    TResult? Function()? nextSubPage,
+    TResult? Function()? previousSubPage,
   }) {
     return loadRegionalPage?.call(region);
   }
@@ -339,6 +367,8 @@ class _$LoadRegionalPageImpl implements _LoadRegionalPage {
     TResult Function(Region region)? loadRegionalPage,
     TResult Function(int currentPage)? nextPage,
     TResult Function(int currentPage)? previousPage,
+    TResult Function()? nextSubPage,
+    TResult Function()? previousSubPage,
     required TResult orElse(),
   }) {
     if (loadRegionalPage != null) {
@@ -354,6 +384,8 @@ class _$LoadRegionalPageImpl implements _LoadRegionalPage {
     required TResult Function(_LoadRegionalPage value) loadRegionalPage,
     required TResult Function(_NextPage value) nextPage,
     required TResult Function(_PreviousPage value) previousPage,
+    required TResult Function(_NextSubPage value) nextSubPage,
+    required TResult Function(_PreviousSubPage value) previousSubPage,
   }) {
     return loadRegionalPage(this);
   }
@@ -365,6 +397,8 @@ class _$LoadRegionalPageImpl implements _LoadRegionalPage {
     TResult? Function(_LoadRegionalPage value)? loadRegionalPage,
     TResult? Function(_NextPage value)? nextPage,
     TResult? Function(_PreviousPage value)? previousPage,
+    TResult? Function(_NextSubPage value)? nextSubPage,
+    TResult? Function(_PreviousSubPage value)? previousSubPage,
   }) {
     return loadRegionalPage?.call(this);
   }
@@ -376,6 +410,8 @@ class _$LoadRegionalPageImpl implements _LoadRegionalPage {
     TResult Function(_LoadRegionalPage value)? loadRegionalPage,
     TResult Function(_NextPage value)? nextPage,
     TResult Function(_PreviousPage value)? previousPage,
+    TResult Function(_NextSubPage value)? nextSubPage,
+    TResult Function(_PreviousSubPage value)? previousSubPage,
     required TResult orElse(),
   }) {
     if (loadRegionalPage != null) {
@@ -470,6 +506,8 @@ class _$NextPageImpl implements _NextPage {
     required TResult Function(Region region) loadRegionalPage,
     required TResult Function(int currentPage) nextPage,
     required TResult Function(int currentPage) previousPage,
+    required TResult Function() nextSubPage,
+    required TResult Function() previousSubPage,
   }) {
     return nextPage(currentPage);
   }
@@ -481,6 +519,8 @@ class _$NextPageImpl implements _NextPage {
     TResult? Function(Region region)? loadRegionalPage,
     TResult? Function(int currentPage)? nextPage,
     TResult? Function(int currentPage)? previousPage,
+    TResult? Function()? nextSubPage,
+    TResult? Function()? previousSubPage,
   }) {
     return nextPage?.call(currentPage);
   }
@@ -492,6 +532,8 @@ class _$NextPageImpl implements _NextPage {
     TResult Function(Region region)? loadRegionalPage,
     TResult Function(int currentPage)? nextPage,
     TResult Function(int currentPage)? previousPage,
+    TResult Function()? nextSubPage,
+    TResult Function()? previousSubPage,
     required TResult orElse(),
   }) {
     if (nextPage != null) {
@@ -507,6 +549,8 @@ class _$NextPageImpl implements _NextPage {
     required TResult Function(_LoadRegionalPage value) loadRegionalPage,
     required TResult Function(_NextPage value) nextPage,
     required TResult Function(_PreviousPage value) previousPage,
+    required TResult Function(_NextSubPage value) nextSubPage,
+    required TResult Function(_PreviousSubPage value) previousSubPage,
   }) {
     return nextPage(this);
   }
@@ -518,6 +562,8 @@ class _$NextPageImpl implements _NextPage {
     TResult? Function(_LoadRegionalPage value)? loadRegionalPage,
     TResult? Function(_NextPage value)? nextPage,
     TResult? Function(_PreviousPage value)? previousPage,
+    TResult? Function(_NextSubPage value)? nextSubPage,
+    TResult? Function(_PreviousSubPage value)? previousSubPage,
   }) {
     return nextPage?.call(this);
   }
@@ -529,6 +575,8 @@ class _$NextPageImpl implements _NextPage {
     TResult Function(_LoadRegionalPage value)? loadRegionalPage,
     TResult Function(_NextPage value)? nextPage,
     TResult Function(_PreviousPage value)? previousPage,
+    TResult Function(_NextSubPage value)? nextSubPage,
+    TResult Function(_PreviousSubPage value)? previousSubPage,
     required TResult orElse(),
   }) {
     if (nextPage != null) {
@@ -623,6 +671,8 @@ class _$PreviousPageImpl implements _PreviousPage {
     required TResult Function(Region region) loadRegionalPage,
     required TResult Function(int currentPage) nextPage,
     required TResult Function(int currentPage) previousPage,
+    required TResult Function() nextSubPage,
+    required TResult Function() previousSubPage,
   }) {
     return previousPage(currentPage);
   }
@@ -634,6 +684,8 @@ class _$PreviousPageImpl implements _PreviousPage {
     TResult? Function(Region region)? loadRegionalPage,
     TResult? Function(int currentPage)? nextPage,
     TResult? Function(int currentPage)? previousPage,
+    TResult? Function()? nextSubPage,
+    TResult? Function()? previousSubPage,
   }) {
     return previousPage?.call(currentPage);
   }
@@ -645,6 +697,8 @@ class _$PreviousPageImpl implements _PreviousPage {
     TResult Function(Region region)? loadRegionalPage,
     TResult Function(int currentPage)? nextPage,
     TResult Function(int currentPage)? previousPage,
+    TResult Function()? nextSubPage,
+    TResult Function()? previousSubPage,
     required TResult orElse(),
   }) {
     if (previousPage != null) {
@@ -660,6 +714,8 @@ class _$PreviousPageImpl implements _PreviousPage {
     required TResult Function(_LoadRegionalPage value) loadRegionalPage,
     required TResult Function(_NextPage value) nextPage,
     required TResult Function(_PreviousPage value) previousPage,
+    required TResult Function(_NextSubPage value) nextSubPage,
+    required TResult Function(_PreviousSubPage value) previousSubPage,
   }) {
     return previousPage(this);
   }
@@ -671,6 +727,8 @@ class _$PreviousPageImpl implements _PreviousPage {
     TResult? Function(_LoadRegionalPage value)? loadRegionalPage,
     TResult? Function(_NextPage value)? nextPage,
     TResult? Function(_PreviousPage value)? previousPage,
+    TResult? Function(_NextSubPage value)? nextSubPage,
+    TResult? Function(_PreviousSubPage value)? previousSubPage,
   }) {
     return previousPage?.call(this);
   }
@@ -682,6 +740,8 @@ class _$PreviousPageImpl implements _PreviousPage {
     TResult Function(_LoadRegionalPage value)? loadRegionalPage,
     TResult Function(_NextPage value)? nextPage,
     TResult Function(_PreviousPage value)? previousPage,
+    TResult Function(_NextSubPage value)? nextSubPage,
+    TResult Function(_PreviousSubPage value)? previousSubPage,
     required TResult orElse(),
   }) {
     if (previousPage != null) {
@@ -702,4 +762,262 @@ abstract class _PreviousPage implements TelevideoEvent {
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$PreviousPageImplCopyWith<_$PreviousPageImpl> get copyWith =>
       throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$NextSubPageImplCopyWith<$Res> {
+  factory _$$NextSubPageImplCopyWith(
+          _$NextSubPageImpl value, $Res Function(_$NextSubPageImpl) then) =
+      __$$NextSubPageImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$NextSubPageImplCopyWithImpl<$Res>
+    extends _$TelevideoEventCopyWithImpl<$Res, _$NextSubPageImpl>
+    implements _$$NextSubPageImplCopyWith<$Res> {
+  __$$NextSubPageImplCopyWithImpl(
+      _$NextSubPageImpl _value, $Res Function(_$NextSubPageImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of TelevideoEvent
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+
+class _$NextSubPageImpl implements _NextSubPage {
+  const _$NextSubPageImpl();
+
+  @override
+  String toString() {
+    return 'TelevideoEvent.nextSubPage()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$NextSubPageImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(int pageNumber) loadNationalPage,
+    required TResult Function(Region region) loadRegionalPage,
+    required TResult Function(int currentPage) nextPage,
+    required TResult Function(int currentPage) previousPage,
+    required TResult Function() nextSubPage,
+    required TResult Function() previousSubPage,
+  }) {
+    return nextSubPage();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(int pageNumber)? loadNationalPage,
+    TResult? Function(Region region)? loadRegionalPage,
+    TResult? Function(int currentPage)? nextPage,
+    TResult? Function(int currentPage)? previousPage,
+    TResult? Function()? nextSubPage,
+    TResult? Function()? previousSubPage,
+  }) {
+    return nextSubPage?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(int pageNumber)? loadNationalPage,
+    TResult Function(Region region)? loadRegionalPage,
+    TResult Function(int currentPage)? nextPage,
+    TResult Function(int currentPage)? previousPage,
+    TResult Function()? nextSubPage,
+    TResult Function()? previousSubPage,
+    required TResult orElse(),
+  }) {
+    if (nextSubPage != null) {
+      return nextSubPage();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_LoadNationalPage value) loadNationalPage,
+    required TResult Function(_LoadRegionalPage value) loadRegionalPage,
+    required TResult Function(_NextPage value) nextPage,
+    required TResult Function(_PreviousPage value) previousPage,
+    required TResult Function(_NextSubPage value) nextSubPage,
+    required TResult Function(_PreviousSubPage value) previousSubPage,
+  }) {
+    return nextSubPage(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_LoadNationalPage value)? loadNationalPage,
+    TResult? Function(_LoadRegionalPage value)? loadRegionalPage,
+    TResult? Function(_NextPage value)? nextPage,
+    TResult? Function(_PreviousPage value)? previousPage,
+    TResult? Function(_NextSubPage value)? nextSubPage,
+    TResult? Function(_PreviousSubPage value)? previousSubPage,
+  }) {
+    return nextSubPage?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_LoadNationalPage value)? loadNationalPage,
+    TResult Function(_LoadRegionalPage value)? loadRegionalPage,
+    TResult Function(_NextPage value)? nextPage,
+    TResult Function(_PreviousPage value)? previousPage,
+    TResult Function(_NextSubPage value)? nextSubPage,
+    TResult Function(_PreviousSubPage value)? previousSubPage,
+    required TResult orElse(),
+  }) {
+    if (nextSubPage != null) {
+      return nextSubPage(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _NextSubPage implements TelevideoEvent {
+  const factory _NextSubPage() = _$NextSubPageImpl;
+}
+
+/// @nodoc
+abstract class _$$PreviousSubPageImplCopyWith<$Res> {
+  factory _$$PreviousSubPageImplCopyWith(_$PreviousSubPageImpl value,
+          $Res Function(_$PreviousSubPageImpl) then) =
+      __$$PreviousSubPageImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$PreviousSubPageImplCopyWithImpl<$Res>
+    extends _$TelevideoEventCopyWithImpl<$Res, _$PreviousSubPageImpl>
+    implements _$$PreviousSubPageImplCopyWith<$Res> {
+  __$$PreviousSubPageImplCopyWithImpl(
+      _$PreviousSubPageImpl _value, $Res Function(_$PreviousSubPageImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of TelevideoEvent
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+
+class _$PreviousSubPageImpl implements _PreviousSubPage {
+  const _$PreviousSubPageImpl();
+
+  @override
+  String toString() {
+    return 'TelevideoEvent.previousSubPage()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$PreviousSubPageImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(int pageNumber) loadNationalPage,
+    required TResult Function(Region region) loadRegionalPage,
+    required TResult Function(int currentPage) nextPage,
+    required TResult Function(int currentPage) previousPage,
+    required TResult Function() nextSubPage,
+    required TResult Function() previousSubPage,
+  }) {
+    return previousSubPage();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(int pageNumber)? loadNationalPage,
+    TResult? Function(Region region)? loadRegionalPage,
+    TResult? Function(int currentPage)? nextPage,
+    TResult? Function(int currentPage)? previousPage,
+    TResult? Function()? nextSubPage,
+    TResult? Function()? previousSubPage,
+  }) {
+    return previousSubPage?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(int pageNumber)? loadNationalPage,
+    TResult Function(Region region)? loadRegionalPage,
+    TResult Function(int currentPage)? nextPage,
+    TResult Function(int currentPage)? previousPage,
+    TResult Function()? nextSubPage,
+    TResult Function()? previousSubPage,
+    required TResult orElse(),
+  }) {
+    if (previousSubPage != null) {
+      return previousSubPage();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_LoadNationalPage value) loadNationalPage,
+    required TResult Function(_LoadRegionalPage value) loadRegionalPage,
+    required TResult Function(_NextPage value) nextPage,
+    required TResult Function(_PreviousPage value) previousPage,
+    required TResult Function(_NextSubPage value) nextSubPage,
+    required TResult Function(_PreviousSubPage value) previousSubPage,
+  }) {
+    return previousSubPage(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_LoadNationalPage value)? loadNationalPage,
+    TResult? Function(_LoadRegionalPage value)? loadRegionalPage,
+    TResult? Function(_NextPage value)? nextPage,
+    TResult? Function(_PreviousPage value)? previousPage,
+    TResult? Function(_NextSubPage value)? nextSubPage,
+    TResult? Function(_PreviousSubPage value)? previousSubPage,
+  }) {
+    return previousSubPage?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_LoadNationalPage value)? loadNationalPage,
+    TResult Function(_LoadRegionalPage value)? loadRegionalPage,
+    TResult Function(_NextPage value)? nextPage,
+    TResult Function(_PreviousPage value)? previousPage,
+    TResult Function(_NextSubPage value)? nextSubPage,
+    TResult Function(_PreviousSubPage value)? previousSubPage,
+    required TResult orElse(),
+  }) {
+    if (previousSubPage != null) {
+      return previousSubPage(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _PreviousSubPage implements TelevideoEvent {
+  const factory _PreviousSubPage() = _$PreviousSubPageImpl;
 }

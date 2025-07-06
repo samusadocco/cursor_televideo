@@ -7,6 +7,6 @@ part 'televideo_state.freezed.dart';
 class TelevideoState with _$TelevideoState {
   const factory TelevideoState.initial() = _Initial;
   const factory TelevideoState.loading() = _Loading;
-  const factory TelevideoState.loaded(TelevideoPage page) = _Loaded;
+  const factory TelevideoState.loaded(TelevideoPage page, {@Default(1) int currentSubPage}) = _Loaded;
   const factory TelevideoState.error(String message) = _Error;
 } 

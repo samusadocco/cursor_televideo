@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class AdService {
@@ -10,6 +11,7 @@ class AdService {
   final int _pagesBeforeAd = 10;
 
   void incrementPageView() {
+    if (kIsWeb) return;  // No ads on web
     _pageViewCount++;
     if (_pageViewCount >= _pagesBeforeAd) {
       _showInterstitialAd();
@@ -18,6 +20,7 @@ class AdService {
   }
 
   void _loadInterstitialAd() {
+    if (kIsWeb) return;  // No ads on web
     InterstitialAd.load(
       adUnitId: 'ca-app-pub-3940256099942544/1033173712', // Test ad unit ID
       request: const AdRequest(),
@@ -33,6 +36,7 @@ class AdService {
   }
 
   void _showInterstitialAd() {
+    if (kIsWeb) return;  // No ads on web
     if (_interstitialAd != null) {
       _interstitialAd!.fullScreenContentCallback = FullScreenContentCallback(
         onAdDismissedFullScreenContent: (ad) {
@@ -49,11 +53,35 @@ class AdService {
     }
   }
 
-  void initialize() {
-    _loadInterstitialAd();
+  Future<void> initialize() async {
+    if (!kIsWeb) {  // Solo su mobile
+      await MobileAds.instance.initialize();
+      _loadInterstitialAd();
+    }
   }
 
   void dispose() {
-    _interstitialAd?.dispose();
+    if (!kIsWeb) {
+      _interstitialAd?.dispose();
+    }
+  }
+
+  static Future<BannerAd?> createBannerAd() async {
+    if (kIsWeb) return null;  // Nessun annuncio su web
+    
+    return BannerAd(
+      adUnitId: 'ca-app-pub-3940256099942544/6300978111',  // Test ad unit ID
+      size: AdSize.banner,
+      request: const AdRequest(),
+      listener: BannerAdListener(
+        onAdLoaded: (Ad ad) => print('Ad loaded.'),
+        onAdFailedToLoad: (Ad ad, LoadAdError error) {
+          ad.dispose();
+          print('Ad failed to load: $error');
+        },
+        onAdOpened: (Ad ad) => print('Ad opened.'),
+        onAdClosed: (Ad ad) => print('Ad closed.'),
+      ),
+    )..load();
   }
 } 
