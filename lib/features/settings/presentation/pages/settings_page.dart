@@ -12,11 +12,15 @@ class SettingsPage extends StatefulWidget {
 
 class _SettingsPageState extends State<SettingsPage> {
   late double _cacheSliderValue;
+  late bool _liveShowEnabled;
+  late double _liveShowIntervalValue;
 
   @override
   void initState() {
     super.initState();
     _cacheSliderValue = AppSettings.cacheDurationInSeconds.toDouble();
+    _liveShowEnabled = AppSettings.liveShowEnabled;
+    _liveShowIntervalValue = AppSettings.liveShowIntervalSeconds.toDouble();
   }
 
   @override
@@ -32,6 +36,68 @@ class _SettingsPageState extends State<SettingsPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // Live Show Setting
+                const Text(
+                  'Live Show Sottopagine',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    Switch(
+                      value: _liveShowEnabled,
+                      onChanged: (value) {
+                        setState(() {
+                          _liveShowEnabled = value;
+                          AppSettings.setLiveShowEnabled(value);
+                        });
+                      },
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      _liveShowEnabled ? 'Abilitato' : 'Disabilitato',
+                      style: const TextStyle(fontSize: 16),
+                    ),
+                  ],
+                ),
+                const Text(
+                  'Quando abilitato, le sottopagine verranno mostrate automaticamente in sequenza.',
+                  style: TextStyle(fontSize: 14, color: Colors.grey),
+                ),
+                const SizedBox(height: 16),
+
+                // Live Show Interval Setting
+                if (_liveShowEnabled) ...[
+                  const Text(
+                    'Intervallo Live Show',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Intervallo: ${_liveShowIntervalValue.toInt()} secondi',
+                    style: const TextStyle(fontSize: 14),
+                  ),
+                  Slider(
+                    value: _liveShowIntervalValue,
+                    min: 3,
+                    max: 30,
+                    divisions: 27,
+                    label: _liveShowIntervalValue.toInt().toString(),
+                    onChanged: (value) {
+                      setState(() {
+                        _liveShowIntervalValue = value;
+                        AppSettings.setLiveShowInterval(value.toInt());
+                      });
+                    },
+                  ),
+                  const Text(
+                    'Imposta il tempo di attesa tra una sottopagina e l\'altra (da 3 a 30 secondi).',
+                    style: TextStyle(fontSize: 14, color: Colors.grey),
+                  ),
+                  const SizedBox(height: 24),
+                ],
+
+                // Cache Duration Setting
                 const Text(
                   'Durata Cache Immagini',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -57,7 +123,6 @@ class _SettingsPageState extends State<SettingsPage> {
                     });
                   },
                 ),
-                const SizedBox(height: 8),
                 const Text(
                   'Imposta per quanto tempo le immagini del televideo vengono mantenute in cache. '
                   'Un valore di 0 disabilita la cache, mentre il massimo è di 600 secondi (10 minuti).',

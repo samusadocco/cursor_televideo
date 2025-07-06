@@ -1,5 +1,7 @@
+import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:cursor_televideo/core/settings/app_settings.dart';
 
 class AdService {
   static final AdService _instance = AdService._internal();
@@ -10,6 +12,17 @@ class AdService {
   int _pageViewCount = 0;
   final int _pagesBeforeAd = 10;
   bool _isLoadingAd = false;
+  bool _isShowingAd = false;
+
+  // Stream controller per gli eventi degli annunci
+  final _adEventController = StreamController<AdEvent>.broadcast();
+  Stream<AdEvent> get adEventStream => _adEventController.stream;
+  bool get isShowingAd => _isShowingAd;
+
+  void dispose() {
+    _interstitialAd?.dispose();
+    _adEventController.close();
+  }
 
   void incrementPageView({bool isSubPage = false}) {
     if (kIsWeb) return;  // No ads on web
@@ -35,6 +48,31 @@ class AdService {
           print('Annuncio interstitial caricato');
           _interstitialAd = ad;
           _isLoadingAd = false;
+
+          // Configura i callback per l'annuncio
+          _interstitialAd?.fullScreenContentCallback = FullScreenContentCallback(
+            onAdShowedFullScreenContent: (ad) {
+              print('Annuncio mostrato');
+              _isShowingAd = true;
+              _adEventController.add(AdEvent.shown);
+            },
+            onAdDismissedFullScreenContent: (ad) {
+              print('Annuncio chiuso');
+              _isShowingAd = false;
+              _adEventController.add(AdEvent.dismissed);
+              ad.dispose();
+              _interstitialAd = null;
+              _loadInterstitialAd();
+            },
+            onAdFailedToShowFullScreenContent: (ad, error) {
+              print('Errore visualizzazione annuncio');
+              _isShowingAd = false;
+              _adEventController.add(AdEvent.failed);
+              ad.dispose();
+              _interstitialAd = null;
+              _loadInterstitialAd();
+            },
+          );
         },
         onAdFailedToLoad: (error) {
           print('Errore caricamento annuncio interstitial: $error');
@@ -45,32 +83,13 @@ class AdService {
     );
   }
 
-  void _showInterstitialAd() {
-    if (kIsWeb) return;  // No ads on web
-    
-    if (_interstitialAd != null) {
-      print('Mostro annuncio interstitial');
-      _interstitialAd!.fullScreenContentCallback = FullScreenContentCallback(
-        onAdDismissedFullScreenContent: (ad) {
-          print('Annuncio interstitial chiuso');
-          ad.dispose();
-          _loadInterstitialAd();
-        },
-        onAdFailedToShowFullScreenContent: (ad, error) {
-          print('Errore visualizzazione annuncio interstitial: $error');
-          ad.dispose();
-          _loadInterstitialAd();
-        },
-        onAdShowedFullScreenContent: (ad) {
-          print('Annuncio interstitial mostrato');
-        },
-      );
-      _interstitialAd!.show();
-      _interstitialAd = null;
-    } else {
-      print('Nessun annuncio interstitial disponibile, ne carico uno nuovo');
+  Future<void> _showInterstitialAd() async {
+    if (_interstitialAd == null) {
       _loadInterstitialAd();
+      return;
     }
+
+    await _interstitialAd?.show();
   }
 
   Future<void> initialize() async {
@@ -81,30 +100,37 @@ class AdService {
     }
   }
 
-  void dispose() {
-    if (!kIsWeb) {
-      _interstitialAd?.dispose();
-    }
-  }
-
   static Future<BannerAd?> createBannerAd({required bool isPortrait}) async {
-    if (kIsWeb) return null;  // Nessun annuncio su web
-    
-    final adSize = isPortrait ? AdSize.largeBanner : AdSize.banner;
-    
-    return BannerAd(
-      adUnitId: 'ca-app-pub-3940256099942544/6300978111',  // Test ad unit ID
-      size: adSize,
+    if (kIsWeb) return null;
+
+    final size = isPortrait ? AdSize.largeBanner : AdSize.banner;
+    final bannerAd = BannerAd(
+      adUnitId: 'ca-app-pub-3940256099942544/2934735716', // Test ad unit ID
+      size: size,
       request: const AdRequest(),
       listener: BannerAdListener(
-        onAdLoaded: (Ad ad) => print('Banner ad caricato.'),
-        onAdFailedToLoad: (Ad ad, LoadAdError error) {
-          ad.dispose();
-          print('Errore caricamento banner ad: $error');
+        onAdLoaded: (ad) {
+          print('Banner Ad loaded.');
         },
-        onAdOpened: (Ad ad) => print('Banner ad aperto.'),
-        onAdClosed: (Ad ad) => print('Banner ad chiuso.'),
+        onAdFailedToLoad: (ad, error) {
+          print('Banner Ad failed to load: $error');
+          ad.dispose();
+        },
       ),
-    )..load();
+    );
+
+    try {
+      await bannerAd.load();
+      return bannerAd;
+    } catch (e) {
+      print('Errore nel caricamento del banner: $e');
+      return null;
+    }
   }
+}
+
+enum AdEvent {
+  shown,
+  dismissed,
+  failed
 } 

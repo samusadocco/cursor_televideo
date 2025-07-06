@@ -1,8 +1,10 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:cursor_televideo/core/settings/app_settings.dart';
+import 'package:cursor_televideo/core/ads/ad_service.dart';
 import 'package:cursor_televideo/features/televideo_viewer/bloc/televideo_bloc.dart';
 import 'package:cursor_televideo/features/televideo_viewer/bloc/televideo_event.dart';
 import 'package:cursor_televideo/features/televideo_viewer/bloc/televideo_state.dart';
@@ -29,11 +31,15 @@ class TelevideoViewer extends StatefulWidget {
 class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<Offset> _slideAnimation;
+  Timer? _liveShowTimer;
+  StreamSubscription? _adEventSubscription;
+  final AdService _adService = AdService();
   Offset _dragStart = Offset.zero;
   bool _isDragging = false;
   bool _isVerticalDrag = false;
   int _currentSubPage = 1;
   int _maxSubPages = 1;
+  bool _wasLiveShowActive = false;
 
   @override
   void initState() {
@@ -53,6 +59,28 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
     // Inizializza i valori delle sottopagine
     _currentSubPage = widget.page.maxSubPages > 0 ? 1 : 0;
     _maxSubPages = widget.page.maxSubPages;
+
+    // Sottoscrizione agli eventi degli annunci
+    _adEventSubscription = _adService.adEventStream.listen((event) {
+      switch (event) {
+        case AdEvent.shown:
+          // Salva lo stato del Live Show e lo ferma
+          _wasLiveShowActive = _liveShowTimer != null;
+          _liveShowTimer?.cancel();
+          _liveShowTimer = null;
+          break;
+        case AdEvent.dismissed:
+        case AdEvent.failed:
+          // Ripristina il Live Show se era attivo
+          if (_wasLiveShowActive) {
+            _startLiveShowTimer();
+          }
+          break;
+      }
+    });
+
+    // Avvia il timer per il Live Show se abilitato
+    _startLiveShowTimer();
   }
 
   @override
@@ -62,13 +90,36 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
       setState(() {
         _maxSubPages = widget.page.maxSubPages;
       });
+      // Riavvia il timer quando cambia la pagina
+      if (!_adService.isShowingAd) {
+        _startLiveShowTimer();
+      }
     }
   }
 
   @override
   void dispose() {
     _controller.dispose();
+    _liveShowTimer?.cancel();
+    _adEventSubscription?.cancel();
     super.dispose();
+  }
+
+  void _startLiveShowTimer() {
+    // Cancella il timer esistente se presente
+    _liveShowTimer?.cancel();
+
+    // Avvia il timer solo se il Live Show è abilitato, ci sono sottopagine e non c'è un annuncio in corso
+    if (AppSettings.liveShowEnabled && widget.page.maxSubPages > 1 && !_adService.isShowingAd) {
+      _liveShowTimer = Timer.periodic(
+        Duration(seconds: AppSettings.liveShowIntervalSeconds),
+        (timer) {
+          if (mounted && !_isDragging && !_adService.isShowingAd) {
+            context.read<TelevideoBloc>().add(const TelevideoEvent.nextSubPage());
+          }
+        }
+      );
+    }
   }
 
   void _onDragStart(DragStartDetails details) {
@@ -157,6 +208,9 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
       });
       _isVerticalDrag = false;
     });
+
+    // Riavvia il timer dopo il drag
+    _startLiveShowTimer();
   }
 
   void _onTapUp(TapUpDetails details, Size imageSize) {
