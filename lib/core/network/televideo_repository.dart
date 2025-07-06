@@ -148,7 +148,8 @@ class TelevideoRepository {
 
       final rawImageUrl = _buildImageUrl(_baseUrl, 'Nazionale', pageNumber, subPage: subPage);
       final imageUrl = kIsWeb ? '$_corsProxy$rawImageUrl' : rawImageUrl;
-      final htmlUrl = '$_htmlBaseUrl?p=$pageNumber';
+      final baseHtmlUrl = '$_htmlBaseUrl?p=$pageNumber';
+      final htmlUrl = subPage > 1 ? '$baseHtmlUrl&s=$subPage&r=Nazionale' : baseHtmlUrl;
       
       print('\nCaricamento pagina:');
       print('URL HTML: $htmlUrl');
@@ -205,7 +206,8 @@ class TelevideoRepository {
 
       final rawImageUrl = _buildImageUrl(_baseUrl, region, pageNumber, subPage: subPage);
       final imageUrl = kIsWeb ? '$_corsProxy$rawImageUrl' : rawImageUrl;
-      final htmlUrl = '$_htmlBaseUrl?r=$region&p=$pageNumber';
+      final baseHtmlUrl = '$_htmlBaseUrl?r=$region&p=$pageNumber';
+      final htmlUrl = subPage > 1 ? '$baseHtmlUrl&s=$subPage' : baseHtmlUrl;
       
       // Prima recuperiamo l'HTML per ottenere il numero massimo di sottopagine
       final htmlResponse = await _dio.get(htmlUrl);

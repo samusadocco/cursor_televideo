@@ -32,6 +32,8 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
   Offset _dragStart = Offset.zero;
   bool _isDragging = false;
   bool _isVerticalDrag = false;
+  int _currentSubPage = 1;
+  int _maxSubPages = 1;
 
   @override
   void initState() {
@@ -47,6 +49,20 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
       parent: _controller,
       curve: Curves.easeInOut,
     ));
+    
+    // Inizializza i valori delle sottopagine
+    _currentSubPage = widget.page.maxSubPages > 0 ? 1 : 0;
+    _maxSubPages = widget.page.maxSubPages;
+  }
+
+  @override
+  void didUpdateWidget(TelevideoViewer oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.page != widget.page) {
+      setState(() {
+        _maxSubPages = widget.page.maxSubPages;
+      });
+    }
   }
 
   @override
@@ -202,91 +218,63 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        if (widget.showControls && widget.isNationalMode)
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    decoration: const InputDecoration(
-                      labelText: 'Numero Pagina',
-                      border: OutlineInputBorder(),
-                    ),
-                    keyboardType: TextInputType.number,
-                    onSubmitted: (value) {
-                      final pageNumber = int.tryParse(value);
-                      if (pageNumber != null && widget.onPageNumberSubmitted != null) {
-                        widget.onPageNumberSubmitted!(pageNumber);
-                      }
+    return BlocListener<TelevideoBloc, TelevideoState>(
+      listener: (context, state) {
+        state.maybeWhen(
+          loaded: (page, currentSubPage) {
+            setState(() {
+              _currentSubPage = currentSubPage;
+              _maxSubPages = page.maxSubPages;
+            });
+          },
+          orElse: () {},
+        );
+      },
+      child: GestureDetector(
+        onVerticalDragStart: _onDragStart,
+        onVerticalDragUpdate: _onDragUpdate,
+        onVerticalDragEnd: _onDragEnd,
+        onHorizontalDragStart: _onDragStart,
+        onHorizontalDragUpdate: _onDragUpdate,
+        onHorizontalDragEnd: _onDragEnd,
+        child: SlideTransition(
+          position: _slideAnimation,
+          child: Container(
+            width: double.infinity,
+            height: double.infinity,
+            color: Colors.black,
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                return GestureDetector(
+                  onTapUp: (details) => _onTapUp(details, constraints.biggest),
+                  child: BlocBuilder<TelevideoBloc, TelevideoState>(
+                    builder: (context, state) {
+                      return state.maybeWhen(
+                        loaded: (page, currentSubPage) => Image.network(
+                          widget.page.imageUrl,
+                          headers: const {
+                            'Cache-Control': 'no-cache',
+                            'Pragma': 'no-cache',
+                          },
+                          fit: BoxFit.fill,
+                        ),
+                        orElse: () => Image.network(
+                          widget.page.imageUrl,
+                          headers: const {
+                            'Cache-Control': 'no-cache',
+                            'Pragma': 'no-cache',
+                          },
+                          fit: BoxFit.fill,
+                        ),
+                      );
                     },
                   ),
-                ),
-                const SizedBox(width: 8),
-                BlocBuilder<TelevideoBloc, TelevideoState>(
-                  builder: (context, state) {
-                    return state.maybeWhen(
-                      loaded: (page, currentSubPage) => Text(
-                        'Sottopagina: $currentSubPage/${page.maxSubPages}',
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
-                      orElse: () => const SizedBox.shrink(),
-                    );
-                  },
-                ),
-              ],
-            ),
-          ),
-        Expanded(
-          child: GestureDetector(
-            onVerticalDragStart: _onDragStart,
-            onVerticalDragUpdate: _onDragUpdate,
-            onVerticalDragEnd: _onDragEnd,
-            onHorizontalDragStart: _onDragStart,
-            onHorizontalDragUpdate: _onDragUpdate,
-            onHorizontalDragEnd: _onDragEnd,
-            child: SlideTransition(
-              position: _slideAnimation,
-              child: Container(
-                width: double.infinity,
-                height: double.infinity,
-                color: Colors.black,
-                child: LayoutBuilder(
-                  builder: (context, constraints) {
-                    return GestureDetector(
-                      onTapUp: (details) => _onTapUp(details, constraints.biggest),
-                      child: BlocBuilder<TelevideoBloc, TelevideoState>(
-                        builder: (context, state) {
-                          return state.maybeWhen(
-                            loaded: (page, currentSubPage) => Image.network(
-                              widget.page.imageUrl,
-                              headers: const {
-                                'Cache-Control': 'no-cache',
-                                'Pragma': 'no-cache',
-                              },
-                              fit: BoxFit.fill,
-                            ),
-                            orElse: () => Image.network(
-                              widget.page.imageUrl,
-                              headers: const {
-                                'Cache-Control': 'no-cache',
-                                'Pragma': 'no-cache',
-                              },
-                              fit: BoxFit.fill,
-                            ),
-                          );
-                        },
-                      ),
-                    );
-                  },
-                ),
-              ),
+                );
+              },
             ),
           ),
         ),
-      ],
+      ),
     );
   }
 } 

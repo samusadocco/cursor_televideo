@@ -66,12 +66,14 @@ class AdService {
     }
   }
 
-  static Future<BannerAd?> createBannerAd() async {
+  static Future<BannerAd?> createBannerAd({required bool isPortrait}) async {
     if (kIsWeb) return null;  // Nessun annuncio su web
+    
+    final adSize = isPortrait ? AdSize.largeBanner : AdSize.banner;
     
     return BannerAd(
       adUnitId: 'ca-app-pub-3940256099942544/6300978111',  // Test ad unit ID
-      size: AdSize.banner,
+      size: adSize,
       request: const AdRequest(),
       listener: BannerAdListener(
         onAdLoaded: (Ad ad) => print('Ad loaded.'),

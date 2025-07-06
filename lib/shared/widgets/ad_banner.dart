@@ -13,13 +13,12 @@ class AdBanner extends StatefulWidget {
 class _AdBannerState extends State<AdBanner> {
   BannerAd? _bannerAd;
   bool _isLoaded = false;
+  bool _isInitialized = false;
 
   @override
   void initState() {
     super.initState();
-    if (!kIsWeb) {
-      _loadAd();
-    }
+    // Non facciamo nulla qui
   }
 
   @override
@@ -28,19 +27,46 @@ class _AdBannerState extends State<AdBanner> {
     super.dispose();
   }
 
-  Future<void> _loadAd() async {
-    _bannerAd = await AdService.createBannerAd();
-    if (_bannerAd != null) {
+  Future<void> _loadAd(bool isPortrait) async {
+    if (!mounted) return;
+    
+    _bannerAd?.dispose();
+    _bannerAd = await AdService.createBannerAd(isPortrait: isPortrait);
+    
+    if (_bannerAd != null && mounted) {
       setState(() {
         _isLoaded = true;
       });
     }
   }
 
+  void _checkAndLoadAd(bool isPortrait) {
+    if (!_isInitialized) {
+      _isInitialized = true;
+      _loadAd(isPortrait);
+    } else {
+      final currentSize = _bannerAd?.size;
+      final expectedSize = isPortrait ? AdSize.largeBanner : AdSize.banner;
+      
+      if (currentSize != expectedSize) {
+        _loadAd(isPortrait);
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    if (kIsWeb || !_isLoaded || _bannerAd == null) {
-      return const SizedBox(height: 50);  // Altezza ridotta su web
+    if (kIsWeb) {
+      final isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
+      return SizedBox(height: isPortrait ? 100 : 50);
+    }
+
+    // Controlliamo l'orientamento e carichiamo l'ad se necessario
+    final isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
+    _checkAndLoadAd(isPortrait);
+
+    if (!_isLoaded || _bannerAd == null) {
+      return SizedBox(height: isPortrait ? 100 : 50);
     }
 
     return SizedBox(
