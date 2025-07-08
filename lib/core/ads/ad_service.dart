@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:cursor_televideo/core/settings/app_settings.dart';
@@ -40,8 +41,25 @@ class AdService {
     if (kIsWeb || _isLoadingAd) return;  // No ads on web or if already loading
     
     _isLoadingAd = true;
+
+    // Determina l'ID dell'annuncio in base alla piattaforma e alla modalità
+    String adUnitId;
+    if (Platform.isIOS && !kDebugMode) {
+      // iOS Release mode - ID di produzione
+      adUnitId = 'ca-app-pub-5405772972501741/4067949899';
+    } else {
+      if (Platform.isAndroid && !kDebugMode) {
+        // Android Release mode - ID di produzione
+        adUnitId = 'ca-app-pub-5405772972501741/2593154495';
+      } else {    
+      // Debug mode o altre piattaforme - ID di test
+      adUnitId = 'ca-app-pub-3940256099942544/1033173712';
+      }
+    }
+    adUnitId = 'ca-app-pub-3940256099942544/1033173712';
+
     InterstitialAd.load(
-      adUnitId: 'ca-app-pub-3940256099942544/1033173712', // Test ad unit ID
+      adUnitId: adUnitId,
       request: const AdRequest(),
       adLoadCallback: InterstitialAdLoadCallback(
         onAdLoaded: (ad) {
@@ -104,8 +122,26 @@ class AdService {
     if (kIsWeb) return null;
 
     final size = isPortrait ? AdSize.largeBanner : AdSize.banner;
+    
+    // Determina l'ID dell'annuncio in base alla piattaforma e alla modalità
+    String adUnitId;
+    if (Platform.isIOS && !kDebugMode) {
+      // iOS Release mode - ID di produzione
+      adUnitId = 'ca-app-pub-5405772972501741/8976947054';
+    } else {
+      if (Platform.isAndroid && !kDebugMode) {
+        // Android Release mode - ID di produzione
+        adUnitId = 'ca-app-pub-5405772972501741/2593154495';
+      } else {
+        // Debug mode o altre piattaforme - ID di test
+        adUnitId = 'ca-app-pub-3940256099942544/2934735716';
+      }
+    }
+        adUnitId = 'ca-app-pub-3940256099942544/2934735716';
+
+
     final bannerAd = BannerAd(
-      adUnitId: 'ca-app-pub-3940256099942544/2934735716', // Test ad unit ID
+      adUnitId: adUnitId,
       size: size,
       request: const AdRequest(),
       listener: BannerAdListener(

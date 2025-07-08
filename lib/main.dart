@@ -10,7 +10,7 @@ import 'package:cursor_televideo/core/ads/ad_service.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await MobileAds.instance.initialize();
-  AdService().initialize();
+  AdService().initialize(); 
   
   runApp(const MyApp());
 }
