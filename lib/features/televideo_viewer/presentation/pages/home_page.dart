@@ -108,6 +108,7 @@ class _HomePageState extends State<HomePage> {
         builder: (context, regionState) {
           final isNationalMode = regionState.selectedRegion == null;
           return Row(
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               UnifiedSelector(
                 selectedRegion: regionState.selectedRegion,
@@ -130,98 +131,6 @@ class _HomePageState extends State<HomePage> {
                   }
                 },
               ),
-              Expanded(
-                child: BlocBuilder<TelevideoBloc, TelevideoState>(
-                  builder: (context, state) {
-                    return state.when(
-                      initial: () => const SizedBox(),
-                      loading: () => const Center(
-                        child: Text(
-                          'Caricamento...',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      loaded: (page, currentSubPage) => Center(
-                        child: GestureDetector(
-                          onTap: () => _showPageNumberDialog(context, isNationalMode, regionState.selectedRegion),
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(4),
-                              color: Colors.white.withOpacity(0.2),
-                            ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text(
-                                  'Pag. ${page.pageNumber}',
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
-                                    shadows: [
-                                      Shadow(
-                                        offset: Offset(1.0, 1.0),
-                                        blurRadius: 3.0,
-                                        color: Colors.black,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                if (page.maxSubPages > 1) ...[
-                                  const SizedBox(width: 4),
-                                  Text(
-                                    '($currentSubPage/${page.maxSubPages})',
-                                    style: const TextStyle(
-                                      fontSize: 14,
-                                      color: Colors.white,
-                                      shadows: [
-                                        Shadow(
-                                          offset: Offset(1.0, 1.0),
-                                          blurRadius: 3.0,
-                                          color: Colors.black,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                                const SizedBox(width: 4),
-                                const Icon(
-                                  Icons.edit,
-                                  size: 16,
-                                  color: Colors.white,
-                                  shadows: [
-                                    Shadow(
-                                      offset: Offset(1.0, 1.0),
-                                      blurRadius: 3.0,
-                                      color: Colors.black,
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      error: (message) => const Center(
-                        child: Text(
-                          'Errore',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.red,
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ),
-              // Aggiungiamo un SizedBox della stessa larghezza del selettore per bilanciare
-              SizedBox(width: 56), // Larghezza approssimativa del UnifiedSelector
             ],
           );
         },
@@ -240,6 +149,144 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  Widget _buildBottomAppBar() {
+    return Container(
+      height: 60,
+      child: AppBar(
+        leading: BlocBuilder<TelevideoBloc, TelevideoState>(
+          builder: (context, state) {
+            return state.maybeWhen(
+              loaded: (page, currentSubPage) => Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  IconButton(
+                    icon: Icon(Icons.skip_previous, size: 40),
+                    onPressed: () {
+                      context.read<TelevideoBloc>().add(TelevideoEvent.previousPage(currentPage: page.pageNumber));
+                    },
+                  ),
+                ],
+              ),
+              orElse: () => const SizedBox(),
+            );
+          },
+        ),
+        actions: [
+          BlocBuilder<TelevideoBloc, TelevideoState>(
+            builder: (context, state) {
+              return state.maybeWhen(
+                loaded: (page, currentSubPage) => Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    IconButton(
+                      icon: Icon(Icons.skip_next, size: 40),
+                      onPressed: () {
+                        context.read<TelevideoBloc>().add(TelevideoEvent.nextPage(currentPage: page.pageNumber));
+                      },
+                    ),
+                  ],
+                ),
+                orElse: () => const SizedBox(),
+              );
+            },
+          ),
+        ],
+        title: BlocBuilder<RegionBloc, RegionState>(
+          builder: (context, regionState) {
+            final isNationalMode = regionState.selectedRegion == null;
+            return BlocBuilder<TelevideoBloc, TelevideoState>(
+              builder: (context, state) {
+                return state.when(
+                  initial: () => const SizedBox(),
+                  loading: () => Text(
+                    'Caricamento...',
+                    style: TextStyle(
+                      fontSize: 16,
+                    ),
+                  ),
+                  loaded: (page, currentSubPage) => Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        flex: 2,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            IconButton(
+                              icon: Icon(Icons.arrow_downward, size: 40),
+                              onPressed: page.maxSubPages > 1 
+                                ? () => context.read<TelevideoBloc>().add(const TelevideoEvent.previousSubPage())
+                                : null,
+                            ),
+                          ],
+                        ),
+                      ),
+                      Flexible(
+                        flex: 3,
+                        child: GestureDetector(
+                          onTap: () => _showPageNumberDialog(context, isNationalMode, regionState.selectedRegion),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                'Pagina ${page.pageNumber}',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                ),
+                              ),
+                              if (page.maxSubPages > 1) ...[
+                                const SizedBox(width: 4),
+                                Text(
+                                  '/ $currentSubPage/${page.maxSubPages}',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ],
+                              const SizedBox(width: 4),
+                              Icon(
+                                Icons.edit,
+                                size: 16,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 2,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            IconButton(
+                              icon: Icon(Icons.arrow_upward, size: 40),
+                              onPressed: page.maxSubPages > 1 
+                                ? () => context.read<TelevideoBloc>().add(const TelevideoEvent.nextSubPage())
+                                : null,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  error: (message) => Text(
+                    message,
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.error,
+                      fontSize: 16,
+                    ),
+                  ),
+                );
+              },
+            );
+          },
+        ),
+        centerTitle: true,
+        automaticallyImplyLeading: false,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -249,33 +296,40 @@ class _HomePageState extends State<HomePage> {
       ],
       child: Scaffold(
         appBar: _buildAppBar(),
-        body: GestureDetector(
-          onTap: _toggleControls,
-          child: BlocBuilder<RegionBloc, RegionState>(
-            builder: (context, regionState) {
-              return BlocBuilder<TelevideoBloc, TelevideoState>(
-                builder: (context, state) {
-                  return state.when(
-                    initial: () => const Center(child: CircularProgressIndicator()),
-                    loading: () => const Center(child: CircularProgressIndicator()),
-                    loaded: (page, currentSubPage) => TelevideoViewer(
-                      page: page,
-                      onPageNumberSubmitted: (pageNumber) {
-                        context.read<TelevideoBloc>().add(TelevideoEvent.loadNationalPage(pageNumber));
+        body: Column(
+          children: [
+            Expanded(
+              child: GestureDetector(
+                onTap: _toggleControls,
+                child: BlocBuilder<RegionBloc, RegionState>(
+                  builder: (context, regionState) {
+                    return BlocBuilder<TelevideoBloc, TelevideoState>(
+                      builder: (context, state) {
+                        return state.when(
+                          initial: () => const Center(child: CircularProgressIndicator()),
+                          loading: () => const Center(child: CircularProgressIndicator()),
+                          loaded: (page, currentSubPage) => TelevideoViewer(
+                            page: page,
+                            onPageNumberSubmitted: (pageNumber) {
+                              context.read<TelevideoBloc>().add(TelevideoEvent.loadNationalPage(pageNumber));
+                            },
+                            showControls: _showControls,
+                            isNationalMode: regionState.selectedRegion == null,
+                          ),
+                          error: (message) => Center(
+                            child: Text(message),
+                          ),
+                        );
                       },
-                      showControls: _showControls,
-                      isNationalMode: regionState.selectedRegion == null,
-                    ),
-                    error: (message) => Center(
-                      child: Text(message),
-                    ),
-                  );
-                },
-              );
-            },
-          ),
+                    );
+                  },
+                ),
+              ),
+            ),
+            if (_showControls) _buildBottomAppBar(),
+            const AdBanner(),
+          ],
         ),
-        bottomNavigationBar: const AdBanner(),
       ),
     );
   }
