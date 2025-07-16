@@ -8,6 +8,7 @@ class TelevideoRepository {
   final Dio _dio;
   final String _baseUrl = 'https://www.televideo.rai.it/televideo/pub/tt4web';
   final String _htmlBaseUrl = 'https://www.televideo.rai.it/televideo/pub/pagina.jsp';
+  final String _htmlRegionalBaseUrl = 'https://www.televideo.rai.it/televideo/pub/homeregione.jsp';
   final String _corsProxy = 'https://corsproxy.io/?';
 
   TelevideoRepository({Dio? dio}) : _dio = dio ?? Dio();
@@ -206,7 +207,7 @@ class TelevideoRepository {
 
       final rawImageUrl = _buildImageUrl(_baseUrl, region, pageNumber, subPage: subPage);
       final imageUrl = kIsWeb ? '$_corsProxy$rawImageUrl' : rawImageUrl;
-      final baseHtmlUrl = '$_htmlBaseUrl?r=$region&p=$pageNumber';
+      final baseHtmlUrl = '$_htmlRegionalBaseUrl?r=$region&p=$pageNumber';
       final htmlUrl = subPage > 1 ? '$baseHtmlUrl&s=$subPage' : baseHtmlUrl;
       
       // Prima recuperiamo l'HTML per ottenere il numero massimo di sottopagine

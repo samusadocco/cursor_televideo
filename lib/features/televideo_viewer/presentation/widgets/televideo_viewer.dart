@@ -9,6 +9,7 @@ import 'package:cursor_televideo/features/televideo_viewer/bloc/televideo_bloc.d
 import 'package:cursor_televideo/features/televideo_viewer/bloc/televideo_event.dart';
 import 'package:cursor_televideo/features/televideo_viewer/bloc/televideo_state.dart';
 import 'package:cursor_televideo/shared/models/televideo_page.dart';
+import 'package:cursor_televideo/shared/models/region.dart';
 
 class TelevideoViewer extends StatefulWidget {
   final TelevideoPage page;
@@ -214,11 +215,10 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
   }
 
   void _onTapUp(TapUpDetails details, Size imageSize) {
-    if (_isDragging || !widget.isNationalMode) return;
+    if (_isDragging) return;
 
     // Converti le coordinate del tap in coordinate relative all'immagine
     final box = context.findRenderObject() as RenderBox;
-    //final localPosition = box.globalToLocal(details.globalPosition);
     final localPosition = details.localPosition;
 
     print('\n=== TAP DETECTED ===');
@@ -226,7 +226,6 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
     print('Local tap position: (${localPosition.dx}, ${localPosition.dy})');
     
     // Con BoxFit.fill, dobbiamo calcolare il rapporto di scala per x e y separatamente
-    //const originalWidth = 644.0; // Larghezza originale dell'immagine del Televideo
     const originalWidth = 360.0; // Larghezza originale dell'immagine del Televideo
     const originalHeight = 400.0; // Altezza originale dell'immagine del Televideo
     final scaleX = imageSize.width / originalWidth;
@@ -262,7 +261,21 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
       if (isInArea) {
         print('\n>>> MATCH TROVATO! Navigazione alla pagina ${area.targetPage}');
         if (widget.onPageNumberSubmitted != null) {
-          widget.onPageNumberSubmitted!(area.targetPage);
+          if (widget.isNationalMode) {
+            widget.onPageNumberSubmitted!(area.targetPage);
+          } else {
+            // In modalità regionale, manteniamo la regione corrente
+            final regionCode = widget.page.region;
+            if (regionCode != null) {
+              final region = Region.values.firstWhere(
+                (r) => r.code == regionCode,
+                orElse: () => Region.values.first,
+              );
+              context.read<TelevideoBloc>().add(
+                TelevideoEvent.loadRegionalPage(region, area.targetPage),
+              );
+            }
+          }
         }
         break;
       }
