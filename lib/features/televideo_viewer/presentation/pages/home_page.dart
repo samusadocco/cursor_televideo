@@ -7,10 +7,14 @@ import 'package:cursor_televideo/features/televideo_viewer/bloc/televideo_state.
 import 'package:cursor_televideo/features/televideo_viewer/bloc/region_bloc.dart';
 import 'package:cursor_televideo/features/televideo_viewer/presentation/widgets/televideo_viewer.dart';
 import 'package:cursor_televideo/features/televideo_viewer/presentation/widgets/region_selector.dart';
+import 'package:cursor_televideo/features/televideo_viewer/presentation/widgets/shortcuts_menu.dart';
 import 'package:cursor_televideo/features/settings/presentation/pages/settings_page.dart';
 import 'package:cursor_televideo/shared/widgets/ad_banner.dart';
 import 'package:cursor_televideo/shared/models/region.dart';
 import 'package:cursor_televideo/core/network/televideo_repository.dart';
+import 'package:cursor_televideo/core/shortcuts/shortcuts_service.dart';
+import 'package:cursor_televideo/core/storage/favorites_service.dart';
+import 'package:cursor_televideo/shared/models/favorite_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -72,7 +76,7 @@ class _HomePageState extends State<HomePage> {
               Navigator.of(dialogContext).pop();
               _televideoBloc.add(TelevideoEvent.loadNationalPage(pageNumber));
               if (!isNationalMode && selectedRegion != null) {
-                _televideoBloc.add(TelevideoEvent.loadRegionalPage(selectedRegion));
+                _televideoBloc.add(TelevideoEvent.loadRegionalPage(selectedRegion, pageNumber));
               }
             }
           },
@@ -89,7 +93,7 @@ class _HomePageState extends State<HomePage> {
                 Navigator.of(dialogContext).pop();
                 _televideoBloc.add(TelevideoEvent.loadNationalPage(pageNumber));
                 if (!isNationalMode && selectedRegion != null) {
-                  _televideoBloc.add(TelevideoEvent.loadRegionalPage(selectedRegion));
+                  _televideoBloc.add(TelevideoEvent.loadRegionalPage(selectedRegion, pageNumber));
                 }
               }
             },
@@ -104,48 +108,183 @@ class _HomePageState extends State<HomePage> {
     if (!_showControls) return null;
 
     return AppBar(
-      title: BlocBuilder<RegionBloc, RegionState>(
-        builder: (context, regionState) {
-          final isNationalMode = regionState.selectedRegion == null;
-          return Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              UnifiedSelector(
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          // Menu Shortcuts
+          BlocBuilder<RegionBloc, RegionState>(
+            builder: (context, regionState) {
+              return ShortcutsMenu(
+                isNational: regionState.selectedRegion == null,
+                selectedRegion: regionState.selectedRegion,
+                onNationalPageSelected: (pageNumber) {
+                  _televideoBloc.add(TelevideoEvent.loadNationalPage(pageNumber));
+                },
+                onRegionalPageSelected: (pageNumber, region) {
+                  _televideoBloc.add(TelevideoEvent.loadRegionalPage(region, pageNumber));
+                },
+              );
+            },
+          ),
+          // Selezione Nazionale/Regionale
+          BlocBuilder<RegionBloc, RegionState>(
+            builder: (context, regionState) {
+              return UnifiedSelector(
                 selectedRegion: regionState.selectedRegion,
                 onSelectionChanged: (region) {
-                  print('[HomePage] onSelectionChanged called with region: $region');
-                  
-                  // Prima aggiorniamo lo stato della regione
-                  print('[HomePage] Dispatching RegionEvent.selectRegion');
-                  context.read<RegionBloc>().add(RegionEvent.selectRegion(region));
-                  
-                  // Poi carichiamo la pagina appropriata
-                  if (region != null) {
-                    print('[HomePage] Loading regional page for: $region');
-                    // Se selezioniamo una regione, carichiamo direttamente la pagina regionale
-                    context.read<TelevideoBloc>().add(TelevideoEvent.loadRegionalPage(region));
+                  if (region == null) {
+                    _regionBloc.add(const RegionEvent.selectRegion(null));
+                    _televideoBloc.add(const TelevideoEvent.loadNationalPage(100));
                   } else {
-                    print('[HomePage] Loading national page 100');
-                    // Se torniamo alla modalità nazionale, carichiamo sempre la pagina 100
-                    context.read<TelevideoBloc>().add(const TelevideoEvent.loadNationalPage(100));
+                    _regionBloc.add(RegionEvent.selectRegion(region));
+                    _televideoBloc
+                      ..add(const TelevideoEvent.loadNationalPage(300))
+                      ..add(TelevideoEvent.loadRegionalPage(region, 300));
                   }
                 },
-              ),
-            ],
-          );
-        },
+              );
+            },
+          ),
+          // Preferiti
+          IconButton(
+            icon: BlocBuilder<TelevideoBloc, TelevideoState>(
+              builder: (context, state) {
+                return state.maybeWhen(
+                  loaded: (page, currentSubPage) {
+                    final isFavorite = FavoritesService().isFavorite(
+                      page.pageNumber,
+                      _regionBloc.state.selectedRegion?.code,
+                    );
+                    return Icon(
+                      isFavorite ? Icons.favorite : Icons.favorite_border,
+                      color: isFavorite ? Colors.red : null,
+                    );
+                  },
+                  orElse: () => const Icon(Icons.favorite_border),
+                );
+              },
+            ),
+            onPressed: () => _showFavoritesDialog(context),
+          ),
+          // Impostazioni
+          IconButton(
+            icon: const Icon(Icons.settings),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const SettingsPage(),
+                ),
+              );
+            },
+          ),
+        ],
       ),
-      actions: [
-        IconButton(
-          icon: const Icon(Icons.settings),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const SettingsPage()),
-            );
-          },
+    );
+  }
+
+  void _showFavoritesDialog(BuildContext context) {
+    final favorites = FavoritesService().getFavorites();
+    final currentRegion = context.read<RegionBloc>().state.selectedRegion;
+
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Row(
+          children: [
+            const Text('Preferiti'),
+            const Spacer(),
+            BlocBuilder<TelevideoBloc, TelevideoState>(
+              builder: (context, state) {
+                return state.maybeWhen(
+                  loaded: (page, currentSubPage) {
+                    final isFavorite = FavoritesService().isFavorite(
+                      page.pageNumber,
+                      currentRegion?.code,
+                    );
+                    return IconButton(
+                      icon: Icon(
+                        isFavorite ? Icons.favorite : Icons.favorite_border,
+                        color: isFavorite ? Colors.red : null,
+                      ),
+                      onPressed: () {
+                        final favoritesService = FavoritesService();
+                        if (isFavorite) {
+                          favoritesService.removeFavorite(
+                            FavoritePage(
+                              pageNumber: page.pageNumber,
+                              title: 'Pagina ${page.pageNumber}',
+                              regionCode: currentRegion?.code,
+                            ),
+                          );
+                        } else {
+                          favoritesService.addFavorite(
+                            FavoritePage(
+                              pageNumber: page.pageNumber,
+                              title: 'Pagina ${page.pageNumber}',
+                              regionCode: currentRegion?.code,
+                            ),
+                          );
+                        }
+                        Navigator.pop(context);
+                        _showFavoritesDialog(context);
+                      },
+                    );
+                  },
+                  orElse: () => const SizedBox(),
+                );
+              },
+            ),
+          ],
         ),
-      ],
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: favorites.map((favorite) => ListTile(
+              title: Text('${favorite.pageNumber} - ${favorite.title}'),
+              subtitle: favorite.regionCode != null
+                ? Text('Regione: ${favorite.regionCode}')
+                : const Text('Nazionale'),
+              onTap: () {
+                if (favorite.regionCode != null) {
+                  // Prima cambiamo regione
+                  final region = Region.values.firstWhere(
+                    (r) => r.code == favorite.regionCode,
+                  );
+                  context.read<RegionBloc>().add(
+                    RegionEvent.selectRegion(region),
+                  );
+                  context.read<TelevideoBloc>().add(
+                    TelevideoEvent.loadRegionalPage(region, favorite.pageNumber),
+                  );
+                } else {
+                  context.read<RegionBloc>().add(
+                    const RegionEvent.selectRegion(null),
+                  );
+                  context.read<TelevideoBloc>().add(
+                    TelevideoEvent.loadNationalPage(favorite.pageNumber),
+                  );
+                }
+                Navigator.pop(context);
+              },
+              trailing: IconButton(
+                icon: const Icon(Icons.delete),
+                onPressed: () {
+                  FavoritesService().removeFavorite(favorite);
+                  Navigator.pop(context);
+                  _showFavoritesDialog(context);
+                },
+              ),
+            )).toList(),
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Chiudi'),
+          ),
+        ],
+      ),
     );
   }
 
@@ -295,42 +434,42 @@ class _HomePageState extends State<HomePage> {
         BlocProvider.value(value: _regionBloc),
       ],
       child: Scaffold(
-        appBar: _buildAppBar(),
-        body: Column(
-          children: [
-            Expanded(
-              child: GestureDetector(
-                onTap: _toggleControls,
-                child: BlocBuilder<RegionBloc, RegionState>(
-                  builder: (context, regionState) {
-                    return BlocBuilder<TelevideoBloc, TelevideoState>(
-                      builder: (context, state) {
-                        return state.when(
-                          initial: () => const Center(child: CircularProgressIndicator()),
-                          loading: () => const Center(child: CircularProgressIndicator()),
-                          loaded: (page, currentSubPage) => TelevideoViewer(
-                            page: page,
-                            onPageNumberSubmitted: (pageNumber) {
-                              context.read<TelevideoBloc>().add(TelevideoEvent.loadNationalPage(pageNumber));
-                            },
-                            showControls: _showControls,
-                            isNationalMode: regionState.selectedRegion == null,
-                          ),
-                          error: (message) => Center(
-                            child: Text(message),
-                          ),
-                        );
-                      },
-                    );
-                  },
+          appBar: _buildAppBar(),
+          body: Column(
+            children: [
+              Expanded(
+                child: GestureDetector(
+                  onTap: _toggleControls,
+                  child: BlocBuilder<RegionBloc, RegionState>(
+                    builder: (context, regionState) {
+                      return BlocBuilder<TelevideoBloc, TelevideoState>(
+                        builder: (context, state) {
+                          return state.when(
+                            initial: () => const Center(child: CircularProgressIndicator()),
+                            loading: () => const Center(child: CircularProgressIndicator()),
+                            loaded: (page, currentSubPage) => TelevideoViewer(
+                              page: page,
+                              onPageNumberSubmitted: (pageNumber) {
+                                context.read<TelevideoBloc>().add(TelevideoEvent.loadNationalPage(pageNumber));
+                              },
+                              showControls: _showControls,
+                              isNationalMode: regionState.selectedRegion == null,
+                            ),
+                            error: (message) => Center(
+                              child: Text(message),
+                            ),
+                          );
+                        },
+                      );
+                    },
+                  ),
                 ),
               ),
-            ),
-            if (_showControls) _buildBottomAppBar(),
-            const AdBanner(),
-          ],
+              if (_showControls) _buildBottomAppBar(),
+              const AdBanner(),
+            ],
+          ),
         ),
-      ),
     );
   }
 } 

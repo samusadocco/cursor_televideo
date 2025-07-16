@@ -19,7 +19,7 @@ mixin _$TelevideoEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(int pageNumber) loadNationalPage,
-    required TResult Function(Region region) loadRegionalPage,
+    required TResult Function(Region region, int pageNumber) loadRegionalPage,
     required TResult Function(int currentPage) nextPage,
     required TResult Function(int currentPage) previousPage,
     required TResult Function() nextSubPage,
@@ -29,7 +29,7 @@ mixin _$TelevideoEvent {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(int pageNumber)? loadNationalPage,
-    TResult? Function(Region region)? loadRegionalPage,
+    TResult? Function(Region region, int pageNumber)? loadRegionalPage,
     TResult? Function(int currentPage)? nextPage,
     TResult? Function(int currentPage)? previousPage,
     TResult? Function()? nextSubPage,
@@ -39,7 +39,7 @@ mixin _$TelevideoEvent {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(int pageNumber)? loadNationalPage,
-    TResult Function(Region region)? loadRegionalPage,
+    TResult Function(Region region, int pageNumber)? loadRegionalPage,
     TResult Function(int currentPage)? nextPage,
     TResult Function(int currentPage)? previousPage,
     TResult Function()? nextSubPage,
@@ -172,7 +172,7 @@ class _$LoadNationalPageImpl implements _LoadNationalPage {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(int pageNumber) loadNationalPage,
-    required TResult Function(Region region) loadRegionalPage,
+    required TResult Function(Region region, int pageNumber) loadRegionalPage,
     required TResult Function(int currentPage) nextPage,
     required TResult Function(int currentPage) previousPage,
     required TResult Function() nextSubPage,
@@ -185,7 +185,7 @@ class _$LoadNationalPageImpl implements _LoadNationalPage {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(int pageNumber)? loadNationalPage,
-    TResult? Function(Region region)? loadRegionalPage,
+    TResult? Function(Region region, int pageNumber)? loadRegionalPage,
     TResult? Function(int currentPage)? nextPage,
     TResult? Function(int currentPage)? previousPage,
     TResult? Function()? nextSubPage,
@@ -198,7 +198,7 @@ class _$LoadNationalPageImpl implements _LoadNationalPage {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(int pageNumber)? loadNationalPage,
-    TResult Function(Region region)? loadRegionalPage,
+    TResult Function(Region region, int pageNumber)? loadRegionalPage,
     TResult Function(int currentPage)? nextPage,
     TResult Function(int currentPage)? previousPage,
     TResult Function()? nextSubPage,
@@ -274,7 +274,7 @@ abstract class _$$LoadRegionalPageImplCopyWith<$Res> {
           $Res Function(_$LoadRegionalPageImpl) then) =
       __$$LoadRegionalPageImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({Region region});
+  $Res call({Region region, int pageNumber});
 }
 
 /// @nodoc
@@ -291,12 +291,17 @@ class __$$LoadRegionalPageImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? region = null,
+    Object? pageNumber = null,
   }) {
     return _then(_$LoadRegionalPageImpl(
       null == region
           ? _value.region
           : region // ignore: cast_nullable_to_non_nullable
               as Region,
+      null == pageNumber
+          ? _value.pageNumber
+          : pageNumber // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -304,14 +309,16 @@ class __$$LoadRegionalPageImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$LoadRegionalPageImpl implements _LoadRegionalPage {
-  const _$LoadRegionalPageImpl(this.region);
+  const _$LoadRegionalPageImpl(this.region, this.pageNumber);
 
   @override
   final Region region;
+  @override
+  final int pageNumber;
 
   @override
   String toString() {
-    return 'TelevideoEvent.loadRegionalPage(region: $region)';
+    return 'TelevideoEvent.loadRegionalPage(region: $region, pageNumber: $pageNumber)';
   }
 
   @override
@@ -319,11 +326,13 @@ class _$LoadRegionalPageImpl implements _LoadRegionalPage {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$LoadRegionalPageImpl &&
-            (identical(other.region, region) || other.region == region));
+            (identical(other.region, region) || other.region == region) &&
+            (identical(other.pageNumber, pageNumber) ||
+                other.pageNumber == pageNumber));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, region);
+  int get hashCode => Object.hash(runtimeType, region, pageNumber);
 
   /// Create a copy of TelevideoEvent
   /// with the given fields replaced by the non-null parameter values.
@@ -338,33 +347,33 @@ class _$LoadRegionalPageImpl implements _LoadRegionalPage {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(int pageNumber) loadNationalPage,
-    required TResult Function(Region region) loadRegionalPage,
+    required TResult Function(Region region, int pageNumber) loadRegionalPage,
     required TResult Function(int currentPage) nextPage,
     required TResult Function(int currentPage) previousPage,
     required TResult Function() nextSubPage,
     required TResult Function() previousSubPage,
   }) {
-    return loadRegionalPage(region);
+    return loadRegionalPage(region, pageNumber);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(int pageNumber)? loadNationalPage,
-    TResult? Function(Region region)? loadRegionalPage,
+    TResult? Function(Region region, int pageNumber)? loadRegionalPage,
     TResult? Function(int currentPage)? nextPage,
     TResult? Function(int currentPage)? previousPage,
     TResult? Function()? nextSubPage,
     TResult? Function()? previousSubPage,
   }) {
-    return loadRegionalPage?.call(region);
+    return loadRegionalPage?.call(region, pageNumber);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(int pageNumber)? loadNationalPage,
-    TResult Function(Region region)? loadRegionalPage,
+    TResult Function(Region region, int pageNumber)? loadRegionalPage,
     TResult Function(int currentPage)? nextPage,
     TResult Function(int currentPage)? previousPage,
     TResult Function()? nextSubPage,
@@ -372,7 +381,7 @@ class _$LoadRegionalPageImpl implements _LoadRegionalPage {
     required TResult orElse(),
   }) {
     if (loadRegionalPage != null) {
-      return loadRegionalPage(region);
+      return loadRegionalPage(region, pageNumber);
     }
     return orElse();
   }
@@ -422,9 +431,11 @@ class _$LoadRegionalPageImpl implements _LoadRegionalPage {
 }
 
 abstract class _LoadRegionalPage implements TelevideoEvent {
-  const factory _LoadRegionalPage(final Region region) = _$LoadRegionalPageImpl;
+  const factory _LoadRegionalPage(final Region region, final int pageNumber) =
+      _$LoadRegionalPageImpl;
 
   Region get region;
+  int get pageNumber;
 
   /// Create a copy of TelevideoEvent
   /// with the given fields replaced by the non-null parameter values.
@@ -503,7 +514,7 @@ class _$NextPageImpl implements _NextPage {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(int pageNumber) loadNationalPage,
-    required TResult Function(Region region) loadRegionalPage,
+    required TResult Function(Region region, int pageNumber) loadRegionalPage,
     required TResult Function(int currentPage) nextPage,
     required TResult Function(int currentPage) previousPage,
     required TResult Function() nextSubPage,
@@ -516,7 +527,7 @@ class _$NextPageImpl implements _NextPage {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(int pageNumber)? loadNationalPage,
-    TResult? Function(Region region)? loadRegionalPage,
+    TResult? Function(Region region, int pageNumber)? loadRegionalPage,
     TResult? Function(int currentPage)? nextPage,
     TResult? Function(int currentPage)? previousPage,
     TResult? Function()? nextSubPage,
@@ -529,7 +540,7 @@ class _$NextPageImpl implements _NextPage {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(int pageNumber)? loadNationalPage,
-    TResult Function(Region region)? loadRegionalPage,
+    TResult Function(Region region, int pageNumber)? loadRegionalPage,
     TResult Function(int currentPage)? nextPage,
     TResult Function(int currentPage)? previousPage,
     TResult Function()? nextSubPage,
@@ -668,7 +679,7 @@ class _$PreviousPageImpl implements _PreviousPage {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(int pageNumber) loadNationalPage,
-    required TResult Function(Region region) loadRegionalPage,
+    required TResult Function(Region region, int pageNumber) loadRegionalPage,
     required TResult Function(int currentPage) nextPage,
     required TResult Function(int currentPage) previousPage,
     required TResult Function() nextSubPage,
@@ -681,7 +692,7 @@ class _$PreviousPageImpl implements _PreviousPage {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(int pageNumber)? loadNationalPage,
-    TResult? Function(Region region)? loadRegionalPage,
+    TResult? Function(Region region, int pageNumber)? loadRegionalPage,
     TResult? Function(int currentPage)? nextPage,
     TResult? Function(int currentPage)? previousPage,
     TResult? Function()? nextSubPage,
@@ -694,7 +705,7 @@ class _$PreviousPageImpl implements _PreviousPage {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(int pageNumber)? loadNationalPage,
-    TResult Function(Region region)? loadRegionalPage,
+    TResult Function(Region region, int pageNumber)? loadRegionalPage,
     TResult Function(int currentPage)? nextPage,
     TResult Function(int currentPage)? previousPage,
     TResult Function()? nextSubPage,
@@ -806,7 +817,7 @@ class _$NextSubPageImpl implements _NextSubPage {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(int pageNumber) loadNationalPage,
-    required TResult Function(Region region) loadRegionalPage,
+    required TResult Function(Region region, int pageNumber) loadRegionalPage,
     required TResult Function(int currentPage) nextPage,
     required TResult Function(int currentPage) previousPage,
     required TResult Function() nextSubPage,
@@ -819,7 +830,7 @@ class _$NextSubPageImpl implements _NextSubPage {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(int pageNumber)? loadNationalPage,
-    TResult? Function(Region region)? loadRegionalPage,
+    TResult? Function(Region region, int pageNumber)? loadRegionalPage,
     TResult? Function(int currentPage)? nextPage,
     TResult? Function(int currentPage)? previousPage,
     TResult? Function()? nextSubPage,
@@ -832,7 +843,7 @@ class _$NextSubPageImpl implements _NextSubPage {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(int pageNumber)? loadNationalPage,
-    TResult Function(Region region)? loadRegionalPage,
+    TResult Function(Region region, int pageNumber)? loadRegionalPage,
     TResult Function(int currentPage)? nextPage,
     TResult Function(int currentPage)? previousPage,
     TResult Function()? nextSubPage,
@@ -935,7 +946,7 @@ class _$PreviousSubPageImpl implements _PreviousSubPage {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(int pageNumber) loadNationalPage,
-    required TResult Function(Region region) loadRegionalPage,
+    required TResult Function(Region region, int pageNumber) loadRegionalPage,
     required TResult Function(int currentPage) nextPage,
     required TResult Function(int currentPage) previousPage,
     required TResult Function() nextSubPage,
@@ -948,7 +959,7 @@ class _$PreviousSubPageImpl implements _PreviousSubPage {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(int pageNumber)? loadNationalPage,
-    TResult? Function(Region region)? loadRegionalPage,
+    TResult? Function(Region region, int pageNumber)? loadRegionalPage,
     TResult? Function(int currentPage)? nextPage,
     TResult? Function(int currentPage)? previousPage,
     TResult? Function()? nextSubPage,
@@ -961,7 +972,7 @@ class _$PreviousSubPageImpl implements _PreviousSubPage {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(int pageNumber)? loadNationalPage,
-    TResult Function(Region region)? loadRegionalPage,
+    TResult Function(Region region, int pageNumber)? loadRegionalPage,
     TResult Function(int currentPage)? nextPage,
     TResult Function(int currentPage)? previousPage,
     TResult Function()? nextSubPage,

@@ -52,15 +52,12 @@ class _UnifiedSelectorState extends State<UnifiedSelector> {
 
   @override
   Widget build(BuildContext context) {
-    print('[UnifiedSelector] Building with selectedRegion: ${widget.selectedRegion}'); // Debug print
-    
     return MenuAnchor(
       controller: _menuController,
       menuChildren: [
         // Opzione Nazionale
         MenuItemButton(
           onPressed: () {
-            print('[UnifiedSelector] Nazionale pressed'); // Debug print
             widget.onSelectionChanged(null);
             _menuController.close();
           },
@@ -86,7 +83,6 @@ class _UnifiedSelectorState extends State<UnifiedSelector> {
           // Regione corrente
           MenuItemButton(
             onPressed: () {
-              print('[UnifiedSelector] Current region ${_currentRegion!.name} pressed');
               widget.onSelectionChanged(_currentRegion);
               _menuController.close();
             },
@@ -112,7 +108,6 @@ class _UnifiedSelectorState extends State<UnifiedSelector> {
         // Opzioni regioni
         ...Region.values.map((region) => MenuItemButton(
           onPressed: () {
-            print('[UnifiedSelector] Region ${region.name} pressed'); // Debug print
             widget.onSelectionChanged(region);
             _menuController.close();
           },
@@ -135,7 +130,6 @@ class _UnifiedSelectorState extends State<UnifiedSelector> {
       builder: (context, controller, child) {
         return GestureDetector(
           onTap: () {
-            print('[UnifiedSelector] Menu button tapped'); // Debug print
             if (controller.isOpen) {
               controller.close();
             } else {

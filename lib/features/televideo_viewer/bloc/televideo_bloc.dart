@@ -19,7 +19,7 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
     on<TelevideoEvent>((event, emit) async {
       await event.when(
         loadNationalPage: (pageNumber) => _onLoadNationalPage(pageNumber, emit),
-        loadRegionalPage: (region) => _onLoadRegionalPage(region, emit),
+        loadRegionalPage: (region, pageNumber) => _onLoadRegionalPage(region, pageNumber, emit),
         nextPage: (currentPage) => _onNextPage(currentPage, emit),
         previousPage: (currentPage) => _onPreviousPage(currentPage, emit),
         nextSubPage: () => _onNextSubPage(emit),
@@ -101,8 +101,8 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
   Future<void> _onLoadNationalPage(int pageNumber, Emitter<TelevideoState> emit) async {
     print('[TelevideoBloc] Loading national page: $pageNumber'); // Debug print
     emit(const TelevideoState.loading());
-    _currentRegion = null;  // Reset della regione corrente
     _currentPage = pageNumber;
+    _currentRegion = null; // Reset della regione quando si carica una pagina nazionale
 
     try {
       print('[TelevideoBloc] Fetching national page from repository'); // Debug print
@@ -116,23 +116,18 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
     }
   }
 
-  Future<void> _onLoadRegionalPage(Region region, Emitter<TelevideoState> emit) async {
+  Future<void> _onLoadRegionalPage(Region region, int pageNumber, Emitter<TelevideoState> emit) async {
     emit(const TelevideoState.loading());
     try {
-      final bool wasNational = _currentRegion == null;
       _currentRegion = region;
+      _currentPage = pageNumber;
       
-      // Impostiamo la pagina 300 solo se veniamo dalla modalità nazionale
-      if (wasNational) {
-        _currentPage = 300;
-      }
-      
-      final page = await _repository.getRegionalPage(region.code, pageNumber: _currentPage);
+      final page = await _repository.getRegionalPage(region.code, pageNumber: pageNumber);
       _adService.incrementPageView();
       emit(TelevideoState.loaded(page, currentSubPage: 1));
     } catch (e) {
       // Se la pagina non è disponibile, cerca la prossima disponibile
-      await _findNextAvailablePage(_currentPage, emit);
+      await _findNextAvailablePage(pageNumber, emit);
     }
   }
 
