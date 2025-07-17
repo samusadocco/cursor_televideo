@@ -1,5 +1,5 @@
-import 'package:cursor_televideo/shared/models/region.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:cursor_televideo/shared/models/region.dart';
 
 part 'televideo_event.freezed.dart';
 

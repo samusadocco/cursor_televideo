@@ -316,8 +316,8 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
                   onTapUp: (details) => _onTapUp(details, constraints.biggest),
                   child: BlocBuilder<TelevideoBloc, TelevideoState>(
                     builder: (context, state) {
-                      return state.maybeWhen(
-                        loaded: (page, currentSubPage) => Image.network(
+                      return state.when(
+                        initial: () => Image.network(
                           widget.page.imageUrl,
                           headers: const {
                             'Cache-Control': 'no-cache',
@@ -325,13 +325,24 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
                           },
                           fit: BoxFit.fill,
                         ),
-                        orElse: () => Image.network(
-                          widget.page.imageUrl,
+                        loading: () => const Center(
+                          child: CircularProgressIndicator(
+                            color: Colors.white,
+                          ),
+                        ),
+                        loaded: (page, currentSubPage) => Image.network(
+                          page.imageUrl,
                           headers: const {
                             'Cache-Control': 'no-cache',
                             'Pragma': 'no-cache',
                           },
                           fit: BoxFit.fill,
+                        ),
+                        error: (message) => Center(
+                          child: Text(
+                            message,
+                            style: const TextStyle(color: Colors.white),
+                          ),
                         ),
                       );
                     },
