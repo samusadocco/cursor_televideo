@@ -5,6 +5,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:cursor_televideo/core/settings/app_settings.dart';
 import 'package:cursor_televideo/core/ads/ad_service.dart';
+import 'package:cursor_televideo/core/animations/page_transitions.dart';
+import 'package:cursor_televideo/core/feedback/haptic_feedback_service.dart';
+import 'package:cursor_televideo/features/televideo_viewer/presentation/widgets/subpage_indicator.dart';
 import 'package:cursor_televideo/features/televideo_viewer/bloc/televideo_bloc.dart';
 import 'package:cursor_televideo/features/televideo_viewer/bloc/televideo_event.dart';
 import 'package:cursor_televideo/features/televideo_viewer/bloc/televideo_state.dart';
@@ -41,6 +44,7 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
   int _currentSubPage = 1;
   int _maxSubPages = 1;
   bool _wasLiveShowActive = false;
+  double _dragProgress = 0.0;
 
   @override
   void initState() {
@@ -126,6 +130,9 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
   void _onDragStart(DragStartDetails details) {
     _isDragging = true;
     _dragStart = details.globalPosition;
+    _dragProgress = 0.0;
+    _isVerticalDrag = false;
+    setState(() {});
   }
 
   void _onDragUpdate(DragUpdateDetails details) {
@@ -136,32 +143,29 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
     
     // Determina se il drag è principalmente orizzontale o verticale
     if (!_isVerticalDrag && dragDistance.distance > 10) {
-      _isVerticalDrag = dragDistance.dy.abs() > dragDistance.dx.abs();
+      final isVertical = dragDistance.dy.abs() > dragDistance.dx.abs();
+      
+      // Se il drag è verticale ma non ci sono sottopagine, diamo feedback aptico e ignoriamo il drag verticale
+      if (isVertical && _maxSubPages <= 1) {
+        HapticFeedbackService.error();
+        return;
+      }
+      
+      _isVerticalDrag = isVertical;
+    }
+    
+    // Se stiamo tentando un drag verticale ma non ci sono sottopagine, ignoriamo il movimento
+    if (_isVerticalDrag && _maxSubPages <= 1) {
+      return;
     }
     
     if (_isVerticalDrag) {
-      final normalizedOffset = dragDistance.dy / screenSize.height;
-      setState(() {
-        _slideAnimation = Tween<Offset>(
-          begin: Offset(0, normalizedOffset),
-          end: Offset(0, normalizedOffset > 0 ? 1 : -1),
-        ).animate(CurvedAnimation(
-          parent: _controller,
-          curve: Curves.easeInOut,
-        ));
-      });
+      _dragProgress = (dragDistance.dy / screenSize.height).clamp(-1.0, 1.0);
     } else {
-      final normalizedOffset = dragDistance.dx / screenSize.width;
-      setState(() {
-        _slideAnimation = Tween<Offset>(
-          begin: Offset(normalizedOffset, 0),
-          end: Offset(normalizedOffset > 0 ? 1 : -1, 0),
-        ).animate(CurvedAnimation(
-          parent: _controller,
-          curve: Curves.easeInOut,
-        ));
-      });
+      _dragProgress = (dragDistance.dx / screenSize.width).clamp(-1.0, 1.0);
     }
+    
+    setState(() {});
   }
 
   void _onDragEnd(DragEndDetails details) {
@@ -169,26 +173,39 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
     
     _isDragging = false;
     final velocity = details.primaryVelocity ?? 0;
+    final threshold = 0.3; // Soglia per determinare se completare lo swipe
     
     if (_isVerticalDrag) {
-      if (velocity.abs() > 300) {
-        if (velocity > 0) {
+      // Se non ci sono sottopagine, ignoriamo il drag verticale
+      if (_maxSubPages <= 1) {
+        _dragProgress = 0.0;
+        _isVerticalDrag = false;
+        setState(() {});
+        return;
+      }
+
+      if (velocity.abs() > 300 || _dragProgress.abs() > threshold) {
+        if (velocity > 0 || _dragProgress > threshold) {
           // Swipe verso il basso - sottopagina precedente
+          HapticFeedbackService.success();
           context.read<TelevideoBloc>().add(const TelevideoEvent.previousSubPage());
         } else {
           // Swipe verso l'alto - sottopagina successiva
+          HapticFeedbackService.success();
           context.read<TelevideoBloc>().add(const TelevideoEvent.nextSubPage());
         }
       }
     } else {
-      if (velocity.abs() > 300) {
-        if (velocity > 0) {
+      if (velocity.abs() > 300 || _dragProgress.abs() > threshold) {
+        if (velocity > 0 || _dragProgress > threshold) {
           // Swipe verso destra - pagina precedente
+          HapticFeedbackService.success();
           context.read<TelevideoBloc>().add(
             TelevideoEvent.previousPage(currentPage: widget.page.pageNumber),
           );
         } else {
           // Swipe verso sinistra - pagina successiva
+          HapticFeedbackService.success();
           context.read<TelevideoBloc>().add(
             TelevideoEvent.nextPage(currentPage: widget.page.pageNumber),
           );
@@ -196,19 +213,9 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
       }
     }
     
-    _controller.forward().then((_) {
-      _controller.reset();
-      setState(() {
-        _slideAnimation = Tween<Offset>(
-          begin: Offset.zero,
-          end: Offset.zero,
-        ).animate(CurvedAnimation(
-          parent: _controller,
-          curve: Curves.easeInOut,
-        ));
-      });
-      _isVerticalDrag = false;
-    });
+    _dragProgress = 0.0;
+    _isVerticalDrag = false;
+    setState(() {});
 
     // Riavvia il timer dopo il drag
     _startLiveShowTimer();
@@ -297,61 +304,148 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
           orElse: () {},
         );
       },
-      child: GestureDetector(
-        onVerticalDragStart: _onDragStart,
-        onVerticalDragUpdate: _onDragUpdate,
-        onVerticalDragEnd: _onDragEnd,
-        onHorizontalDragStart: _onDragStart,
-        onHorizontalDragUpdate: _onDragUpdate,
-        onHorizontalDragEnd: _onDragEnd,
-        child: SlideTransition(
-          position: _slideAnimation,
-          child: Container(
-            width: double.infinity,
-            height: double.infinity,
-            color: Colors.black,
-            child: LayoutBuilder(
-              builder: (context, constraints) {
-                return GestureDetector(
-                  onTapUp: (details) => _onTapUp(details, constraints.biggest),
-                  child: BlocBuilder<TelevideoBloc, TelevideoState>(
-                    builder: (context, state) {
-                      return state.when(
-                        initial: () => Image.network(
-                          widget.page.imageUrl,
-                          headers: const {
-                            'Cache-Control': 'no-cache',
-                            'Pragma': 'no-cache',
-                          },
-                          fit: BoxFit.fill,
-                        ),
-                        loading: () => const Center(
-                          child: CircularProgressIndicator(
-                            color: Colors.white,
+      child: Stack(
+        children: [
+          GestureDetector(
+            onVerticalDragStart: _onDragStart,
+            onVerticalDragUpdate: _onDragUpdate,
+            onVerticalDragEnd: _onDragEnd,
+            onHorizontalDragStart: _onDragStart,
+            onHorizontalDragUpdate: _onDragUpdate,
+            onHorizontalDragEnd: _onDragEnd,
+            child: Container(
+              width: double.infinity,
+              height: double.infinity,
+              color: Colors.black,
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  return GestureDetector(
+                    onTapUp: (details) => _onTapUp(details, constraints.biggest),
+                    child: BlocBuilder<TelevideoBloc, TelevideoState>(
+                      builder: (context, state) {
+                        Widget content = state.when(
+                          initial: () => Image.network(
+                            widget.page.imageUrl,
+                            headers: const {
+                              'Cache-Control': 'no-cache',
+                              'Pragma': 'no-cache',
+                            },
+                            fit: BoxFit.fill,
                           ),
-                        ),
-                        loaded: (page, currentSubPage) => Image.network(
-                          page.imageUrl,
-                          headers: const {
-                            'Cache-Control': 'no-cache',
-                            'Pragma': 'no-cache',
-                          },
-                          fit: BoxFit.fill,
-                        ),
-                        error: (message) => Center(
-                          child: Text(
-                            message,
-                            style: const TextStyle(color: Colors.white),
+                          loading: () => const Center(
+                            child: CircularProgressIndicator(
+                              color: Colors.white,
+                            ),
                           ),
-                        ),
-                      );
-                    },
-                  ),
-                );
-              },
+                          loaded: (page, currentSubPage) {
+                            final lastEvent = context.read<TelevideoBloc>().lastEvent;
+                            var transitionType = PageTransitionType.fade;
+                            var forward = true;
+
+                            if (lastEvent != null) {
+                              lastEvent.when(
+                                loadNationalPage: (_) => transitionType = PageTransitionType.fade,
+                                loadRegionalPage: (_, __) => transitionType = PageTransitionType.fade,
+                                nextPage: (_) {
+                                  transitionType = PageTransitionType.slideHorizontal;
+                                  forward = true;
+                                },
+                                previousPage: (_) {
+                                  transitionType = PageTransitionType.slideHorizontal;
+                                  forward = false;
+                                },
+                                nextSubPage: () {
+                                  transitionType = PageTransitionType.slideVertical;
+                                  forward = true;
+                                },
+                                previousSubPage: () {
+                                  transitionType = PageTransitionType.slideVertical;
+                                  forward = false;
+                                },
+                              );
+                            }
+
+                            return AnimatedPageTransition(
+                              type: transitionType,
+                              forward: forward,
+                              child: Image.network(
+                                page.imageUrl,
+                                headers: const {
+                                  'Cache-Control': 'no-cache',
+                                  'Pragma': 'no-cache',
+                                },
+                                fit: BoxFit.fill,
+                              ),
+                            );
+                          },
+                          error: (message) => Center(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const Icon(
+                                  Icons.error_outline,
+                                  color: Colors.red,
+                                  size: 48,
+                                ),
+                                const SizedBox(height: 16),
+                                Text(
+                                  message,
+                                  style: const TextStyle(color: Colors.white),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+
+                        // Applica la trasformazione durante il drag
+                        if (_isDragging) {
+                          return Transform.translate(
+                            offset: _isVerticalDrag
+                                ? Offset(0, _dragProgress * MediaQuery.of(context).size.height)
+                                : Offset(_dragProgress * MediaQuery.of(context).size.width, 0),
+                            child: content,
+                          );
+                        }
+
+                        return content;
+                      },
+                    ),
+                  );
+                },
+              ),
             ),
           ),
-        ),
+          // Indicatore delle sottopagine
+          if (widget.showControls)
+            Positioned(
+              bottom: 16,
+              left: 0,
+              right: 0,
+              child: Center(
+                child: SubpageIndicator(
+                  currentSubPage: _currentSubPage,
+                  maxSubPages: _maxSubPages,
+                ),
+              ),
+            ),
+          // Indicatore di caricamento
+          BlocBuilder<TelevideoBloc, TelevideoState>(
+            builder: (context, state) {
+              return state.maybeWhen(
+                loading: () => Container(
+                  color: Colors.black.withOpacity(0.5),
+                  child: const Center(
+                    child: CircularProgressIndicator(
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                orElse: () => const SizedBox.shrink(),
+              );
+            },
+          ),
+        ],
       ),
     );
   }

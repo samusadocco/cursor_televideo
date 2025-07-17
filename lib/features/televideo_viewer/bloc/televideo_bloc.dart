@@ -12,11 +12,16 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
   final int defaultPage = 100;
   Region? _currentRegion;
   int _currentPage = 100;
+  TelevideoEvent? _lastEvent;
+
+  /// L'ultimo evento ricevuto dal bloc
+  TelevideoEvent? get lastEvent => _lastEvent;
 
   TelevideoBloc({required TelevideoRepository repository})
       : _repository = repository,
         super(const TelevideoState.initial()) {
     on<TelevideoEvent>((event, emit) async {
+      _lastEvent = event;  // Salviamo l'ultimo evento
       print('[TelevideoBloc] Received event: $event'); // Debug print
       await event.when(
         loadNationalPage: (pageNumber) => _onLoadNationalPage(pageNumber, emit),

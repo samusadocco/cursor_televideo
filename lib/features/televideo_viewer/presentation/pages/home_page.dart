@@ -24,7 +24,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  bool _showControls = true;
+  final bool _showControls = true;  // Sempre true, non più modificabile
   late TelevideoBloc _televideoBloc;
   late RegionBloc _regionBloc;
   final TextEditingController _pageNumberController = TextEditingController();
@@ -43,12 +43,6 @@ class _HomePageState extends State<HomePage> {
     _regionBloc.close();
     _pageNumberController.dispose();
     super.dispose();
-  }
-
-  void _toggleControls() {
-    setState(() {
-      _showControls = !_showControls;
-    });
   }
 
   Future<void> _showPageNumberDialog(BuildContext context, bool isNationalMode, Region? selectedRegion) async {
@@ -145,7 +139,7 @@ class _HomePageState extends State<HomePage> {
               );
             },
           ),
-          // Preferiti
+          // Preferiti e Impostazioni
           Row(
             children: [
               IconButton(
@@ -225,19 +219,18 @@ class _HomePageState extends State<HomePage> {
                 tooltip: 'Lista preferiti',
                 onPressed: () => _showFavoritesDialog(context),
               ),
+              IconButton(
+                icon: const Icon(Icons.settings),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const SettingsPage(),
+                    ),
+                  );
+                },
+              ),
             ],
-          ),
-          // Impostazioni
-          IconButton(
-            icon: const Icon(Icons.settings),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const SettingsPage(),
-                ),
-              );
-            },
           ),
         ],
       ),
@@ -307,11 +300,12 @@ class _HomePageState extends State<HomePage> {
                         : null;
 
                     return ListTile(
-                      leading: CircleAvatar(
-                        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-                        child: Icon(
-                          region != null ? Icons.location_on : Icons.public,
-                          color: Theme.of(context).colorScheme.onPrimaryContainer,
+                      leading: SizedBox(
+                        width: 24,
+                        height: 24,
+                        child: Image.asset(
+                          region?.imagePath ?? 'assets/images/italy.png',
+                          fit: BoxFit.contain,
                         ),
                       ),
                       title: Text(
@@ -539,34 +533,31 @@ class _HomePageState extends State<HomePage> {
           body: Column(
             children: [
               Expanded(
-                child: GestureDetector(
-                  onTap: _toggleControls,
-                  child: BlocBuilder<RegionBloc, RegionState>(
-                    builder: (context, regionState) {
-                      return BlocBuilder<TelevideoBloc, TelevideoState>(
-                        builder: (context, state) {
-                          return state.when(
-                            initial: () => const Center(child: CircularProgressIndicator()),
-                            loading: () => const Center(child: CircularProgressIndicator()),
-                            loaded: (page, currentSubPage) => TelevideoViewer(
-                              page: page,
-                              onPageNumberSubmitted: (pageNumber) {
-                                context.read<TelevideoBloc>().add(TelevideoEvent.loadNationalPage(pageNumber));
-                              },
-                              showControls: _showControls,
-                              isNationalMode: regionState.selectedRegion == null,
-                            ),
-                            error: (message) => Center(
-                              child: Text(message),
-                            ),
-                          );
-                        },
-                      );
-                    },
-                  ),
+                child: BlocBuilder<RegionBloc, RegionState>(
+                  builder: (context, regionState) {
+                    return BlocBuilder<TelevideoBloc, TelevideoState>(
+                      builder: (context, state) {
+                        return state.when(
+                          initial: () => const Center(child: CircularProgressIndicator()),
+                          loading: () => const Center(child: CircularProgressIndicator()),
+                          loaded: (page, currentSubPage) => TelevideoViewer(
+                            page: page,
+                            onPageNumberSubmitted: (pageNumber) {
+                              context.read<TelevideoBloc>().add(TelevideoEvent.loadNationalPage(pageNumber));
+                            },
+                            showControls: _showControls,
+                            isNationalMode: regionState.selectedRegion == null,
+                          ),
+                          error: (message) => Center(
+                            child: Text(message),
+                          ),
+                        );
+                      },
+                    );
+                  },
                 ),
               ),
-              if (_showControls) _buildBottomAppBar(),
+              _buildBottomAppBar(),
               const AdBanner(),
             ],
           ),

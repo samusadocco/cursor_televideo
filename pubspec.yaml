@@ -39,7 +39,7 @@ dependencies:
   # Network
   dio: ^5.4.0
   # Storage
-  shared_preferences: ^2.2.2
+  shared_preferences: ^2.5.3
   # Utils
   equatable: ^2.0.5
   freezed_annotation: ^2.4.1
