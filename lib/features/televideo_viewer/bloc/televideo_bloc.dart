@@ -17,6 +17,7 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
       : _repository = repository,
         super(const TelevideoState.initial()) {
     on<TelevideoEvent>((event, emit) async {
+      print('[TelevideoBloc] Received event: $event'); // Debug print
       await event.when(
         loadNationalPage: (pageNumber) => _onLoadNationalPage(pageNumber, emit),
         loadRegionalPage: (region, pageNumber) => _onLoadRegionalPage(region, pageNumber, emit),
@@ -117,15 +118,19 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
   }
 
   Future<void> _onLoadRegionalPage(Region region, int pageNumber, Emitter<TelevideoState> emit) async {
+    print('[TelevideoBloc] Loading regional page: $pageNumber for region ${region.code}'); // Debug print
     emit(const TelevideoState.loading());
     try {
       _currentRegion = region;
       _currentPage = pageNumber;
       
+      print('[TelevideoBloc] Fetching regional page from repository'); // Debug print
       final page = await _repository.getRegionalPage(region.code, pageNumber: pageNumber);
       _adService.incrementPageView();
+      print('[TelevideoBloc] Regional page loaded successfully'); // Debug print
       emit(TelevideoState.loaded(page, currentSubPage: 1));
     } catch (e) {
+      print('[TelevideoBloc] Error loading regional page: $e'); // Debug print
       // Se la pagina non è disponibile, cerca la prossima disponibile
       await _findNextAvailablePage(pageNumber, emit);
     }
@@ -206,6 +211,32 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
   Future<void> _onPreviousPage(int currentPage, Emitter<TelevideoState> emit) async {
     if (currentPage > 100) {
       await _findPreviousAvailablePage(currentPage - 1, emit);
+    }
+  }
+
+  Future<void> _onLoadFromFavorite(int pageNumber, Region? region, Emitter<TelevideoState> emit) async {
+    print('[TelevideoBloc] Loading from favorite: page $pageNumber, region ${region?.code}');
+    emit(const TelevideoState.loading());
+
+    try {
+      if (region != null) {
+        _currentRegion = region;
+        _currentPage = pageNumber;
+        print('[TelevideoBloc] Loading regional page from favorite');
+        final page = await _repository.getRegionalPage(region.code, pageNumber: pageNumber);
+        _adService.incrementPageView();
+        emit(TelevideoState.loaded(page, currentSubPage: 1));
+      } else {
+        _currentRegion = null;
+        _currentPage = pageNumber;
+        print('[TelevideoBloc] Loading national page from favorite');
+        final page = await _repository.getNationalPage(pageNumber);
+        _adService.incrementPageView();
+        emit(TelevideoState.loaded(page, currentSubPage: 1));
+      }
+    } catch (e) {
+      print('[TelevideoBloc] Error loading page from favorite: $e');
+      emit(TelevideoState.error(e.toString()));
     }
   }
 
