@@ -419,7 +419,7 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
           // Indicatore delle sottopagine
           if (widget.showControls)
             Positioned(
-              bottom: 16,
+              bottom: -8,
               left: 0,
               right: 0,
               child: Center(
