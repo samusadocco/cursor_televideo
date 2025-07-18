@@ -55,6 +55,10 @@ class _UnifiedSelectorState extends State<UnifiedSelector> {
     return MenuAnchor(
       controller: _menuController,
       menuChildren: [
+        // Spazio all'inizio del menu
+        const MenuItemButton(
+          child: SizedBox(height: 8),
+        ),
         // Opzione Nazionale
         MenuItemButton(
           onPressed: () {
@@ -105,7 +109,7 @@ class _UnifiedSelectorState extends State<UnifiedSelector> {
         const MenuItemButton(
           child: Divider(),
         ),
-        // Opzioni regioni
+        // Lista delle regioni
         ...Region.values.map((region) => MenuItemButton(
           onPressed: () {
             widget.onSelectionChanged(region);
@@ -126,6 +130,10 @@ class _UnifiedSelectorState extends State<UnifiedSelector> {
             ],
           ),
         )),
+        // Spazio alla fine del menu
+        const MenuItemButton(
+          child: SizedBox(height: 8),
+        ),
       ],
       builder: (context, controller, child) {
         return GestureDetector(

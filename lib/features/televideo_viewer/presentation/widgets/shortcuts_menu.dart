@@ -33,21 +33,24 @@ class _ShortcutsMenuState extends State<ShortcutsMenu> {
   @override
   void didUpdateWidget(ShortcutsMenu oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.isNational != widget.isNational) {
+    if (oldWidget.isNational != widget.isNational || 
+        oldWidget.selectedRegion != widget.selectedRegion) {
       _updateShortcuts();
     }
   }
 
   void _updateShortcuts() {
-    _shortcuts = ShortcutsService().getShortcuts(isNational: widget.isNational);
+    final service = ShortcutsService();
+    _shortcuts = widget.selectedRegion != null ? 
+      service.regionalShortcuts : 
+      service.nationalShortcuts;
   }
 
   void _handleShortcutSelected(dynamic shortcut) {
-    if (widget.isNational) {
-      widget.onNationalPageSelected(shortcut.pageNumber);
-    } else if (widget.selectedRegion != null) {
-      // In modalità regionale, carichiamo direttamente la pagina regionale
+    if (widget.selectedRegion != null) {
       widget.onRegionalPageSelected(shortcut.pageNumber, widget.selectedRegion!);
+    } else {
+      widget.onNationalPageSelected(shortcut.pageNumber);
     }
     _menuController.close();
   }

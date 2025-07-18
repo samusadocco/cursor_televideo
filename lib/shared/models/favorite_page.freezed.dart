@@ -22,6 +22,7 @@ FavoritePage _$FavoritePageFromJson(Map<String, dynamic> json) {
 mixin _$FavoritePage {
   int get pageNumber => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
+  String? get description => throw _privateConstructorUsedError;
   String? get regionCode => throw _privateConstructorUsedError;
 
   /// Serializes this FavoritePage to a JSON map.
@@ -40,7 +41,8 @@ abstract class $FavoritePageCopyWith<$Res> {
           FavoritePage value, $Res Function(FavoritePage) then) =
       _$FavoritePageCopyWithImpl<$Res, FavoritePage>;
   @useResult
-  $Res call({int pageNumber, String title, String? regionCode});
+  $Res call(
+      {int pageNumber, String title, String? description, String? regionCode});
 }
 
 /// @nodoc
@@ -60,6 +62,7 @@ class _$FavoritePageCopyWithImpl<$Res, $Val extends FavoritePage>
   $Res call({
     Object? pageNumber = null,
     Object? title = null,
+    Object? description = freezed,
     Object? regionCode = freezed,
   }) {
     return _then(_value.copyWith(
@@ -71,6 +74,10 @@ class _$FavoritePageCopyWithImpl<$Res, $Val extends FavoritePage>
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
+      description: freezed == description
+          ? _value.description
+          : description // ignore: cast_nullable_to_non_nullable
+              as String?,
       regionCode: freezed == regionCode
           ? _value.regionCode
           : regionCode // ignore: cast_nullable_to_non_nullable
@@ -87,7 +94,8 @@ abstract class _$$FavoritePageImplCopyWith<$Res>
       __$$FavoritePageImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int pageNumber, String title, String? regionCode});
+  $Res call(
+      {int pageNumber, String title, String? description, String? regionCode});
 }
 
 /// @nodoc
@@ -105,6 +113,7 @@ class __$$FavoritePageImplCopyWithImpl<$Res>
   $Res call({
     Object? pageNumber = null,
     Object? title = null,
+    Object? description = freezed,
     Object? regionCode = freezed,
   }) {
     return _then(_$FavoritePageImpl(
@@ -116,6 +125,10 @@ class __$$FavoritePageImplCopyWithImpl<$Res>
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
+      description: freezed == description
+          ? _value.description
+          : description // ignore: cast_nullable_to_non_nullable
+              as String?,
       regionCode: freezed == regionCode
           ? _value.regionCode
           : regionCode // ignore: cast_nullable_to_non_nullable
@@ -126,9 +139,13 @@ class __$$FavoritePageImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$FavoritePageImpl implements _FavoritePage {
+class _$FavoritePageImpl extends _FavoritePage {
   const _$FavoritePageImpl(
-      {required this.pageNumber, required this.title, this.regionCode});
+      {required this.pageNumber,
+      required this.title,
+      this.description,
+      this.regionCode})
+      : super._();
 
   factory _$FavoritePageImpl.fromJson(Map<String, dynamic> json) =>
       _$$FavoritePageImplFromJson(json);
@@ -138,11 +155,13 @@ class _$FavoritePageImpl implements _FavoritePage {
   @override
   final String title;
   @override
+  final String? description;
+  @override
   final String? regionCode;
 
   @override
   String toString() {
-    return 'FavoritePage(pageNumber: $pageNumber, title: $title, regionCode: $regionCode)';
+    return 'FavoritePage(pageNumber: $pageNumber, title: $title, description: $description, regionCode: $regionCode)';
   }
 
   @override
@@ -153,13 +172,16 @@ class _$FavoritePageImpl implements _FavoritePage {
             (identical(other.pageNumber, pageNumber) ||
                 other.pageNumber == pageNumber) &&
             (identical(other.title, title) || other.title == title) &&
+            (identical(other.description, description) ||
+                other.description == description) &&
             (identical(other.regionCode, regionCode) ||
                 other.regionCode == regionCode));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, pageNumber, title, regionCode);
+  int get hashCode =>
+      Object.hash(runtimeType, pageNumber, title, description, regionCode);
 
   /// Create a copy of FavoritePage
   /// with the given fields replaced by the non-null parameter values.
@@ -177,11 +199,13 @@ class _$FavoritePageImpl implements _FavoritePage {
   }
 }
 
-abstract class _FavoritePage implements FavoritePage {
+abstract class _FavoritePage extends FavoritePage {
   const factory _FavoritePage(
       {required final int pageNumber,
       required final String title,
+      final String? description,
       final String? regionCode}) = _$FavoritePageImpl;
+  const _FavoritePage._() : super._();
 
   factory _FavoritePage.fromJson(Map<String, dynamic> json) =
       _$FavoritePageImpl.fromJson;
@@ -190,6 +214,8 @@ abstract class _FavoritePage implements FavoritePage {
   int get pageNumber;
   @override
   String get title;
+  @override
+  String? get description;
   @override
   String? get regionCode;
 

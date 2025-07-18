@@ -13,6 +13,7 @@ import 'package:cursor_televideo/features/televideo_viewer/bloc/televideo_event.
 import 'package:cursor_televideo/features/televideo_viewer/bloc/televideo_state.dart';
 import 'package:cursor_televideo/shared/models/televideo_page.dart';
 import 'package:cursor_televideo/shared/models/region.dart';
+import 'package:cursor_televideo/features/televideo_viewer/bloc/region_bloc.dart';
 
 class TelevideoViewer extends StatefulWidget {
   final TelevideoPage page;
@@ -45,6 +46,7 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
   int _maxSubPages = 1;
   bool _wasLiveShowActive = false;
   double _dragProgress = 0.0;
+  bool _isRefreshing = false;  // Nuovo stato per gestire il refresh
 
   @override
   void initState() {
@@ -143,20 +145,7 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
     
     // Determina se il drag è principalmente orizzontale o verticale
     if (!_isVerticalDrag && dragDistance.distance > 10) {
-      final isVertical = dragDistance.dy.abs() > dragDistance.dx.abs();
-      
-      // Se il drag è verticale ma non ci sono sottopagine, diamo feedback aptico e ignoriamo il drag verticale
-      if (isVertical && _maxSubPages <= 1) {
-        HapticFeedbackService.error();
-        return;
-      }
-      
-      _isVerticalDrag = isVertical;
-    }
-    
-    // Se stiamo tentando un drag verticale ma non ci sono sottopagine, ignoriamo il movimento
-    if (_isVerticalDrag && _maxSubPages <= 1) {
-      return;
+      _isVerticalDrag = dragDistance.dy.abs() > dragDistance.dx.abs();
     }
     
     if (_isVerticalDrag) {
@@ -176,24 +165,52 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
     final threshold = 0.3; // Soglia per determinare se completare lo swipe
     
     if (_isVerticalDrag) {
-      // Se non ci sono sottopagine, ignoriamo il drag verticale
-      if (_maxSubPages <= 1) {
-        _dragProgress = 0.0;
-        _isVerticalDrag = false;
-        setState(() {});
-        return;
-      }
-
-      if (velocity.abs() > 300 || _dragProgress.abs() > threshold) {
-        if (velocity > 0 || _dragProgress > threshold) {
-          // Swipe verso il basso - sottopagina precedente
-          HapticFeedbackService.success();
-          context.read<TelevideoBloc>().add(const TelevideoEvent.previousSubPage());
-        } else {
-          // Swipe verso l'alto - sottopagina successiva
-          HapticFeedbackService.success();
-          context.read<TelevideoBloc>().add(const TelevideoEvent.nextSubPage());
+      if (_maxSubPages > 1) {
+        // Gestione normale delle sottopagine
+        if (velocity.abs() > 300 || _dragProgress.abs() > threshold) {
+          if (velocity > 0 || _dragProgress > threshold) {
+            // Swipe verso il basso - sottopagina precedente
+            HapticFeedbackService.success();
+            context.read<TelevideoBloc>().add(const TelevideoEvent.previousSubPage());
+          } else {
+            // Swipe verso l'alto - sottopagina successiva
+            HapticFeedbackService.success();
+            context.read<TelevideoBloc>().add(const TelevideoEvent.nextSubPage());
+          }
         }
+      } else {
+        // Gestione pagine senza sottopagine
+        if (velocity > 0 && _dragProgress > 0) {  // Solo swipe verso il basso
+          final regionState = context.read<RegionBloc>().state;
+          
+          // Imposta lo stato di refresh
+          setState(() {
+            _isRefreshing = true;
+          });
+          
+          // Aspetta 0.5 secondi prima di ricaricare la pagina
+          Future.delayed(const Duration(milliseconds: 500), () {
+            if (mounted) {  // Verifica che il widget sia ancora montato
+              if (regionState.selectedRegion != null) {
+                context.read<TelevideoBloc>().add(
+                  TelevideoEvent.loadRegionalPage(
+                    regionState.selectedRegion!,
+                    widget.page.pageNumber,
+                  ),
+                );
+              } else {
+                context.read<TelevideoBloc>().add(
+                  TelevideoEvent.loadNationalPage(widget.page.pageNumber),
+                );
+              }
+              // Reset dello stato di refresh
+              setState(() {
+                _isRefreshing = false;
+              });
+            }
+          });
+        }
+        // Ignora silenziosamente lo swipe verso l'alto
       }
     } else {
       if (velocity.abs() > 300 || _dragProgress.abs() > threshold) {
@@ -299,6 +316,7 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
             setState(() {
               _currentSubPage = currentSubPage;
               _maxSubPages = page.maxSubPages;
+              _isRefreshing = false;  // Reset dello stato di refresh quando la pagina è caricata
             });
           },
           orElse: () {},
@@ -362,6 +380,7 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
                                   transitionType = PageTransitionType.slideVertical;
                                   forward = false;
                                 },
+                                startLoading: () => transitionType = PageTransitionType.fade,
                               );
                             }
 
@@ -430,21 +449,18 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
               ),
             ),
           // Indicatore di caricamento
-          BlocBuilder<TelevideoBloc, TelevideoState>(
-            builder: (context, state) {
-              return state.maybeWhen(
-                loading: () => Container(
-                  color: Colors.black.withOpacity(0.5),
-                  child: const Center(
-                    child: CircularProgressIndicator(
-                      color: Colors.white,
-                    ),
-                  ),
+          if (_isRefreshing || context.watch<TelevideoBloc>().state.maybeWhen(
+            loading: () => true,
+            orElse: () => false,
+          ))
+            Container(
+              color: Colors.black.withOpacity(0.5),
+              child: const Center(
+                child: CircularProgressIndicator(
+                  color: Colors.white,
                 ),
-                orElse: () => const SizedBox.shrink(),
-              );
-            },
-          ),
+              ),
+            ),
         ],
       ),
     );

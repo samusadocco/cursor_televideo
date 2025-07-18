@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cursor_televideo/core/settings/app_settings.dart';
+import 'package:cursor_televideo/core/theme/theme_bloc.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 
@@ -23,6 +25,31 @@ class _SettingsPageState extends State<SettingsPage> {
     _liveShowIntervalValue = AppSettings.liveShowIntervalSeconds.toDouble();
   }
 
+  Future<void> _updateCacheDuration(double value) async {
+    setState(() {
+      _cacheSliderValue = value;
+    });
+    await AppSettings.setCacheDuration(value.toInt());
+    if (mounted) {
+      // Svuota la cache quando viene modificata la durata
+      await DefaultCacheManager().emptyCache();
+    }
+  }
+
+  Future<void> _updateLiveShowEnabled(bool value) async {
+    setState(() {
+      _liveShowEnabled = value;
+    });
+    await AppSettings.setLiveShowEnabled(value);
+  }
+
+  Future<void> _updateLiveShowInterval(double value) async {
+    setState(() {
+      _liveShowIntervalValue = value;
+    });
+    await AppSettings.setLiveShowInterval(value.toInt());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,6 +63,49 @@ class _SettingsPageState extends State<SettingsPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // Theme Setting
+                const Text(
+                  'Tema',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 8),
+                BlocBuilder<ThemeBloc, ThemeState>(
+                  builder: (context, state) {
+                    return SegmentedButton<ThemeMode>(
+                      segments: [
+                        ButtonSegment<ThemeMode>(
+                          value: ThemeMode.system,
+                          icon: const Icon(Icons.brightness_auto),
+                          label: const Text('Auto'),
+                        ),
+                        ButtonSegment<ThemeMode>(
+                          value: ThemeMode.light,
+                          icon: const Icon(Icons.light_mode),
+                          label: const Text('Chiaro'),
+                        ),
+                        ButtonSegment<ThemeMode>(
+                          value: ThemeMode.dark,
+                          icon: const Icon(Icons.dark_mode),
+                          label: const Text('Scuro'),
+                        ),
+                      ],
+                      selected: {state.themeMode},
+                      onSelectionChanged: (Set<ThemeMode> selection) {
+                        if (selection.isNotEmpty) {
+                          context.read<ThemeBloc>().add(
+                            ThemeEvent.changeTheme(selection.first),
+                          );
+                        }
+                      },
+                    );
+                  },
+                ),
+                const Text(
+                  'Scegli il tema dell\'app. In modalità automatica verrà utilizzato il tema di sistema.',
+                  style: TextStyle(fontSize: 14, color: Colors.grey),
+                ),
+                const SizedBox(height: 24),
+
                 // Live Show Setting
                 const Text(
                   'Live Show Sottopagine',
@@ -46,12 +116,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   children: [
                     Switch(
                       value: _liveShowEnabled,
-                      onChanged: (value) {
-                        setState(() {
-                          _liveShowEnabled = value;
-                          AppSettings.setLiveShowEnabled(value);
-                        });
-                      },
+                      onChanged: _updateLiveShowEnabled,
                     ),
                     const SizedBox(width: 8),
                     Text(
@@ -70,28 +135,32 @@ class _SettingsPageState extends State<SettingsPage> {
                 if (_liveShowEnabled) ...[
                   const Text(
                     'Intervallo Live Show',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 8),
-                  Text(
-                    'Intervallo: ${_liveShowIntervalValue.toInt()} secondi',
-                    style: const TextStyle(fontSize: 14),
-                  ),
-                  Slider(
-                    value: _liveShowIntervalValue,
-                    min: 3,
-                    max: 30,
-                    divisions: 27,
-                    label: _liveShowIntervalValue.toInt().toString(),
-                    onChanged: (value) {
-                      setState(() {
-                        _liveShowIntervalValue = value;
-                        AppSettings.setLiveShowInterval(value.toInt());
-                      });
-                    },
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Slider(
+                          value: _liveShowIntervalValue,
+                          min: 3,
+                          max: 30,
+                          divisions: 27,
+                          label: '${_liveShowIntervalValue.toInt()} secondi',
+                          onChanged: _updateLiveShowInterval,
+                        ),
+                      ),
+                      SizedBox(
+                        width: 50,
+                        child: Text(
+                          '${_liveShowIntervalValue.toInt()}s',
+                          style: const TextStyle(fontSize: 16),
+                        ),
+                      ),
+                    ],
                   ),
                   const Text(
-                    'Imposta il tempo di attesa tra una sottopagina e l\'altra (da 3 a 30 secondi).',
+                    'Imposta l\'intervallo di tempo tra il cambio automatico delle sottopagine.',
                     style: TextStyle(fontSize: 14, color: Colors.grey),
                   ),
                   const SizedBox(height: 24),
@@ -99,29 +168,30 @@ class _SettingsPageState extends State<SettingsPage> {
 
                 // Cache Duration Setting
                 const Text(
-                  'Durata Cache Immagini',
+                  'Durata Cache',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 8),
-                Text(
-                  _cacheSliderValue == 0
-                      ? 'Cache disabilitata'
-                      : 'Durata: ${_cacheSliderValue.toInt()} secondi',
-                ),
-                Slider(
-                  value: _cacheSliderValue,
-                  min: 0,
-                  max: 600,
-                  divisions: 60,
-                  label: _cacheSliderValue.toInt().toString(),
-                  onChanged: (value) {
-                    setState(() {
-                      _cacheSliderValue = value;
-                      AppSettings.setCacheDuration(value.toInt());
-                      // Svuota la cache quando viene modificata la durata
-                      DefaultCacheManager().emptyCache();
-                    });
-                  },
+                Row(
+                  children: [
+                    Expanded(
+                      child: Slider(
+                        value: _cacheSliderValue,
+                        min: 0,
+                        max: 600,
+                        divisions: 60,
+                        label: '${_cacheSliderValue.toInt()} secondi',
+                        onChanged: _updateCacheDuration,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 50,
+                      child: Text(
+                        '${_cacheSliderValue.toInt()}s',
+                        style: const TextStyle(fontSize: 16),
+                      ),
+                    ),
+                  ],
                 ),
                 const Text(
                   'Imposta per quanto tempo le immagini del televideo vengono mantenute in cache. '

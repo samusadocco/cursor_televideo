@@ -190,12 +190,12 @@ class TelevideoRepository {
         );
       }
       
-      throw Exception('Pagina $pageNumber non trovata');
+      throw 'La pagina richiesta non è disponibile';
     } catch (e) {
       if (e is DioException && e.response?.statusCode == 404) {
-        throw Exception('Pagina $pageNumber non trovata');
+        throw 'La pagina richiesta non è disponibile';
       }
-      throw Exception('Errore nel caricamento della pagina $pageNumber: ${e.toString()}');
+      throw 'Si è verificato un errore durante il caricamento della pagina';
     }
   }
 
@@ -245,12 +245,12 @@ class TelevideoRepository {
         );
       }
       
-      throw Exception('Pagina regionale $pageNumber non trovata per $region');
+      throw 'La pagina richiesta non è disponibile';
     } catch (e) {
       if (e is DioException && e.response?.statusCode == 404) {
-        throw Exception('Pagina regionale $pageNumber non trovata per $region');
+        throw 'La pagina richiesta non è disponibile';
       }
-      throw Exception('Errore nel caricamento della pagina regionale $pageNumber per $region: ${e.toString()}');
+      throw 'Si è verificato un errore durante il caricamento della pagina';
     }
   }
 } 

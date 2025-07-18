@@ -13,6 +13,7 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
   Region? _currentRegion;
   int _currentPage = 100;
   TelevideoEvent? _lastEvent;
+  TelevideoState? _previousState;  // Per gestire il delay nel refresh
 
   /// L'ultimo evento ricevuto dal bloc
   TelevideoEvent? get lastEvent => _lastEvent;
@@ -30,8 +31,14 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
         previousPage: (currentPage) => _onPreviousPage(currentPage, emit),
         nextSubPage: () => _onNextSubPage(emit),
         previousSubPage: () => _onPreviousSubPage(emit),
+        startLoading: () => _onStartLoading(emit),
       );
     });
+  }
+
+  Future<void> _onStartLoading(Emitter<TelevideoState> emit) async {
+    _previousState = state;  // Salva lo stato corrente
+    emit(const TelevideoState.loading());
   }
 
   Future<void> _onNextSubPage(Emitter<TelevideoState> emit) async {
@@ -106,7 +113,18 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
 
   Future<void> _onLoadNationalPage(int pageNumber, Emitter<TelevideoState> emit) async {
     print('[TelevideoBloc] Loading national page: $pageNumber'); // Debug print
-    emit(const TelevideoState.loading());
+    
+    // Se veniamo da uno stato di loading (refresh), aspetta il delay completo
+    if (_previousState?.maybeWhen(
+      loading: () => true,
+      orElse: () => false,
+    ) ?? false) {
+      await Future.delayed(const Duration(milliseconds: 500));
+    } else {
+      emit(const TelevideoState.loading());
+    }
+    _previousState = null;  // Reset dello stato precedente
+    
     _currentPage = pageNumber;
     _currentRegion = null; // Reset della regione quando si carica una pagina nazionale
 
@@ -118,13 +136,27 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
       emit(TelevideoState.loaded(page, currentSubPage: 1));
     } catch (e) {
       print('[TelevideoBloc] Error loading national page: $e'); // Debug print
-      emit(TelevideoState.error(e.toString()));
+      final message = e.toString().contains('404') || e.toString().contains('non trovata')
+        ? 'La pagina $pageNumber non è disponibile.\nProva con un altro numero tra 100 e 999.'
+        : 'Si è verificato un errore durante il caricamento della pagina.\nRiprova tra qualche istante.';
+      emit(TelevideoState.error(message));
     }
   }
 
   Future<void> _onLoadRegionalPage(Region region, int pageNumber, Emitter<TelevideoState> emit) async {
     print('[TelevideoBloc] Loading regional page: $pageNumber for region ${region.code}'); // Debug print
-    emit(const TelevideoState.loading());
+    
+    // Se veniamo da uno stato di loading (refresh), aspetta il delay completo
+    if (_previousState?.maybeWhen(
+      loading: () => true,
+      orElse: () => false,
+    ) ?? false) {
+      await Future.delayed(const Duration(milliseconds: 500));
+    } else {
+      emit(const TelevideoState.loading());
+    }
+    _previousState = null;  // Reset dello stato precedente
+
     try {
       _currentRegion = region;
       _currentPage = pageNumber;
@@ -136,8 +168,10 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
       emit(TelevideoState.loaded(page, currentSubPage: 1));
     } catch (e) {
       print('[TelevideoBloc] Error loading regional page: $e'); // Debug print
-      // Se la pagina non è disponibile, cerca la prossima disponibile
-      await _findNextAvailablePage(pageNumber, emit);
+      final message = e.toString().contains('404') || e.toString().contains('non trovata')
+        ? 'La pagina $pageNumber non è disponibile per la regione ${region.name}.\nProva con un altro numero tra 100 e 999.'
+        : 'Si è verificato un errore durante il caricamento della pagina.\nRiprova tra qualche istante.';
+      emit(TelevideoState.error(message));
     }
   }
 
@@ -164,14 +198,20 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
         }
       } catch (e) {
         if (currentPage >= 899) {
-          emit(TelevideoState.error('Nessuna pagina disponibile'));
+          final message = _currentRegion != null
+            ? 'Non sono disponibili altre pagine per la regione ${_currentRegion!.name}.'
+            : 'Non sono disponibili altre pagine.';
+          emit(TelevideoState.error(message));
           return;
         }
         currentPage++;
         attempts++;
       }
     }
-    emit(TelevideoState.error('Nessuna pagina disponibile'));
+    final message = _currentRegion != null
+      ? 'Non sono disponibili altre pagine per la regione ${_currentRegion!.name}.'
+      : 'Non sono disponibili altre pagine.';
+    emit(TelevideoState.error(message));
   }
 
   Future<void> _findPreviousAvailablePage(int startPage, Emitter<TelevideoState> emit) async {
@@ -197,14 +237,20 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
         }
       } catch (e) {
         if (currentPage <= 100) {
-          emit(TelevideoState.error('Nessuna pagina disponibile'));
+          final message = _currentRegion != null
+            ? 'Non sono disponibili altre pagine per la regione ${_currentRegion!.name}.'
+            : 'Non sono disponibili altre pagine.';
+          emit(TelevideoState.error(message));
           return;
         }
         currentPage--;
         attempts++;
       }
     }
-    emit(TelevideoState.error('Nessuna pagina disponibile'));
+    final message = _currentRegion != null
+      ? 'Non sono disponibili altre pagine per la regione ${_currentRegion!.name}.'
+      : 'Non sono disponibili altre pagine.';
+    emit(TelevideoState.error(message));
   }
 
   Future<void> _onNextPage(int currentPage, Emitter<TelevideoState> emit) async {

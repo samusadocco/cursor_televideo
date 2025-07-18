@@ -11,4 +11,5 @@ class TelevideoEvent with _$TelevideoEvent {
   const factory TelevideoEvent.previousPage({required int currentPage}) = _PreviousPage;
   const factory TelevideoEvent.nextSubPage() = _NextSubPage;
   const factory TelevideoEvent.previousSubPage() = _PreviousSubPage;
+  const factory TelevideoEvent.startLoading() = _StartLoading;
 } 

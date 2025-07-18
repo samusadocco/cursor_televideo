@@ -9,6 +9,8 @@ import 'package:cursor_televideo/features/televideo_viewer/presentation/pages/ho
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:cursor_televideo/core/ads/ad_service.dart';
 import 'package:cursor_televideo/core/storage/favorites_service.dart';
+import 'package:cursor_televideo/core/settings/app_settings.dart';
+import 'package:cursor_televideo/core/theme/theme_bloc.dart';
 
 // Funzione per determinare se il dispositivo è un tablet
 bool isTablet(BuildContext context) {
@@ -48,6 +50,9 @@ void main() async {
   // Inizializza il servizio dei preferiti
   await FavoritesService().initialize();
 
+  // Inizializza le impostazioni dell'app
+  await AppSettings.initialize();
+
   runApp(const MyApp());
 }
 
@@ -66,19 +71,26 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => RegionBloc(),
         ),
-      ],
-      child: MaterialApp(
-        title: 'TeleRetro Italia',
-        theme: AppTheme.lightTheme,
-        darkTheme: AppTheme.darkTheme,
-        themeMode: ThemeMode.system,
-        home: Builder(
-          builder: (context) {
-            // Configura l'orientamento quando l'app viene costruita
-            configureOrientation(context);
-            return const HomePage();
-          },
+        BlocProvider(
+          create: (context) => ThemeBloc(),
         ),
+      ],
+      child: BlocBuilder<ThemeBloc, ThemeState>(
+        builder: (context, state) {
+          return MaterialApp(
+            title: 'TeleRetro Italia',
+            theme: AppTheme.lightTheme,
+            darkTheme: AppTheme.darkTheme,
+            themeMode: state.themeMode,
+            home: Builder(
+              builder: (context) {
+                // Configura l'orientamento quando l'app viene costruita
+                configureOrientation(context);
+                return const HomePage();
+              },
+            ),
+          );
+        },
       ),
     );
   }
