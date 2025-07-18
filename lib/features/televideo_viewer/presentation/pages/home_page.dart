@@ -16,6 +16,32 @@ import 'package:cursor_televideo/core/shortcuts/shortcuts_service.dart';
 import 'package:cursor_televideo/core/storage/favorites_service.dart';
 import 'package:cursor_televideo/shared/models/favorite_page.dart';
 
+// Funzione per determinare se il dispositivo è un tablet
+bool isTablet(BuildContext context) {
+  final data = MediaQuery.of(context);
+  final shortestSide = data.size.shortestSide;
+  return shortestSide >= 600;
+}
+
+// Funzione per configurare l'orientamento in base al tipo di dispositivo
+void configureOrientation(BuildContext context) {
+  if (isTablet(context)) {
+    // Tablet: permetti entrambi gli orientamenti
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+    ]);
+  } else {
+    // Telefono: solo orientamento verticale
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+  }
+}
+
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -523,45 +549,52 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider.value(value: _televideoBloc),
-        BlocProvider.value(value: _regionBloc),
-      ],
-      child: Scaffold(
-          appBar: _buildAppBar(),
-          body: Column(
-            children: [
-              Expanded(
-                child: BlocBuilder<RegionBloc, RegionState>(
-                  builder: (context, regionState) {
-                    return BlocBuilder<TelevideoBloc, TelevideoState>(
-                      builder: (context, state) {
-                        return state.when(
-                          initial: () => const Center(child: CircularProgressIndicator()),
-                          loading: () => const Center(child: CircularProgressIndicator()),
-                          loaded: (page, currentSubPage) => TelevideoViewer(
-                            page: page,
-                            onPageNumberSubmitted: (pageNumber) {
-                              context.read<TelevideoBloc>().add(TelevideoEvent.loadNationalPage(pageNumber));
-                            },
-                            showControls: _showControls,
-                            isNationalMode: regionState.selectedRegion == null,
-                          ),
-                          error: (message) => Center(
-                            child: Text(message),
-                          ),
-                        );
-                      },
-                    );
-                  },
+    return OrientationBuilder(
+      builder: (context, orientation) {
+        // Riconfigura l'orientamento quando cambia l'orientamento dello schermo
+        configureOrientation(context);
+        
+        return MultiBlocProvider(
+          providers: [
+            BlocProvider.value(value: _televideoBloc),
+            BlocProvider.value(value: _regionBloc),
+          ],
+          child: Scaffold(
+            appBar: _buildAppBar(),
+            body: Column(
+              children: [
+                Expanded(
+                  child: BlocBuilder<RegionBloc, RegionState>(
+                    builder: (context, regionState) {
+                      return BlocBuilder<TelevideoBloc, TelevideoState>(
+                        builder: (context, state) {
+                          return state.when(
+                            initial: () => const Center(child: CircularProgressIndicator()),
+                            loading: () => const Center(child: CircularProgressIndicator()),
+                            loaded: (page, currentSubPage) => TelevideoViewer(
+                              page: page,
+                              onPageNumberSubmitted: (pageNumber) {
+                                context.read<TelevideoBloc>().add(TelevideoEvent.loadNationalPage(pageNumber));
+                              },
+                              showControls: _showControls,
+                              isNationalMode: regionState.selectedRegion == null,
+                            ),
+                            error: (message) => Center(
+                              child: Text(message),
+                            ),
+                          );
+                        },
+                      );
+                    },
+                  ),
                 ),
-              ),
-              _buildBottomAppBar(),
-              const AdBanner(),
-            ],
+                _buildBottomAppBar(),
+                const AdBanner(),
+              ],
+            ),
           ),
-        ),
+        );
+      },
     );
   }
 } 

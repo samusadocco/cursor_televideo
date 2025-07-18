@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cursor_televideo/core/theme/app_theme.dart';
 import 'package:cursor_televideo/core/network/televideo_repository.dart';
@@ -8,6 +9,34 @@ import 'package:cursor_televideo/features/televideo_viewer/presentation/pages/ho
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:cursor_televideo/core/ads/ad_service.dart';
 import 'package:cursor_televideo/core/storage/favorites_service.dart';
+
+// Funzione per determinare se il dispositivo è un tablet
+bool isTablet(BuildContext context) {
+  final data = MediaQuery.of(context);
+  final shortestSide = data.size.shortestSide;
+  
+  // Consideriamo tablet i dispositivi con dimensione minima di 600dp
+  return shortestSide >= 600;
+}
+
+// Funzione per configurare l'orientamento in base al tipo di dispositivo
+void configureOrientation(BuildContext context) {
+  if (isTablet(context)) {
+    // Tablet: permetti entrambi gli orientamenti
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+    ]);
+  } else {
+    // Telefono: solo orientamento verticale
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+  }
+}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,7 +54,6 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -44,7 +72,13 @@ class MyApp extends StatelessWidget {
         theme: AppTheme.lightTheme,
         darkTheme: AppTheme.darkTheme,
         themeMode: ThemeMode.system,
-        home: const HomePage(),
+        home: Builder(
+          builder: (context) {
+            // Configura l'orientamento quando l'app viene costruita
+            configureOrientation(context);
+            return const HomePage();
+          },
+        ),
       ),
     );
   }
