@@ -102,7 +102,7 @@ class Region {
     ),
     Region(
       name: "Valle d'Aosta",
-      code: 'Valle',
+      code: 'Aosta',
       imagePath: 'assets/images/regions/valle_d_aosta.png',
     ),
     Region(

@@ -95,4 +95,24 @@ class FavoritesService {
         .toList();
     await prefs.setStringList(_favoritesKey, favoritesJson);
   }
+
+  Future<void> restoreFromBackup(List<FavoritePage> favorites) async {
+    _favorites = favorites.map((favorite) {
+      // Aggiorna la descrizione se mancante
+      if (favorite.description == null) {
+        return FavoritePage(
+          pageNumber: favorite.pageNumber,
+          title: favorite.title,
+          description: _descriptionsService.getDescription(
+            favorite.pageNumber,
+            isRegional: favorite.regionCode != null,
+          ),
+          regionCode: favorite.regionCode,
+        );
+      }
+      return favorite;
+    }).toList();
+    
+    await _saveFavorites();
+  }
 } 

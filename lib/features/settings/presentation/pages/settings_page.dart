@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cursor_televideo/core/settings/app_settings.dart';
 import 'package:cursor_televideo/core/theme/theme_bloc.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:cursor_televideo/core/onboarding/onboarding_service.dart';
+import 'package:cursor_televideo/features/settings/presentation/pages/backup_page.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -16,6 +17,7 @@ class _SettingsPageState extends State<SettingsPage> {
   late double _cacheSliderValue;
   late bool _liveShowEnabled;
   late double _liveShowIntervalValue;
+  late bool _showOnboardingOnStartup;
 
   @override
   void initState() {
@@ -23,6 +25,7 @@ class _SettingsPageState extends State<SettingsPage> {
     _cacheSliderValue = AppSettings.cacheDurationInSeconds.toDouble();
     _liveShowEnabled = AppSettings.liveShowEnabled;
     _liveShowIntervalValue = AppSettings.liveShowIntervalSeconds.toDouble();
+    _showOnboardingOnStartup = OnboardingService().showOnStartup;
   }
 
   Future<void> _updateCacheDuration(double value) async {
@@ -50,6 +53,17 @@ class _SettingsPageState extends State<SettingsPage> {
     await AppSettings.setLiveShowInterval(value.toInt());
   }
 
+  Future<void> _updateShowOnboardingOnStartup(bool value) async {
+    setState(() {
+      _showOnboardingOnStartup = value;
+    });
+    await OnboardingService().setShowOnStartup(value);
+  }
+
+  void _showInstructions() {
+    OnboardingService().showOnboarding();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,148 +72,132 @@ class _SettingsPageState extends State<SettingsPage> {
       ),
       body: ListView(
         children: [
+          // Sezione Cache
+          ListTile(
+            title: const Text('Durata cache immagini pagine Televideo (0 secondi per disabilitare)'),
+            subtitle: Text('${_cacheSliderValue.toInt()} secondi'),
+          ),
           Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Theme Setting
-                const Text(
-                  'Tema',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 8),
-                BlocBuilder<ThemeBloc, ThemeState>(
-                  builder: (context, state) {
-                    return SegmentedButton<ThemeMode>(
-                      segments: [
-                        ButtonSegment<ThemeMode>(
-                          value: ThemeMode.system,
-                          icon: const Icon(Icons.brightness_auto),
-                          label: const Text('Auto'),
-                        ),
-                        ButtonSegment<ThemeMode>(
-                          value: ThemeMode.light,
-                          icon: const Icon(Icons.light_mode),
-                          label: const Text('Chiaro'),
-                        ),
-                        ButtonSegment<ThemeMode>(
-                          value: ThemeMode.dark,
-                          icon: const Icon(Icons.dark_mode),
-                          label: const Text('Scuro'),
-                        ),
-                      ],
-                      selected: {state.themeMode},
-                      onSelectionChanged: (Set<ThemeMode> selection) {
-                        if (selection.isNotEmpty) {
-                          context.read<ThemeBloc>().add(
-                            ThemeEvent.changeTheme(selection.first),
-                          );
-                        }
-                      },
-                    );
-                  },
-                ),
-                const Text(
-                  'Scegli il tema dell\'app. In modalità automatica verrà utilizzato il tema di sistema.',
-                  style: TextStyle(fontSize: 14, color: Colors.grey),
-                ),
-                const SizedBox(height: 24),
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Slider(
+              value: _cacheSliderValue,
+              min: 0,
+              max: 600,
+              divisions: 60,
+              label: '${_cacheSliderValue.toInt()} secondi',
+              onChanged: _updateCacheDuration,
+            ),
+          ),
+          const Divider(),
 
-                // Live Show Setting
-                const Text(
-                  'Live Show Sottopagine',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 8),
-                Row(
-                  children: [
-                    Switch(
-                      value: _liveShowEnabled,
-                      onChanged: _updateLiveShowEnabled,
-                    ),
-                    const SizedBox(width: 8),
-                    Text(
-                      _liveShowEnabled ? 'Abilitato' : 'Disabilitato',
-                      style: const TextStyle(fontSize: 16),
-                    ),
-                  ],
-                ),
-                const Text(
-                  'Quando abilitato, le sottopagine verranno mostrate automaticamente in sequenza.',
-                  style: TextStyle(fontSize: 14, color: Colors.grey),
-                ),
-                const SizedBox(height: 16),
+          // Sezione Live Show
+          SwitchListTile(
+            title: const Text('Aggiornamento automatico'),
+            subtitle: const Text('Aggiorna automaticamente le sottopagine'),
+            value: _liveShowEnabled,
+            onChanged: _updateLiveShowEnabled,
+          ),
+          if (_liveShowEnabled) ...[
+            ListTile(
+              title: const Text('Intervallo aggiornamento'),
+              subtitle: Text('${_liveShowIntervalValue.toInt()} secondi'),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Slider(
+                value: _liveShowIntervalValue,
+                min: 3,
+                max: 30,
+                divisions: 27,
+                label: '${_liveShowIntervalValue.toInt()} secondi',
+                onChanged: _updateLiveShowInterval,
+              ),
+            ),
+          ],
+          const Divider(),
 
-                // Live Show Interval Setting
-                if (_liveShowEnabled) ...[
-                  const Text(
-                    'Intervallo Live Show',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 8),
-                  Row(
+          // Sezione Onboarding
+          SwitchListTile(
+            title: const Text('Mostra istruzioni all\'avvio'),
+            subtitle: const Text('Mostra le istruzioni ogni volta che apri l\'app'),
+            value: _showOnboardingOnStartup,
+            onChanged: _updateShowOnboardingOnStartup,
+          ),
+          ListTile(
+            title: const Text('Mostra istruzioni'),
+            subtitle: const Text('Rivedi le istruzioni per l\'utilizzo dell\'app'),
+            trailing: const Icon(Icons.help_outline),
+            onTap: _showInstructions,
+          ),
+          const Divider(),
+
+          // Sezione Backup
+          ListTile(
+            title: const Text('Backup preferiti'),
+            subtitle: const Text('Salva e ripristina i tuoi preferiti'),
+            trailing: const Icon(Icons.backup),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const BackupPage(),
+                ),
+              );
+            },
+          ),
+          const Divider(),
+
+          // Sezione Tema
+          ListTile(
+            title: const Text('Tema'),
+            subtitle: Text(
+              BlocProvider.of<ThemeBloc>(context).state.themeMode == ThemeMode.system
+                  ? 'Usa tema di sistema'
+                  : BlocProvider.of<ThemeBloc>(context).state.themeMode == ThemeMode.light
+                      ? 'Tema chiaro'
+                      : 'Tema scuro',
+            ),
+            trailing: const Icon(Icons.palette_outlined),
+            onTap: () {
+              showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                  title: const Text('Seleziona tema'),
+                  content: Column(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      Expanded(
-                        child: Slider(
-                          value: _liveShowIntervalValue,
-                          min: 3,
-                          max: 30,
-                          divisions: 27,
-                          label: '${_liveShowIntervalValue.toInt()} secondi',
-                          onChanged: _updateLiveShowInterval,
-                        ),
+                      ListTile(
+                        title: const Text('Tema di sistema'),
+                        leading: const Icon(Icons.brightness_auto),
+                        onTap: () {
+                          BlocProvider.of<ThemeBloc>(context)
+                              .add(const ThemeEvent.changeTheme(ThemeMode.system));
+                          Navigator.pop(context);
+                        },
                       ),
-                      SizedBox(
-                        width: 50,
-                        child: Text(
-                          '${_liveShowIntervalValue.toInt()}s',
-                          style: const TextStyle(fontSize: 16),
-                        ),
+                      ListTile(
+                        title: const Text('Tema chiaro'),
+                        leading: const Icon(Icons.brightness_high),
+                        onTap: () {
+                          BlocProvider.of<ThemeBloc>(context)
+                              .add(const ThemeEvent.changeTheme(ThemeMode.light));
+                          Navigator.pop(context);
+                        },
+                      ),
+                      ListTile(
+                        title: const Text('Tema scuro'),
+                        leading: const Icon(Icons.brightness_4),
+                        onTap: () {
+                          BlocProvider.of<ThemeBloc>(context)
+                              .add(const ThemeEvent.changeTheme(ThemeMode.dark));
+                          Navigator.pop(context);
+                        },
                       ),
                     ],
                   ),
-                  const Text(
-                    'Imposta l\'intervallo di tempo tra il cambio automatico delle sottopagine.',
-                    style: TextStyle(fontSize: 14, color: Colors.grey),
-                  ),
-                  const SizedBox(height: 24),
-                ],
-
-                // Cache Duration Setting
-                const Text(
-                  'Durata Cache',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
-                const SizedBox(height: 8),
-                Row(
-                  children: [
-                    Expanded(
-                      child: Slider(
-                        value: _cacheSliderValue,
-                        min: 0,
-                        max: 600,
-                        divisions: 60,
-                        label: '${_cacheSliderValue.toInt()} secondi',
-                        onChanged: _updateCacheDuration,
-                      ),
-                    ),
-                    SizedBox(
-                      width: 50,
-                      child: Text(
-                        '${_cacheSliderValue.toInt()}s',
-                        style: const TextStyle(fontSize: 16),
-                      ),
-                    ),
-                  ],
-                ),
-                const Text(
-                  'Imposta per quanto tempo le immagini del televideo vengono mantenute in cache. '
-                  'Un valore di 0 disabilita la cache, mentre il massimo è di 600 secondi (10 minuti).',
-                  style: TextStyle(fontSize: 14, color: Colors.grey),
-                ),
-              ],
-            ),
+              );
+            },
           ),
         ],
       ),
