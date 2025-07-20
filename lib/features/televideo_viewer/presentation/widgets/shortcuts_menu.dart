@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cursor_televideo/core/shortcuts/shortcuts_service.dart';
 import 'package:cursor_televideo/shared/models/region.dart';
+import 'package:cursor_televideo/features/televideo_viewer/presentation/widgets/page_search_dialog.dart';
 
 class ShortcutsMenu extends StatefulWidget {
   final bool isNational;
@@ -55,19 +56,49 @@ class _ShortcutsMenuState extends State<ShortcutsMenu> {
     _menuController.close();
   }
 
+  void _showSearchDialog() {
+    _menuController.close();
+    showDialog(
+      context: context,
+      builder: (context) => PageSearchDialog(
+        isNational: widget.isNational,
+        onNationalPageSelected: widget.onNationalPageSelected,
+        onRegionalPageSelected: widget.onRegionalPageSelected,
+        selectedRegion: widget.selectedRegion,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return MenuAnchor(
       controller: _menuController,
       menuChildren: [
-        ..._shortcuts.map((shortcut) => MenuItemButton(
-          onPressed: () => _handleShortcutSelected(shortcut),
-          child: Text('${shortcut.pageNumber} - ${shortcut.title}'),
-        )),
+        // Pulsante di ricerca in cima al menu
+        MenuItemButton(
+          onPressed: _showSearchDialog,
+          leadingIcon: const Icon(Icons.search),
+          child: const Text(
+            'Cerca pagina...',
+            style: TextStyle(fontSize: 14),
+          ),
+        ),
+        const PopupMenuDivider(),
+        // Scorciatoie
+        ..._shortcuts.map<MenuItemButton>((shortcut) {
+          return MenuItemButton(
+            onPressed: () => _handleShortcutSelected(shortcut),
+            child: Text(
+              '${shortcut.pageNumber} - ${shortcut.title}',
+              style: const TextStyle(fontSize: 14),
+            ),
+          );
+        }).toList(),
       ],
       builder: (context, controller, child) {
         return IconButton(
           icon: const Icon(Icons.menu_book),
+          tooltip: 'Menu Shortcuts',
           onPressed: () {
             if (controller.isOpen) {
               controller.close();
