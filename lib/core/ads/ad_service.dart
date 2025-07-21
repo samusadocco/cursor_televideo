@@ -121,7 +121,10 @@ class AdService {
   static Future<BannerAd?> createBannerAd({required bool isPortrait}) async {
     if (kIsWeb) return null;
 
-    final size = isPortrait ? AdSize.largeBanner : AdSize.banner;
+    // Determina la dimensione del banner in base alla piattaforma
+    final size = Platform.isAndroid 
+        ? AdSize.banner  // Banner standard per Android
+        : (isPortrait ? AdSize.largeBanner : AdSize.banner);  // Dimensioni originali per iOS
     
     // Determina l'ID dell'annuncio in base alla piattaforma e alla modalità
     String adUnitId;
@@ -137,7 +140,7 @@ class AdService {
         adUnitId = 'ca-app-pub-3940256099942544/2934735716';
       }
     }
-        adUnitId = 'ca-app-pub-3940256099942544/2934735716';
+    adUnitId = 'ca-app-pub-3940256099942544/2934735716';
 
 
     final bannerAd = BannerAd(

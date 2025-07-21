@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'dart:io';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:cursor_televideo/core/ads/ad_service.dart';
 
@@ -46,7 +47,9 @@ class _AdBannerState extends State<AdBanner> {
       _loadAd(isPortrait);
     } else {
       final currentSize = _bannerAd?.size;
-      final expectedSize = isPortrait ? AdSize.largeBanner : AdSize.banner;
+      final expectedSize = Platform.isAndroid
+          ? AdSize.banner
+          : (isPortrait ? AdSize.largeBanner : AdSize.banner);
       
       if (currentSize != expectedSize) {
         _loadAd(isPortrait);
@@ -57,8 +60,7 @@ class _AdBannerState extends State<AdBanner> {
   @override
   Widget build(BuildContext context) {
     if (kIsWeb) {
-      final isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
-      return SizedBox(height: isPortrait ? 100 : 50);
+      return const SizedBox(height: 50);  // Altezza fissa per il web
     }
 
     // Controlliamo l'orientamento e carichiamo l'ad se necessario
@@ -66,12 +68,15 @@ class _AdBannerState extends State<AdBanner> {
     _checkAndLoadAd(isPortrait);
 
     if (!_isLoaded || _bannerAd == null) {
-      return SizedBox(height: isPortrait ? 100 : 50);
+      return SizedBox(
+        height: Platform.isAndroid ? 50 : (isPortrait ? 100 : 50),
+      );
     }
 
-    return SizedBox(
+    return Container(
       width: _bannerAd!.size.width.toDouble(),
       height: _bannerAd!.size.height.toDouble(),
+      alignment: Alignment.center,
       child: AdWidget(ad: _bannerAd!),
     );
   }

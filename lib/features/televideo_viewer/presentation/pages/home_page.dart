@@ -18,6 +18,8 @@ import 'package:cursor_televideo/core/storage/favorites_service.dart';
 import 'package:cursor_televideo/shared/models/favorite_page.dart';
 import 'package:cursor_televideo/core/descriptions/page_descriptions_service.dart';
 import 'package:cursor_televideo/features/televideo_viewer/presentation/widgets/edit_description_dialog.dart';
+import 'package:cursor_televideo/core/settings/app_settings.dart';
+import 'package:cursor_televideo/features/televideo_viewer/presentation/widgets/page_number_indicator.dart';
 
 // Funzione per determinare se il dispositivo è un tablet
 bool isTablet(BuildContext context) {
@@ -442,7 +444,7 @@ class _HomePageState extends State<HomePage> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   IconButton(
-                    icon: Icon(Icons.skip_previous, size: 40),
+                    icon: Icon(Icons.skip_previous, size: 32),
                     onPressed: () {
                       context.read<TelevideoBloc>().add(TelevideoEvent.previousPage(currentPage: page.pageNumber));
                     },
@@ -461,7 +463,7 @@ class _HomePageState extends State<HomePage> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     IconButton(
-                      icon: Icon(Icons.skip_next, size: 40),
+                      icon: Icon(Icons.skip_next, size: 32),
                       onPressed: () {
                         context.read<TelevideoBloc>().add(TelevideoEvent.nextPage(currentPage: page.pageNumber));
                       },
@@ -495,7 +497,8 @@ class _HomePageState extends State<HomePage> {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             IconButton(
-                              icon: Icon(Icons.arrow_downward, size: 40),
+                              icon: Icon(Icons.arrow_downward, size: 32),
+                              padding: EdgeInsets.zero,
                               onPressed: page.maxSubPages > 1 
                                 ? () => context.read<TelevideoBloc>().add(const TelevideoEvent.previousSubPage())
                                 : null,
@@ -505,29 +508,35 @@ class _HomePageState extends State<HomePage> {
                       ),
                       Flexible(
                         flex: 3,
-                        child: GestureDetector(
-                          onTap: () => _showPageNumberDialog(context, isNationalMode, regionState.selectedRegion),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                '${page.pageNumber}',
-                                style: const TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
+                        child: Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            if (page.maxSubPages > 1)
+                              PageNumberIndicator(
+                                pageNumber: page.pageNumber,
+                                subPage: currentSubPage,
+                                maxSubPages: page.maxSubPages,
+                                duration: Duration(seconds: AppSettings.liveShowIntervalSeconds),
+                                isAutoRefreshEnabled: AppSettings.liveShowEnabled,
+                                onTap: () => _showPageNumberDialog(context, isNationalMode, regionState.selectedRegion),
+                              ),
+                            if (page.maxSubPages <= 1)
+                              GestureDetector(
+                                onTap: () => _showPageNumberDialog(context, isNationalMode, regionState.selectedRegion),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      '${page.pageNumber}',
+                                      style: const TextStyle(
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
-                              if (page.maxSubPages > 1) ...[
-                                const SizedBox(height: 2),
-                                Text(
-                                  '$currentSubPage/${page.maxSubPages}',
-                                  style: const TextStyle(
-                                    fontSize: 12,
-                                  ),
-                                ),
-                              ],
-                            ],
-                          ),
+                          ],
                         ),
                       ),
                       Expanded(
@@ -536,7 +545,8 @@ class _HomePageState extends State<HomePage> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             IconButton(
-                              icon: Icon(Icons.arrow_upward, size: 40),
+                              icon: Icon(Icons.arrow_upward, size: 32),
+                              padding: EdgeInsets.zero,
                               onPressed: page.maxSubPages > 1 
                                 ? () => context.read<TelevideoBloc>().add(const TelevideoEvent.nextSubPage())
                                 : null,

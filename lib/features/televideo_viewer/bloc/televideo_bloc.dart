@@ -41,6 +41,9 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
 
   Future<void> _onLoadNationalPage(int pageNumber, Emitter<TelevideoState> emit) async {
     print('[TelevideoBloc] Loading national page: $pageNumber'); // Debug print
+    
+    // Salva lo stato corrente prima di iniziare il caricamento
+    final previousState = state;
     emit(const TelevideoState.loading());
     _currentPage = pageNumber;
     _currentRegion = null; // Reset della regione quando si carica una pagina nazionale
@@ -50,18 +53,29 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
       final page = await _repository.getNationalPage(pageNumber);
       _adService.incrementPageView();
       print('[TelevideoBloc] National page loaded successfully'); // Debug print
-      emit(TelevideoState.loaded(page, currentSubPage: 1));
+      if (!emit.isDone) {
+        emit(TelevideoState.loaded(page, currentSubPage: 1));
+      }
     } catch (e) {
       print('[TelevideoBloc] Error loading national page: $e'); // Debug print
       final message = e.toString().contains('404') || e.toString().contains('non trovata')
         ? 'La pagina $pageNumber non è disponibile.\nProva con un altro numero tra 100 e 999.'
         : 'Si è verificato un errore durante il caricamento della pagina.\nRiprova tra qualche istante.';
-      emit(TelevideoState.error(message));
+      if (!emit.isDone) {
+        // Se c'è un errore, torna allo stato precedente se possibile
+        previousState.maybeWhen(
+          loaded: (page, currentSubPage) => emit(TelevideoState.loaded(page, currentSubPage: currentSubPage)),
+          orElse: () => emit(TelevideoState.error(message)),
+        );
+      }
     }
   }
 
   Future<void> _onLoadRegionalPage(Region region, int pageNumber, Emitter<TelevideoState> emit) async {
     print('[TelevideoBloc] Loading regional page: $pageNumber for region ${region.code}'); // Debug print
+    
+    // Salva lo stato corrente prima di iniziare il caricamento
+    final previousState = state;
     emit(const TelevideoState.loading());
     try {
       _currentRegion = region;
@@ -71,13 +85,21 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
       final page = await _repository.getRegionalPage(region.code, pageNumber: pageNumber);
       _adService.incrementPageView();
       print('[TelevideoBloc] Regional page loaded successfully'); // Debug print
-      emit(TelevideoState.loaded(page, currentSubPage: 1));
+      if (!emit.isDone) {
+        emit(TelevideoState.loaded(page, currentSubPage: 1));
+      }
     } catch (e) {
       print('[TelevideoBloc] Error loading regional page: $e'); // Debug print
       final message = e.toString().contains('404') || e.toString().contains('non trovata')
         ? 'La pagina $pageNumber non è disponibile per la regione ${region.name}.\nProva con un altro numero tra 100 e 999.'
         : 'Si è verificato un errore durante il caricamento della pagina.\nRiprova tra qualche istante.';
-      emit(TelevideoState.error(message));
+      if (!emit.isDone) {
+        // Se c'è un errore, torna allo stato precedente se possibile
+        previousState.maybeWhen(
+          loaded: (page, currentSubPage) => emit(TelevideoState.loaded(page, currentSubPage: currentSubPage)),
+          orElse: () => emit(TelevideoState.error(message)),
+        );
+      }
     }
   }
 
@@ -192,13 +214,9 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
             emit(TelevideoState.loaded(newPage, currentSubPage: validSubPage));
           }
         } catch (e) {
-          // Se la sottopagina non esiste, torniamo alla prima
+          // Se c'è un errore nel caricamento della sottopagina, mantieni la pagina corrente
           if (!emit.isDone) {
-            final fallbackPage = await _currentRegion != null
-                ? await _repository.getRegionalPage(_currentRegion!.code, pageNumber: page.pageNumber)
-                : await _repository.getNationalPage(page.pageNumber);
-            
-            emit(TelevideoState.loaded(fallbackPage, currentSubPage: 1));
+            emit(TelevideoState.loaded(page, currentSubPage: currentSubPage));
           }
         }
       },
@@ -227,13 +245,9 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
             emit(TelevideoState.loaded(newPage, currentSubPage: validSubPage));
           }
         } catch (e) {
-          // Se la sottopagina non esiste, torniamo alla prima
+          // Se c'è un errore nel caricamento della sottopagina, mantieni la pagina corrente
           if (!emit.isDone) {
-            final fallbackPage = await _currentRegion != null
-                ? await _repository.getRegionalPage(_currentRegion!.code, pageNumber: page.pageNumber)
-                : await _repository.getNationalPage(page.pageNumber);
-            
-            emit(TelevideoState.loaded(fallbackPage, currentSubPage: 1));
+            emit(TelevideoState.loaded(page, currentSubPage: currentSubPage));
           }
         }
       },
