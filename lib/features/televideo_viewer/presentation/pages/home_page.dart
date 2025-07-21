@@ -60,8 +60,7 @@ class _HomePageState extends State<HomePage> {
   late TelevideoBloc _televideoBloc;
   late RegionBloc _regionBloc;
   final TextEditingController _pageNumberController = TextEditingController();
-  final ValueNotifier<List<FavoritePage>> _favoritesNotifier = ValueNotifier<List<FavoritePage>>([]);
-  final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
+  List<FavoritePage> _favorites = [];
 
   @override
   void initState() {
@@ -69,15 +68,12 @@ class _HomePageState extends State<HomePage> {
     _televideoBloc = context.read<TelevideoBloc>()
       ..add(const TelevideoEvent.loadNationalPage(100));
     _regionBloc = RegionBloc();
-    _favoritesNotifier.value = FavoritesService().getFavorites();
   }
 
   @override
   void dispose() {
-    _televideoBloc.close();
     _regionBloc.close();
     _pageNumberController.dispose();
-    _favoritesNotifier.dispose();
     super.dispose();
   }
 
@@ -271,7 +267,12 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildFavoriteItem(FavoritePage favorite, Animation<double> animation, BuildContext dialogContext) {
+  Widget _buildFavoriteItem(
+    FavoritePage favorite,
+    Animation<double> animation,
+    BuildContext dialogContext,
+    StateSetter setDialogState,
+  ) {
     final region = favorite.regionCode != null
         ? Region.values.firstWhere(
             (r) => r.code == favorite.regionCode,
@@ -279,14 +280,17 @@ class _HomePageState extends State<HomePage> {
           )
         : null;
 
+    // Creiamo una chiave univoca per l'elemento che non cambia durante il riordino
+    final itemKey = ObjectKey(favorite);
+
     return Container(
-      key: ValueKey('${favorite.pageNumber}_${favorite.regionCode ?? "national"}'),
+      key: itemKey, // Usiamo la stessa chiave per il Container
       child: SizeTransition(
         sizeFactor: animation,
         child: FadeTransition(
           opacity: animation,
           child: Dismissible(
-            key: ValueKey('dismissible_${favorite.pageNumber}_${favorite.regionCode ?? "national"}'),
+            key: itemKey, // Riusiamo la stessa chiave per il Dismissible
             direction: DismissDirection.endToStart,
             background: Container(
               color: Colors.red,
@@ -323,7 +327,9 @@ class _HomePageState extends State<HomePage> {
                 favorite.pageNumber,
                 regionCode: favorite.regionCode,
               );
-              _favoritesNotifier.value = FavoritesService().getFavorites();
+              setDialogState(() {
+                _favorites = FavoritesService().getFavorites();
+              });
             },
             child: ListTile(
               leading: Row(
@@ -380,7 +386,9 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ).then((saved) async {
                     if (saved == true) {
-                      _favoritesNotifier.value = FavoritesService().getFavorites();
+                      setDialogState(() {
+                        _favorites = FavoritesService().getFavorites();
+                      });
                     }
                   });
                 },
@@ -406,107 +414,110 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _showFavoritesDialog(BuildContext context) {
-    _favoritesNotifier.value = FavoritesService().getFavorites();
+    _favorites = FavoritesService().getFavorites();
 
     showDialog(
       context: context,
-      builder: (dialogContext) => AlertDialog(
-        contentPadding: const EdgeInsets.symmetric(vertical: 16.0),
-        titlePadding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
-        title: Row(
-          children: [
-            const Icon(Icons.favorite),
-            const SizedBox(width: 8),
-            const Text('Preferiti'),
-            const Spacer(),
-            IconButton(
-              icon: const Icon(Icons.close),
-              onPressed: () => Navigator.of(dialogContext).pop(),
-              tooltip: 'Chiudi',
-            ),
-          ],
-        ),
-        content: SizedBox(
-          width: MediaQuery.of(context).size.width * 0.9,
-          child: ValueListenableBuilder<List<FavoritePage>>(
-            valueListenable: _favoritesNotifier,
-            builder: (context, favorites, child) {
-              return favorites.isEmpty
-                  ? const Center(
-                      child: Padding(
-                        padding: EdgeInsets.all(16.0),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(
-                              Icons.favorite_border,
-                              size: 48,
+      builder: (dialogContext) => StatefulBuilder(
+        builder: (context, setDialogState) => AlertDialog(
+          contentPadding: const EdgeInsets.symmetric(vertical: 16.0),
+          titlePadding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
+          title: Row(
+            children: [
+              const Icon(Icons.favorite),
+              const SizedBox(width: 8),
+              const Text('Preferiti'),
+              const Spacer(),
+              IconButton(
+                icon: const Icon(Icons.close),
+                onPressed: () => Navigator.of(dialogContext).pop(),
+                tooltip: 'Chiudi',
+              ),
+            ],
+          ),
+          content: SizedBox(
+            width: MediaQuery.of(context).size.width * 0.9,
+            height: MediaQuery.of(context).size.height * 0.7, // Limitiamo l'altezza al 70% dello schermo
+            child: _favorites.isEmpty
+                ? const Center(
+                    child: Padding(
+                      padding: EdgeInsets.all(16.0),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            Icons.favorite_border,
+                            size: 48,
+                            color: Colors.grey,
+                          ),
+                          SizedBox(height: 16),
+                          Text(
+                            'Nessun preferito salvato',
+                            style: TextStyle(
                               color: Colors.grey,
+                              fontSize: 16,
                             ),
-                            SizedBox(height: 16),
-                            Text(
-                              'Nessun preferito salvato',
-                              style: TextStyle(
-                                color: Colors.grey,
-                                fontSize: 16,
-                              ),
+                          ),
+                          SizedBox(height: 8),
+                          Text(
+                            'Usa l\'icona ❤️ per aggiungere pagine ai preferiti',
+                            style: TextStyle(
+                              color: Colors.grey,
+                              fontSize: 14,
                             ),
-                            SizedBox(height: 8),
-                            Text(
-                              'Usa l\'icona ❤️ per aggiungere pagine ai preferiti',
-                              style: TextStyle(
-                                color: Colors.grey,
-                                fontSize: 14,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
-                        ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
                       ),
-                    )
-                  : ReorderableListView.builder(
-                      buildDefaultDragHandles: true,
-                      shrinkWrap: true,
-                      proxyDecorator: (child, index, animation) {
-                        return AnimatedBuilder(
-                          animation: animation,
-                          builder: (BuildContext context, Widget? child) {
-                            final double scale = lerpDouble(1, 1.02, animation.value)!;
-                            final double elevation = lerpDouble(0, 8, animation.value)!;
-                            return Transform.scale(
-                              scale: scale,
-                              child: Material(
-                                elevation: elevation,
-                                color: Theme.of(context).cardColor.withOpacity(0.95),
-                                borderRadius: BorderRadius.circular(8),
-                                child: child,
-                              ),
-                            );
-                          },
-                          child: child,
-                        );
-                      },
-                      onReorderStart: (index) {
-                        HapticFeedback.mediumImpact();
-                      },
-                      onReorderEnd: (index) {
-                        HapticFeedback.lightImpact();
-                      },
-                      onReorder: (oldIndex, newIndex) async {
-                        await FavoritesService().reorderFavorites(oldIndex, newIndex);
-                        _favoritesNotifier.value = FavoritesService().getFavorites();
-                      },
-                      itemCount: favorites.length,
-                      itemBuilder: (context, index) {
-                        final favorite = favorites[index];
-                        return _buildFavoriteItem(
-                          favorite,
-                          const AlwaysStoppedAnimation(1.0),
-                          dialogContext,
-                        );
-                      },
-                    );
-            },
+                    ),
+                  )
+                : ReorderableListView.builder(
+                    key: const ValueKey('favorites_list'),
+                    buildDefaultDragHandles: true,
+                    physics: const AlwaysScrollableScrollPhysics(), // Abilitiamo lo scroll
+                    shrinkWrap: false, // Disabilitiamo shrinkWrap
+                    proxyDecorator: (child, index, animation) {
+                      return AnimatedBuilder(
+                        animation: animation,
+                        builder: (BuildContext context, Widget? child) {
+                          final double scale = lerpDouble(1, 1.02, animation.value)!;
+                          final double elevation = lerpDouble(0, 8, animation.value)!;
+                          return Transform.scale(
+                            scale: scale,
+                            child: Material(
+                              elevation: elevation,
+                              color: Theme.of(context).cardColor.withOpacity(0.95),
+                              borderRadius: BorderRadius.circular(8),
+                              child: child,
+                            ),
+                          );
+                        },
+                        child: child,
+                      );
+                    },
+                    onReorderStart: (index) {
+                      HapticFeedback.mediumImpact();
+                    },
+                    onReorderEnd: (index) {
+                      HapticFeedback.lightImpact();
+                    },
+                    onReorder: (oldIndex, newIndex) async {
+                      await FavoritesService().reorderFavorites(oldIndex, newIndex);
+                      setDialogState(() {
+                        _favorites = FavoritesService().getFavorites();
+                      });
+                    },
+                    itemCount: _favorites.length,
+                    itemBuilder: (context, index) {
+                      final favorite = _favorites[index];
+                      return _buildFavoriteItem(
+                        favorite,
+                        const AlwaysStoppedAnimation(1.0),
+                        dialogContext,
+                        setDialogState,
+                      );
+                    },
+                  ),
           ),
         ),
       ),

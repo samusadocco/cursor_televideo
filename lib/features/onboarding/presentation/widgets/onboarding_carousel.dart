@@ -161,8 +161,9 @@ class _OnboardingCarouselState extends State<OnboardingCarousel> with SingleTick
       ),
       // Spiegazione numeri cliccabili
       _buildPage(
-        'Numeri di pagina cliccabili',
-        'Tocca i numeri di pagina evidenziati per navigare direttamente a quella pagina',
+        'Numeri di pagina clickabili',
+        'Tocca i numeri di pagina evidenziati per navigare direttamente a quella pagina\n\n'
+        'Le pagine 100/1 del Televideo Nazionale e 300/1 del Televideo Regionale non sono clickabili',
         Icons.touch_app,
         customContent: const PageLinksInstruction(),
       ),
