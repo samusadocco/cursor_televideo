@@ -12,6 +12,7 @@ class FavoritePage with _$FavoritePage {
     required String title,
     String? description,
     String? regionCode,
+    @Default(0) int order,
   }) = _FavoritePage;
 
   // Getter per ottenere una descrizione sicura

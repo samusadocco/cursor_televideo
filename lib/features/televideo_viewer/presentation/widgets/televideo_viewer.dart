@@ -14,6 +14,7 @@ import 'package:cursor_televideo/features/televideo_viewer/bloc/televideo_state.
 import 'package:cursor_televideo/shared/models/televideo_page.dart';
 import 'package:cursor_televideo/shared/models/region.dart';
 import 'package:cursor_televideo/features/televideo_viewer/bloc/region_bloc.dart';
+import 'package:cursor_televideo/shared/widgets/error_page_view.dart';
 
 class TelevideoViewer extends StatefulWidget {
   final TelevideoPage page;
@@ -37,7 +38,6 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
   late AnimationController _controller;
   late Animation<Offset> _slideAnimation;
   Timer? _liveShowTimer;
-  StreamSubscription? _adEventSubscription;
   final AdService _adService = AdService();
   Offset _dragStart = Offset.zero;
   bool _isDragging = false;
@@ -67,25 +67,6 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
     _currentSubPage = widget.page.maxSubPages > 0 ? 1 : 0;
     _maxSubPages = widget.page.maxSubPages;
 
-    // Sottoscrizione agli eventi degli annunci
-    _adEventSubscription = _adService.adEventStream.listen((event) {
-      switch (event) {
-        case AdEvent.shown:
-          // Salva lo stato del Live Show e lo ferma
-          _wasLiveShowActive = _liveShowTimer != null;
-          _liveShowTimer?.cancel();
-          _liveShowTimer = null;
-          break;
-        case AdEvent.dismissed:
-        case AdEvent.failed:
-          // Ripristina il Live Show se era attivo
-          if (_wasLiveShowActive) {
-            _startLiveShowTimer();
-          }
-          break;
-      }
-    });
-
     // Avvia il timer per il Live Show se abilitato
     _startLiveShowTimer();
   }
@@ -108,7 +89,6 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
   void dispose() {
     _controller.dispose();
     _liveShowTimer?.cancel();
-    _adEventSubscription?.cancel();
     super.dispose();
   }
 
@@ -342,19 +322,8 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
                     child: BlocBuilder<TelevideoBloc, TelevideoState>(
                       builder: (context, state) {
                         Widget content = state.when(
-                          initial: () => Image.network(
-                            widget.page.imageUrl,
-                            headers: const {
-                              'Cache-Control': 'no-cache',
-                              'Pragma': 'no-cache',
-                            },
-                            fit: BoxFit.fill,
-                          ),
-                          loading: () => const Center(
-                            child: CircularProgressIndicator(
-                              color: Colors.white,
-                            ),
-                          ),
+                          initial: () => const Center(child: CircularProgressIndicator()),
+                          loading: () => const Center(child: CircularProgressIndicator()),
                           loaded: (page, currentSubPage) {
                             final lastEvent = context.read<TelevideoBloc>().lastEvent;
                             var transitionType = PageTransitionType.fade;
@@ -394,26 +363,71 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
                                   'Pragma': 'no-cache',
                                 },
                                 fit: BoxFit.fill,
+                                errorBuilder: (context, error, stackTrace) {
+                                  return ErrorPageView(
+                                    message: 'Impossibile caricare l\'immagine della pagina.\nRiprova tra qualche istante.',
+                                    onRetry: () {
+                                      final regionState = context.read<RegionBloc>().state;
+                                      if (regionState.selectedRegion != null) {
+                                        context.read<TelevideoBloc>().add(
+                                          TelevideoEvent.loadRegionalPage(
+                                            regionState.selectedRegion!,
+                                            page.pageNumber,
+                                          ),
+                                        );
+                                      } else {
+                                        context.read<TelevideoBloc>().add(
+                                          TelevideoEvent.loadNationalPage(page.pageNumber),
+                                        );
+                                      }
+                                    },
+                                  );
+                                },
                               ),
                             );
                           },
-                          error: (message) => Center(
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                const Icon(
-                                  Icons.error_outline,
-                                  color: Colors.red,
-                                  size: 48,
-                                ),
-                                const SizedBox(height: 16),
-                                Text(
-                                  message,
-                                  style: const TextStyle(color: Colors.white),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ],
-                            ),
+                          error: (message) => ErrorPageView(
+                            message: message,
+                            onRetry: () {
+                              final regionState = context.read<RegionBloc>().state;
+                              final lastEvent = context.read<TelevideoBloc>().lastEvent;
+                              
+                              lastEvent?.when(
+                                loadNationalPage: (pageNumber) {
+                                  context.read<TelevideoBloc>().add(
+                                    TelevideoEvent.loadNationalPage(pageNumber),
+                                  );
+                                },
+                                loadRegionalPage: (region, pageNumber) {
+                                  context.read<TelevideoBloc>().add(
+                                    TelevideoEvent.loadRegionalPage(region, pageNumber),
+                                  );
+                                },
+                                nextPage: (currentPage) {
+                                  context.read<TelevideoBloc>().add(
+                                    TelevideoEvent.nextPage(currentPage: currentPage),
+                                  );
+                                },
+                                previousPage: (currentPage) {
+                                  context.read<TelevideoBloc>().add(
+                                    TelevideoEvent.previousPage(currentPage: currentPage),
+                                  );
+                                },
+                                nextSubPage: () {
+                                  context.read<TelevideoBloc>().add(
+                                    const TelevideoEvent.nextSubPage(),
+                                  );
+                                },
+                                previousSubPage: () {
+                                  context.read<TelevideoBloc>().add(
+                                    const TelevideoEvent.previousSubPage(),
+                                  );
+                                },
+                                startLoading: () {
+                                  // Non fare nulla in questo caso
+                                },
+                              );
+                            },
                           ),
                         );
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'dart:ui' show lerpDouble;
 import 'package:cursor_televideo/features/televideo_viewer/bloc/televideo_bloc.dart';
 import 'package:cursor_televideo/features/televideo_viewer/bloc/televideo_event.dart';
 import 'package:cursor_televideo/features/televideo_viewer/bloc/televideo_state.dart';
@@ -59,13 +60,16 @@ class _HomePageState extends State<HomePage> {
   late TelevideoBloc _televideoBloc;
   late RegionBloc _regionBloc;
   final TextEditingController _pageNumberController = TextEditingController();
+  final ValueNotifier<List<FavoritePage>> _favoritesNotifier = ValueNotifier<List<FavoritePage>>([]);
+  final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
 
   @override
   void initState() {
     super.initState();
-    _televideoBloc = TelevideoBloc(repository: TelevideoRepository())
+    _televideoBloc = context.read<TelevideoBloc>()
       ..add(const TelevideoEvent.loadNationalPage(100));
     _regionBloc = RegionBloc();
+    _favoritesNotifier.value = FavoritesService().getFavorites();
   }
 
   @override
@@ -73,6 +77,7 @@ class _HomePageState extends State<HomePage> {
     _televideoBloc.close();
     _regionBloc.close();
     _pageNumberController.dispose();
+    _favoritesNotifier.dispose();
     super.dispose();
   }
 
@@ -99,9 +104,12 @@ class _HomePageState extends State<HomePage> {
             final pageNumber = int.tryParse(value);
             if (pageNumber != null && pageNumber >= 100 && pageNumber <= 999) {
               Navigator.of(dialogContext).pop();
-              _televideoBloc.add(TelevideoEvent.loadNationalPage(pageNumber));
               if (!isNationalMode && selectedRegion != null) {
+                // Se siamo in modalità regionale, carica direttamente la pagina regionale
                 _televideoBloc.add(TelevideoEvent.loadRegionalPage(selectedRegion, pageNumber));
+              } else {
+                // Se siamo in modalità nazionale, carica la pagina nazionale
+                _televideoBloc.add(TelevideoEvent.loadNationalPage(pageNumber));
               }
             }
           },
@@ -116,9 +124,12 @@ class _HomePageState extends State<HomePage> {
               final pageNumber = int.tryParse(_pageNumberController.text);
               if (pageNumber != null && pageNumber >= 100 && pageNumber <= 999) {
                 Navigator.of(dialogContext).pop();
-                _televideoBloc.add(TelevideoEvent.loadNationalPage(pageNumber));
                 if (!isNationalMode && selectedRegion != null) {
+                  // Se siamo in modalità regionale, carica direttamente la pagina regionale
                   _televideoBloc.add(TelevideoEvent.loadRegionalPage(selectedRegion, pageNumber));
+                } else {
+                  // Se siamo in modalità nazionale, carica la pagina nazionale
+                  _televideoBloc.add(TelevideoEvent.loadNationalPage(pageNumber));
                 }
               }
             },
@@ -260,175 +271,238 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void _showFavoritesDialog(BuildContext context) {
-    final favorites = FavoritesService().getFavorites();
-    showDialog(
-      context: context,
-      builder: (dialogContext) => AlertDialog(
-        title: Row(
-          children: [
-            const Icon(Icons.favorite, color: Colors.red),
-            const SizedBox(width: 8),
-            const Text('Preferiti'),
-          ],
-        ),
-        content: SizedBox(
-          width: double.maxFinite,
-          child: favorites.isEmpty
-              ? const Center(
-                  child: Padding(
-                    padding: EdgeInsets.all(16.0),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(
-                          Icons.favorite_border,
-                          size: 48,
-                          color: Colors.grey,
-                        ),
-                        SizedBox(height: 16),
-                        Text(
-                          'Nessun preferito salvato',
-                          style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 16,
-                          ),
-                        ),
-                        SizedBox(height: 8),
-                        Text(
-                          'Usa l\'icona ❤️ per aggiungere pagine ai preferiti',
-                          style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 14,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ],
-                    ),
-                  ),
-                )
-              : ListView.separated(
-                  shrinkWrap: true,
-                  itemCount: favorites.length,
-                  separatorBuilder: (context, index) => const Divider(),
-                  itemBuilder: (context, index) {
-                    final favorite = favorites[index];
-                    final region = favorite.regionCode != null
-                        ? Region.values.firstWhere(
-                            (r) => r.code == favorite.regionCode,
-                            orElse: () => Region.values.first,
-                          )
-                        : null;
+  Widget _buildFavoriteItem(FavoritePage favorite, Animation<double> animation, BuildContext dialogContext) {
+    final region = favorite.regionCode != null
+        ? Region.values.firstWhere(
+            (r) => r.code == favorite.regionCode,
+            orElse: () => Region.values.first,
+          )
+        : null;
 
-                    return ListTile(
-                      leading: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SizedBox(
-                            width: 24,
-                            height: 24,
-                            child: Image.asset(
-                              region?.imagePath ?? 'assets/images/italy.png',
-                              fit: BoxFit.contain,
-                            ),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            '${favorite.pageNumber}',
-                            style: const TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
+    return Container(
+      key: ValueKey('${favorite.pageNumber}_${favorite.regionCode ?? "national"}'),
+      child: SizeTransition(
+        sizeFactor: animation,
+        child: FadeTransition(
+          opacity: animation,
+          child: Dismissible(
+            key: ValueKey('dismissible_${favorite.pageNumber}_${favorite.regionCode ?? "national"}'),
+            direction: DismissDirection.endToStart,
+            background: Container(
+              color: Colors.red,
+              alignment: Alignment.centerRight,
+              padding: const EdgeInsets.only(right: 16.0),
+              child: const Icon(
+                Icons.delete,
+                color: Colors.white,
+              ),
+            ),
+            confirmDismiss: (direction) async {
+              return await showDialog<bool>(
+                context: dialogContext,
+                builder: (confirmContext) => AlertDialog(
+                  title: const Text('Conferma rimozione'),
+                  content: Text(
+                    'Vuoi davvero rimuovere ${favorite.displayDescription} dai preferiti?'
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.of(confirmContext).pop(false),
+                      child: const Text('ANNULLA'),
+                    ),
+                    TextButton(
+                      onPressed: () => Navigator.of(confirmContext).pop(true),
+                      child: const Text('RIMUOVI'),
+                    ),
+                  ],
+                ),
+              ) ?? false;
+            },
+            onDismissed: (direction) async {
+              await FavoritesService().removeFavorite(
+                favorite.pageNumber,
+                regionCode: favorite.regionCode,
+              );
+              _favoritesNotifier.value = FavoritesService().getFavorites();
+            },
+            child: ListTile(
+              leading: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Icon(Icons.drag_handle),
+                  const SizedBox(width: 8),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        width: 24,
+                        height: 24,
+                        child: Image.asset(
+                          region?.imagePath ?? 'assets/images/italy.png',
+                          fit: BoxFit.contain,
+                        ),
                       ),
-                      title: Text(
-                        favorite.displayDescription,
+                      const SizedBox(height: 4),
+                      Text(
+                        '${favorite.pageNumber}',
                         style: const TextStyle(
+                          fontSize: 12,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      subtitle: Text(
-                        region?.name ?? 'Nazionale',
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.secondary,
+                    ],
+                  ),
+                ],
+              ),
+              title: Text(
+                favorite.displayDescription,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              subtitle: Text(
+                region?.name ?? 'Nazionale',
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
+              ),
+              trailing: IconButton(
+                icon: const Icon(Icons.edit_outlined),
+                tooltip: 'Modifica descrizione',
+                onPressed: () {
+                  showDialog<bool>(
+                    context: dialogContext,
+                    builder: (editContext) => EditDescriptionDialog(
+                      pageNumber: favorite.pageNumber,
+                      regionCode: favorite.regionCode,
+                      initialDescription: favorite.description,
+                      regionName: region?.name ?? 'Nazionale',
+                    ),
+                  ).then((saved) async {
+                    if (saved == true) {
+                      _favoritesNotifier.value = FavoritesService().getFavorites();
+                    }
+                  });
+                },
+              ),
+              onTap: () {
+                Navigator.of(dialogContext).pop();
+                if (region != null) {
+                  // Se è una pagina regionale
+                  _regionBloc.add(RegionEvent.selectRegion(region));
+                  // Carica direttamente la pagina regionale
+                  _televideoBloc.add(TelevideoEvent.loadRegionalPage(region, favorite.pageNumber));
+                } else {
+                  // Se è una pagina nazionale
+                  _regionBloc.add(const RegionEvent.selectRegion(null));
+                  _televideoBloc.add(TelevideoEvent.loadNationalPage(favorite.pageNumber));
+                }
+              },
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _showFavoritesDialog(BuildContext context) {
+    _favoritesNotifier.value = FavoritesService().getFavorites();
+
+    showDialog(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        contentPadding: const EdgeInsets.symmetric(vertical: 16.0),
+        titlePadding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
+        title: Row(
+          children: [
+            const Icon(Icons.favorite),
+            const SizedBox(width: 8),
+            const Text('Preferiti'),
+            const Spacer(),
+            IconButton(
+              icon: const Icon(Icons.close),
+              onPressed: () => Navigator.of(dialogContext).pop(),
+              tooltip: 'Chiudi',
+            ),
+          ],
+        ),
+        content: SizedBox(
+          width: MediaQuery.of(context).size.width * 0.9,
+          child: ValueListenableBuilder<List<FavoritePage>>(
+            valueListenable: _favoritesNotifier,
+            builder: (context, favorites, child) {
+              return favorites.isEmpty
+                  ? const Center(
+                      child: Padding(
+                        padding: EdgeInsets.all(16.0),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              Icons.favorite_border,
+                              size: 48,
+                              color: Colors.grey,
+                            ),
+                            SizedBox(height: 16),
+                            Text(
+                              'Nessun preferito salvato',
+                              style: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 16,
+                              ),
+                            ),
+                            SizedBox(height: 8),
+                            Text(
+                              'Usa l\'icona ❤️ per aggiungere pagine ai preferiti',
+                              style: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 14,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
                         ),
                       ),
-                      trailing: IconButton(
-                        icon: const Icon(Icons.delete_outline),
-                        tooltip: 'Rimuovi dai preferiti',
-                        onPressed: () {
-                          showDialog(
-                            context: dialogContext,
-                            builder: (confirmContext) => AlertDialog(
-                              title: const Text('Conferma rimozione'),
-                              content: Text(
-                                'Vuoi davvero rimuovere ${favorite.displayDescription} dai preferiti?'
-                              ),
-                              actions: [
-                                TextButton(
-                                  onPressed: () => Navigator.of(confirmContext).pop(),
-                                  child: const Text('ANNULLA'),
-                                ),
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.of(confirmContext).pop();
-                                    FavoritesService().removeFavorite(
-                                      favorite.pageNumber,
-                                      regionCode: favorite.regionCode,
-                                    );
-                                    Navigator.of(dialogContext).pop();
-                                    _showFavoritesDialog(context);
-                                  },
-                                  child: const Text('RIMUOVI'),
-                                ),
-                              ],
-                            ),
-                          );
-                        },
-                      ),
-                      onTap: () {
-                        Navigator.of(dialogContext).pop();
-                        if (region != null) {
-                          // Se è una pagina regionale
-                          _regionBloc.add(RegionEvent.selectRegion(region));
-                          // Carica prima la pagina nazionale 300 (indice regionale)
-                          _televideoBloc.add(const TelevideoEvent.loadNationalPage(300));
-                          // Poi carica la pagina regionale specifica
-                          _televideoBloc.add(TelevideoEvent.loadRegionalPage(region, favorite.pageNumber));
-                        } else {
-                          // Se è una pagina nazionale
-                          _regionBloc.add(const RegionEvent.selectRegion(null));
-                          _televideoBloc.add(TelevideoEvent.loadNationalPage(favorite.pageNumber));
-                        }
+                    )
+                  : ReorderableListView.builder(
+                      buildDefaultDragHandles: true, // Riabilitiamo i drag handles di default
+                      shrinkWrap: true,
+                      onReorder: (oldIndex, newIndex) async {
+                        await FavoritesService().reorderFavorites(oldIndex, newIndex);
+                        _favoritesNotifier.value = FavoritesService().getFavorites();
                       },
-                      onLongPress: () {
-                        showDialog<bool>(
-                          context: dialogContext,
-                          builder: (editContext) => EditDescriptionDialog(
-                            pageNumber: favorite.pageNumber,
-                            regionCode: favorite.regionCode,
-                            initialDescription: favorite.description,
-                            regionName: region?.name ?? 'Nazionale',
+                      itemCount: favorites.length,
+                      itemBuilder: (context, index) {
+                        final favorite = favorites[index];
+                        return _buildFavoriteItem(
+                          favorite,
+                          const AlwaysStoppedAnimation(1.0),
+                          dialogContext,
+                        );
+                      },
+                      proxyDecorator: (child, index, animation) {
+                        return Material(
+                          elevation: 6.0,
+                          color: Colors.transparent,
+                          child: AnimatedBuilder(
+                            animation: animation,
+                            builder: (BuildContext context, Widget? child) {
+                              final double animValue = Curves.easeInOut.transform(animation.value);
+                              final double elevation = lerpDouble(0, 6, animValue)!;
+                              return Material(
+                                elevation: elevation,
+                                color: Theme.of(context).cardColor.withOpacity(0.9),
+                                child: child,
+                              );
+                            },
+                            child: child,
                           ),
-                        ).then((saved) {
-                          if (saved == true) {
-                            Navigator.of(dialogContext).pop();
-                            _showFavoritesDialog(context);
-                          }
-                        });
+                        );
                       },
                     );
-                  },
-                ),
-        ),
-        actions: [
-          TextButton.icon(
-            icon: const Icon(Icons.close),
-            label: const Text('CHIUDI'),
-            onPressed: () => Navigator.of(dialogContext).pop(),
+            },
           ),
-        ],
+        ),
       ),
     );
   }

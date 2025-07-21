@@ -1,15 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:cursor_televideo/features/onboarding/presentation/widgets/bottom_bar_instruction.dart';
 
-enum BottomBarHighlight {
-  horizontalNavigation,
-  verticalNavigation,
-  pageSelector,
-}
-
-class BottomBarInstruction extends StatelessWidget {
+class BottomBarInstructionWithTimer extends StatelessWidget {
   final BottomBarHighlight highlight;
 
-  const BottomBarInstruction({
+  const BottomBarInstructionWithTimer({
     super.key,
     required this.highlight,
   });
@@ -95,23 +90,57 @@ class BottomBarInstruction extends StatelessWidget {
                 Expanded(
                   child: _buildHighlightedContainer(
                     isHighlighted: highlight == BottomBarHighlight.pageSelector,
-                    child: GestureDetector(
-                      onTap: null,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            '101',
-                            style: TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
-                              color: highlight == BottomBarHighlight.pageSelector
-                                  ? Theme.of(context).colorScheme.primary
-                                  : Theme.of(context).textTheme.bodyLarge?.color?.withOpacity(0.3),
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        // Cerchio di sfondo
+                        Container(
+                          width: 50,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: Theme.of(context).colorScheme.primary.withOpacity(0.3),
+                              width: 1.5,
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                        // Cerchio di progresso
+                        SizedBox(
+                          width: 50,
+                          height: 50,
+                          child: CircularProgressIndicator(
+                            value: 0.7,
+                            strokeWidth: 1.5,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                        ),
+                        // Testo centrale
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              '103',
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: highlight == BottomBarHighlight.pageSelector
+                                    ? Theme.of(context).colorScheme.primary
+                                    : Theme.of(context).textTheme.bodyLarge?.color?.withOpacity(0.3),
+                              ),
+                            ),
+                            Text(
+                              '1/2',
+                              style: TextStyle(
+                                fontSize: 10,
+                                color: highlight == BottomBarHighlight.pageSelector
+                                    ? Theme.of(context).colorScheme.primary
+                                    : Theme.of(context).textTheme.bodyLarge?.color?.withOpacity(0.3),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
                 ),

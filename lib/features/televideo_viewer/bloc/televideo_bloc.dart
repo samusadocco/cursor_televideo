@@ -42,8 +42,6 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
   Future<void> _onLoadNationalPage(int pageNumber, Emitter<TelevideoState> emit) async {
     print('[TelevideoBloc] Loading national page: $pageNumber'); // Debug print
     
-    // Salva lo stato corrente prima di iniziare il caricamento
-    final previousState = state;
     emit(const TelevideoState.loading());
     _currentPage = pageNumber;
     _currentRegion = null; // Reset della regione quando si carica una pagina nazionale
@@ -62,11 +60,7 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
         ? 'La pagina $pageNumber non è disponibile.\nProva con un altro numero tra 100 e 999.'
         : 'Si è verificato un errore durante il caricamento della pagina.\nRiprova tra qualche istante.';
       if (!emit.isDone) {
-        // Se c'è un errore, torna allo stato precedente se possibile
-        previousState.maybeWhen(
-          loaded: (page, currentSubPage) => emit(TelevideoState.loaded(page, currentSubPage: currentSubPage)),
-          orElse: () => emit(TelevideoState.error(message)),
-        );
+        emit(TelevideoState.error(message));
       }
     }
   }
@@ -74,8 +68,6 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
   Future<void> _onLoadRegionalPage(Region region, int pageNumber, Emitter<TelevideoState> emit) async {
     print('[TelevideoBloc] Loading regional page: $pageNumber for region ${region.code}'); // Debug print
     
-    // Salva lo stato corrente prima di iniziare il caricamento
-    final previousState = state;
     emit(const TelevideoState.loading());
     try {
       _currentRegion = region;
@@ -94,11 +86,7 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
         ? 'La pagina $pageNumber non è disponibile per la regione ${region.name}.\nProva con un altro numero tra 100 e 999.'
         : 'Si è verificato un errore durante il caricamento della pagina.\nRiprova tra qualche istante.';
       if (!emit.isDone) {
-        // Se c'è un errore, torna allo stato precedente se possibile
-        previousState.maybeWhen(
-          loaded: (page, currentSubPage) => emit(TelevideoState.loaded(page, currentSubPage: currentSubPage)),
-          orElse: () => emit(TelevideoState.error(message)),
-        );
+        emit(TelevideoState.error(message));
       }
     }
   }

@@ -24,6 +24,7 @@ mixin _$FavoritePage {
   String get title => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
   String? get regionCode => throw _privateConstructorUsedError;
+  int get order => throw _privateConstructorUsedError;
 
   /// Serializes this FavoritePage to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -42,7 +43,11 @@ abstract class $FavoritePageCopyWith<$Res> {
       _$FavoritePageCopyWithImpl<$Res, FavoritePage>;
   @useResult
   $Res call(
-      {int pageNumber, String title, String? description, String? regionCode});
+      {int pageNumber,
+      String title,
+      String? description,
+      String? regionCode,
+      int order});
 }
 
 /// @nodoc
@@ -64,6 +69,7 @@ class _$FavoritePageCopyWithImpl<$Res, $Val extends FavoritePage>
     Object? title = null,
     Object? description = freezed,
     Object? regionCode = freezed,
+    Object? order = null,
   }) {
     return _then(_value.copyWith(
       pageNumber: null == pageNumber
@@ -82,6 +88,10 @@ class _$FavoritePageCopyWithImpl<$Res, $Val extends FavoritePage>
           ? _value.regionCode
           : regionCode // ignore: cast_nullable_to_non_nullable
               as String?,
+      order: null == order
+          ? _value.order
+          : order // ignore: cast_nullable_to_non_nullable
+              as int,
     ) as $Val);
   }
 }
@@ -95,7 +105,11 @@ abstract class _$$FavoritePageImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {int pageNumber, String title, String? description, String? regionCode});
+      {int pageNumber,
+      String title,
+      String? description,
+      String? regionCode,
+      int order});
 }
 
 /// @nodoc
@@ -115,6 +129,7 @@ class __$$FavoritePageImplCopyWithImpl<$Res>
     Object? title = null,
     Object? description = freezed,
     Object? regionCode = freezed,
+    Object? order = null,
   }) {
     return _then(_$FavoritePageImpl(
       pageNumber: null == pageNumber
@@ -133,6 +148,10 @@ class __$$FavoritePageImplCopyWithImpl<$Res>
           ? _value.regionCode
           : regionCode // ignore: cast_nullable_to_non_nullable
               as String?,
+      order: null == order
+          ? _value.order
+          : order // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -144,7 +163,8 @@ class _$FavoritePageImpl extends _FavoritePage {
       {required this.pageNumber,
       required this.title,
       this.description,
-      this.regionCode})
+      this.regionCode,
+      this.order = 0})
       : super._();
 
   factory _$FavoritePageImpl.fromJson(Map<String, dynamic> json) =>
@@ -158,10 +178,13 @@ class _$FavoritePageImpl extends _FavoritePage {
   final String? description;
   @override
   final String? regionCode;
+  @override
+  @JsonKey()
+  final int order;
 
   @override
   String toString() {
-    return 'FavoritePage(pageNumber: $pageNumber, title: $title, description: $description, regionCode: $regionCode)';
+    return 'FavoritePage(pageNumber: $pageNumber, title: $title, description: $description, regionCode: $regionCode, order: $order)';
   }
 
   @override
@@ -175,13 +198,14 @@ class _$FavoritePageImpl extends _FavoritePage {
             (identical(other.description, description) ||
                 other.description == description) &&
             (identical(other.regionCode, regionCode) ||
-                other.regionCode == regionCode));
+                other.regionCode == regionCode) &&
+            (identical(other.order, order) || other.order == order));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, pageNumber, title, description, regionCode);
+  int get hashCode => Object.hash(
+      runtimeType, pageNumber, title, description, regionCode, order);
 
   /// Create a copy of FavoritePage
   /// with the given fields replaced by the non-null parameter values.
@@ -204,7 +228,8 @@ abstract class _FavoritePage extends FavoritePage {
       {required final int pageNumber,
       required final String title,
       final String? description,
-      final String? regionCode}) = _$FavoritePageImpl;
+      final String? regionCode,
+      final int order}) = _$FavoritePageImpl;
   const _FavoritePage._() : super._();
 
   factory _FavoritePage.fromJson(Map<String, dynamic> json) =
@@ -218,6 +243,8 @@ abstract class _FavoritePage extends FavoritePage {
   String? get description;
   @override
   String? get regionCode;
+  @override
+  int get order;
 
   /// Create a copy of FavoritePage
   /// with the given fields replaced by the non-null parameter values.
