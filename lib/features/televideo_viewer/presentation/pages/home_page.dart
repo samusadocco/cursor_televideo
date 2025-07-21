@@ -465,8 +465,33 @@ class _HomePageState extends State<HomePage> {
                       ),
                     )
                   : ReorderableListView.builder(
-                      buildDefaultDragHandles: true, // Riabilitiamo i drag handles di default
+                      buildDefaultDragHandles: true,
                       shrinkWrap: true,
+                      proxyDecorator: (child, index, animation) {
+                        return AnimatedBuilder(
+                          animation: animation,
+                          builder: (BuildContext context, Widget? child) {
+                            final double scale = lerpDouble(1, 1.02, animation.value)!;
+                            final double elevation = lerpDouble(0, 8, animation.value)!;
+                            return Transform.scale(
+                              scale: scale,
+                              child: Material(
+                                elevation: elevation,
+                                color: Theme.of(context).cardColor.withOpacity(0.95),
+                                borderRadius: BorderRadius.circular(8),
+                                child: child,
+                              ),
+                            );
+                          },
+                          child: child,
+                        );
+                      },
+                      onReorderStart: (index) {
+                        HapticFeedback.mediumImpact();
+                      },
+                      onReorderEnd: (index) {
+                        HapticFeedback.lightImpact();
+                      },
                       onReorder: (oldIndex, newIndex) async {
                         await FavoritesService().reorderFavorites(oldIndex, newIndex);
                         _favoritesNotifier.value = FavoritesService().getFavorites();
@@ -478,25 +503,6 @@ class _HomePageState extends State<HomePage> {
                           favorite,
                           const AlwaysStoppedAnimation(1.0),
                           dialogContext,
-                        );
-                      },
-                      proxyDecorator: (child, index, animation) {
-                        return Material(
-                          elevation: 6.0,
-                          color: Colors.transparent,
-                          child: AnimatedBuilder(
-                            animation: animation,
-                            builder: (BuildContext context, Widget? child) {
-                              final double animValue = Curves.easeInOut.transform(animation.value);
-                              final double elevation = lerpDouble(0, 6, animValue)!;
-                              return Material(
-                                elevation: elevation,
-                                color: Theme.of(context).cardColor.withOpacity(0.9),
-                                child: child,
-                              );
-                            },
-                            child: child,
-                          ),
                         );
                       },
                     );
