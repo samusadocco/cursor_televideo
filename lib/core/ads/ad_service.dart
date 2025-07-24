@@ -56,7 +56,7 @@ class AdService {
       adUnitId = 'ca-app-pub-3940256099942544/1033173712';
       }
     }
-    adUnitId = 'ca-app-pub-3940256099942544/1033173712';
+    //adUnitId = 'ca-app-pub-3940256099942544/1033173712';
 
     InterstitialAd.load(
       adUnitId: adUnitId,
@@ -140,7 +140,7 @@ class AdService {
         adUnitId = 'ca-app-pub-3940256099942544/2934735716';
       }
     }
-    adUnitId = 'ca-app-pub-3940256099942544/2934735716';
+    //adUnitId = 'ca-app-pub-3940256099942544/2934735716';
 
 
     final bannerAd = BannerAd(

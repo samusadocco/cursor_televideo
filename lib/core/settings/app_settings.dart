@@ -11,7 +11,7 @@ class AppSettings {
   static const int _defaultCacheDuration = 300; // 5 minuti
   static const bool _defaultLiveShowEnabled = true;
   static const int _defaultLiveShowInterval = 10; // 10 secondi
-  static const ThemeMode _defaultThemeMode = ThemeMode.system;
+  static const ThemeMode _defaultThemeMode = ThemeMode.dark;
 
   // Valori in memoria
   static int _cacheDurationInSeconds = _defaultCacheDuration;
