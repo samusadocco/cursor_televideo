@@ -13,6 +13,17 @@ class TelevideoRepository {
 
   TelevideoRepository({Dio? dio}) : _dio = dio ?? Dio();
 
+  /// Verifica se la pagina 100 è disponibile
+  Future<bool> isPage100Available() async {
+    try {
+      final url = 'https://www.servizitelevideo.rai.it/televideo/pub/tt4web/Nazionale/16_9_page-100.png';
+      final response = await _dio.head(url);
+      return response.statusCode == 200;
+    } catch (e) {
+      return false;
+    }
+  }
+
   /// Estrae le aree cliccabili dalla pagina HTML
   Future<List<ClickableArea>> _extractClickableAreas(String html) async {
     print('\n=== ESTRAZIONE AREE CLICCABILI ===');

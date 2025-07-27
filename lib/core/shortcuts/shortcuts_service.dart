@@ -5,11 +5,11 @@ class ShortcutsService {
   factory ShortcutsService() => _instance;
   ShortcutsService._internal();
 
-  final List<ShortcutPage> nationalShortcuts = [
+  final List<ShortcutPage> _nationalShortcuts = [
     const ShortcutPage(pageNumber: 100, title: 'Indice'),
     const ShortcutPage(pageNumber: 101, title: 'Ultim\'ora'),
     const ShortcutPage(pageNumber: 103, title: 'Prima'),
-    const ShortcutPage(pageNumber: 110, title: 'Primo Piano'),
+    //const ShortcutPage(pageNumber: 110, title: 'Primo Piano'),
     const ShortcutPage(pageNumber: 120, title: 'Politica'),
     const ShortcutPage(pageNumber: 130, title: 'Economia'),
     const ShortcutPage(pageNumber: 140, title: 'Dall\'Italia'),
@@ -37,7 +37,16 @@ class ShortcutsService {
     const ShortcutPage(pageNumber: 690, title: 'Farmacie'),
   ];
 
+  /// Restituisce la lista degli shortcuts nazionali, filtrata in base alla disponibilità della pagina 100
+  List<ShortcutPage> getNationalShortcuts({required bool isPage100Available}) {
+    if (isPage100Available) {
+      return _nationalShortcuts;
+    } else {
+      return _nationalShortcuts.where((shortcut) => shortcut.pageNumber != 100).toList();
+    }
+  }
+
   List<ShortcutPage> getShortcuts({required bool isNational}) {
-    return isNational ? nationalShortcuts : regionalShortcuts;
+    return isNational ? _nationalShortcuts : regionalShortcuts;
   }
 } 

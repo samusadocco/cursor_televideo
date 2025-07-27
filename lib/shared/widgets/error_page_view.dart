@@ -82,8 +82,9 @@ class ErrorPageView extends StatelessWidget {
                           ),
                         );
                       } else {
+                        final minPage = context.read<TelevideoBloc>().minPage;
                         context.read<TelevideoBloc>().add(
-                          const TelevideoEvent.loadNationalPage(100),
+                          TelevideoEvent.loadNationalPage(minPage),
                         );
                       }
                     },
@@ -91,7 +92,7 @@ class ErrorPageView extends StatelessWidget {
                       backgroundColor: Theme.of(context).colorScheme.secondary,
                     ),
                     icon: const Icon(Icons.home),
-                    label: Text(isRegionalMode ? 'Torna a 300' : 'Torna a 100'),
+                    label: Text(isRegionalMode ? 'Torna a 300' : 'Torna a ${context.read<TelevideoBloc>().minPage}'),
                   ),
                 ],
               ),

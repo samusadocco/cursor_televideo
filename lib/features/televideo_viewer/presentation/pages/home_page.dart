@@ -65,8 +65,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    _televideoBloc = context.read<TelevideoBloc>()
-      ..add(const TelevideoEvent.loadNationalPage(100));
+    _televideoBloc = context.read<TelevideoBloc>();
     _regionBloc = RegionBloc();
   }
 
@@ -78,6 +77,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> _showPageNumberDialog(BuildContext context, bool isNationalMode, Region? selectedRegion) async {
+    final minPage = context.read<TelevideoBloc>().minPage;
     _pageNumberController.clear();
     return showDialog(
       context: context,
@@ -90,15 +90,15 @@ class _HomePageState extends State<HomePage> {
             FilteringTextInputFormatter.digitsOnly,
             LengthLimitingTextInputFormatter(3),
           ],
-          decoration: const InputDecoration(
-            hintText: 'Numero da 100 a 999',
+          decoration: InputDecoration(
+            hintText: 'Numero da $minPage a 999',
             border: OutlineInputBorder(),
             errorMaxLines: 2,
           ),
           autofocus: true,
           onSubmitted: (value) {
             final pageNumber = int.tryParse(value);
-            if (pageNumber != null && pageNumber >= 100 && pageNumber <= 999) {
+            if (pageNumber != null && pageNumber >= minPage && pageNumber <= 999) {
               Navigator.of(dialogContext).pop();
               if (!isNationalMode && selectedRegion != null) {
                 // Se siamo in modalità regionale, carica direttamente la pagina regionale
@@ -118,7 +118,7 @@ class _HomePageState extends State<HomePage> {
           TextButton(
             onPressed: () {
               final pageNumber = int.tryParse(_pageNumberController.text);
-              if (pageNumber != null && pageNumber >= 100 && pageNumber <= 999) {
+              if (pageNumber != null && pageNumber >= minPage && pageNumber <= 999) {
                 Navigator.of(dialogContext).pop();
                 if (!isNationalMode && selectedRegion != null) {
                   // Se siamo in modalità regionale, carica direttamente la pagina regionale
@@ -166,12 +166,11 @@ class _HomePageState extends State<HomePage> {
                 onSelectionChanged: (region) {
                   if (region == null) {
                     _regionBloc.add(const RegionEvent.selectRegion(null));
-                    _televideoBloc.add(const TelevideoEvent.loadNationalPage(100));
+                    final minPage = context.read<TelevideoBloc>().minPage;
+                    _televideoBloc.add(TelevideoEvent.loadNationalPage(minPage));
                   } else {
                     _regionBloc.add(RegionEvent.selectRegion(region));
-                    _televideoBloc
-                      ..add(const TelevideoEvent.loadNationalPage(300))
-                      ..add(TelevideoEvent.loadRegionalPage(region, 300));
+                    _televideoBloc.add(TelevideoEvent.loadRegionalPage(region, 300));
                   }
                 },
               );
