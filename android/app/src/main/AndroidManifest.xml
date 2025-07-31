@@ -3,7 +3,7 @@
     <application
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
-        android:label="Televideo">
+        android:label="Teleretrò Italia">
         <meta-data
             android:name="io.flutter.embedding.android.EnableDeferredComponents"
             android:value="false" />
@@ -28,6 +28,6 @@
             android:value="2" />
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-3940256099942544~3347511713" />
+            android:value="ca-app-pub-5405772972501741~8859179946" />
     </application>
 </manifest>

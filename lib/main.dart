@@ -11,6 +11,7 @@ import 'package:cursor_televideo/features/televideo_viewer/bloc/televideo_bloc.d
 import 'package:cursor_televideo/features/televideo_viewer/bloc/region_bloc.dart';
 import 'package:cursor_televideo/core/network/televideo_repository.dart';
 import 'package:cursor_televideo/core/theme/theme_bloc.dart';
+import 'package:cursor_televideo/core/ads/ad_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,6 +20,7 @@ void main() async {
   await AppSettings.initialize();
   await OnboardingService().initialize();
   await FavoritesService().initialize();
+  await AdService().initialize(); // Inizializza il servizio annunci
   
   runApp(const MyApp());
 }
