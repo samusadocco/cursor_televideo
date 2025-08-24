@@ -65,8 +65,8 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    _televideoBloc = context.read<TelevideoBloc>();
     _regionBloc = RegionBloc();
+    _televideoBloc = context.read<TelevideoBloc>()..setRegionBloc(_regionBloc);
   }
 
   @override

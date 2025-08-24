@@ -1,6 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:cursor_televideo/core/network/televideo_repository.dart';
 import 'package:cursor_televideo/core/ads/ad_service.dart';
+import 'package:cursor_televideo/core/settings/app_settings.dart';
+import 'package:cursor_televideo/core/storage/favorites_service.dart';
+import 'package:cursor_televideo/features/televideo_viewer/bloc/region_bloc.dart';
 import 'package:cursor_televideo/features/televideo_viewer/bloc/televideo_event.dart';
 import 'package:cursor_televideo/features/televideo_viewer/bloc/televideo_state.dart';
 import 'package:cursor_televideo/shared/models/televideo_page.dart';
@@ -9,6 +12,7 @@ import 'package:cursor_televideo/shared/models/region.dart';
 class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
   final TelevideoRepository _repository;
   final AdService _adService = AdService();
+  RegionBloc? _regionBloc;
   late final int _minPage; // Minima pagina disponibile (100 o 101)
   bool _isPage100Available = true; // Inizialmente assumiamo che sia disponibile
   Region? _currentRegion;
@@ -24,8 +28,14 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
   /// Indica se la pagina 100 è disponibile
   bool get isPage100Available => _isPage100Available;
 
-  TelevideoBloc({required TelevideoRepository repository})
+  /// Imposta il RegionBloc da utilizzare per la sincronizzazione dello stato
+  void setRegionBloc(RegionBloc regionBloc) {
+    _regionBloc = regionBloc;
+  }
+
+  TelevideoBloc({required TelevideoRepository repository, RegionBloc? regionBloc})
       : _repository = repository,
+        _regionBloc = regionBloc,
         super(const TelevideoState.initial()) {
     on<TelevideoEvent>((event, emit) async {
       _lastEvent = event;
@@ -47,6 +57,26 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
 
   Future<void> _initializeBloc() async {
     await _checkPage100Availability();
+    
+    // Se l'impostazione è abilitata e ci sono preferiti, carica il primo preferito
+    if (AppSettings.loadFirstFavorite) {
+      final favorites = FavoritesService().getFavorites();
+      if (favorites.isNotEmpty) {
+        final firstFavorite = favorites.first;
+        if (firstFavorite.regionCode != null) {
+          // Se è una pagina regionale, carica la regione corrispondente
+          final region = Region.fromCode(firstFavorite.regionCode!);
+          add(TelevideoEvent.loadRegionalPage(region, firstFavorite.pageNumber));
+        } else {
+          // Se è una pagina nazionale, caricala direttamente
+          add(TelevideoEvent.loadNationalPage(firstFavorite.pageNumber));
+        }
+        return; // Esce dalla funzione per evitare il caricamento della pagina predefinita
+      }
+    }
+    
+    // Se non ci sono preferiti o l'impostazione è disabilitata, carica la pagina predefinita
+    add(TelevideoEvent.loadNationalPage(_minPage));
   }
 
   Future<void> _checkPage100Availability() async {
@@ -54,13 +84,11 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
       _isPage100Available = await _repository.isPage100Available();
       _minPage = _isPage100Available ? 100 : 101;
       _currentPage = _minPage;
-      add(TelevideoEvent.loadNationalPage(_minPage));
     } catch (e) {
       // In caso di errore, assumiamo che la pagina 100 non sia disponibile
       _isPage100Available = false;
       _minPage = 101;
       _currentPage = 101;
-      add(const TelevideoEvent.loadNationalPage(101));
     }
   }
 
@@ -74,6 +102,9 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
     emit(const TelevideoState.loading());
     _currentPage = pageNumber;
     _currentRegion = null; // Reset della regione quando si carica una pagina nazionale
+    
+    // Aggiorna il RegionBloc se disponibile
+    _regionBloc?.add(const RegionEvent.selectRegion(null));
 
     try {
       print('[TelevideoBloc] Fetching national page from repository'); // Debug print
@@ -106,6 +137,9 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
       emit(const TelevideoState.loading());
       _currentRegion = region;
       _currentPage = pageNumber;
+      
+      // Aggiorna il RegionBloc se disponibile
+      _regionBloc?.add(RegionEvent.selectRegion(region));
       
       _adService.incrementPageView();
       print('[TelevideoBloc] Regional page loaded successfully'); // Debug print

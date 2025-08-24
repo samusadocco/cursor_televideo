@@ -114,7 +114,8 @@ class FavoritesService {
       );
     }
     
-    //await _saveFavorites();
+    // Salva immediatamente il nuovo ordine
+    await _saveFavorites();
   }
 
   void _reorderIndexes() {

@@ -9,6 +9,13 @@ class Region {
     required this.imagePath,
   });
 
+  static Region fromCode(String code) {
+    return values.firstWhere(
+      (region) => region.code == code,
+      orElse: () => throw Exception('Regione non trovata per il codice: $code'),
+    );
+  }
+
   static const List<Region> values = [
     Region(
       name: 'Abruzzo',

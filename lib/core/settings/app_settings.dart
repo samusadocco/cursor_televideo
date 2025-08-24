@@ -6,24 +6,28 @@ class AppSettings {
   static const String _liveShowEnabledKey = 'live_show_enabled';
   static const String _liveShowIntervalKey = 'live_show_interval_seconds';
   static const String _themeModeKey = 'theme_mode';
+  static const String _loadFirstFavoriteKey = 'load_first_favorite';
 
   // Valori di default
   static const int _defaultCacheDuration = 300; // 5 minuti
   static const bool _defaultLiveShowEnabled = true;
   static const int _defaultLiveShowInterval = 10; // 10 secondi
   static const ThemeMode _defaultThemeMode = ThemeMode.dark;
+  static const bool _defaultLoadFirstFavorite = false;
 
   // Valori in memoria
   static int _cacheDurationInSeconds = _defaultCacheDuration;
   static bool _liveShowEnabled = _defaultLiveShowEnabled;
   static int _liveShowIntervalSeconds = _defaultLiveShowInterval;
   static ThemeMode _themeMode = _defaultThemeMode;
+  static bool _loadFirstFavorite = _defaultLoadFirstFavorite;
 
   // Getters
   static int get cacheDurationInSeconds => _cacheDurationInSeconds;
   static bool get liveShowEnabled => _liveShowEnabled;
   static int get liveShowIntervalSeconds => _liveShowIntervalSeconds;
   static ThemeMode get themeMode => _themeMode;
+  static bool get loadFirstFavorite => _loadFirstFavorite;
 
   // Inizializzazione
   static Future<void> initialize() async {
@@ -32,6 +36,7 @@ class AppSettings {
     _cacheDurationInSeconds = prefs.getInt(_cacheDurationKey) ?? _defaultCacheDuration;
     _liveShowEnabled = prefs.getBool(_liveShowEnabledKey) ?? _defaultLiveShowEnabled;
     _liveShowIntervalSeconds = prefs.getInt(_liveShowIntervalKey) ?? _defaultLiveShowInterval;
+    _loadFirstFavorite = prefs.getBool(_loadFirstFavoriteKey) ?? _defaultLoadFirstFavorite;
     
     final themeModeIndex = prefs.getInt(_themeModeKey);
     _themeMode = themeModeIndex != null 
@@ -66,5 +71,11 @@ class AppSettings {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setInt(_themeModeKey, mode.index);
     _themeMode = mode;
+  }
+
+  static Future<void> setLoadFirstFavorite(bool enabled) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_loadFirstFavoriteKey, enabled);
+    _loadFirstFavorite = enabled;
   }
 } 

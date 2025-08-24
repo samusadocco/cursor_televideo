@@ -5,6 +5,7 @@ import 'package:cursor_televideo/core/theme/theme_bloc.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:cursor_televideo/core/onboarding/onboarding_service.dart';
 import 'package:cursor_televideo/features/settings/presentation/pages/backup_page.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -14,18 +15,36 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
+  late bool _loadFirstFavorite;
   late double _cacheSliderValue;
   late bool _liveShowEnabled;
   late double _liveShowIntervalValue;
   late bool _showOnboardingOnStartup;
+  PackageInfo? _packageInfo;
 
   @override
   void initState() {
     super.initState();
+    _loadFirstFavorite = AppSettings.loadFirstFavorite;
     _cacheSliderValue = AppSettings.cacheDurationInSeconds.toDouble();
     _liveShowEnabled = AppSettings.liveShowEnabled;
     _liveShowIntervalValue = AppSettings.liveShowIntervalSeconds.toDouble();
     _showOnboardingOnStartup = OnboardingService().showOnStartup;
+    _loadPackageInfo();
+  }
+
+  Future<void> _loadPackageInfo() async {
+    final packageInfo = await PackageInfo.fromPlatform();
+    setState(() {
+      _packageInfo = packageInfo;
+    });
+  }
+
+  Future<void> _updateLoadFirstFavorite(bool value) async {
+    setState(() {
+      _loadFirstFavorite = value;
+    });
+    await AppSettings.setLoadFirstFavorite(value);
   }
 
   Future<void> _updateCacheDuration(double value) async {
@@ -72,6 +91,15 @@ class _SettingsPageState extends State<SettingsPage> {
       ),
       body: ListView(
         children: [
+          // Sezione Caricamento Preferiti
+          SwitchListTile(
+            title: const Text('Carica il primo preferito all\'avvio'),
+            subtitle: const Text('Se abilitato, all\'avvio dell\'app verrà caricato il primo preferito della lista'),
+            value: _loadFirstFavorite,
+            onChanged: _updateLoadFirstFavorite,
+          ),
+          const Divider(),
+
           // Sezione Cache
           ListTile(
             title: const Text('Durata cache immagini pagine Televideo (0 secondi per disabilitare)'),
@@ -199,6 +227,16 @@ class _SettingsPageState extends State<SettingsPage> {
               );
             },
           ),
+          const Divider(),
+          
+          // Sezione Informazioni App
+          if (_packageInfo != null) ...[
+            ListTile(
+              title: const Text('Versione'),
+              subtitle: Text('${_packageInfo!.version} (build ${_packageInfo!.buildNumber})'),
+              trailing: const Icon(Icons.info_outline),
+            ),
+          ],
         ],
       ),
     );
