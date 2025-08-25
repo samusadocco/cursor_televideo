@@ -240,9 +240,7 @@ class AdService {
     if (kIsWeb) return null;
 
     // Determina la dimensione del banner in base alla piattaforma
-    final size = Platform.isAndroid 
-        ? AdSize.banner  // Banner standard per Android
-        : (isPortrait ? AdSize.largeBanner : AdSize.banner);  // Dimensioni originali per iOS
+    final size = (isPortrait ? AdSize.largeBanner : AdSize.banner);  // Dimensioni originali per iOS
     
     // Determina l'ID dell'annuncio in base alla piattaforma e alla modalità
     String adUnitId;

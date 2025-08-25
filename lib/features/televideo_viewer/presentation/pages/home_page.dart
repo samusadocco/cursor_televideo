@@ -572,10 +572,11 @@ class _HomePageState extends State<HomePage> {
               builder: (context, state) {
                 return state.when(
                   initial: () => const SizedBox(),
-                  loading: () => Text(
-                    'Caricamento...',
+                  loading: (pageNumber) => Text(
+                    '...$pageNumber...',
                     style: TextStyle(
-                      fontSize: 16,
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                   loaded: (page, currentSubPage) => Row(
@@ -687,7 +688,22 @@ class _HomePageState extends State<HomePage> {
                         builder: (context, state) {
                           return state.when(
                             initial: () => const Center(child: CircularProgressIndicator()),
-                            loading: () => const Center(child: CircularProgressIndicator()),
+                            loading: (pageNumber) => Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const CircularProgressIndicator(),
+                                  const SizedBox(height: 16),
+                                  Text(
+                                    'Caricamento pagina $pageNumber...',
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                             loaded: (page, currentSubPage) => TelevideoViewer(
                               page: page,
                               onPageNumberSubmitted: (pageNumber) {

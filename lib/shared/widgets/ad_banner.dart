@@ -47,9 +47,7 @@ class _AdBannerState extends State<AdBanner> {
       _loadAd(isPortrait);
     } else {
       final currentSize = _bannerAd?.size;
-      final expectedSize = Platform.isAndroid
-          ? AdSize.banner
-          : (isPortrait ? AdSize.largeBanner : AdSize.banner);
+      final expectedSize =(isPortrait ? AdSize.largeBanner : AdSize.banner);
       
       if (currentSize != expectedSize) {
         _loadAd(isPortrait);

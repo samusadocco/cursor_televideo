@@ -19,7 +19,7 @@ mixin _$TelevideoState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function() loading,
+    required TResult Function(int pageNumber) loading,
     required TResult Function(TelevideoPage page, int currentSubPage) loaded,
     required TResult Function(String message) error,
   }) =>
@@ -27,7 +27,7 @@ mixin _$TelevideoState {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
-    TResult? Function()? loading,
+    TResult? Function(int pageNumber)? loading,
     TResult? Function(TelevideoPage page, int currentSubPage)? loaded,
     TResult? Function(String message)? error,
   }) =>
@@ -35,7 +35,7 @@ mixin _$TelevideoState {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function()? loading,
+    TResult Function(int pageNumber)? loading,
     TResult Function(TelevideoPage page, int currentSubPage)? loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
@@ -131,7 +131,7 @@ class _$InitialImpl implements _Initial {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function() loading,
+    required TResult Function(int pageNumber) loading,
     required TResult Function(TelevideoPage page, int currentSubPage) loaded,
     required TResult Function(String message) error,
   }) {
@@ -142,7 +142,7 @@ class _$InitialImpl implements _Initial {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
-    TResult? Function()? loading,
+    TResult? Function(int pageNumber)? loading,
     TResult? Function(TelevideoPage page, int currentSubPage)? loaded,
     TResult? Function(String message)? error,
   }) {
@@ -153,7 +153,7 @@ class _$InitialImpl implements _Initial {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function()? loading,
+    TResult Function(int pageNumber)? loading,
     TResult Function(TelevideoPage page, int currentSubPage)? loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
@@ -211,6 +211,8 @@ abstract class _$$LoadingImplCopyWith<$Res> {
   factory _$$LoadingImplCopyWith(
           _$LoadingImpl value, $Res Function(_$LoadingImpl) then) =
       __$$LoadingImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({int pageNumber});
 }
 
 /// @nodoc
@@ -223,60 +225,86 @@ class __$$LoadingImplCopyWithImpl<$Res>
 
   /// Create a copy of TelevideoState
   /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? pageNumber = null,
+  }) {
+    return _then(_$LoadingImpl(
+      pageNumber: null == pageNumber
+          ? _value.pageNumber
+          : pageNumber // ignore: cast_nullable_to_non_nullable
+              as int,
+    ));
+  }
 }
 
 /// @nodoc
 
 class _$LoadingImpl implements _Loading {
-  const _$LoadingImpl();
+  const _$LoadingImpl({required this.pageNumber});
+
+  @override
+  final int pageNumber;
 
   @override
   String toString() {
-    return 'TelevideoState.loading()';
+    return 'TelevideoState.loading(pageNumber: $pageNumber)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$LoadingImpl);
+        (other.runtimeType == runtimeType &&
+            other is _$LoadingImpl &&
+            (identical(other.pageNumber, pageNumber) ||
+                other.pageNumber == pageNumber));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode => Object.hash(runtimeType, pageNumber);
+
+  /// Create a copy of TelevideoState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$LoadingImplCopyWith<_$LoadingImpl> get copyWith =>
+      __$$LoadingImplCopyWithImpl<_$LoadingImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function() loading,
+    required TResult Function(int pageNumber) loading,
     required TResult Function(TelevideoPage page, int currentSubPage) loaded,
     required TResult Function(String message) error,
   }) {
-    return loading();
+    return loading(pageNumber);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
-    TResult? Function()? loading,
+    TResult? Function(int pageNumber)? loading,
     TResult? Function(TelevideoPage page, int currentSubPage)? loaded,
     TResult? Function(String message)? error,
   }) {
-    return loading?.call();
+    return loading?.call(pageNumber);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function()? loading,
+    TResult Function(int pageNumber)? loading,
     TResult Function(TelevideoPage page, int currentSubPage)? loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
     if (loading != null) {
-      return loading();
+      return loading(pageNumber);
     }
     return orElse();
   }
@@ -320,7 +348,15 @@ class _$LoadingImpl implements _Loading {
 }
 
 abstract class _Loading implements TelevideoState {
-  const factory _Loading() = _$LoadingImpl;
+  const factory _Loading({required final int pageNumber}) = _$LoadingImpl;
+
+  int get pageNumber;
+
+  /// Create a copy of TelevideoState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$LoadingImplCopyWith<_$LoadingImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -414,7 +450,7 @@ class _$LoadedImpl implements _Loaded {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function() loading,
+    required TResult Function(int pageNumber) loading,
     required TResult Function(TelevideoPage page, int currentSubPage) loaded,
     required TResult Function(String message) error,
   }) {
@@ -425,7 +461,7 @@ class _$LoadedImpl implements _Loaded {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
-    TResult? Function()? loading,
+    TResult? Function(int pageNumber)? loading,
     TResult? Function(TelevideoPage page, int currentSubPage)? loaded,
     TResult? Function(String message)? error,
   }) {
@@ -436,7 +472,7 @@ class _$LoadedImpl implements _Loaded {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function()? loading,
+    TResult Function(int pageNumber)? loading,
     TResult Function(TelevideoPage page, int currentSubPage)? loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
@@ -568,7 +604,7 @@ class _$ErrorImpl implements _Error {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function() loading,
+    required TResult Function(int pageNumber) loading,
     required TResult Function(TelevideoPage page, int currentSubPage) loaded,
     required TResult Function(String message) error,
   }) {
@@ -579,7 +615,7 @@ class _$ErrorImpl implements _Error {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
-    TResult? Function()? loading,
+    TResult? Function(int pageNumber)? loading,
     TResult? Function(TelevideoPage page, int currentSubPage)? loaded,
     TResult? Function(String message)? error,
   }) {
@@ -590,7 +626,7 @@ class _$ErrorImpl implements _Error {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function()? loading,
+    TResult Function(int pageNumber)? loading,
     TResult Function(TelevideoPage page, int currentSubPage)? loaded,
     TResult Function(String message)? error,
     required TResult orElse(),

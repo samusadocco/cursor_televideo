@@ -196,7 +196,87 @@ def generate_macos_icons(base_icon):
         resized = base_icon.resize((size, size), Image.Resampling.LANCZOS)
         resized.save(os.path.join(macos_path, name))
 
+def create_launch_screen_image(size=1024):
+    # Crea un'immagine quadrata con sfondo nero
+    image = Image.new('RGB', (size, size), 'black')
+    draw = ImageDraw.Draw(image)
+    
+    # Crea il testo "TeleRetro" in stile pixel
+    text_size = int(size * 0.1)
+    try:
+        font = ImageFont.truetype("scripts/fonts/VT323-Regular.ttf", text_size)
+    except:
+        font = ImageFont.load_default()
+    
+    # Calcola la posizione del testo per centrarlo
+    text = "TeleRetrò\n  Italia"
+    text_bbox = draw.textbbox((0, 0), text, font=font)
+    text_width = text_bbox[2] - text_bbox[0]
+    text_height = text_bbox[3] - text_bbox[1]
+    text_x = (size - text_width) // 2
+    text_y = (size - text_height) // 2
+    
+    # Disegna il testo principale in verde televideo più brillante
+    draw.text((text_x, text_y), text, font=font, fill='#50ff50')
+    
+    # Aggiungi un bagliore più intenso al testo
+    glow = image.copy()
+    # Applica più passaggi di blur per un bagliore più realistico
+    for _ in range(3):
+        glow = glow.filter(ImageFilter.GaussianBlur(size // 30))
+    enhancer = ImageEnhance.Brightness(glow)
+    glow = enhancer.enhance(2.0)  # Aumenta l'intensità del bagliore
+    
+    # Combina l'immagine originale con il bagliore
+    image = Image.blend(glow, image, 0.5)
+    
+    # Aggiungi effetto scanlines più pronunciato
+    scanlines = Image.new('RGB', (size, size), 'black')
+    draw_scanlines = ImageDraw.Draw(scanlines)
+    for y in range(0, size, 2):
+        draw_scanlines.line([(0, y), (size, y)], fill='#111111', width=1)
+    image = Image.blend(image, scanlines, 0.15)
+    
+    # Applica la distorsione CRT
+    image = create_crt_distortion(image)
+    
+    # Aggiungi aberrazione cromatica
+    image = add_chromatic_aberration(image)
+    
+    # Aggiungi rumore
+    image = add_noise(image)
+    
+    # Applica un leggero bloom finale
+    image = image.filter(ImageFilter.GaussianBlur(1))
+    
+    return image
+
+def generate_android_launch_images(base_image):
+    # Dimensioni per le diverse densità
+    densities = {
+        'mdpi': 320,    # 1x
+        'hdpi': 480,    # 1.5x
+        'xhdpi': 640,   # 2x
+        'xxhdpi': 960,  # 3x
+        'xxxhdpi': 1280 # 4x
+    }
+    
+    for density, size in densities.items():
+        resized = base_image.resize((size, size), Image.Resampling.LANCZOS)
+        folder_path = f'android/app/src/main/res/drawable-{density}'
+        if not os.path.exists(folder_path):
+            os.makedirs(folder_path)
+        resized.save(os.path.join(folder_path, 'launch_image.png'))
+
 def main():
+    import argparse
+    
+    parser = argparse.ArgumentParser(description='Genera icone per l\'app')
+    parser.add_argument('--output', help='Percorso del file di output')
+    parser.add_argument('--size', type=int, default=1024, help='Dimensione dell\'immagine')
+    parser.add_argument('--launch-screen', action='store_true', help='Genera immagine per il LaunchScreen')
+    args = parser.parse_args()
+    
     # Crea la directory fonts se non esiste
     fonts_dir = Path("scripts/fonts")
     fonts_dir.mkdir(parents=True, exist_ok=True)
@@ -209,15 +289,37 @@ def main():
         response = requests.get(font_url)
         font_path.write_bytes(response.content)
     
-    # Genera l'icona base
-    base_icon = create_base_icon(1024)
+    if args.output:
+        # Genera una singola immagine
+        if args.launch_screen:
+            image = create_launch_screen_image(args.size)
+        else:
+            image = create_base_icon(args.size)
+        
+        # Crea la directory di output se non esiste
+        output_dir = os.path.dirname(args.output)
+        if output_dir and not os.path.exists(output_dir):
+            os.makedirs(output_dir)
+        
+        image.save(args.output)
+        
+        # Se stiamo generando l'immagine di avvio, genera anche le versioni per Android
+        if args.launch_screen:
+            generate_android_launch_images(image)
+    else:
+        # Genera l'icona base
+        base_icon = create_base_icon(1024)
+        
+        # Genera le icone per tutte le piattaforme
+        generate_ios_icons(base_icon)
+        generate_android_icons(base_icon)
+        generate_macos_icons(base_icon)
+        
+        # Genera l'immagine di avvio per Android
+        launch_image = create_launch_screen_image(1024)
+        generate_android_launch_images(launch_image)
     
-    # Genera le icone per tutte le piattaforme
-    generate_ios_icons(base_icon)
-    generate_android_icons(base_icon)
-    generate_macos_icons(base_icon)
-    
-    print("Icone generate con successo!")
+    print("Icone e immagini di avvio generate con successo!")
 
 if __name__ == "__main__":
     main() 

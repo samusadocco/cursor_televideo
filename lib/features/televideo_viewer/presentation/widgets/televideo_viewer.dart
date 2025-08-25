@@ -323,7 +323,22 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
                       builder: (context, state) {
                         Widget content = state.when(
                           initial: () => const Center(child: CircularProgressIndicator()),
-                          loading: () => const Center(child: CircularProgressIndicator()),
+                          loading: (pageNumber) => Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const CircularProgressIndicator(),
+                                const SizedBox(height: 16),
+                                Text(
+                                  'Caricamento pagina $pageNumber...',
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                           loaded: (page, currentSubPage) {
                             final lastEvent = context.read<TelevideoBloc>().lastEvent;
                             var transitionType = PageTransitionType.fade;
@@ -464,7 +479,7 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
             ),
           // Indicatore di caricamento
           if (_isRefreshing || context.watch<TelevideoBloc>().state.maybeWhen(
-            loading: () => true,
+            loading: (_) => true,
             orElse: () => false,
           ))
             Container(

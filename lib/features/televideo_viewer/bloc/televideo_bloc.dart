@@ -93,14 +93,14 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
   }
 
   Future<void> _onStartLoading(Emitter<TelevideoState> emit) async {
-    emit(const TelevideoState.loading());
+    emit(TelevideoState.loading(pageNumber: _currentPage));
   }
 
   Future<void> _onLoadNationalPage(int pageNumber, Emitter<TelevideoState> emit) async {
     print('[TelevideoBloc] Loading national page: $pageNumber'); // Debug print
     
-    emit(const TelevideoState.loading());
     _currentPage = pageNumber;
+    emit(TelevideoState.loading(pageNumber: pageNumber));
     _currentRegion = null; // Reset della regione quando si carica una pagina nazionale
     
     // Aggiorna il RegionBloc se disponibile
@@ -134,9 +134,9 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
       final page = await _repository.getRegionalPage(region.code, pageNumber: pageNumber);
       
       // Solo dopo un caricamento riuscito, aggiorniamo lo stato e le variabili
-      emit(const TelevideoState.loading());
       _currentRegion = region;
       _currentPage = pageNumber;
+      emit(TelevideoState.loading(pageNumber: pageNumber));
       
       // Aggiorna il RegionBloc se disponibile
       _regionBloc?.add(RegionEvent.selectRegion(region));
@@ -170,12 +170,13 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
   }
 
   Future<void> _findNextAvailablePage(int startPage, Emitter<TelevideoState> emit) async {
-    emit(const TelevideoState.loading());
     int currentPage = startPage;
     int maxAttempts = 100; // Limita il numero di tentativi per evitare loop infiniti
     int attempts = 0;
 
     while (currentPage <= 899 && attempts < maxAttempts) {
+      // Emetti lo stato di loading con la pagina corrente che stiamo provando
+      emit(TelevideoState.loading(pageNumber: currentPage));
       try {
         if (_currentRegion != null) {
           final page = await _repository.getRegionalPage(_currentRegion!.code, pageNumber: currentPage);
@@ -209,12 +210,13 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
   }
 
   Future<void> _findPreviousAvailablePage(int startPage, Emitter<TelevideoState> emit) async {
-    emit(const TelevideoState.loading());
     int currentPage = startPage;
     int maxAttempts = 100; // Limita il numero di tentativi per evitare loop infiniti
     int attempts = 0;
 
     while (currentPage >= _minPage && attempts < maxAttempts) {
+      // Emetti lo stato di loading con la pagina corrente che stiamo provando
+      emit(TelevideoState.loading(pageNumber: currentPage));
       try {
         if (_currentRegion != null) {
           final page = await _repository.getRegionalPage(_currentRegion!.code, pageNumber: currentPage);

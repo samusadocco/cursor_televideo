@@ -12,6 +12,7 @@ import 'package:cursor_televideo/features/televideo_viewer/bloc/region_bloc.dart
 import 'package:cursor_televideo/core/network/televideo_repository.dart';
 import 'package:cursor_televideo/core/theme/theme_bloc.dart';
 import 'package:cursor_televideo/core/ads/ad_service.dart';
+import 'package:cursor_televideo/features/splash/presentation/widgets/splash_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -56,8 +57,10 @@ class _MyAppState extends State<MyApp> {
             theme: AppTheme.lightTheme,
             darkTheme: AppTheme.darkTheme,
             themeMode: state.themeMode,
-            home: const OnboardingWrapper(
-              child: HomePage(),
+            home: const SplashScreen(
+              child: OnboardingWrapper(
+                child: HomePage(),
+              ),
             ),
             debugShowCheckedModeBanner: false,
           );
