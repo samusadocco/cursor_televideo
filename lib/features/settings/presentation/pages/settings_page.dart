@@ -6,6 +6,7 @@ import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:cursor_televideo/core/onboarding/onboarding_service.dart';
 import 'package:cursor_televideo/features/settings/presentation/pages/backup_page.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -81,6 +82,37 @@ class _SettingsPageState extends State<SettingsPage> {
 
   void _showInstructions() {
     OnboardingService().showOnboarding();
+  }
+
+  Future<void> _resetConsentSettings() async {
+    // Mostra un dialogo di conferma
+    final shouldReset = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Reset Impostazioni Privacy'),
+        content: const Text('Vuoi davvero resettare le impostazioni sulla privacy? Ti verrà richiesto nuovamente il consenso al prossimo avvio dell\'app.'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: const Text('ANNULLA'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            child: const Text('RESET'),
+          ),
+        ],
+      ),
+    ) ?? false;
+
+    if (shouldReset && mounted) {
+      await ConsentInformation.instance.reset();
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Impostazioni privacy resettate. Riavvia l\'app per il nuovo consenso.'),
+          duration: Duration(seconds: 5),
+        ),
+      );
+    }
   }
 
   @override
@@ -229,6 +261,68 @@ class _SettingsPageState extends State<SettingsPage> {
           ),
           const Divider(),
           
+          // Sezione Privacy
+          ListTile(
+            title: const Text('Impostazioni Privacy'),
+            subtitle: const Text('Modifica le tue preferenze sulla privacy per gli annunci'),
+            trailing: const Icon(Icons.privacy_tip_outlined),
+            onTap: () async {
+              try {
+                // Prima verifichiamo se il form è disponibile
+                final isAvailable = await ConsentInformation.instance.isConsentFormAvailable();
+                if (!isAvailable && mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Le impostazioni sulla privacy non sono disponibili al momento'),
+                    ),
+                  );
+                  return;
+                }
+
+                // Carichiamo e mostriamo il form
+                ConsentForm.loadConsentForm(
+                  (ConsentForm consentForm) {
+                    consentForm.show(
+                      (FormError? formError) {
+                        if (formError != null && mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Errore: ${formError.message}'),
+                            ),
+                          );
+                        }
+                      },
+                    );
+                  },
+                  (FormError formError) {
+                    if (mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Errore: ${formError.message}'),
+                        ),
+                      );
+                    }
+                  },
+                );
+              } catch (e) {
+                if (mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Errore: $e'),
+                    ),
+                  );
+                }
+              }
+            },
+          ),
+          ListTile(
+            title: const Text('Reset Impostazioni Privacy'),
+            subtitle: const Text('Resetta completamente le impostazioni sulla privacy'),
+            trailing: const Icon(Icons.restore),
+            onTap: _resetConsentSettings,
+          ),
+          const Divider(),
+
           // Sezione Informazioni App
           if (_packageInfo != null) ...[
             ListTile(

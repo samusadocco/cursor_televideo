@@ -13,6 +13,7 @@ import 'package:cursor_televideo/core/network/televideo_repository.dart';
 import 'package:cursor_televideo/core/theme/theme_bloc.dart';
 import 'package:cursor_televideo/core/ads/ad_service.dart';
 import 'package:cursor_televideo/features/splash/presentation/widgets/splash_screen.dart';
+import 'package:cursor_televideo/core/ads/initialize_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,7 +22,6 @@ void main() async {
   await AppSettings.initialize();
   await OnboardingService().initialize();
   await FavoritesService().initialize();
-  await AdService().initialize(); // Inizializza il servizio annunci
   
   runApp(const MyApp());
 }
@@ -57,9 +57,11 @@ class _MyAppState extends State<MyApp> {
             theme: AppTheme.lightTheme,
             darkTheme: AppTheme.darkTheme,
             themeMode: state.themeMode,
-            home: const SplashScreen(
-              child: OnboardingWrapper(
-                child: HomePage(),
+            home: const InitializeScreen(
+              targetWidget: SplashScreen(
+                child: OnboardingWrapper(
+                  child: HomePage(),
+                ),
               ),
             ),
             debugShowCheckedModeBanner: false,
