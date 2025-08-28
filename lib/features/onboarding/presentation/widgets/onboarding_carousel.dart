@@ -216,10 +216,13 @@ class _OnboardingCarouselState extends State<OnboardingCarousel> with SingleTick
       _buildPage(
         'Impostazioni',
         'Personalizza l\'app secondo le tue preferenze:\n\n'
+        '• Carica il primo preferito all\'avvio: decidi con quale pagina del Televideo iniziare\n'
         '• Tema: scegli tra chiaro, scuro o automatico\n'
         '• Aggiornamento automatico: attiva il caricamento automatico delle sottopagine\n'
         '• Cache: gestisci la durata della cache delle pagine\n'
-        '• Istruzioni: rivedi questo tutorial quando vuoi',
+        '• Istruzioni: rivedi questo tutorial quando vuoi\n'
+        '• Backup Preferiti: salva e ripristina i tuoi preferiti\n'
+        '• Impostazioni e reset Privacy: gestisci o resetta le scelte sulla privacy',
         Icons.settings,
         customContent: const SettingsInstruction(),
         contentAfterTitle: true,

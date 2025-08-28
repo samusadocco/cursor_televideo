@@ -14,6 +14,8 @@ import 'package:cursor_televideo/core/theme/theme_bloc.dart';
 import 'package:cursor_televideo/core/ads/ad_service.dart';
 import 'package:cursor_televideo/features/splash/presentation/widgets/splash_screen.dart';
 import 'package:cursor_televideo/core/ads/initialize_screen.dart';
+import 'package:cursor_televideo/core/version_manager.dart';
+import 'package:cursor_televideo/features/version/widgets/version_changes_dialog.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -86,6 +88,7 @@ class OnboardingWrapper extends StatefulWidget {
 
 class _OnboardingWrapperState extends State<OnboardingWrapper> {
   StreamSubscription? _onboardingSubscription;
+  bool _hasShownVersionChanges = false;
 
   @override
   void initState() {
@@ -121,6 +124,27 @@ class _OnboardingWrapperState extends State<OnboardingWrapper> {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         _showOnboardingDialog();
       });
+    } else {
+      // Se non dobbiamo mostrare l'onboarding, controlliamo le novità della versione
+      _checkVersionChanges();
+    }
+  }
+
+  void _checkVersionChanges() async {
+    if (_hasShownVersionChanges) return;
+
+    final versionManager = VersionManager();
+    final newVersions = await versionManager.getNewVersions();
+
+    if (newVersions.isNotEmpty && mounted) {
+      _hasShownVersionChanges = true;
+      // Aspetta il primo frame per mostrare il dialogo
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        showDialog(
+          context: context,
+          builder: (context) => VersionChangesDialog(versions: newVersions),
+        );
+      });
     }
   }
 
@@ -135,6 +159,8 @@ class _OnboardingWrapperState extends State<OnboardingWrapper> {
           await OnboardingService().markOnboardingAsSeen();
           if (mounted && context.mounted) {
             Navigator.of(context).pop();
+            // Dopo l'onboarding, controlliamo le novità della versione
+            _checkVersionChanges();
           }
         },
       ),

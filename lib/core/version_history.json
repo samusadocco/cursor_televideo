@@ -1,0 +1,26 @@
+{
+  "versions": [
+    {
+        "version": "1.0.5",
+        "changes": [
+          "Mostra il changelog all' avvio dopo un aggiornamento"
+        ]
+      },
+    {
+        "version": "1.0.4",
+        "changes": [
+          "Carica il primo preferito all'avvio: decidi con quale pagina del Televideo iniziare (vai nelle Impostazioni)",
+          "GDPR: gestisci le tue scelte sulla privacy",
+          "Ottimizzate le prestazioni",
+          "Mostra la versione nelle Impostazioni"
+        ]
+      },
+    {
+      "version": "1.0.3",
+      "changes": [
+        "Corretti bug minori"
+      ]
+    }
+    
+  ]
+}
