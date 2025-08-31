@@ -60,3 +60,4 @@ class VersionChangesDialog extends StatelessWidget {
     );
   }
 }
+

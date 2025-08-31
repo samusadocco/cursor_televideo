@@ -1,6 +1,13 @@
 {
   "versions": [
     {
+        "version": "1.0.6",
+        "changes": [
+          "Ottimizzate le prestazioni",
+          "Fix messaggio tracking authorization"
+        ]
+      },
+    {
         "version": "1.0.5",
         "changes": [
           "Mostra il changelog all' avvio dopo un aggiornamento"
@@ -24,3 +31,4 @@
     
   ]
 }
+

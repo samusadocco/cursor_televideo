@@ -16,6 +16,8 @@ import 'package:cursor_televideo/features/splash/presentation/widgets/splash_scr
 import 'package:cursor_televideo/core/ads/initialize_screen.dart';
 import 'package:cursor_televideo/core/version_manager.dart';
 import 'package:cursor_televideo/features/version/widgets/version_changes_dialog.dart';
+import 'package:cursor_televideo/core/review/review_service.dart';
+import 'package:cursor_televideo/core/tracking/tracking_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,6 +26,13 @@ void main() async {
   await AppSettings.initialize();
   await OnboardingService().initialize();
   await FavoritesService().initialize();
+  
+  // Inizializza il servizio di recensioni
+  final reviewService = await ReviewService.create();
+  await reviewService.incrementLaunchCount();
+
+  // Richiedi autorizzazione al tracciamento su iOS
+  await TrackingService.requestTrackingAuthorization();
   
   runApp(const MyApp());
 }
@@ -143,8 +152,18 @@ class _OnboardingWrapperState extends State<OnboardingWrapper> {
         showDialog(
           context: context,
           builder: (context) => VersionChangesDialog(versions: newVersions),
-        );
+        ).then((_) => _checkReview()); // Controlla le recensioni dopo aver mostrato le novità
       });
+    } else {
+      // Se non ci sono novità, controlla subito le recensioni
+      _checkReview();
+    }
+  }
+
+  void _checkReview() async {
+    final reviewService = await ReviewService.create();
+    if (await reviewService.shouldRequestReview()) {
+      await reviewService.requestReview();
     }
   }
 
@@ -160,7 +179,7 @@ class _OnboardingWrapperState extends State<OnboardingWrapper> {
           if (mounted && context.mounted) {
             Navigator.of(context).pop();
             // Dopo l'onboarding, controlliamo le novità della versione
-            _checkVersionChanges();
+            _checkVersionChanges(); // Questo a sua volta controllerà le recensioni
           }
         },
       ),

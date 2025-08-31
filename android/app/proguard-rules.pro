@@ -14,6 +14,7 @@
 # Geocoding
 -keep class com.google.android.gms.location.** { *; }
 -keep class com.google.android.gms.common.** { *; }
+-keep class com.google.android.gms.common.annotation.** { *; }
 
 # Keep your application class
 -keep class it.codebysam.televideo.** { *; }
@@ -33,6 +34,7 @@
 -keep class com.google.android.play.core.missingsplits.** { *; }
 -keep class com.google.android.play.core.splitinstall.model.** { *; }
 -keep class com.google.android.play.core.tasks.** { *; }
+-keep class com.google.android.play.core.ktx.** { *; }
 
 # Keep R8 rules
 -keepattributes SourceFile,LineNumberTable

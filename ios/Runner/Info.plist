@@ -37,6 +37,8 @@
 	<string>L'app ha bisogno della tua posizione per mostrare automaticamente la tua regione</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>L'app ha bisogno della tua posizione per mostrare automaticamente la tua regione</string>
+	<key>NSUserTrackingUsageDescription</key>
+	<string>Questa autorizzazione ci permette di mostrarti annunci più pertinenti</string>
 	<key>SKAdNetworkItems</key>
 	<array>
 		<dict>

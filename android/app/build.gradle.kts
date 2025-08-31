@@ -28,8 +28,8 @@ android {
         applicationId = "it.codebysam.televideo"
         minSdk = flutter.minSdkVersion
         targetSdk = 35 // Manteniamo Android 14 come target
-        versionCode = 6
-        versionName = "1.0.5"
+        versionCode = 7
+        versionName = "1.0.6"
 
         // Disabilita i componenti differiti
         manifestPlaceholders["enableDeferredComponents"] = "false"
@@ -46,7 +46,8 @@ android {
 
     buildTypes {
         getByName("release") {
-            isMinifyEnabled = true
+            isMinifyEnabled = false // Disabilitiamo R8
+            isShrinkResources = false // Disabilitiamo la rimozione delle risorse inutilizzate
             proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
             signingConfig = signingConfigs.getByName("release")
         }
@@ -55,6 +56,10 @@ android {
 
 dependencies {
     implementation("com.google.android.ump:user-messaging-platform:2.1.0")
+    implementation("com.google.android.gms:play-services-base:18.3.0")
+    implementation("com.google.android.play:review:2.0.2")
+    implementation("com.google.android.play:review-ktx:2.0.2")
+    implementation("com.google.android.gms:play-services-basement:18.3.0")
 }
 
 flutter {
