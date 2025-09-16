@@ -1,6 +1,18 @@
 {
   "versions": [
     {
+      "version": "1.0.8",
+      "changes": [
+        "Aggiunta la funzione di pausa e play dell' aggiornamento automatico di sottopagine"
+      ]
+    },
+    {
+      "version": "1.0.7",
+      "changes": [
+        "Migliorata la gestione delle recensioni"
+      ]
+    },
+    {
         "version": "1.0.6",
         "changes": [
           "Ottimizzate le prestazioni",

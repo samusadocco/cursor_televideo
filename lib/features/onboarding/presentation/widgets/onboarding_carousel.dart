@@ -152,6 +152,21 @@ class _OnboardingCarouselState extends State<OnboardingCarousel> with SingleTick
         ),
         contentAtBottom: true,
       ),
+      // Pausa autocaricamento
+      _buildPage(
+        'Pausa Autocaricamento',
+        'Puoi mettere in pausa l\'aggiornamento automatico delle sottopagine:\n\n'
+        '• Tocca in un punto qualsiasi della pagina dove non ci sono numeri cliccabili\n'
+        '• Vedrai apparire l\'icona ⏸️ per indicare che l\'aggiornamento è in pausa\n'
+        '• Tocca di nuovo per riprendere l\'aggiornamento (icona ▶️)\n\n'
+        'Questa funzione è utile quando vuoi leggere con calma una sottopagina senza che cambi automaticamente.',
+        Icons.pause_circle_outline,
+        customContent: const BottomBarInstructionWithTimer(
+          highlight: BottomBarHighlight.pageSelector,
+          showPauseOverlay: true,
+        ),
+        contentAtBottom: true,
+      ),
       // Spiegazione swipe
       _buildPage(
         'Navigazione Swipe',

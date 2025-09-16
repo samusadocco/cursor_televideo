@@ -18,21 +18,67 @@ import 'package:cursor_televideo/core/version_manager.dart';
 import 'package:cursor_televideo/features/version/widgets/version_changes_dialog.dart';
 import 'package:cursor_televideo/core/review/review_service.dart';
 import 'package:cursor_televideo/core/tracking/tracking_service.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cursor_televideo/core/analytics/analytics_service.dart';
+import 'package:cursor_televideo/firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Richiedi autorizzazione al tracciamento su iOS prima di tutto
+  try {
+    await TrackingService.requestTrackingAuthorization();
+    print('TrackingService authorization requested successfully');
+  } catch (e) {
+    print('Error requesting tracking authorization: $e');
+  }
+  
+  // Inizializza Firebase e Analytics
+  try {
+    print('Starting Firebase initialization...');
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+    print('Firebase initialized successfully');
+    
+    // Verifica che Firebase sia inizializzato correttamente
+    if (Firebase.apps.isEmpty) {
+      throw Exception('Firebase non è stato inizializzato correttamente');
+    }
+    
+    // Inizializza Analytics
+    print('Starting Analytics initialization...');
+    await AnalyticsService.initialize();
+    print('Analytics initialized successfully');
+    
+    // Log dell'apertura dell'app
+    await AnalyticsService().logAppOpen();
+    print('App open event logged successfully');
+  } catch (e, stackTrace) {
+    print('Error initializing Firebase/Analytics: $e');
+    print('Stack trace: $stackTrace');
+  }
   
   // Inizializza le impostazioni
-  await AppSettings.initialize();
-  await OnboardingService().initialize();
-  await FavoritesService().initialize();
+  try {
+    await AppSettings.initialize();
+    print('AppSettings initialized successfully');
+    await OnboardingService().initialize();
+    print('OnboardingService initialized successfully');
+    await FavoritesService().initialize();
+    print('FavoritesService initialized successfully');
+  } catch (e) {
+    print('Error initializing services: $e');
+  }
   
   // Inizializza il servizio di recensioni
-  final reviewService = await ReviewService.create();
-  await reviewService.incrementLaunchCount();
-
-  // Richiedi autorizzazione al tracciamento su iOS
-  await TrackingService.requestTrackingAuthorization();
+  try {
+    final reviewService = await ReviewService.create();
+    await reviewService.incrementLaunchCount();
+    print('ReviewService initialized successfully');
+  } catch (e) {
+    print('Error initializing ReviewService: $e');
+  }
   
   runApp(const MyApp());
 }

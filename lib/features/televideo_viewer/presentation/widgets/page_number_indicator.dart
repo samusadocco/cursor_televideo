@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'dart:async';
+import 'package:cursor_televideo/core/analytics/analytics_service.dart';
+import 'package:cursor_televideo/core/ads/ad_service.dart';
 
 class PageNumberIndicator extends StatefulWidget {
   final int pageNumber;
@@ -6,6 +9,7 @@ class PageNumberIndicator extends StatefulWidget {
   final int? maxSubPages;
   final Duration duration;
   final bool isAutoRefreshEnabled;
+  final bool isAutoRefreshPaused;
   final VoidCallback? onTap;
 
   const PageNumberIndicator({
@@ -15,6 +19,7 @@ class PageNumberIndicator extends StatefulWidget {
     this.maxSubPages,
     required this.duration,
     required this.isAutoRefreshEnabled,
+    this.isAutoRefreshPaused = false,
     this.onTap,
   });
 
@@ -26,10 +31,34 @@ class _PageNumberIndicatorState extends State<PageNumberIndicator> with SingleTi
   late AnimationController _controller;
   late Animation<double> _animation;
   int? _lastSubPage;
+  StreamSubscription? _adEventSubscription;
+  double _savedProgress = 0.0;
 
   @override
   void initState() {
     super.initState();
+    
+    // Ascolta gli eventi degli annunci
+    _adEventSubscription = AdService().adEventStream.listen((event) {
+      switch (event) {
+        case AdEvent.shown:
+          // Quando l'annuncio viene mostrato, salviamo il progresso e fermiamo l'animazione
+          if (widget.isAutoRefreshEnabled && !widget.isAutoRefreshPaused && widget.subPage != null) {
+            _savedProgress = _controller.value;
+            _controller.stop();
+          }
+          break;
+        case AdEvent.dismissed:
+          // Quando l'annuncio viene chiuso, riprendiamo dal punto salvato
+          if (widget.isAutoRefreshEnabled && !widget.isAutoRefreshPaused && widget.subPage != null) {
+            _controller.forward(from: _savedProgress);
+          }
+          break;
+        default:
+          break;
+      }
+    });
+
     _controller = AnimationController(
       vsync: this,
       duration: widget.duration,
@@ -44,9 +73,33 @@ class _PageNumberIndicatorState extends State<PageNumberIndicator> with SingleTi
     ));
 
     _lastSubPage = widget.subPage;
-    if (widget.isAutoRefreshEnabled && widget.subPage != null) {
-      _controller.repeat();
+    
+    _animation.addListener(() {
+      if (_animation.isCompleted) {
+        // Non resettare subito l'animazione, aspetta che la pagina sia stata aggiornata
+        if (widget.isAutoRefreshEnabled && !widget.isAutoRefreshPaused) {
+          // Log del cambio automatico di sottopagina
+          if (widget.subPage != null && widget.maxSubPages != null) {
+            final nextSubPage = widget.subPage! >= widget.maxSubPages! ? 1 : widget.subPage! + 1;
+            AnalyticsService().logSubpageChange(
+              widget.pageNumber.toString(),
+              nextSubPage.toString(),
+              'auto_refresh',
+            );
+          }
+        }
+      }
+    });
+
+    if (widget.isAutoRefreshEnabled && !widget.isAutoRefreshPaused && widget.subPage != null) {
+      _controller.forward();
     }
+  }
+
+
+  void _resetAndStart() {
+    _controller.reset();
+    _controller.forward(from: 0.0);
   }
 
   @override
@@ -58,29 +111,44 @@ class _PageNumberIndicatorState extends State<PageNumberIndicator> with SingleTi
       _controller.duration = widget.duration;
     }
 
-    // Se è cambiata la sottopagina, resetta l'animazione
+    // Se è cambiata la sottopagina, resetta e riavvia l'animazione
     if (widget.subPage != _lastSubPage) {
       _lastSubPage = widget.subPage;
-      _controller.reset();
-      if (widget.isAutoRefreshEnabled && widget.subPage != null) {
-        _controller.forward();
+      if (widget.isAutoRefreshEnabled && !widget.isAutoRefreshPaused && widget.subPage != null) {
+        _resetAndStart();
       }
     }
 
-    // Gestisci l'animazione in base allo stato di auto-refresh
-    if (widget.isAutoRefreshEnabled && widget.subPage != null) {
+    // Gestisci l'animazione in base allo stato di auto-refresh e pausa
+    if (widget.isAutoRefreshEnabled && !widget.isAutoRefreshPaused && widget.subPage != null) {
       if (!_controller.isAnimating) {
-        _controller.forward();
+        // Se l'animazione si è fermata (es. dopo un annuncio), riprendiamo dal punto salvato
+        _controller.forward(from: _savedProgress);
       }
     } else {
       _controller.stop();
-      _controller.reset();
+      if (!widget.isAutoRefreshEnabled) {
+        _controller.reset();
+      }
+    }
+
+    // Se lo stato di pausa è cambiato
+    if (oldWidget.isAutoRefreshPaused != widget.isAutoRefreshPaused) {
+      if (widget.isAutoRefreshPaused) {
+        // Salva il progresso quando mettiamo in pausa
+        _savedProgress = _controller.value;
+        _controller.stop();
+      } else if (widget.isAutoRefreshEnabled && widget.subPage != null) {
+        // Quando usciamo dalla pausa, riprendiamo dal punto salvato
+        _controller.forward(from: _savedProgress);
+      }
     }
   }
 
   @override
   void dispose() {
     _controller.dispose();
+    _adEventSubscription?.cancel();
     super.dispose();
   }
 
@@ -188,4 +256,4 @@ class CircleProgressPainter extends CustomPainter {
            oldDelegate.color != color ||
            oldDelegate.strokeWidth != strokeWidth;
   }
-} 
+}

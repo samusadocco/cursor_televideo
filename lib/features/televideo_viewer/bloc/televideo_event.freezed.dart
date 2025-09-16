@@ -25,6 +25,7 @@ mixin _$TelevideoEvent {
     required TResult Function() nextSubPage,
     required TResult Function() previousSubPage,
     required TResult Function() startLoading,
+    required TResult Function() toggleAutoRefreshPause,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -36,6 +37,7 @@ mixin _$TelevideoEvent {
     TResult? Function()? nextSubPage,
     TResult? Function()? previousSubPage,
     TResult? Function()? startLoading,
+    TResult? Function()? toggleAutoRefreshPause,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -47,6 +49,7 @@ mixin _$TelevideoEvent {
     TResult Function()? nextSubPage,
     TResult Function()? previousSubPage,
     TResult Function()? startLoading,
+    TResult Function()? toggleAutoRefreshPause,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -59,6 +62,8 @@ mixin _$TelevideoEvent {
     required TResult Function(_NextSubPage value) nextSubPage,
     required TResult Function(_PreviousSubPage value) previousSubPage,
     required TResult Function(_StartLoading value) startLoading,
+    required TResult Function(_ToggleAutoRefreshPause value)
+        toggleAutoRefreshPause,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -70,6 +75,7 @@ mixin _$TelevideoEvent {
     TResult? Function(_NextSubPage value)? nextSubPage,
     TResult? Function(_PreviousSubPage value)? previousSubPage,
     TResult? Function(_StartLoading value)? startLoading,
+    TResult? Function(_ToggleAutoRefreshPause value)? toggleAutoRefreshPause,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -81,6 +87,7 @@ mixin _$TelevideoEvent {
     TResult Function(_NextSubPage value)? nextSubPage,
     TResult Function(_PreviousSubPage value)? previousSubPage,
     TResult Function(_StartLoading value)? startLoading,
+    TResult Function(_ToggleAutoRefreshPause value)? toggleAutoRefreshPause,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -184,6 +191,7 @@ class _$LoadNationalPageImpl implements _LoadNationalPage {
     required TResult Function() nextSubPage,
     required TResult Function() previousSubPage,
     required TResult Function() startLoading,
+    required TResult Function() toggleAutoRefreshPause,
   }) {
     return loadNationalPage(pageNumber);
   }
@@ -198,6 +206,7 @@ class _$LoadNationalPageImpl implements _LoadNationalPage {
     TResult? Function()? nextSubPage,
     TResult? Function()? previousSubPage,
     TResult? Function()? startLoading,
+    TResult? Function()? toggleAutoRefreshPause,
   }) {
     return loadNationalPage?.call(pageNumber);
   }
@@ -212,6 +221,7 @@ class _$LoadNationalPageImpl implements _LoadNationalPage {
     TResult Function()? nextSubPage,
     TResult Function()? previousSubPage,
     TResult Function()? startLoading,
+    TResult Function()? toggleAutoRefreshPause,
     required TResult orElse(),
   }) {
     if (loadNationalPage != null) {
@@ -230,6 +240,8 @@ class _$LoadNationalPageImpl implements _LoadNationalPage {
     required TResult Function(_NextSubPage value) nextSubPage,
     required TResult Function(_PreviousSubPage value) previousSubPage,
     required TResult Function(_StartLoading value) startLoading,
+    required TResult Function(_ToggleAutoRefreshPause value)
+        toggleAutoRefreshPause,
   }) {
     return loadNationalPage(this);
   }
@@ -244,6 +256,7 @@ class _$LoadNationalPageImpl implements _LoadNationalPage {
     TResult? Function(_NextSubPage value)? nextSubPage,
     TResult? Function(_PreviousSubPage value)? previousSubPage,
     TResult? Function(_StartLoading value)? startLoading,
+    TResult? Function(_ToggleAutoRefreshPause value)? toggleAutoRefreshPause,
   }) {
     return loadNationalPage?.call(this);
   }
@@ -258,6 +271,7 @@ class _$LoadNationalPageImpl implements _LoadNationalPage {
     TResult Function(_NextSubPage value)? nextSubPage,
     TResult Function(_PreviousSubPage value)? previousSubPage,
     TResult Function(_StartLoading value)? startLoading,
+    TResult Function(_ToggleAutoRefreshPause value)? toggleAutoRefreshPause,
     required TResult orElse(),
   }) {
     if (loadNationalPage != null) {
@@ -365,6 +379,7 @@ class _$LoadRegionalPageImpl implements _LoadRegionalPage {
     required TResult Function() nextSubPage,
     required TResult Function() previousSubPage,
     required TResult Function() startLoading,
+    required TResult Function() toggleAutoRefreshPause,
   }) {
     return loadRegionalPage(region, pageNumber);
   }
@@ -379,6 +394,7 @@ class _$LoadRegionalPageImpl implements _LoadRegionalPage {
     TResult? Function()? nextSubPage,
     TResult? Function()? previousSubPage,
     TResult? Function()? startLoading,
+    TResult? Function()? toggleAutoRefreshPause,
   }) {
     return loadRegionalPage?.call(region, pageNumber);
   }
@@ -393,6 +409,7 @@ class _$LoadRegionalPageImpl implements _LoadRegionalPage {
     TResult Function()? nextSubPage,
     TResult Function()? previousSubPage,
     TResult Function()? startLoading,
+    TResult Function()? toggleAutoRefreshPause,
     required TResult orElse(),
   }) {
     if (loadRegionalPage != null) {
@@ -411,6 +428,8 @@ class _$LoadRegionalPageImpl implements _LoadRegionalPage {
     required TResult Function(_NextSubPage value) nextSubPage,
     required TResult Function(_PreviousSubPage value) previousSubPage,
     required TResult Function(_StartLoading value) startLoading,
+    required TResult Function(_ToggleAutoRefreshPause value)
+        toggleAutoRefreshPause,
   }) {
     return loadRegionalPage(this);
   }
@@ -425,6 +444,7 @@ class _$LoadRegionalPageImpl implements _LoadRegionalPage {
     TResult? Function(_NextSubPage value)? nextSubPage,
     TResult? Function(_PreviousSubPage value)? previousSubPage,
     TResult? Function(_StartLoading value)? startLoading,
+    TResult? Function(_ToggleAutoRefreshPause value)? toggleAutoRefreshPause,
   }) {
     return loadRegionalPage?.call(this);
   }
@@ -439,6 +459,7 @@ class _$LoadRegionalPageImpl implements _LoadRegionalPage {
     TResult Function(_NextSubPage value)? nextSubPage,
     TResult Function(_PreviousSubPage value)? previousSubPage,
     TResult Function(_StartLoading value)? startLoading,
+    TResult Function(_ToggleAutoRefreshPause value)? toggleAutoRefreshPause,
     required TResult orElse(),
   }) {
     if (loadRegionalPage != null) {
@@ -538,6 +559,7 @@ class _$NextPageImpl implements _NextPage {
     required TResult Function() nextSubPage,
     required TResult Function() previousSubPage,
     required TResult Function() startLoading,
+    required TResult Function() toggleAutoRefreshPause,
   }) {
     return nextPage(currentPage);
   }
@@ -552,6 +574,7 @@ class _$NextPageImpl implements _NextPage {
     TResult? Function()? nextSubPage,
     TResult? Function()? previousSubPage,
     TResult? Function()? startLoading,
+    TResult? Function()? toggleAutoRefreshPause,
   }) {
     return nextPage?.call(currentPage);
   }
@@ -566,6 +589,7 @@ class _$NextPageImpl implements _NextPage {
     TResult Function()? nextSubPage,
     TResult Function()? previousSubPage,
     TResult Function()? startLoading,
+    TResult Function()? toggleAutoRefreshPause,
     required TResult orElse(),
   }) {
     if (nextPage != null) {
@@ -584,6 +608,8 @@ class _$NextPageImpl implements _NextPage {
     required TResult Function(_NextSubPage value) nextSubPage,
     required TResult Function(_PreviousSubPage value) previousSubPage,
     required TResult Function(_StartLoading value) startLoading,
+    required TResult Function(_ToggleAutoRefreshPause value)
+        toggleAutoRefreshPause,
   }) {
     return nextPage(this);
   }
@@ -598,6 +624,7 @@ class _$NextPageImpl implements _NextPage {
     TResult? Function(_NextSubPage value)? nextSubPage,
     TResult? Function(_PreviousSubPage value)? previousSubPage,
     TResult? Function(_StartLoading value)? startLoading,
+    TResult? Function(_ToggleAutoRefreshPause value)? toggleAutoRefreshPause,
   }) {
     return nextPage?.call(this);
   }
@@ -612,6 +639,7 @@ class _$NextPageImpl implements _NextPage {
     TResult Function(_NextSubPage value)? nextSubPage,
     TResult Function(_PreviousSubPage value)? previousSubPage,
     TResult Function(_StartLoading value)? startLoading,
+    TResult Function(_ToggleAutoRefreshPause value)? toggleAutoRefreshPause,
     required TResult orElse(),
   }) {
     if (nextPage != null) {
@@ -709,6 +737,7 @@ class _$PreviousPageImpl implements _PreviousPage {
     required TResult Function() nextSubPage,
     required TResult Function() previousSubPage,
     required TResult Function() startLoading,
+    required TResult Function() toggleAutoRefreshPause,
   }) {
     return previousPage(currentPage);
   }
@@ -723,6 +752,7 @@ class _$PreviousPageImpl implements _PreviousPage {
     TResult? Function()? nextSubPage,
     TResult? Function()? previousSubPage,
     TResult? Function()? startLoading,
+    TResult? Function()? toggleAutoRefreshPause,
   }) {
     return previousPage?.call(currentPage);
   }
@@ -737,6 +767,7 @@ class _$PreviousPageImpl implements _PreviousPage {
     TResult Function()? nextSubPage,
     TResult Function()? previousSubPage,
     TResult Function()? startLoading,
+    TResult Function()? toggleAutoRefreshPause,
     required TResult orElse(),
   }) {
     if (previousPage != null) {
@@ -755,6 +786,8 @@ class _$PreviousPageImpl implements _PreviousPage {
     required TResult Function(_NextSubPage value) nextSubPage,
     required TResult Function(_PreviousSubPage value) previousSubPage,
     required TResult Function(_StartLoading value) startLoading,
+    required TResult Function(_ToggleAutoRefreshPause value)
+        toggleAutoRefreshPause,
   }) {
     return previousPage(this);
   }
@@ -769,6 +802,7 @@ class _$PreviousPageImpl implements _PreviousPage {
     TResult? Function(_NextSubPage value)? nextSubPage,
     TResult? Function(_PreviousSubPage value)? previousSubPage,
     TResult? Function(_StartLoading value)? startLoading,
+    TResult? Function(_ToggleAutoRefreshPause value)? toggleAutoRefreshPause,
   }) {
     return previousPage?.call(this);
   }
@@ -783,6 +817,7 @@ class _$PreviousPageImpl implements _PreviousPage {
     TResult Function(_NextSubPage value)? nextSubPage,
     TResult Function(_PreviousSubPage value)? previousSubPage,
     TResult Function(_StartLoading value)? startLoading,
+    TResult Function(_ToggleAutoRefreshPause value)? toggleAutoRefreshPause,
     required TResult orElse(),
   }) {
     if (previousPage != null) {
@@ -853,6 +888,7 @@ class _$NextSubPageImpl implements _NextSubPage {
     required TResult Function() nextSubPage,
     required TResult Function() previousSubPage,
     required TResult Function() startLoading,
+    required TResult Function() toggleAutoRefreshPause,
   }) {
     return nextSubPage();
   }
@@ -867,6 +903,7 @@ class _$NextSubPageImpl implements _NextSubPage {
     TResult? Function()? nextSubPage,
     TResult? Function()? previousSubPage,
     TResult? Function()? startLoading,
+    TResult? Function()? toggleAutoRefreshPause,
   }) {
     return nextSubPage?.call();
   }
@@ -881,6 +918,7 @@ class _$NextSubPageImpl implements _NextSubPage {
     TResult Function()? nextSubPage,
     TResult Function()? previousSubPage,
     TResult Function()? startLoading,
+    TResult Function()? toggleAutoRefreshPause,
     required TResult orElse(),
   }) {
     if (nextSubPage != null) {
@@ -899,6 +937,8 @@ class _$NextSubPageImpl implements _NextSubPage {
     required TResult Function(_NextSubPage value) nextSubPage,
     required TResult Function(_PreviousSubPage value) previousSubPage,
     required TResult Function(_StartLoading value) startLoading,
+    required TResult Function(_ToggleAutoRefreshPause value)
+        toggleAutoRefreshPause,
   }) {
     return nextSubPage(this);
   }
@@ -913,6 +953,7 @@ class _$NextSubPageImpl implements _NextSubPage {
     TResult? Function(_NextSubPage value)? nextSubPage,
     TResult? Function(_PreviousSubPage value)? previousSubPage,
     TResult? Function(_StartLoading value)? startLoading,
+    TResult? Function(_ToggleAutoRefreshPause value)? toggleAutoRefreshPause,
   }) {
     return nextSubPage?.call(this);
   }
@@ -927,6 +968,7 @@ class _$NextSubPageImpl implements _NextSubPage {
     TResult Function(_NextSubPage value)? nextSubPage,
     TResult Function(_PreviousSubPage value)? previousSubPage,
     TResult Function(_StartLoading value)? startLoading,
+    TResult Function(_ToggleAutoRefreshPause value)? toggleAutoRefreshPause,
     required TResult orElse(),
   }) {
     if (nextSubPage != null) {
@@ -988,6 +1030,7 @@ class _$PreviousSubPageImpl implements _PreviousSubPage {
     required TResult Function() nextSubPage,
     required TResult Function() previousSubPage,
     required TResult Function() startLoading,
+    required TResult Function() toggleAutoRefreshPause,
   }) {
     return previousSubPage();
   }
@@ -1002,6 +1045,7 @@ class _$PreviousSubPageImpl implements _PreviousSubPage {
     TResult? Function()? nextSubPage,
     TResult? Function()? previousSubPage,
     TResult? Function()? startLoading,
+    TResult? Function()? toggleAutoRefreshPause,
   }) {
     return previousSubPage?.call();
   }
@@ -1016,6 +1060,7 @@ class _$PreviousSubPageImpl implements _PreviousSubPage {
     TResult Function()? nextSubPage,
     TResult Function()? previousSubPage,
     TResult Function()? startLoading,
+    TResult Function()? toggleAutoRefreshPause,
     required TResult orElse(),
   }) {
     if (previousSubPage != null) {
@@ -1034,6 +1079,8 @@ class _$PreviousSubPageImpl implements _PreviousSubPage {
     required TResult Function(_NextSubPage value) nextSubPage,
     required TResult Function(_PreviousSubPage value) previousSubPage,
     required TResult Function(_StartLoading value) startLoading,
+    required TResult Function(_ToggleAutoRefreshPause value)
+        toggleAutoRefreshPause,
   }) {
     return previousSubPage(this);
   }
@@ -1048,6 +1095,7 @@ class _$PreviousSubPageImpl implements _PreviousSubPage {
     TResult? Function(_NextSubPage value)? nextSubPage,
     TResult? Function(_PreviousSubPage value)? previousSubPage,
     TResult? Function(_StartLoading value)? startLoading,
+    TResult? Function(_ToggleAutoRefreshPause value)? toggleAutoRefreshPause,
   }) {
     return previousSubPage?.call(this);
   }
@@ -1062,6 +1110,7 @@ class _$PreviousSubPageImpl implements _PreviousSubPage {
     TResult Function(_NextSubPage value)? nextSubPage,
     TResult Function(_PreviousSubPage value)? previousSubPage,
     TResult Function(_StartLoading value)? startLoading,
+    TResult Function(_ToggleAutoRefreshPause value)? toggleAutoRefreshPause,
     required TResult orElse(),
   }) {
     if (previousSubPage != null) {
@@ -1123,6 +1172,7 @@ class _$StartLoadingImpl implements _StartLoading {
     required TResult Function() nextSubPage,
     required TResult Function() previousSubPage,
     required TResult Function() startLoading,
+    required TResult Function() toggleAutoRefreshPause,
   }) {
     return startLoading();
   }
@@ -1137,6 +1187,7 @@ class _$StartLoadingImpl implements _StartLoading {
     TResult? Function()? nextSubPage,
     TResult? Function()? previousSubPage,
     TResult? Function()? startLoading,
+    TResult? Function()? toggleAutoRefreshPause,
   }) {
     return startLoading?.call();
   }
@@ -1151,6 +1202,7 @@ class _$StartLoadingImpl implements _StartLoading {
     TResult Function()? nextSubPage,
     TResult Function()? previousSubPage,
     TResult Function()? startLoading,
+    TResult Function()? toggleAutoRefreshPause,
     required TResult orElse(),
   }) {
     if (startLoading != null) {
@@ -1169,6 +1221,8 @@ class _$StartLoadingImpl implements _StartLoading {
     required TResult Function(_NextSubPage value) nextSubPage,
     required TResult Function(_PreviousSubPage value) previousSubPage,
     required TResult Function(_StartLoading value) startLoading,
+    required TResult Function(_ToggleAutoRefreshPause value)
+        toggleAutoRefreshPause,
   }) {
     return startLoading(this);
   }
@@ -1183,6 +1237,7 @@ class _$StartLoadingImpl implements _StartLoading {
     TResult? Function(_NextSubPage value)? nextSubPage,
     TResult? Function(_PreviousSubPage value)? previousSubPage,
     TResult? Function(_StartLoading value)? startLoading,
+    TResult? Function(_ToggleAutoRefreshPause value)? toggleAutoRefreshPause,
   }) {
     return startLoading?.call(this);
   }
@@ -1197,6 +1252,7 @@ class _$StartLoadingImpl implements _StartLoading {
     TResult Function(_NextSubPage value)? nextSubPage,
     TResult Function(_PreviousSubPage value)? previousSubPage,
     TResult Function(_StartLoading value)? startLoading,
+    TResult Function(_ToggleAutoRefreshPause value)? toggleAutoRefreshPause,
     required TResult orElse(),
   }) {
     if (startLoading != null) {
@@ -1208,4 +1264,149 @@ class _$StartLoadingImpl implements _StartLoading {
 
 abstract class _StartLoading implements TelevideoEvent {
   const factory _StartLoading() = _$StartLoadingImpl;
+}
+
+/// @nodoc
+abstract class _$$ToggleAutoRefreshPauseImplCopyWith<$Res> {
+  factory _$$ToggleAutoRefreshPauseImplCopyWith(
+          _$ToggleAutoRefreshPauseImpl value,
+          $Res Function(_$ToggleAutoRefreshPauseImpl) then) =
+      __$$ToggleAutoRefreshPauseImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$ToggleAutoRefreshPauseImplCopyWithImpl<$Res>
+    extends _$TelevideoEventCopyWithImpl<$Res, _$ToggleAutoRefreshPauseImpl>
+    implements _$$ToggleAutoRefreshPauseImplCopyWith<$Res> {
+  __$$ToggleAutoRefreshPauseImplCopyWithImpl(
+      _$ToggleAutoRefreshPauseImpl _value,
+      $Res Function(_$ToggleAutoRefreshPauseImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of TelevideoEvent
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+
+class _$ToggleAutoRefreshPauseImpl implements _ToggleAutoRefreshPause {
+  const _$ToggleAutoRefreshPauseImpl();
+
+  @override
+  String toString() {
+    return 'TelevideoEvent.toggleAutoRefreshPause()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$ToggleAutoRefreshPauseImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(int pageNumber) loadNationalPage,
+    required TResult Function(Region region, int pageNumber) loadRegionalPage,
+    required TResult Function(int currentPage) nextPage,
+    required TResult Function(int currentPage) previousPage,
+    required TResult Function() nextSubPage,
+    required TResult Function() previousSubPage,
+    required TResult Function() startLoading,
+    required TResult Function() toggleAutoRefreshPause,
+  }) {
+    return toggleAutoRefreshPause();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(int pageNumber)? loadNationalPage,
+    TResult? Function(Region region, int pageNumber)? loadRegionalPage,
+    TResult? Function(int currentPage)? nextPage,
+    TResult? Function(int currentPage)? previousPage,
+    TResult? Function()? nextSubPage,
+    TResult? Function()? previousSubPage,
+    TResult? Function()? startLoading,
+    TResult? Function()? toggleAutoRefreshPause,
+  }) {
+    return toggleAutoRefreshPause?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(int pageNumber)? loadNationalPage,
+    TResult Function(Region region, int pageNumber)? loadRegionalPage,
+    TResult Function(int currentPage)? nextPage,
+    TResult Function(int currentPage)? previousPage,
+    TResult Function()? nextSubPage,
+    TResult Function()? previousSubPage,
+    TResult Function()? startLoading,
+    TResult Function()? toggleAutoRefreshPause,
+    required TResult orElse(),
+  }) {
+    if (toggleAutoRefreshPause != null) {
+      return toggleAutoRefreshPause();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_LoadNationalPage value) loadNationalPage,
+    required TResult Function(_LoadRegionalPage value) loadRegionalPage,
+    required TResult Function(_NextPage value) nextPage,
+    required TResult Function(_PreviousPage value) previousPage,
+    required TResult Function(_NextSubPage value) nextSubPage,
+    required TResult Function(_PreviousSubPage value) previousSubPage,
+    required TResult Function(_StartLoading value) startLoading,
+    required TResult Function(_ToggleAutoRefreshPause value)
+        toggleAutoRefreshPause,
+  }) {
+    return toggleAutoRefreshPause(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_LoadNationalPage value)? loadNationalPage,
+    TResult? Function(_LoadRegionalPage value)? loadRegionalPage,
+    TResult? Function(_NextPage value)? nextPage,
+    TResult? Function(_PreviousPage value)? previousPage,
+    TResult? Function(_NextSubPage value)? nextSubPage,
+    TResult? Function(_PreviousSubPage value)? previousSubPage,
+    TResult? Function(_StartLoading value)? startLoading,
+    TResult? Function(_ToggleAutoRefreshPause value)? toggleAutoRefreshPause,
+  }) {
+    return toggleAutoRefreshPause?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_LoadNationalPage value)? loadNationalPage,
+    TResult Function(_LoadRegionalPage value)? loadRegionalPage,
+    TResult Function(_NextPage value)? nextPage,
+    TResult Function(_PreviousPage value)? previousPage,
+    TResult Function(_NextSubPage value)? nextSubPage,
+    TResult Function(_PreviousSubPage value)? previousSubPage,
+    TResult Function(_StartLoading value)? startLoading,
+    TResult Function(_ToggleAutoRefreshPause value)? toggleAutoRefreshPause,
+    required TResult orElse(),
+  }) {
+    if (toggleAutoRefreshPause != null) {
+      return toggleAutoRefreshPause(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _ToggleAutoRefreshPause implements TelevideoEvent {
+  const factory _ToggleAutoRefreshPause() = _$ToggleAutoRefreshPauseImpl;
 }

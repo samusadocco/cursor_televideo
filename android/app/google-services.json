@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "876587734466",
+    "project_id": "teleretro-italia",
+    "storage_bucket": "teleretro-italia.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:876587734466:android:08364a88df1f8e94b6f25b",
+        "android_client_info": {
+          "package_name": "it.codebysam.televideo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBkvgnOFa0soeLL0Kuu70BAwfreFdeUMtU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

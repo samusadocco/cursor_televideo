@@ -20,7 +20,9 @@ mixin _$TelevideoState {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function(int pageNumber) loading,
-    required TResult Function(TelevideoPage page, int currentSubPage) loaded,
+    required TResult Function(
+            TelevideoPage page, int currentSubPage, bool isAutoRefreshPaused)
+        loaded,
     required TResult Function(String message) error,
   }) =>
       throw _privateConstructorUsedError;
@@ -28,7 +30,9 @@ mixin _$TelevideoState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function(int pageNumber)? loading,
-    TResult? Function(TelevideoPage page, int currentSubPage)? loaded,
+    TResult? Function(
+            TelevideoPage page, int currentSubPage, bool isAutoRefreshPaused)?
+        loaded,
     TResult? Function(String message)? error,
   }) =>
       throw _privateConstructorUsedError;
@@ -36,7 +40,9 @@ mixin _$TelevideoState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function(int pageNumber)? loading,
-    TResult Function(TelevideoPage page, int currentSubPage)? loaded,
+    TResult Function(
+            TelevideoPage page, int currentSubPage, bool isAutoRefreshPaused)?
+        loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) =>
@@ -132,7 +138,9 @@ class _$InitialImpl implements _Initial {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function(int pageNumber) loading,
-    required TResult Function(TelevideoPage page, int currentSubPage) loaded,
+    required TResult Function(
+            TelevideoPage page, int currentSubPage, bool isAutoRefreshPaused)
+        loaded,
     required TResult Function(String message) error,
   }) {
     return initial();
@@ -143,7 +151,9 @@ class _$InitialImpl implements _Initial {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function(int pageNumber)? loading,
-    TResult? Function(TelevideoPage page, int currentSubPage)? loaded,
+    TResult? Function(
+            TelevideoPage page, int currentSubPage, bool isAutoRefreshPaused)?
+        loaded,
     TResult? Function(String message)? error,
   }) {
     return initial?.call();
@@ -154,7 +164,9 @@ class _$InitialImpl implements _Initial {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function(int pageNumber)? loading,
-    TResult Function(TelevideoPage page, int currentSubPage)? loaded,
+    TResult Function(
+            TelevideoPage page, int currentSubPage, bool isAutoRefreshPaused)?
+        loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -277,7 +289,9 @@ class _$LoadingImpl implements _Loading {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function(int pageNumber) loading,
-    required TResult Function(TelevideoPage page, int currentSubPage) loaded,
+    required TResult Function(
+            TelevideoPage page, int currentSubPage, bool isAutoRefreshPaused)
+        loaded,
     required TResult Function(String message) error,
   }) {
     return loading(pageNumber);
@@ -288,7 +302,9 @@ class _$LoadingImpl implements _Loading {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function(int pageNumber)? loading,
-    TResult? Function(TelevideoPage page, int currentSubPage)? loaded,
+    TResult? Function(
+            TelevideoPage page, int currentSubPage, bool isAutoRefreshPaused)?
+        loaded,
     TResult? Function(String message)? error,
   }) {
     return loading?.call(pageNumber);
@@ -299,7 +315,9 @@ class _$LoadingImpl implements _Loading {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function(int pageNumber)? loading,
-    TResult Function(TelevideoPage page, int currentSubPage)? loaded,
+    TResult Function(
+            TelevideoPage page, int currentSubPage, bool isAutoRefreshPaused)?
+        loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -365,7 +383,7 @@ abstract class _$$LoadedImplCopyWith<$Res> {
           _$LoadedImpl value, $Res Function(_$LoadedImpl) then) =
       __$$LoadedImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({TelevideoPage page, int currentSubPage});
+  $Res call({TelevideoPage page, int currentSubPage, bool isAutoRefreshPaused});
 
   $TelevideoPageCopyWith<$Res> get page;
 }
@@ -385,6 +403,7 @@ class __$$LoadedImplCopyWithImpl<$Res>
   $Res call({
     Object? page = null,
     Object? currentSubPage = null,
+    Object? isAutoRefreshPaused = null,
   }) {
     return _then(_$LoadedImpl(
       null == page
@@ -395,6 +414,10 @@ class __$$LoadedImplCopyWithImpl<$Res>
           ? _value.currentSubPage
           : currentSubPage // ignore: cast_nullable_to_non_nullable
               as int,
+      isAutoRefreshPaused: null == isAutoRefreshPaused
+          ? _value.isAutoRefreshPaused
+          : isAutoRefreshPaused // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 
@@ -412,17 +435,21 @@ class __$$LoadedImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$LoadedImpl implements _Loaded {
-  const _$LoadedImpl(this.page, {this.currentSubPage = 1});
+  const _$LoadedImpl(this.page,
+      {this.currentSubPage = 1, this.isAutoRefreshPaused = false});
 
   @override
   final TelevideoPage page;
   @override
   @JsonKey()
   final int currentSubPage;
+  @override
+  @JsonKey()
+  final bool isAutoRefreshPaused;
 
   @override
   String toString() {
-    return 'TelevideoState.loaded(page: $page, currentSubPage: $currentSubPage)';
+    return 'TelevideoState.loaded(page: $page, currentSubPage: $currentSubPage, isAutoRefreshPaused: $isAutoRefreshPaused)';
   }
 
   @override
@@ -432,11 +459,14 @@ class _$LoadedImpl implements _Loaded {
             other is _$LoadedImpl &&
             (identical(other.page, page) || other.page == page) &&
             (identical(other.currentSubPage, currentSubPage) ||
-                other.currentSubPage == currentSubPage));
+                other.currentSubPage == currentSubPage) &&
+            (identical(other.isAutoRefreshPaused, isAutoRefreshPaused) ||
+                other.isAutoRefreshPaused == isAutoRefreshPaused));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, page, currentSubPage);
+  int get hashCode =>
+      Object.hash(runtimeType, page, currentSubPage, isAutoRefreshPaused);
 
   /// Create a copy of TelevideoState
   /// with the given fields replaced by the non-null parameter values.
@@ -451,10 +481,12 @@ class _$LoadedImpl implements _Loaded {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function(int pageNumber) loading,
-    required TResult Function(TelevideoPage page, int currentSubPage) loaded,
+    required TResult Function(
+            TelevideoPage page, int currentSubPage, bool isAutoRefreshPaused)
+        loaded,
     required TResult Function(String message) error,
   }) {
-    return loaded(page, currentSubPage);
+    return loaded(page, currentSubPage, isAutoRefreshPaused);
   }
 
   @override
@@ -462,10 +494,12 @@ class _$LoadedImpl implements _Loaded {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function(int pageNumber)? loading,
-    TResult? Function(TelevideoPage page, int currentSubPage)? loaded,
+    TResult? Function(
+            TelevideoPage page, int currentSubPage, bool isAutoRefreshPaused)?
+        loaded,
     TResult? Function(String message)? error,
   }) {
-    return loaded?.call(page, currentSubPage);
+    return loaded?.call(page, currentSubPage, isAutoRefreshPaused);
   }
 
   @override
@@ -473,12 +507,14 @@ class _$LoadedImpl implements _Loaded {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function(int pageNumber)? loading,
-    TResult Function(TelevideoPage page, int currentSubPage)? loaded,
+    TResult Function(
+            TelevideoPage page, int currentSubPage, bool isAutoRefreshPaused)?
+        loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
     if (loaded != null) {
-      return loaded(page, currentSubPage);
+      return loaded(page, currentSubPage, isAutoRefreshPaused);
     }
     return orElse();
   }
@@ -522,11 +558,13 @@ class _$LoadedImpl implements _Loaded {
 }
 
 abstract class _Loaded implements TelevideoState {
-  const factory _Loaded(final TelevideoPage page, {final int currentSubPage}) =
-      _$LoadedImpl;
+  const factory _Loaded(final TelevideoPage page,
+      {final int currentSubPage,
+      final bool isAutoRefreshPaused}) = _$LoadedImpl;
 
   TelevideoPage get page;
   int get currentSubPage;
+  bool get isAutoRefreshPaused;
 
   /// Create a copy of TelevideoState
   /// with the given fields replaced by the non-null parameter values.
@@ -605,7 +643,9 @@ class _$ErrorImpl implements _Error {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function(int pageNumber) loading,
-    required TResult Function(TelevideoPage page, int currentSubPage) loaded,
+    required TResult Function(
+            TelevideoPage page, int currentSubPage, bool isAutoRefreshPaused)
+        loaded,
     required TResult Function(String message) error,
   }) {
     return error(message);
@@ -616,7 +656,9 @@ class _$ErrorImpl implements _Error {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function(int pageNumber)? loading,
-    TResult? Function(TelevideoPage page, int currentSubPage)? loaded,
+    TResult? Function(
+            TelevideoPage page, int currentSubPage, bool isAutoRefreshPaused)?
+        loaded,
     TResult? Function(String message)? error,
   }) {
     return error?.call(message);
@@ -627,7 +669,9 @@ class _$ErrorImpl implements _Error {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function(int pageNumber)? loading,
-    TResult Function(TelevideoPage page, int currentSubPage)? loaded,
+    TResult Function(
+            TelevideoPage page, int currentSubPage, bool isAutoRefreshPaused)?
+        loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {

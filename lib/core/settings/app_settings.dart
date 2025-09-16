@@ -7,6 +7,7 @@ class AppSettings {
   static const String _liveShowIntervalKey = 'live_show_interval_seconds';
   static const String _themeModeKey = 'theme_mode';
   static const String _loadFirstFavoriteKey = 'load_first_favorite';
+  static const String _adsPersonalizationEnabledKey = 'ads_personalization_enabled';
 
   // Valori di default
   static const int _defaultCacheDuration = 300; // 5 minuti
@@ -14,6 +15,7 @@ class AppSettings {
   static const int _defaultLiveShowInterval = 10; // 10 secondi
   static const ThemeMode _defaultThemeMode = ThemeMode.dark;
   static const bool _defaultLoadFirstFavorite = false;
+  static const bool _defaultAdsPersonalizationEnabled = true;
 
   // Valori in memoria
   static int _cacheDurationInSeconds = _defaultCacheDuration;
@@ -21,6 +23,7 @@ class AppSettings {
   static int _liveShowIntervalSeconds = _defaultLiveShowInterval;
   static ThemeMode _themeMode = _defaultThemeMode;
   static bool _loadFirstFavorite = _defaultLoadFirstFavorite;
+  static bool _adsPersonalizationEnabled = _defaultAdsPersonalizationEnabled;
 
   // Getters
   static int get cacheDurationInSeconds => _cacheDurationInSeconds;
@@ -28,6 +31,7 @@ class AppSettings {
   static int get liveShowIntervalSeconds => _liveShowIntervalSeconds;
   static ThemeMode get themeMode => _themeMode;
   static bool get loadFirstFavorite => _loadFirstFavorite;
+  static bool get adsPersonalizationEnabled => _adsPersonalizationEnabled;
 
   // Inizializzazione
   static Future<void> initialize() async {
@@ -37,6 +41,7 @@ class AppSettings {
     _liveShowEnabled = prefs.getBool(_liveShowEnabledKey) ?? _defaultLiveShowEnabled;
     _liveShowIntervalSeconds = prefs.getInt(_liveShowIntervalKey) ?? _defaultLiveShowInterval;
     _loadFirstFavorite = prefs.getBool(_loadFirstFavoriteKey) ?? _defaultLoadFirstFavorite;
+    _adsPersonalizationEnabled = prefs.getBool(_adsPersonalizationEnabledKey) ?? _defaultAdsPersonalizationEnabled;
     
     final themeModeIndex = prefs.getInt(_themeModeKey);
     _themeMode = themeModeIndex != null 
@@ -77,5 +82,11 @@ class AppSettings {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool(_loadFirstFavoriteKey, enabled);
     _loadFirstFavorite = enabled;
+  }
+
+  static Future<void> setAdsPersonalizationEnabled(bool enabled) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_adsPersonalizationEnabledKey, enabled);
+    _adsPersonalizationEnabled = enabled;
   }
 } 

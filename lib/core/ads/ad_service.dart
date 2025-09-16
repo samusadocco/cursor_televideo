@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:cursor_televideo/core/settings/app_settings.dart';
+import 'package:cursor_televideo/core/descriptions/page_descriptions_service.dart';
+import 'package:cursor_televideo/shared/models/region.dart';
 
 class AdService {
   static final AdService _instance = AdService._internal();
@@ -25,8 +27,178 @@ class AdService {
     _adEventController.close();
   }
 
-  void incrementPageView({bool isSubPage = false}) {
+  String? _currentPageNumber;
+  String? _currentSection;
+  bool _isRegional = false;
+  Region? _currentRegion;
+
+  void setContext({
+    String? pageNumber,
+    String? section,
+    bool isRegional = false,
+    Region? region,
+  }) {
+    _currentPageNumber = pageNumber;
+    _currentSection = section;
+    _isRegional = isRegional;
+    _currentRegion = region;
+  }
+
+  AdRequest _createAdRequest() {
+    var keywords = <String>[];
+    final contentUrl = 'https://www.televideo.rai.it';
+
+    // Aggiungi keywords basate sul contesto
+    if (_currentPageNumber != null) {
+      final pageNum = int.tryParse(_currentPageNumber!) ?? 0;
+      
+      // Aggiungi la descrizione della pagina come keyword
+      final description = PageDescriptionsService().getDescription(
+        pageNum,
+        isRegional: _isRegional,
+      );
+      
+      // Estrai parole chiave dalla descrizione
+      final descriptionWords = description
+          .toLowerCase()
+          .replaceAll(RegExp(r'[^\w\s]'), '') // Rimuovi punteggiatura
+          .split(' ')
+          .where((word) => word.length > 3) // Solo parole significative
+          .toList();
+      
+      keywords.addAll(descriptionWords);
+      
+      // Aggiungi categorie basate sul numero di pagina
+      if (pageNum >= 100 && pageNum < 200) {
+        keywords.addAll(['news', 'attualita', 'cronaca']);
+      } else if (pageNum >= 200 && pageNum < 300) {
+        keywords.addAll(['sport', 'calcio', 'campionato']);
+      } else if (pageNum >= 300 && pageNum < 400) {
+        keywords.addAll(['economia', 'finanza', 'mercati']);
+      } else if (pageNum >= 400 && pageNum < 500) {
+        keywords.addAll(['utilita', 'servizi', 'informazioni']);
+      } else if (pageNum >= 500 && pageNum < 600) {
+        keywords.addAll(['cultura', 'spettacolo', 'entertainment']);
+      } else if (pageNum >= 600 && pageNum < 700) {
+        keywords.addAll(['viabilita', 'trasporti', 'mobilita']);
+      } else if (pageNum >= 700) {
+        keywords.addAll(['meteo', 'previsioni', 'tempo']);
+      }
+
+      // Aggiungi il contesto regionale se presente
+      if (_isRegional) {
+        keywords.add('regionale');
+        keywords.add('locale');
+        
+        // Aggiungi informazioni specifiche della regione
+        if (_currentRegion != null) {
+          // Aggiungi il nome della regione
+          keywords.add(_currentRegion!.name.toLowerCase());
+          
+          // Aggiungi parole chiave basate sulla regione
+          // Aggiungi parole chiave basate sul codice della regione
+          switch (_currentRegion!.code) {
+            case 'Abruzzo':
+              keywords.addAll(['abruzzese', 'adriatico', 'appennino']);
+              break;
+            case 'Basilicata':
+              keywords.addAll(['lucano', 'lucana', 'meridionale']);
+              break;
+            case 'Calabria':
+              keywords.addAll(['calabrese', 'meridionale', 'mediterraneo']);
+              break;
+            case 'Campania':
+              keywords.addAll(['campano', 'vesuvio', 'meridionale']);
+              break;
+            case 'Emilia':
+              keywords.addAll(['emiliano', 'romagnolo', 'padano']);
+              break;
+            case 'Friuli':
+              keywords.addAll(['friulano', 'giuliano', 'nordest']);
+              break;
+            case 'Lazio':
+              keywords.addAll(['laziale', 'romano', 'centrale']);
+              break;
+            case 'Liguria':
+              keywords.addAll(['ligure', 'riviera', 'tirreno']);
+              break;
+            case 'Lombardia':
+              keywords.addAll(['lombardo', 'padano', 'alpino']);
+              break;
+            case 'Marche':
+              keywords.addAll(['marchigiano', 'adriatico', 'centrale']);
+              break;
+            case 'Molise':
+              keywords.addAll(['molisano', 'adriatico', 'appennino']);
+              break;
+            case 'Piemonte':
+              keywords.addAll(['piemontese', 'alpino', 'padano']);
+              break;
+            case 'Puglia':
+              keywords.addAll(['pugliese', 'adriatico', 'meridionale']);
+              break;
+            case 'Sardegna':
+              keywords.addAll(['sardo', 'isola', 'mediterraneo']);
+              break;
+            case 'Sicilia':
+              keywords.addAll(['siciliano', 'isola', 'mediterraneo']);
+              break;
+            case 'Toscana':
+              keywords.addAll(['toscano', 'tirreno', 'centrale']);
+              break;
+            case 'Trentino':
+              keywords.addAll(['trentino', 'altoatesino', 'alpino']);
+              break;
+            case 'Umbria':
+              keywords.addAll(['umbro', 'appennino', 'centrale']);
+              break;
+            case 'Aosta':
+              keywords.addAll(['valdostano', 'alpino', 'montano']);
+              break;
+            case 'Veneto':
+              keywords.addAll(['veneto', 'nordest', 'adriatico']);
+              break;
+          }
+        }
+      }
+    }
+
+    if (_currentSection != null) {
+      keywords.add(_currentSection!.toLowerCase());
+    }
+
+    // Rimuovi duplicati e limita il numero di keywords
+    keywords = keywords.toSet().toList();
+    if (keywords.length > 10) {
+      keywords = keywords.sublist(0, 10);
+    }
+
+    // Log del contesto per AdMob
+    print('\n=== CONTESTO ADMOB ===');
+    print('Page Number: $_currentPageNumber');
+    print('Section: $_currentSection');
+    print('Is Regional: $_isRegional');
+    if (_currentRegion != null) {
+      print('Region: ${_currentRegion!.name} (${_currentRegion!.code})');
+    }
+    print('Keywords: ${keywords.join(", ")}');
+    print('Content URL: $contentUrl');
+    print('Personalized Ads: ${AppSettings.adsPersonalizationEnabled}');
+    print('=== FINE CONTESTO ADMOB ===\n');
+
+    return AdRequest(
+      keywords: keywords,
+      contentUrl: contentUrl,
+      nonPersonalizedAds: !AppSettings.adsPersonalizationEnabled,
+    );
+  }
+
+  void incrementPageView({bool isSubPage = false, String? pageNumber}) {
     if (kIsWeb) return;  // No ads on web
+    
+    if (pageNumber != null) {
+      setContext(pageNumber: pageNumber);
+    }
     
     _pageViewCount++;
     print('Conteggio visualizzazioni: $_pageViewCount/${_pagesBeforeAd} (${isSubPage ? "Sottopagina" : "Pagina"})');
@@ -70,7 +242,7 @@ class AdService {
 
     InterstitialAd.load(
       adUnitId: adUnitId,
-      request: const AdRequest(),
+      request: _createAdRequest(),
       adLoadCallback: InterstitialAdLoadCallback(
         onAdLoaded: (ad) {
           print('Annuncio interstitial caricato');
@@ -170,7 +342,7 @@ class AdService {
       
     InterstitialAd.load(
       adUnitId: adUnitId,
-      request: const AdRequest(),
+      request: _createAdRequest(),
       adLoadCallback: InterstitialAdLoadCallback(
         onAdLoaded: (ad) {
           print('Primo annuncio interstitial caricato con successo');
@@ -236,7 +408,7 @@ class AdService {
     return completer.future;
   }
 
-  static Future<BannerAd?> createBannerAd({required bool isPortrait}) async {
+  Future<BannerAd?> createBannerAd({required bool isPortrait}) async {
     if (kIsWeb) return null;
 
     // Determina la dimensione del banner in base alla piattaforma
@@ -263,7 +435,7 @@ class AdService {
     final bannerAd = BannerAd(
       adUnitId: adUnitId,
       size: size,
-      request: const AdRequest(),
+      request: _createAdRequest(),
       listener: BannerAdListener(
         onAdLoaded: (ad) {
           print('Banner Ad loaded.');

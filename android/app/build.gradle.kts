@@ -2,6 +2,7 @@ plugins {
     id("com.android.application")
     id("kotlin-android")
     id("dev.flutter.flutter-gradle-plugin")
+    id("com.google.gms.google-services")
 }
 
 
@@ -28,8 +29,8 @@ android {
         applicationId = "it.codebysam.televideo"
         minSdk = flutter.minSdkVersion
         targetSdk = 35 // Manteniamo Android 14 come target
-        versionCode = 7
-        versionName = "1.0.6"
+        versionCode = 10
+        versionName = "1.0.8"
 
         // Disabilita i componenti differiti
         manifestPlaceholders["enableDeferredComponents"] = "false"
@@ -57,8 +58,6 @@ android {
 dependencies {
     implementation("com.google.android.ump:user-messaging-platform:2.1.0")
     implementation("com.google.android.gms:play-services-base:18.3.0")
-    implementation("com.google.android.play:review:2.0.2")
-    implementation("com.google.android.play:review-ktx:2.0.2")
     implementation("com.google.android.gms:play-services-basement:18.3.0")
 }
 

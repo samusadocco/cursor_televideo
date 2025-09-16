@@ -3,10 +3,12 @@ import 'package:cursor_televideo/features/onboarding/presentation/widgets/bottom
 
 class BottomBarInstructionWithTimer extends StatelessWidget {
   final BottomBarHighlight highlight;
+  final bool showPauseOverlay;
 
   const BottomBarInstructionWithTimer({
     super.key,
     required this.highlight,
+    this.showPauseOverlay = false,
   });
 
   Widget _buildHighlightedContainer({
@@ -94,16 +96,36 @@ class BottomBarInstructionWithTimer extends StatelessWidget {
                       alignment: Alignment.center,
                       children: [
                         // Cerchio di sfondo
-                        Container(
-                          width: 50,
-                          height: 50,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                              color: Theme.of(context).colorScheme.primary.withOpacity(0.3),
-                              width: 1.5,
+                        Stack(
+                          children: [
+                            Container(
+                              width: 50,
+                              height: 50,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: Theme.of(context).colorScheme.primary.withOpacity(0.3),
+                                  width: 1.5,
+                                ),
+                              ),
                             ),
-                          ),
+                            if (showPauseOverlay)
+                              Container(
+                                width: 50,
+                                height: 50,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.black.withOpacity(0.5),
+                                ),
+                                child: Center(
+                                  child: Icon(
+                                    Icons.pause,
+                                    color: Colors.white,
+                                    size: 24,
+                                  ),
+                                ),
+                              ),
+                          ],
                         ),
                         // Cerchio di progresso
                         SizedBox(

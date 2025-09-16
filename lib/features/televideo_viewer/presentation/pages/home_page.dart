@@ -13,14 +13,12 @@ import 'package:cursor_televideo/features/settings/presentation/pages/settings_p
 import 'package:cursor_televideo/shared/widgets/ad_banner.dart';
 import 'package:cursor_televideo/shared/widgets/error_page_view.dart';
 import 'package:cursor_televideo/shared/models/region.dart';
-import 'package:cursor_televideo/core/network/televideo_repository.dart';
-import 'package:cursor_televideo/core/shortcuts/shortcuts_service.dart';
 import 'package:cursor_televideo/core/storage/favorites_service.dart';
 import 'package:cursor_televideo/shared/models/favorite_page.dart';
-import 'package:cursor_televideo/core/descriptions/page_descriptions_service.dart';
 import 'package:cursor_televideo/features/televideo_viewer/presentation/widgets/edit_description_dialog.dart';
 import 'package:cursor_televideo/core/settings/app_settings.dart';
 import 'package:cursor_televideo/features/televideo_viewer/presentation/widgets/page_number_indicator.dart';
+import 'package:cursor_televideo/core/analytics/analytics_service.dart';
 
 // Funzione per determinare se il dispositivo è un tablet
 bool isTablet(BuildContext context) {
@@ -67,6 +65,10 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     _regionBloc = RegionBloc();
     _televideoBloc = context.read<TelevideoBloc>()..setRegionBloc(_regionBloc);
+    
+    // Log dell'apertura dell'app
+    AnalyticsService().logAppOpen();
+    AnalyticsService().logPageView('HomePage');
   }
 
   @override
@@ -181,7 +183,7 @@ class _HomePageState extends State<HomePage> {
             icon: BlocBuilder<TelevideoBloc, TelevideoState>(
               builder: (context, state) {
                 return state.maybeWhen(
-                  loaded: (page, currentSubPage) {
+                  loaded: (page, currentSubPage, isAutoRefreshPaused) {
                     final isFavorite = FavoritesService().isFavorite(
                       page.pageNumber,
                       _regionBloc.state.selectedRegion?.code,
@@ -200,7 +202,7 @@ class _HomePageState extends State<HomePage> {
               final currentRegion = _regionBloc.state.selectedRegion;
               
               state.maybeWhen(
-                loaded: (page, currentSubPage) {
+                loaded: (page, currentSubPage, isAutoRefreshPaused) {
                   final favoritesService = FavoritesService();
                   final isFavorite = favoritesService.isFavorite(
                     page.pageNumber,
@@ -530,13 +532,17 @@ class _HomePageState extends State<HomePage> {
         leading: BlocBuilder<TelevideoBloc, TelevideoState>(
           builder: (context, state) {
             return state.maybeWhen(
-              loaded: (page, currentSubPage) => Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  IconButton(
-                    icon: Icon(Icons.skip_previous, size: 32),
+                loaded: (page, currentSubPage, isAutoRefreshPaused) => Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    IconButton(
+                      icon: Icon(Icons.skip_previous, size: 32),
                     onPressed: () {
                       context.read<TelevideoBloc>().add(TelevideoEvent.previousPage(currentPage: page.pageNumber));
+                      AnalyticsService().logTelevideoPageView(
+                        (page.pageNumber - 1).toString(),
+                        'button',
+                      );
                     },
                   ),
                 ],
@@ -549,13 +555,17 @@ class _HomePageState extends State<HomePage> {
           BlocBuilder<TelevideoBloc, TelevideoState>(
             builder: (context, state) {
               return state.maybeWhen(
-                loaded: (page, currentSubPage) => Row(
+                loaded: (page, currentSubPage, isAutoRefreshPaused) => Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     IconButton(
                       icon: Icon(Icons.skip_next, size: 32),
                       onPressed: () {
                         context.read<TelevideoBloc>().add(TelevideoEvent.nextPage(currentPage: page.pageNumber));
+                        AnalyticsService().logTelevideoPageView(
+                          (page.pageNumber + 1).toString(),
+                          'button',
+                        );
                       },
                     ),
                   ],
@@ -579,7 +589,7 @@ class _HomePageState extends State<HomePage> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  loaded: (page, currentSubPage) => Row(
+                  loaded: (page, currentSubPage, isAutoRefreshPaused) => Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Expanded(
@@ -591,7 +601,14 @@ class _HomePageState extends State<HomePage> {
                               icon: Icon(Icons.arrow_downward, size: 32),
                               padding: EdgeInsets.zero,
                               onPressed: page.maxSubPages > 1 
-                                ? () => context.read<TelevideoBloc>().add(const TelevideoEvent.previousSubPage())
+                                ? () {
+                                    context.read<TelevideoBloc>().add(const TelevideoEvent.previousSubPage());
+                                    AnalyticsService().logSubpageChange(
+                                      page.pageNumber.toString(),
+                                      (currentSubPage - 1).toString(),
+                                      'manual',
+                                    );
+                                  }
                                 : null,
                             ),
                           ],
@@ -609,6 +626,7 @@ class _HomePageState extends State<HomePage> {
                                 maxSubPages: page.maxSubPages,
                                 duration: Duration(seconds: AppSettings.liveShowIntervalSeconds),
                                 isAutoRefreshEnabled: AppSettings.liveShowEnabled,
+                                isAutoRefreshPaused: isAutoRefreshPaused,
                                 onTap: () => _showPageNumberDialog(context, isNationalMode, regionState.selectedRegion),
                               ),
                             if (page.maxSubPages <= 1)
@@ -639,7 +657,14 @@ class _HomePageState extends State<HomePage> {
                               icon: Icon(Icons.arrow_upward, size: 32),
                               padding: EdgeInsets.zero,
                               onPressed: page.maxSubPages > 1 
-                                ? () => context.read<TelevideoBloc>().add(const TelevideoEvent.nextSubPage())
+                                ? () {
+                                    context.read<TelevideoBloc>().add(const TelevideoEvent.nextSubPage());
+                                    AnalyticsService().logSubpageChange(
+                                      page.pageNumber.toString(),
+                                      (currentSubPage + 1).toString(),
+                                      'manual',
+                                    );
+                                  }
                                 : null,
                             ),
                           ],
@@ -704,7 +729,7 @@ class _HomePageState extends State<HomePage> {
                                 ],
                               ),
                             ),
-                            loaded: (page, currentSubPage) => TelevideoViewer(
+                            loaded: (page, currentSubPage, isAutoRefreshPaused) => TelevideoViewer(
                               page: page,
                               onPageNumberSubmitted: (pageNumber) {
                                 context.read<TelevideoBloc>().add(TelevideoEvent.loadNationalPage(pageNumber));

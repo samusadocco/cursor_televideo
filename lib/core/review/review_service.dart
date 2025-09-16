@@ -65,12 +65,13 @@ class ReviewService {
   /// Richiede una recensione all'utente
   Future<void> requestReview() async {
     try {
-      if (await _inAppReview.isAvailable()) {
+      //if (await _inAppReview.isAvailable()) {
         // In sviluppo, apriamo direttamente la pagina dello store
-        await openStoreListing();
-      } else {
-        await _inAppReview.requestReview();
-      }
+      //  await openStoreListing();
+      //} else {
+      //  await _inAppReview.requestReview();
+      //}
+      await _inAppReview.requestReview();
       // Salva la data dell'ultima richiesta
       await _prefs.setInt(_lastReviewRequestKey, DateTime.now().millisecondsSinceEpoch);
       // Resetta il contatore degli avvii

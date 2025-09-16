@@ -15,6 +15,7 @@ class _AdBannerState extends State<AdBanner> {
   BannerAd? _bannerAd;
   bool _isLoaded = false;
   bool _isInitialized = false;
+  final AdService _adService = AdService();
 
   @override
   void initState() {
@@ -32,7 +33,7 @@ class _AdBannerState extends State<AdBanner> {
     if (!mounted) return;
     
     _bannerAd?.dispose();
-    _bannerAd = await AdService.createBannerAd(isPortrait: isPortrait);
+    _bannerAd = await _adService.createBannerAd(isPortrait: isPortrait);
     
     if (_bannerAd != null && mounted) {
       setState(() {

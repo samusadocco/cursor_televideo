@@ -12,4 +12,5 @@ class TelevideoEvent with _$TelevideoEvent {
   const factory TelevideoEvent.nextSubPage() = _NextSubPage;
   const factory TelevideoEvent.previousSubPage() = _PreviousSubPage;
   const factory TelevideoEvent.startLoading() = _StartLoading;
+  const factory TelevideoEvent.toggleAutoRefreshPause() = _ToggleAutoRefreshPause;
 } 
