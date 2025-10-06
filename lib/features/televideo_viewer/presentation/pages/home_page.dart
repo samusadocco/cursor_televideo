@@ -674,7 +674,7 @@ class _HomePageState extends State<HomePage> {
                     ],
                   ),
                   error: (message) => Text(
-                    message,
+                    "",
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.error,
                       fontSize: 16,
