@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cursor_televideo/features/onboarding/presentation/widgets/swipe_gesture_animation.dart';
+import 'package:cursor_televideo/core/l10n/app_localizations.dart';
 
 class SwipeInstructions extends StatelessWidget {
   const SwipeInstructions({super.key});
@@ -27,7 +28,7 @@ class SwipeInstructions extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            '← Precedente',
+                            AppLocalizations.of(context)?.swipePrevious ?? '← Previous',
                             style: TextStyle(
                               color: Theme.of(context).colorScheme.primary,
                               fontSize: 14,
@@ -35,7 +36,7 @@ class SwipeInstructions extends StatelessWidget {
                           ),
                           const SizedBox(height: 4),
                           Text(
-                            '→ Successiva',
+                            AppLocalizations.of(context)?.swipeNext ?? '→ Next',
                             style: TextStyle(
                               color: Theme.of(context).colorScheme.primary,
                               fontSize: 14,
@@ -64,7 +65,7 @@ class SwipeInstructions extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        '↑ Successiva',
+                        AppLocalizations.of(context)?.swipeNextUp ?? '↑ Next',
                         style: TextStyle(
                           color: Theme.of(context).colorScheme.primary,
                           fontSize: 14,
@@ -72,7 +73,7 @@ class SwipeInstructions extends StatelessWidget {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        '↓ Precedente',
+                        AppLocalizations.of(context)?.swipePreviousDown ?? '↓ Previous',
                         style: TextStyle(
                           color: Theme.of(context).colorScheme.primary,
                           fontSize: 14,
@@ -80,7 +81,7 @@ class SwipeInstructions extends StatelessWidget {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        '↓ Aggiorna',
+                        AppLocalizations.of(context)?.swipeRefresh ?? '↓ Refresh',
                         style: TextStyle(
                           color: Theme.of(context).colorScheme.primary,
                           fontSize: 14,

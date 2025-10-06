@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cursor_televideo/core/settings/app_settings.dart';
@@ -7,6 +9,10 @@ import 'package:cursor_televideo/core/onboarding/onboarding_service.dart';
 import 'package:cursor_televideo/features/settings/presentation/pages/backup_page.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:cursor_televideo/core/l10n/app_localizations.dart';
+import 'package:cursor_televideo/core/l10n/language_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -21,6 +27,8 @@ class _SettingsPageState extends State<SettingsPage> {
   late bool _liveShowEnabled;
   late double _liveShowIntervalValue;
   late bool _showOnboardingOnStartup;
+  LanguageService? _languageService;
+  StreamSubscription<Locale>? _languageSubscription;
   PackageInfo? _packageInfo;
 
   @override
@@ -32,6 +40,41 @@ class _SettingsPageState extends State<SettingsPage> {
     _liveShowIntervalValue = AppSettings.liveShowIntervalSeconds.toDouble();
     _showOnboardingOnStartup = OnboardingService().showOnStartup;
     _loadPackageInfo();
+    _initializeLanguageService();
+  }
+
+  Future<void> _initializeLanguageService() async {
+    final prefs = await SharedPreferences.getInstance();
+    _languageService = LanguageService(prefs);
+    
+    // Ascolta i cambiamenti di lingua dopo l'inizializzazione
+    _languageSubscription = _languageService?.languageStream.listen((_) {
+      if (mounted) {
+        setState(() {});
+      }
+    });
+  }
+
+  String _getLanguageName(String languageCode) {
+    switch (languageCode) {
+      case 'it': return 'Italiano';
+      case 'en': return 'English';
+      case 'de': return 'Deutsch';
+      case 'fr': return 'Français';
+      case 'es': return 'Español';
+      case 'pt': return 'Português';
+      case 'nl': return 'Nederlands';
+      case 'da': return 'Dansk';
+      case 'sv': return 'Svenska';
+      case 'fi': return 'Suomi';
+      case 'cs': return 'Čeština';
+      case 'hr': return 'Hrvatski';
+      case 'sl': return 'Slovenščina';
+      case 'is': return 'Íslenska';
+      case 'hu': return 'Magyar';
+      case 'bs': return 'Bosanski';
+      default: return languageCode;
+    }
   }
 
   Future<void> _loadPackageInfo() async {
@@ -85,20 +128,21 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   Future<void> _resetConsentSettings() async {
+    final l10n = AppLocalizations.of(context)!;
     // Mostra un dialogo di conferma
     final shouldReset = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Reset Impostazioni Privacy'),
-        content: const Text('Vuoi davvero resettare le impostazioni sulla privacy? Ti verrà richiesto nuovamente il consenso al prossimo avvio dell\'app.'),
+        title: Text(l10n.resetPrivacySettings),
+        content: Text(l10n.resetPrivacyConfirm),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('ANNULLA'),
+            child: Text(l10n.cancel),
           ),
           TextButton(
             onPressed: () => Navigator.of(context).pop(true),
-            child: const Text('RESET'),
+            child: Text(l10n.reset),
           ),
         ],
       ),
@@ -107,8 +151,8 @@ class _SettingsPageState extends State<SettingsPage> {
     if (shouldReset && mounted) {
       await ConsentInformation.instance.reset();
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Impostazioni privacy resettate. Riavvia l\'app per il nuovo consenso.'),
+        SnackBar(
+          content: Text(l10n.privacySettingsReset),
           duration: Duration(seconds: 5),
         ),
       );
@@ -116,17 +160,31 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   @override
+  void dispose() {
+    _languageSubscription?.cancel();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    if (l10n == null) {
+      return const Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Impostazioni'),
+        title: Text(l10n.settings),
       ),
       body: ListView(
         children: [
           // Sezione Caricamento Preferiti
           SwitchListTile(
-            title: const Text('Carica il primo preferito all\'avvio'),
-            subtitle: const Text('Se abilitato, all\'avvio dell\'app verrà caricato il primo preferito della lista'),
+            title: Text(l10n.loadFirstFavorite),
+            subtitle: Text(l10n.loadFirstFavoriteDescription),
             value: _loadFirstFavorite,
             onChanged: _updateLoadFirstFavorite,
           ),
@@ -134,8 +192,8 @@ class _SettingsPageState extends State<SettingsPage> {
 
           // Sezione Cache
           ListTile(
-            title: const Text('Durata cache immagini pagine Televideo (0 secondi per disabilitare)'),
-            subtitle: Text('${_cacheSliderValue.toInt()} secondi'),
+            title: Text(l10n.cacheDuration),
+            subtitle: Text('${_cacheSliderValue.toInt()} ${l10n.seconds}'),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -144,7 +202,7 @@ class _SettingsPageState extends State<SettingsPage> {
               min: 0,
               max: 600,
               divisions: 60,
-              label: '${_cacheSliderValue.toInt()} secondi',
+              label: '${_cacheSliderValue.toInt()} ${l10n.seconds}',
               onChanged: _updateCacheDuration,
             ),
           ),
@@ -152,15 +210,15 @@ class _SettingsPageState extends State<SettingsPage> {
 
           // Sezione Live Show
           SwitchListTile(
-            title: const Text('Aggiornamento automatico'),
-            subtitle: const Text('Aggiorna automaticamente le sottopagine'),
+            title: Text(l10n.autoRefresh),
+            subtitle: Text(l10n.autoRefreshDescription),
             value: _liveShowEnabled,
             onChanged: _updateLiveShowEnabled,
           ),
           if (_liveShowEnabled) ...[
             ListTile(
-              title: const Text('Intervallo aggiornamento'),
-              subtitle: Text('${_liveShowIntervalValue.toInt()} secondi'),
+              title: Text(l10n.refreshInterval),
+              subtitle: Text('${_liveShowIntervalValue.toInt()} ${l10n.seconds}'),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -169,7 +227,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 min: 3,
                 max: 30,
                 divisions: 27,
-                label: '${_liveShowIntervalValue.toInt()} secondi',
+                label: '${_liveShowIntervalValue.toInt()} ${l10n.seconds}',
                 onChanged: _updateLiveShowInterval,
               ),
             ),
@@ -178,14 +236,14 @@ class _SettingsPageState extends State<SettingsPage> {
 
           // Sezione Onboarding
           SwitchListTile(
-            title: const Text('Mostra istruzioni all\'avvio'),
-            subtitle: const Text('Mostra le istruzioni ogni volta che apri l\'app'),
+            title: Text(l10n.showOnboardingAtStartup),
+            subtitle: Text(l10n.showOnboardingAtStartupDescription),
             value: _showOnboardingOnStartup,
             onChanged: _updateShowOnboardingOnStartup,
           ),
           ListTile(
-            title: const Text('Mostra istruzioni'),
-            subtitle: const Text('Rivedi le istruzioni per l\'utilizzo dell\'app'),
+            title: Text(l10n.showInstructions),
+            subtitle: Text(l10n.showInstructionsDescription),
             trailing: const Icon(Icons.help_outline),
             onTap: _showInstructions,
           ),
@@ -193,8 +251,8 @@ class _SettingsPageState extends State<SettingsPage> {
 
           // Sezione Backup
           ListTile(
-            title: const Text('Backup preferiti'),
-            subtitle: const Text('Salva e ripristina i tuoi preferiti'),
+            title: Text(l10n.backupFavorites),
+            subtitle: Text(l10n.backupFavoritesDescription),
             trailing: const Icon(Icons.backup),
             onTap: () {
               Navigator.push(
@@ -207,27 +265,97 @@ class _SettingsPageState extends State<SettingsPage> {
           ),
           const Divider(),
 
+          // Sezione Lingua
+          ListTile(
+            title: Text(l10n.language),
+            subtitle: FutureBuilder<Locale>(
+              future: _languageService?.getSelectedLocale() ?? Future.value(const Locale('en')),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return const Text('...');
+                }
+                return Text(_getLanguageName(snapshot.data!.languageCode));
+              },
+            ),
+            trailing: const Icon(Icons.language),
+            onTap: () async {
+              if (_languageService == null) return;
+              final currentLocale = await _languageService!.getSelectedLocale();
+              if (!mounted) return;
+              
+              showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                  title: Text(l10n.language),
+                  content: SingleChildScrollView(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        // Lista delle lingue supportate
+                        ...const [
+                          Locale('it'), // Italiano
+                          Locale('en'), // Inglese
+                          Locale('de'), // Tedesco
+                          Locale('fr'), // Francese
+                          Locale('es'), // Spagnolo
+                          Locale('pt'), // Portoghese
+                          Locale('nl'), // Olandese
+                          Locale('da'), // Danese
+                          Locale('sv'), // Svedese
+                          Locale('fi'), // Finlandese
+                          Locale('cs'), // Ceco
+                          Locale('hr'), // Croato
+                          Locale('sl'), // Sloveno
+                          Locale('is'), // Islandese
+                          Locale('hu'), // Ungherese
+                          Locale('bs'), // Bosniaco
+                        ].map((locale) {
+                          return RadioListTile<String>(
+                            title: Text(_getLanguageName(locale.languageCode)),
+                            value: locale.languageCode,
+                            groupValue: currentLocale.languageCode,
+                            onChanged: (value) async {
+                              if (value != null) {
+                                await _languageService?.setLocale(Locale(value));
+                                if (mounted) {
+                                  Navigator.of(context).pop();
+                                  // Riavvia l'app per applicare la nuova lingua
+                                  Phoenix.rebirth(context);
+                                }
+                              }
+                            },
+                          );
+                        }).toList(),
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
+          const Divider(),
+
           // Sezione Tema
           ListTile(
-            title: const Text('Tema'),
+            title: Text(l10n.theme),
             subtitle: Text(
               BlocProvider.of<ThemeBloc>(context).state.themeMode == ThemeMode.system
-                  ? 'Usa tema di sistema'
+                  ? l10n.systemTheme
                   : BlocProvider.of<ThemeBloc>(context).state.themeMode == ThemeMode.light
-                      ? 'Tema chiaro'
-                      : 'Tema scuro',
+                      ? l10n.lightTheme
+                      : l10n.darkTheme,
             ),
             trailing: const Icon(Icons.palette_outlined),
             onTap: () {
               showDialog(
                 context: context,
                 builder: (context) => AlertDialog(
-                  title: const Text('Seleziona tema'),
+                  title: Text(l10n.selectTheme),
                   content: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       ListTile(
-                        title: const Text('Tema di sistema'),
+                        title: Text(l10n.systemTheme),
                         leading: const Icon(Icons.brightness_auto),
                         onTap: () {
                           BlocProvider.of<ThemeBloc>(context)
@@ -236,7 +364,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         },
                       ),
                       ListTile(
-                        title: const Text('Tema chiaro'),
+                        title: Text(l10n.lightTheme),
                         leading: const Icon(Icons.brightness_high),
                         onTap: () {
                           BlocProvider.of<ThemeBloc>(context)
@@ -245,7 +373,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         },
                       ),
                       ListTile(
-                        title: const Text('Tema scuro'),
+                        title: Text(l10n.darkTheme),
                         leading: const Icon(Icons.brightness_4),
                         onTap: () {
                           BlocProvider.of<ThemeBloc>(context)
@@ -263,8 +391,8 @@ class _SettingsPageState extends State<SettingsPage> {
           
           // Sezione Privacy
           ListTile(
-            title: const Text('Impostazioni Privacy'),
-            subtitle: const Text('Modifica le tue preferenze sulla privacy per gli annunci'),
+            title: Text(l10n.privacySettings),
+            subtitle: Text(l10n.privacySettingsDescription),
             trailing: const Icon(Icons.privacy_tip_outlined),
             onTap: () async {
               try {
@@ -272,8 +400,8 @@ class _SettingsPageState extends State<SettingsPage> {
                 final isAvailable = await ConsentInformation.instance.isConsentFormAvailable();
                 if (!isAvailable && mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Le impostazioni sulla privacy non sono disponibili al momento'),
+                    SnackBar(
+                      content: Text(l10n.privacySettingsUnavailable),
                     ),
                   );
                   return;
@@ -287,7 +415,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         if (formError != null && mounted) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                              content: Text('Errore: ${formError.message}'),
+                              content: Text(l10n.errorWithMessage(formError.message)),
                             ),
                           );
                         }
@@ -298,7 +426,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     if (mounted) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: Text('Errore: ${formError.message}'),
+                          content: Text(l10n.errorWithMessage(formError.message)),
                         ),
                       );
                     }
@@ -308,7 +436,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 if (mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: Text('Errore: $e'),
+                      content: Text(l10n.errorWithMessage(e.toString())),
                     ),
                   );
                 }
@@ -316,8 +444,8 @@ class _SettingsPageState extends State<SettingsPage> {
             },
           ),
           ListTile(
-            title: const Text('Reset Impostazioni Privacy'),
-            subtitle: const Text('Resetta completamente le impostazioni sulla privacy'),
+            title: Text(l10n.resetPrivacySettings),
+            subtitle: Text(l10n.resetPrivacySettingsDescription),
             trailing: const Icon(Icons.restore),
             onTap: _resetConsentSettings,
           ),
@@ -326,8 +454,8 @@ class _SettingsPageState extends State<SettingsPage> {
           // Sezione Informazioni App
           if (_packageInfo != null) ...[
             ListTile(
-              title: const Text('Versione'),
-              subtitle: Text('${_packageInfo!.version} (build ${_packageInfo!.buildNumber})'),
+              title: Text(l10n.version),
+              subtitle: Text('${_packageInfo!.version} (${l10n.build} ${_packageInfo!.buildNumber})'),
               trailing: const Icon(Icons.info_outline),
             ),
           ],
@@ -335,4 +463,4 @@ class _SettingsPageState extends State<SettingsPage> {
       ),
     );
   }
-} 
+}

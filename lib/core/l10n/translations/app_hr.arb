@@ -1,0 +1,226 @@
+{
+  "@@locale": "hr",
+  "appTitle": "TeleRetrò Italia",
+  "pageUnavailable": "Nije moguće učitati sliku stranice.\nPokušajte ponovno za trenutak.",
+  "pageNotAvailable": "Tražena stranica nije dostupna",
+  "pageLoadError": "Došlo je do pogreške prilikom učitavanja stranice.\nPovratak na stranicu 100",
+  "pageNotAvailableForRegion": "Stranica {pageNumber} nije dostupna za {regionName}",
+  "@pageNotAvailableForRegion": {
+    "description": "Error message when a page is not available for a specific region",
+    "placeholders": {
+      "pageNumber": {
+        "type": "int",
+        "example": "100"
+      },
+      "regionName": {
+        "type": "String",
+        "example": "Lombardia"
+      }
+    }
+  },
+  "noMorePagesForRegion": "Nema više dostupnih stranica za {regionName}",
+  "@noMorePagesForRegion": {
+    "description": "Error message when there are no more pages for a region",
+    "placeholders": {
+      "regionName": {
+        "type": "String",
+        "example": "Lombardia"
+      }
+    }
+  },
+  "noMorePages": "Nema više dostupnih stranica",
+  "invalidSubpageNumber": "Nevažeći broj podstranice",
+  "subpageError": "Pogreška pri učitavanju podstranice {current} od {total}",
+  "@subpageError": {
+    "description": "Error message when a subpage fails to load",
+    "placeholders": {
+      "current": {
+        "type": "int",
+        "example": "1"
+      },
+      "total": {
+        "type": "int",
+        "example": "8"
+      }
+    }
+  },
+  "swipePrevious": "← Prethodna",
+  "swipeNext": "Sljedeća →",
+  "swipeNextUp": "Sljedeća ↑",
+  "swipePreviousDown": "Prethodna ↓",
+  "swipeRefresh": "Osvježi ↻",
+  "pageAddedToFavorites": "Stranica dodana u favorite",
+  "pageRemovedFromFavorites": "Stranica uklonjena iz favorita",
+  "editDescription": "Uredi opis",
+  "pageAndRegion": "Stranica {pageNumber} - {regionName}",
+  "@pageAndRegion": {
+    "description": "Page number and region name",
+    "placeholders": {
+      "pageNumber": {
+        "type": "int",
+        "example": "100"
+      },
+      "regionName": {
+        "type": "String",
+        "example": "Lombardia"
+      }
+    }
+  },
+  "description": "Opis",
+  "enterCustomDescription": "Unesite prilagođeni opis",
+  "restoreHint": "Savjet: dugo pritisnite gumb \"VRATI\" za povratak na zadani opis.",
+  "restore": "VRATI",
+  "cancel": "ODUSTANI",
+  "save": "SPREMI",
+  "searchHint": "Pretraži stranicu...",
+  "noResults": "Nema rezultata",
+  "settings": "Postavke",
+  "enterPageNumber": "Unesite broj stranice",
+  "pageNumberRange": "Broj od {minPage} do 999",
+  "@pageNumberRange": {
+    "description": "Hint text for page number input",
+    "placeholders": {
+      "minPage": {
+        "type": "int",
+        "example": "100"
+      }
+    }
+  },
+  "ok": "U redu",
+  "favoritesList": "Popis favorita",
+  "confirmRemoval": "Potvrdi uklanjanje",
+  "confirmRemoveFromFavorites": "Želite li stvarno ukloniti {description} iz favorita?",
+  "@confirmRemoveFromFavorites": {
+    "description": "Confirmation message when removing a page from favorites",
+    "placeholders": {
+      "description": {
+        "type": "String",
+        "example": "Stranica 100"
+      }
+    }
+  },
+  "remove": "Ukloni",
+  "edit": "Uredi",
+  "close": "Zatvori",
+  "noFavorites": "Nema favorita",
+  "useFavoriteIcon": "Koristite ikonu ❤️ za dodavanje stranica u favorite",
+  "loadingPage": "Učitavanje stranice {pageNumber}...",
+  "@loadingPage": {
+    "description": "Loading message when loading a page",
+    "placeholders": {
+      "pageNumber": {
+        "type": "int",
+        "example": "100"
+      }
+    }
+  },
+  "noPageToAddToFavorites": "Nema stranice za dodavanje u favorite",
+  "language": "Jezik",
+  "systemLanguage": "Sistemski jezik",
+  "darkMode": "Tamni način",
+  "autoRefresh": "Automatsko osvježavanje",
+  "favorites": "Favoriti",
+  "search": "Pretraži",
+  "regions": "Regije",
+  "home": "Početna",
+  "addToFavorites": "Dodaj u favorite",
+  "removeFromFavorites": "Ukloni iz favorita",
+  "loading": "Učitavanje...",
+  "error": "Pogreška",
+  "errorWithMessage": "Pogreška: {message}",
+  "@errorWithMessage": {
+    "description": "Error message with details",
+    "placeholders": {
+      "message": {
+        "type": "String",
+        "example": "Network error"
+      }
+    }
+  },
+  "retry": "Pokušaj ponovno",
+  "next": "Sljedeća",
+  "previous": "Prethodna",
+  "pageNotFound": "Stranica nije pronađena",
+  "networkError": "Mrežna pogreška",
+  "connectionRequired": "Potrebna je veza",
+  "refreshing": "Osvježavanje...",
+  "lastUpdate": "Posljednje ažuriranje",
+  "theme": "Tema",
+  "systemTheme": "Sistemska tema",
+  "lightTheme": "Svijetla tema",
+  "darkTheme": "Tamna tema",
+  "selectTheme": "Odaberi temu",
+  "loadFirstFavorite": "Učitaj prvi favorit pri pokretanju",
+  "loadFirstFavoriteDescription": "Ako je omogućeno, prvi favorit s popisa će se učitati pri pokretanju aplikacije",
+  "cacheDuration": "Trajanje predmemorije slika Televideo stranica (0 sekundi za onemogućavanje)",
+  "seconds": "sekundi",
+  "autoRefreshDescription": "Automatski osvježi podstranice",
+  "refreshInterval": "Interval osvježavanja",
+  "showOnboardingAtStartup": "Prikaži upute pri pokretanju",
+  "showOnboardingAtStartupDescription": "Prikaži upute svaki put kada otvorite aplikaciju",
+  "showInstructions": "Prikaži upute",
+  "showInstructionsDescription": "Pregledajte upute za korištenje aplikacije",
+  "backupFavorites": "Sigurnosna kopija favorita",
+  "backupFavoritesDescription": "Spremite i vratite svoje favorite",
+  "privacySettings": "Postavke privatnosti",
+  "privacySettingsDescription": "Izmijenite svoje postavke privatnosti za oglase",
+  "resetPrivacySettings": "Poništi postavke privatnosti",
+  "resetPrivacySettingsDescription": "Potpuno poništi postavke privatnosti",
+  "resetPrivacyConfirm": "Želite li stvarno poništiti postavke privatnosti? Bit ćete ponovno upitani za pristanak pri sljedećem pokretanju aplikacije.",
+  "privacySettingsUnavailable": "Postavke privatnosti trenutno nisu dostupne",
+  "privacySettingsReset": "Postavke privatnosti su poništene. Ponovno pokrenite aplikaciju za novi pristanak.",
+  "version": "Verzija",
+  "build": "build",
+  "onboardingWelcome": "Dobrodošli u TeleRetrò Italia",
+  "onboardingWelcomeDescription": "Aplikacija za brzo i jednostavno konzultiranje RAI Televideo",
+  "onboardingNavigation": "Navigacija",
+  "onboardingNavigationDescription": "Prijeđite prstom lijevo ili desno za promjenu stranice, dodirnite brojeve za izravnu navigaciju",
+  "onboardingFavorites": "Favoriti",
+  "onboardingFavoritesDescription": "Dodajte stranice u favorite za brzi pristup",
+  "onboardingRegions": "Regionalni Televideo",
+  "onboardingRegionsDescription": "Pristupite Televideo-u svoje regije",
+  "onboardingAutoRefresh": "Automatsko Osvježavanje",
+  "onboardingAutoRefreshDescription": "Podstranice se automatski ažuriraju",
+  "onboardingPause": "Pauziraj Osvježavanje",
+  "onboardingPauseDescription": "Dodirnite prazno područje za pauziranje automatskog osvježavanja",
+  "onboardingPageSelector": "Odabir Stranice",
+  "onboardingPageSelectorDescription": "Dodirnite središnji broj za izravan unos stranice.\n\nUnesite broj između 100 i 999 za skok na tu stranicu.",
+  "onboardingSubpageNavigation": "Navigacija Podstranica",
+  "onboardingSubpageNavigationDescription": "Ako stranica ima podstranice, vidjet ćete i indikator:\n• 1/3 znači: prva podstranica od tri dostupne\n\nKoristite središnje strelice za navigaciju između podstranica:\n\n• Strelica gore: idi na sljedeću podstranicu\n• Strelica dolje: idi na prethodnu podstranicu\n\nStrelice su aktivne samo kada su dostupne podstranice.",
+  "onboardingSwipe": "Navigacija Prelaskom",
+  "onboardingSwipeDescription": "Jednostavno se krećite između stranica pomoću gore prikazanih gesti.",
+  "onboardingClickableNumbers": "Brojevi Stranica na Klik",
+  "onboardingClickableNumbersDescription": "Dodirnite istaknute brojeve stranica za izravnu navigaciju na tu stranicu\n\nStranice 100/1 Nacionalnog Televideo-a i 300/1 Regionalnog Televideo-a nisu klikabilne",
+  "onboardingShortcuts": "Izbornik Prečaca",
+  "onboardingShortcutsDescription": "Brzi pristup najvažnijim Televideo stranicama.\n\nKoristite ovaj izbornik za izravan skok na:\n• Stranica 100: Nacionalni indeks\n• Stranica 200: Vijesti\n.....\nMožete također pretraživati stranice po naslovu odabirom opcije Pretraži stranicu",
+  "onboardingFavoritesList": "Popis Favorita",
+  "onboardingFavoritesListDescription": "Upravljajte svojim omiljenim stranicama:\n\n• Dodirnite stranicu za otvaranje\n• Prijeđite prstom ulijevo za uklanjanje\n• Dodirnite olovku za uređivanje opisa\n• Dugo pritisnite za promjenu redoslijeda\n\n",
+  "onboardingSettingsDescription": "Prilagodite aplikaciju prema svojim preferencijama:\n\n• Učitaj prvi favorit pri pokretanju: odlučite s kojom Televideo stranicom početi\n• Tema: odaberite između svijetle, tamne ili automatske\n• Automatsko osvježavanje: omogućite automatsko učitavanje podstranica\n• Predmemorija: upravljajte trajanjem predmemorije stranica\n• Upute: pregledajte ovaj vodič kad god želite\n• Sigurnosna kopija favorita: spremite i vratite svoje favorite\n• Postavke privatnosti i poništavanje: upravljajte ili poništite svoje izbore privatnosti",
+  "dontShowAgain": "Ne prikazuj ponovno",
+  "start": "Započni",
+  "reset": "Poništi",
+  "backToPage": "Natrag na stranicu {pageNumber}",
+  "@backToPage": {
+    "description": "Button text to go back to a specific page",
+    "placeholders": {
+      "pageNumber": {
+        "type": "int",
+        "example": "100"
+      }
+    }
+  },
+  "pageNotAvailableForRegionWithHint": "Stranica {pageNumber} nije dostupna za {regionName}.\nPokušajte s drugim brojem između 100 i 999.",
+  "@pageNotAvailableForRegionWithHint": {
+    "description": "Error message when a page is not available for a region, with hint",
+    "placeholders": {
+      "pageNumber": {
+        "type": "int",
+        "example": "100"
+      },
+      "regionName": {
+        "type": "String",
+        "example": "Lombardia"
+      }
+    }
+  }
+}

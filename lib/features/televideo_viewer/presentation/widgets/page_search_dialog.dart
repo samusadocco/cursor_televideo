@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cursor_televideo/core/descriptions/page_descriptions_service.dart';
 import 'package:cursor_televideo/shared/models/region.dart';
+import 'package:cursor_televideo/core/l10n/app_localizations.dart';
 
 class PageSearchDialog extends StatefulWidget {
   final bool isNational;
@@ -77,7 +78,7 @@ class _PageSearchDialogState extends State<PageSearchDialog> {
               TextField(
                 controller: _searchController,
                 decoration: InputDecoration(
-                  hintText: 'Cerca pagina...',
+                  hintText: AppLocalizations.of(context)?.searchHint ?? 'Search page...',
                   prefixIcon: const Icon(Icons.search),
                   suffixIcon: _searchQuery.isNotEmpty
                       ? IconButton(
@@ -97,9 +98,9 @@ class _PageSearchDialogState extends State<PageSearchDialog> {
               // Lista risultati
               Flexible(
                 child: _filteredPages.isEmpty
-                    ? const Center(
+                    ? Center(
                         child: Text(
-                          'Nessuna pagina trovata',
+                          AppLocalizations.of(context)?.noResults ?? 'No results',
                           style: TextStyle(
                             color: Colors.grey,
                             fontSize: 16,

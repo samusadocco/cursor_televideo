@@ -1,0 +1,487 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:cursor_televideo/features/televideo_viewer/bloc/televideo_bloc.dart';
+import 'package:cursor_televideo/features/televideo_viewer/bloc/televideo_event.dart';
+import 'package:cursor_televideo/features/televideo_viewer/bloc/televideo_state.dart';
+import 'package:cursor_televideo/features/televideo_viewer/bloc/region_bloc.dart';
+import 'package:cursor_televideo/features/televideo_viewer/presentation/widgets/televideo_viewer.dart';
+import 'package:cursor_televideo/core/storage/favorites_service.dart';
+import 'package:cursor_televideo/core/l10n/app_localizations.dart';
+import 'package:cursor_televideo/features/settings/presentation/pages/settings_page.dart';
+import 'package:cursor_televideo/core/network/televideo_repository.dart';
+import 'package:cursor_televideo/shared/models/region.dart';
+import 'package:cursor_televideo/shared/widgets/error_page_view.dart';
+import 'package:cursor_televideo/shared/widgets/ad_banner.dart';
+import 'package:cursor_televideo/features/televideo_viewer/presentation/widgets/page_number_indicator.dart';
+import 'package:cursor_televideo/features/televideo_viewer/presentation/widgets/shortcuts_menu.dart';
+import 'package:cursor_televideo/core/settings/app_settings.dart';
+import 'package:cursor_televideo/features/televideo_viewer/presentation/widgets/page_search_dialog.dart';
+
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  late final TelevideoBloc _televideoBloc;
+  late final RegionBloc _regionBloc;
+
+  @override
+  void initState() {
+    super.initState();
+    _regionBloc = RegionBloc();
+    _televideoBloc = TelevideoBloc(
+      repository: TelevideoRepository(),
+      regionBloc: _regionBloc,
+    );
+  }
+
+  @override
+  void dispose() {
+    _televideoBloc.close();
+    _regionBloc.close();
+    super.dispose();
+  }
+
+  AppBar _buildAppBar() {
+    return AppBar(
+      title: const Text('TeleRetrò Italia'),
+      actions: [
+        // Preferiti
+        IconButton(
+          icon: BlocBuilder<TelevideoBloc, TelevideoState>(
+            builder: (context, state) {
+              return state.maybeWhen(
+                loaded: (page, currentSubPage, isAutoRefreshPaused) {
+                  final isFavorite = FavoritesService().isFavorite(
+                    page.pageNumber,
+                    _regionBloc.state.selectedRegion?.code,
+                  );
+                  return Icon(
+                    isFavorite ? Icons.favorite : Icons.favorite_border,
+                    color: isFavorite ? Colors.red : null,
+                  );
+                },
+                orElse: () => const Icon(Icons.favorite_border),
+              );
+            },
+          ),
+          onPressed: () {
+            final state = _televideoBloc.state;
+            final currentRegion = _regionBloc.state.selectedRegion;
+            
+            state.maybeWhen(
+              loaded: (page, currentSubPage, isAutoRefreshPaused) {
+                final favoritesService = FavoritesService();
+                final isFavorite = favoritesService.isFavorite(
+                  page.pageNumber,
+                  currentRegion?.code,
+                );
+
+                if (isFavorite) {
+                  favoritesService.removeFavorite(
+                    page.pageNumber,
+                    regionCode: currentRegion?.code,
+                  );
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(AppLocalizations.of(context)!.pageRemovedFromFavorites),
+                      duration: const Duration(seconds: 2),
+                    ),
+                  );
+                } else {
+                  favoritesService.addFavorite(
+                    page.pageNumber,
+                    regionCode: currentRegion?.code,
+                  );
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(AppLocalizations.of(context)!.pageAddedToFavorites),
+                      duration: const Duration(seconds: 2),
+                    ),
+                  );
+                }
+                setState(() {}); // Forza l'aggiornamento dell'icona
+              },
+              orElse: () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(AppLocalizations.of(context)!.noPageToAddToFavorites),
+                    duration: const Duration(seconds: 2),
+                  ),
+                );
+              },
+            );
+          },
+        ),
+        // Lista preferiti
+        IconButton(
+          icon: const Icon(Icons.list),
+          tooltip: AppLocalizations.of(context)!.favoritesList,
+          onPressed: () => _showFavoritesDialog(context),
+        ),
+        // Impostazioni
+        IconButton(
+          icon: const Icon(Icons.settings),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const SettingsPage(),
+              ),
+            );
+          },
+        ),
+      ],
+      centerTitle: true,
+      automaticallyImplyLeading: false,
+    );
+  }
+
+  void _showFavoritesDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (dialogContext) {
+        final favorites = FavoritesService().getFavorites();
+        return StatefulBuilder(
+          builder: (context, setDialogState) {
+            return AlertDialog(
+              title: Text(AppLocalizations.of(context)!.favoritesList),
+              content: SizedBox(
+                width: double.maxFinite,
+                child: favorites.isEmpty
+                    ? const Center(
+                        child: Text('Nessun preferito'),
+                      )
+                    : ReorderableListView.builder(
+                        key: const ValueKey('favorites_list'),
+                        buildDefaultDragHandles: true,
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        shrinkWrap: false,
+                        itemBuilder: (context, index) {
+                          final favorite = favorites[index];
+                          return Dismissible(
+                            key: ObjectKey(favorite),
+                            direction: DismissDirection.endToStart,
+                            background: Container(
+                              color: Colors.red,
+                              alignment: Alignment.centerRight,
+                              padding: const EdgeInsets.only(right: 16.0),
+                              child: const Icon(
+                                Icons.delete,
+                                color: Colors.white,
+                              ),
+                            ),
+                            confirmDismiss: (direction) async {
+                              return await showDialog<bool>(
+                                context: dialogContext,
+                                builder: (confirmContext) => AlertDialog(
+                                  title: Text(AppLocalizations.of(context)!.confirmRemoval),
+                                  content: Text(
+                                    AppLocalizations.of(context)!.confirmRemoveFromFavorites(favorite.displayDescription)
+                                  ),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () => Navigator.of(confirmContext).pop(false),
+                                      child: Text(AppLocalizations.of(context)!.cancel),
+                                    ),
+                                    TextButton(
+                                      onPressed: () => Navigator.of(confirmContext).pop(true),
+                                      child: Text(AppLocalizations.of(context)!.remove),
+                                    ),
+                                  ],
+                                ),
+                              ) ?? false;
+                            },
+                            onDismissed: (direction) async {
+                              await FavoritesService().removeFavorite(
+                                favorite.pageNumber,
+                                regionCode: favorite.regionCode,
+                              );
+                              setDialogState(() {
+                                favorites.removeAt(index);
+                              });
+                            },
+                            child: ListTile(
+                              title: Text(favorite.displayDescription),
+                              onTap: () {
+                                if (favorite.regionCode != null) {
+                                  final region = Region.fromCode(favorite.regionCode!);
+                                  _regionBloc.add(RegionEvent.selectRegion(region));
+                                  _televideoBloc.add(
+                                    TelevideoEvent.loadRegionalPage(
+                                      region,
+                                      favorite.pageNumber,
+                                    ),
+                                  );
+                                } else {
+                                  _regionBloc.add(const RegionEvent.selectRegion(null));
+                                  _televideoBloc.add(
+                                    TelevideoEvent.loadNationalPage(favorite.pageNumber),
+                                  );
+                                }
+                                Navigator.of(dialogContext).pop();
+                              },
+                            ),
+                          );
+                        },
+                        itemCount: favorites.length,
+                        onReorder: (oldIndex, newIndex) async {
+                          await FavoritesService().reorderFavorites(oldIndex, newIndex);
+                          setDialogState(() {
+                            favorites.insert(
+                              newIndex > oldIndex ? newIndex - 1 : newIndex,
+                              favorites.removeAt(oldIndex),
+                            );
+                          });
+                        },
+                      ),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(dialogContext).pop(),
+                  child: Text(AppLocalizations.of(context)!.close),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return OrientationBuilder(
+      builder: (context, orientation) {
+        return MultiBlocProvider(
+          providers: [
+            BlocProvider.value(value: _televideoBloc),
+            BlocProvider.value(value: _regionBloc),
+          ],
+          child: Scaffold(
+            appBar: _buildAppBar(),
+            body: Column(
+              children: [
+                Expanded(
+                  child: BlocBuilder<RegionBloc, RegionState>(
+                    builder: (context, regionState) {
+                      return BlocBuilder<TelevideoBloc, TelevideoState>(
+                        builder: (context, state) {
+                          return state.when(
+                            initial: () => const Center(child: CircularProgressIndicator()),
+                            loading: (pageNumber) => Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const CircularProgressIndicator(),
+                                  const SizedBox(height: 16),
+                                  Text(
+                                    AppLocalizations.of(context)!.loadingPage(pageNumber),
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            loaded: (page, currentSubPage, isAutoRefreshPaused) => TelevideoViewer(
+                              page: page,
+                              onPageNumberSubmitted: (pageNumber) {
+                                if (regionState.selectedRegion != null) {
+                                  _televideoBloc.add(
+                                    TelevideoEvent.loadRegionalPage(
+                                      regionState.selectedRegion!,
+                                      pageNumber,
+                                    ),
+                                  );
+                                } else {
+                                  _televideoBloc.add(
+                                    TelevideoEvent.loadNationalPage(pageNumber),
+                                  );
+                                }
+                              },
+                              showControls: true,
+                              isNationalMode: regionState.selectedRegion == null,
+                            ),
+                            error: (message) => ErrorPageView(
+                              message: message,
+                              onRetry: () {
+                                if (regionState.selectedRegion != null) {
+                                  _televideoBloc.add(
+                                    TelevideoEvent.loadRegionalPage(
+                                      regionState.selectedRegion!,
+                                      300,
+                                    ),
+                                  );
+                                } else {
+                                  _televideoBloc.add(
+                                    TelevideoEvent.loadNationalPage(_televideoBloc.minPage),
+                                  );
+                                }
+                              },
+                            ),
+                          );
+                        },
+                      );
+                    },
+                  ),
+                ),
+                const AdBanner(),
+                Container(
+                  height: 60,
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).bottomAppBarTheme.color,
+                  ),
+                  child: BlocBuilder<TelevideoBloc, TelevideoState>(
+                    builder: (context, state) {
+                      return state.maybeWhen(
+                        loaded: (page, currentSubPage, isAutoRefreshPaused) {
+                          return Row(
+                            children: [
+                              // Freccia sinistra
+                              Expanded(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    IconButton(
+                                      icon: const Icon(
+                                        Icons.skip_previous,
+                                        size: 32,
+                                      ),
+                                      onPressed: () {
+                                        _televideoBloc.add(
+                                          TelevideoEvent.previousPage(currentPage: page.pageNumber),
+                                        );
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              // Frecce verticali e numero pagina
+                              Expanded(
+                                flex: 2,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    if (page.maxSubPages > 1) ...[
+                                      IconButton(
+                                        icon: const Icon(
+                                          Icons.keyboard_arrow_up,
+                                          size: 32,
+                                        ),
+                                        onPressed: () {
+                                          _televideoBloc.add(const TelevideoEvent.nextSubPage());
+                                        },
+                                      ),
+                                    ],
+                                    PageNumberIndicator(
+                                      pageNumber: page.pageNumber,
+                                      subPage: currentSubPage,
+                                      maxSubPages: page.maxSubPages,
+                                      duration: Duration(seconds: AppSettings.liveShowIntervalSeconds),
+                                      isAutoRefreshEnabled: AppSettings.liveShowEnabled,
+                                      isAutoRefreshPaused: isAutoRefreshPaused,
+                                      onTap: () {
+                                        showDialog(
+                                          context: context,
+                                          builder: (context) => PageSearchDialog(
+                                            isNational: _regionBloc.state.selectedRegion == null,
+                                            onNationalPageSelected: (pageNumber) {
+                                              _televideoBloc.add(
+                                                TelevideoEvent.loadNationalPage(pageNumber),
+                                              );
+                                            },
+                                            onRegionalPageSelected: (pageNumber, region) {
+                                              _televideoBloc.add(
+                                                TelevideoEvent.loadRegionalPage(
+                                                  region,
+                                                  pageNumber,
+                                                ),
+                                              );
+                                            },
+                                            selectedRegion: _regionBloc.state.selectedRegion,
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                    if (page.maxSubPages > 1) ...[
+                                      IconButton(
+                                        icon: const Icon(
+                                          Icons.keyboard_arrow_down,
+                                          size: 32,
+                                        ),
+                                        onPressed: () {
+                                          _televideoBloc.add(const TelevideoEvent.previousSubPage());
+                                        },
+                                      ),
+                                    ],
+                                  ],
+                                ),
+                              ),
+                              // Freccia destra e menu
+                              Expanded(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    IconButton(
+                                      icon: const Icon(
+                                        Icons.skip_next,
+                                        size: 32,
+                                      ),
+                                      onPressed: () {
+                                        _televideoBloc.add(
+                                          TelevideoEvent.nextPage(currentPage: page.pageNumber),
+                                        );
+                                      },
+                                    ),
+                                    IconButton(
+                                      icon: const Icon(
+                                        Icons.menu,
+                                        size: 32,
+                                      ),
+                                      onPressed: () {
+                                        showModalBottomSheet(
+                                          context: context,
+                                          builder: (context) => ShortcutsMenu(
+                                            isNational: _regionBloc.state.selectedRegion == null,
+                                            onNationalPageSelected: (pageNumber) {
+                                              _televideoBloc.add(
+                                                TelevideoEvent.loadNationalPage(pageNumber),
+                                              );
+                                            },
+                                            onRegionalPageSelected: (pageNumber, region) {
+                                              _televideoBloc.add(
+                                                TelevideoEvent.loadRegionalPage(
+                                                  region,
+                                                  pageNumber,
+                                                ),
+                                              );
+                                            },
+                                            selectedRegion: _regionBloc.state.selectedRegion,
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                        orElse: () => const SizedBox.shrink(),
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+}

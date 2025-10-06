@@ -10,6 +10,7 @@ import 'package:cursor_televideo/features/onboarding/presentation/widgets/settin
 import 'package:cursor_televideo/features/onboarding/presentation/widgets/page_links_instruction.dart';
 import 'package:cursor_televideo/features/onboarding/presentation/widgets/navigation_arrows_instruction.dart';
 import 'package:cursor_televideo/core/onboarding/onboarding_service.dart';
+import 'package:cursor_televideo/core/l10n/app_localizations.dart';
 
 class OnboardingCarousel extends StatefulWidget {
   final VoidCallback onDismiss;
@@ -71,6 +72,7 @@ class _OnboardingCarouselState extends State<OnboardingCarousel> with SingleTick
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
     final isTablet = screenSize.shortestSide >= 600;
+    final l10n = AppLocalizations.of(context)!;
 
     final dialogWidth = isTablet 
         ? screenSize.width * 0.7
@@ -83,8 +85,8 @@ class _OnboardingCarouselState extends State<OnboardingCarousel> with SingleTick
     final pages = [
       // Pagina di benvenuto
       _buildPage(
-        'Benvenuto in TeleRetro Italia',
-        'Scopri tutte le funzionalità dell\'app',
+        l10n.onboardingWelcome,
+        l10n.onboardingWelcomeDescription,
         Icons.tv,
         customContent: Column(
           mainAxisSize: MainAxisSize.min,
@@ -102,11 +104,8 @@ class _OnboardingCarouselState extends State<OnboardingCarousel> with SingleTick
       ),
       // Navigazione orizzontale
       _buildPage(
-        'Navigazione Pagine',
-        'Usa le frecce laterali per navigare tra le pagine:\n\n'
-        '• Freccia sinistra: vai alla pagina precedente\n'
-        '• Freccia destra: vai alla pagina successiva\n\n'
-        'Puoi anche usare lo swipe orizzontale per lo stesso effetto.',
+        l10n.onboardingNavigation,
+        l10n.onboardingNavigationDescription,
         Icons.arrow_forward,
         customContent: const BottomBarInstruction(
           highlight: BottomBarHighlight.horizontalNavigation,
@@ -115,10 +114,8 @@ class _OnboardingCarouselState extends State<OnboardingCarousel> with SingleTick
       ),
       // Selettore pagine
       _buildPage(
-        'Selettore Pagine',
-        'Tocca il numero centrale per inserire direttamente una pagina.\n\n'
-        
-        'Inserisci un numero tra 100 e 999 per saltare a quella pagina.',
+        l10n.onboardingPageSelector,
+        l10n.onboardingPageSelectorDescription,
         Icons.numbers,
         customContent: const BottomBarInstruction(
           highlight: BottomBarHighlight.pageSelector,
@@ -127,13 +124,8 @@ class _OnboardingCarouselState extends State<OnboardingCarousel> with SingleTick
       ),
       // Navigazione verticale
       _buildPage(
-        'Navigazione Sottopagine',
-        'Se la pagina ha delle sottopagine, vedrai anche l\'indicatore:\n'
-        '• 1/3 significa: prima sottopagina di tre disponibili\n\n'
-        'Usa le frecce centrali per navigare tra le sottopagine:\n\n'
-        '• Freccia su: vai alla sottopagina successiva\n'
-        '• Freccia giù: vai alla sottopagina precedente\n\n'
-        'Le frecce sono attive solo quando ci sono sottopagine disponibili.',
+        l10n.onboardingSubpageNavigation,
+        l10n.onboardingSubpageNavigationDescription,
         Icons.arrow_upward,
         customContent: const BottomBarInstructionWithTimer(
           highlight: BottomBarHighlight.verticalNavigation,
@@ -142,10 +134,8 @@ class _OnboardingCarouselState extends State<OnboardingCarousel> with SingleTick
       ),
       // Indicatore di autocaricamento
       _buildPage(
-        'Autocaricamento Sottopagine',
-        'Quando l\'aggiornamento automatico è attivo, il cerchio intorno al numero di pagina si riempie progressivamente:\n\n'
-        'Modifica il tempo di aggiornamento nelle impostazioni\n\n'
-        'L\'indicatore è visibile solo quando ci sono sottopagine disponibili e l\'aggiornamento automatico è attivo.',
+        l10n.onboardingAutoRefresh,
+        l10n.onboardingAutoRefreshDescription,
         Icons.timer,
         customContent: const BottomBarInstructionWithTimer(
           highlight: BottomBarHighlight.pageSelector,
@@ -154,12 +144,8 @@ class _OnboardingCarouselState extends State<OnboardingCarousel> with SingleTick
       ),
       // Pausa autocaricamento
       _buildPage(
-        'Pausa Autocaricamento',
-        'Puoi mettere in pausa l\'aggiornamento automatico delle sottopagine:\n\n'
-        '• Tocca in un punto qualsiasi della pagina dove non ci sono numeri cliccabili\n'
-        '• Vedrai apparire l\'icona ⏸️ per indicare che l\'aggiornamento è in pausa\n'
-        '• Tocca di nuovo per riprendere l\'aggiornamento (icona ▶️)\n\n'
-        'Questa funzione è utile quando vuoi leggere con calma una sottopagina senza che cambi automaticamente.',
+        l10n.onboardingPause,
+        l10n.onboardingPauseDescription,
         Icons.pause_circle_outline,
         customContent: const BottomBarInstructionWithTimer(
           highlight: BottomBarHighlight.pageSelector,
@@ -169,81 +155,56 @@ class _OnboardingCarouselState extends State<OnboardingCarousel> with SingleTick
       ),
       // Spiegazione swipe
       _buildPage(
-        'Navigazione Swipe',
-        'Naviga facilmente tra le pagine con i gesti mostrati qui sopra.',
+        l10n.onboardingSwipe,
+        l10n.onboardingSwipeDescription,
         Icons.swipe,
         customContent: const SwipeInstructions(),
       ),
       // Spiegazione numeri cliccabili
       _buildPage(
-        'Numeri di pagina clickabili',
-        'Tocca i numeri di pagina evidenziati per navigare direttamente a quella pagina\n\n'
-        'Le pagine 100/1 del Televideo Nazionale e 300/1 del Televideo Regionale non sono clickabili',
+        l10n.onboardingClickableNumbers,
+        l10n.onboardingClickableNumbersDescription,
         Icons.touch_app,
         customContent: const PageLinksInstruction(),
       ),
       // Spiegazione menu shortcuts
       _buildPage(
-        'Menu Shortcuts',
-        'Accedi rapidamente alle pagine più importanti del Televideo.\n\n'
-        'Usa questo menu per saltare direttamente a:\n'
-        '• Pagina 100: Indice nazionale\n'
-        '• Pagina 200: Notizie\n'
-        '.....\n'
-        'Puoi anche ricercare le pagine in base al titolo selezionando l\' opzione Cerca pagina',
+        l10n.onboardingShortcuts,
+        l10n.onboardingShortcutsDescription,
         Icons.menu_book,
         customContent: const ShortcutsMenuInstruction(),
       ),
       // Spiegazione selettore regioni
       _buildPage(
-        'Selettore Regioni',
-        'Passa dal Televideo Nazionale a quello Regionale.\n\n'
-
-        'La tua posizione verrà rilevata automaticamente per suggerirti la regione corretta.',
+        l10n.onboardingRegions,
+        l10n.onboardingRegionsDescription,
         Icons.location_on,
         customContent: const RegionSelectorInstruction(),
       ),
       // Spiegazione preferiti
       _buildPage(
-        'Aggiungi ai Preferiti',
-        'Salva le pagine che visiti più spesso:\n\n'
-        '• Tocca l\'icona cuore per aggiungere la pagina corrente\n'
-        '• Tocca di nuovo per rimuoverla dai preferiti\n'
-        '• L\'icona diventa rossa quando la pagina è tra i preferiti\n\n'
-        'Puoi salvare sia pagine nazionali che regionali.',
+        l10n.onboardingFavorites,
+        l10n.onboardingFavoritesDescription,
         Icons.favorite,
         customContent: const FavoritesInstruction(),
         contentAfterTitle: true,
       ),
       // Spiegazione lista preferiti
       _buildPage(
-        'Lista Preferiti',
-        'Gestisci le tue pagine preferite:\n\n'
-        '• Tocca una pagina per aprirla\n'
-        '• Scorri a sinistra per rimuoverla\n'
-        '• Tocca la matita per modificare la descrizione\n'
-        '• Tieni premuto per modificare l\'ordine\n\n'
-         , Icons.list,
+        l10n.onboardingFavoritesList,
+        l10n.onboardingFavoritesListDescription,
+        Icons.list,
         customContent: const FavoritesListInstruction(),
         contentAfterTitle: true,
       ),
       // Spiegazione impostazioni
       _buildPage(
-        'Impostazioni',
-        'Personalizza l\'app secondo le tue preferenze:\n\n'
-        '• Carica il primo preferito all\'avvio: decidi con quale pagina del Televideo iniziare\n'
-        '• Tema: scegli tra chiaro, scuro o automatico\n'
-        '• Aggiornamento automatico: attiva il caricamento automatico delle sottopagine\n'
-        '• Cache: gestisci la durata della cache delle pagine\n'
-        '• Istruzioni: rivedi questo tutorial quando vuoi\n'
-        '• Backup Preferiti: salva e ripristina i tuoi preferiti\n'
-        '• Impostazioni e reset Privacy: gestisci o resetta le scelte sulla privacy',
+        l10n.settings,
+        l10n.onboardingSettingsDescription,
         Icons.settings,
         customContent: const SettingsInstruction(),
         contentAfterTitle: true,
       ),
-      // Spiegazione Live Show
-      
     ];
 
     return AnimatedBuilder(
@@ -347,7 +308,7 @@ class _OnboardingCarouselState extends State<OnboardingCarousel> with SingleTick
                                       curve: Curves.easeInOutCubic,
                                     );
                                   },
-                                  child: const Text('Indietro'),
+                                  child: Text(l10n.previous),
                                 )
                               else
                                 TextButton(
@@ -358,7 +319,7 @@ class _OnboardingCarouselState extends State<OnboardingCarousel> with SingleTick
                                       widget.onDismiss();
                                     }
                                   },
-                                  child: const Text('Non mostrare più'),
+                                  child: Text(l10n.dontShowAgain),
                                 ),
                               TextButton(
                                 onPressed: () {
@@ -371,7 +332,7 @@ class _OnboardingCarouselState extends State<OnboardingCarousel> with SingleTick
                                     widget.onDismiss();
                                   }
                                 },
-                                child: Text(_currentPage < pages.length - 1 ? 'Avanti' : 'Inizia'),
+                                child: Text(_currentPage < pages.length - 1 ? l10n.next : l10n.start),
                               ),
                             ],
                           ),
@@ -467,4 +428,4 @@ class _OnboardingCarouselState extends State<OnboardingCarousel> with SingleTick
       children: content,
     );
   }
-} 
+}

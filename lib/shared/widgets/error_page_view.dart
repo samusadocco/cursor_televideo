@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cursor_televideo/features/televideo_viewer/bloc/televideo_bloc.dart';
 import 'package:cursor_televideo/features/televideo_viewer/bloc/televideo_event.dart';
 import 'package:cursor_televideo/features/televideo_viewer/bloc/region_bloc.dart';
+import 'package:cursor_televideo/core/l10n/app_localizations.dart';
 
 class ErrorPageView extends StatelessWidget {
   final String message;
@@ -18,6 +19,7 @@ class ErrorPageView extends StatelessWidget {
   Widget build(BuildContext context) {
     final regionState = context.watch<RegionBloc>().state;
     final isRegionalMode = regionState.selectedRegion != null;
+    final l10n = AppLocalizations.of(context)!;
 
     return Container(
       color: Colors.black,
@@ -46,7 +48,7 @@ class ErrorPageView extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               Text(
-                'Pagina non disponibile',
+                l10n.pageUnavailable,
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
@@ -68,7 +70,7 @@ class ErrorPageView extends StatelessWidget {
                     FilledButton.icon(
                       onPressed: onRetry,
                       icon: const Icon(Icons.refresh),
-                      label: const Text('Riprova'),
+                      label: Text(l10n.retry),
                     ),
                     const SizedBox(width: 16),
                   ],
@@ -92,7 +94,7 @@ class ErrorPageView extends StatelessWidget {
                       backgroundColor: Theme.of(context).colorScheme.secondary,
                     ),
                     icon: const Icon(Icons.home),
-                    label: Text(isRegionalMode ? 'Torna a 300' : 'Torna a ${context.read<TelevideoBloc>().minPage}'),
+                    label: Text(isRegionalMode ? l10n.backToPage(300) : l10n.backToPage(context.read<TelevideoBloc>().minPage)),
                   ),
                 ],
               ),
@@ -102,4 +104,4 @@ class ErrorPageView extends StatelessWidget {
       ),
     );
   }
-} 
+}

@@ -1,0 +1,71 @@
+{
+  "bs": [
+    "pageUnavailableWithHint",
+    "pageLoadErrorWithHint"
+  ],
+
+  "cs": [
+    "pageUnavailableWithHint",
+    "pageLoadErrorWithHint"
+  ],
+
+  "da": [
+    "pageUnavailableWithHint",
+    "pageLoadErrorWithHint"
+  ],
+
+  "de": [
+    "pageUnavailableWithHint",
+    "pageLoadErrorWithHint"
+  ],
+
+  "es": [
+    "pageUnavailableWithHint",
+    "pageLoadErrorWithHint"
+  ],
+
+  "fi": [
+    "pageUnavailableWithHint",
+    "pageLoadErrorWithHint"
+  ],
+
+  "fr": [
+    "pageUnavailableWithHint",
+    "pageLoadErrorWithHint"
+  ],
+
+  "hr": [
+    "pageUnavailableWithHint",
+    "pageLoadErrorWithHint"
+  ],
+
+  "hu": [
+    "pageUnavailableWithHint",
+    "pageLoadErrorWithHint"
+  ],
+
+  "is": [
+    "pageUnavailableWithHint",
+    "pageLoadErrorWithHint"
+  ],
+
+  "nl": [
+    "pageUnavailableWithHint",
+    "pageLoadErrorWithHint"
+  ],
+
+  "pt": [
+    "pageUnavailableWithHint",
+    "pageLoadErrorWithHint"
+  ],
+
+  "sl": [
+    "pageUnavailableWithHint",
+    "pageLoadErrorWithHint"
+  ],
+
+  "sv": [
+    "pageUnavailableWithHint",
+    "pageLoadErrorWithHint"
+  ]
+}

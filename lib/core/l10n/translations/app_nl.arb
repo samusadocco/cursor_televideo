@@ -1,0 +1,226 @@
+{
+  "@@locale": "nl",
+  "appTitle": "TeleRetrò Italia",
+  "pageUnavailable": "Kan de paginafoto niet laden.\nProbeer het over een moment opnieuw.",
+  "pageNotAvailable": "De gevraagde pagina is niet beschikbaar",
+  "pageLoadError": "Er is een fout opgetreden bij het laden van de pagina.\nTerug naar pagina 100",
+  "pageNotAvailableForRegion": "Pagina {pageNumber} is niet beschikbaar voor {regionName}",
+  "@pageNotAvailableForRegion": {
+    "description": "Error message when a page is not available for a specific region",
+    "placeholders": {
+      "pageNumber": {
+        "type": "int",
+        "example": "100"
+      },
+      "regionName": {
+        "type": "String",
+        "example": "Lombardia"
+      }
+    }
+  },
+  "noMorePagesForRegion": "Geen pagina's meer beschikbaar voor {regionName}",
+  "@noMorePagesForRegion": {
+    "description": "Error message when there are no more pages for a region",
+    "placeholders": {
+      "regionName": {
+        "type": "String",
+        "example": "Lombardia"
+      }
+    }
+  },
+  "noMorePages": "Geen pagina's meer beschikbaar",
+  "invalidSubpageNumber": "Ongeldig subpaginanummer",
+  "subpageError": "Fout bij het laden van subpagina {current} van {total}",
+  "@subpageError": {
+    "description": "Error message when a subpage fails to load",
+    "placeholders": {
+      "current": {
+        "type": "int",
+        "example": "1"
+      },
+      "total": {
+        "type": "int",
+        "example": "8"
+      }
+    }
+  },
+  "swipePrevious": "← Vorige",
+  "swipeNext": "Volgende →",
+  "swipeNextUp": "Volgende ↑",
+  "swipePreviousDown": "Vorige ↓",
+  "swipeRefresh": "Vernieuwen ↻",
+  "pageAddedToFavorites": "Pagina toegevoegd aan favorieten",
+  "pageRemovedFromFavorites": "Pagina verwijderd uit favorieten",
+  "editDescription": "Beschrijving bewerken",
+  "pageAndRegion": "Pagina {pageNumber} - {regionName}",
+  "@pageAndRegion": {
+    "description": "Page number and region name",
+    "placeholders": {
+      "pageNumber": {
+        "type": "int",
+        "example": "100"
+      },
+      "regionName": {
+        "type": "String",
+        "example": "Lombardia"
+      }
+    }
+  },
+  "description": "Beschrijving",
+  "enterCustomDescription": "Voer een aangepaste beschrijving in",
+  "restoreHint": "Tip: houd de \"HERSTELLEN\" knop ingedrukt om terug te keren naar de standaardbeschrijving.",
+  "restore": "HERSTELLEN",
+  "cancel": "ANNULEREN",
+  "save": "OPSLAAN",
+  "searchHint": "Zoek pagina...",
+  "noResults": "Geen resultaten",
+  "settings": "Instellingen",
+  "enterPageNumber": "Voer paginanummer in",
+  "pageNumberRange": "Nummer van {minPage} tot 999",
+  "@pageNumberRange": {
+    "description": "Hint text for page number input",
+    "placeholders": {
+      "minPage": {
+        "type": "int",
+        "example": "100"
+      }
+    }
+  },
+  "ok": "OK",
+  "favoritesList": "Favorietenlijst",
+  "confirmRemoval": "Bevestig verwijdering",
+  "confirmRemoveFromFavorites": "Wilt u {description} echt verwijderen uit favorieten?",
+  "@confirmRemoveFromFavorites": {
+    "description": "Confirmation message when removing a page from favorites",
+    "placeholders": {
+      "description": {
+        "type": "String",
+        "example": "Pagina 100"
+      }
+    }
+  },
+  "remove": "Verwijderen",
+  "edit": "Bewerken",
+  "close": "Sluiten",
+  "noFavorites": "Geen favorieten",
+  "useFavoriteIcon": "Gebruik het ❤️ icoon om pagina's toe te voegen aan favorieten",
+  "loadingPage": "Pagina {pageNumber} laden...",
+  "@loadingPage": {
+    "description": "Loading message when loading a page",
+    "placeholders": {
+      "pageNumber": {
+        "type": "int",
+        "example": "100"
+      }
+    }
+  },
+  "noPageToAddToFavorites": "Geen pagina om toe te voegen aan favorieten",
+  "language": "Taal",
+  "systemLanguage": "Systeemtaal",
+  "darkMode": "Donkere modus",
+  "autoRefresh": "Automatisch vernieuwen",
+  "favorites": "Favorieten",
+  "search": "Zoeken",
+  "regions": "Regio's",
+  "home": "Home",
+  "addToFavorites": "Toevoegen aan favorieten",
+  "removeFromFavorites": "Verwijderen uit favorieten",
+  "loading": "Laden...",
+  "error": "Fout",
+  "errorWithMessage": "Fout: {message}",
+  "@errorWithMessage": {
+    "description": "Error message with details",
+    "placeholders": {
+      "message": {
+        "type": "String",
+        "example": "Network error"
+      }
+    }
+  },
+  "retry": "Opnieuw proberen",
+  "next": "Volgende",
+  "previous": "Vorige",
+  "pageNotFound": "Pagina niet gevonden",
+  "networkError": "Netwerkfout",
+  "connectionRequired": "Verbinding vereist",
+  "refreshing": "Vernieuwen...",
+  "lastUpdate": "Laatste update",
+  "theme": "Thema",
+  "systemTheme": "Systeemthema",
+  "lightTheme": "Licht thema",
+  "darkTheme": "Donker thema",
+  "selectTheme": "Selecteer thema",
+  "loadFirstFavorite": "Laad eerste favoriet bij opstarten",
+  "loadFirstFavoriteDescription": "Indien ingeschakeld wordt de eerste favoriet in de lijst geladen bij het starten van de app",
+  "cacheDuration": "Cache-duur voor Televideo-paginafoto's (0 seconden om uit te schakelen)",
+  "seconds": "seconden",
+  "autoRefreshDescription": "Automatisch subpagina's vernieuwen",
+  "refreshInterval": "Vernieuwingsinterval",
+  "showOnboardingAtStartup": "Toon instructies bij opstarten",
+  "showOnboardingAtStartupDescription": "Toon instructies elke keer dat u de app opent",
+  "showInstructions": "Toon instructies",
+  "showInstructionsDescription": "Bekijk de gebruiksinstructies van de app",
+  "backupFavorites": "Back-up favorieten",
+  "backupFavoritesDescription": "Sla uw favorieten op en herstel ze",
+  "privacySettings": "Privacy-instellingen",
+  "privacySettingsDescription": "Wijzig uw privacyvoorkeuren voor advertenties",
+  "resetPrivacySettings": "Privacy-instellingen resetten",
+  "resetPrivacySettingsDescription": "Privacy-instellingen volledig resetten",
+  "resetPrivacyConfirm": "Wilt u de privacy-instellingen echt resetten? U wordt bij de volgende start van de app opnieuw om toestemming gevraagd.",
+  "privacySettingsUnavailable": "Privacy-instellingen zijn momenteel niet beschikbaar",
+  "privacySettingsReset": "Privacy-instellingen gereset. Start de app opnieuw voor nieuwe toestemming.",
+  "version": "Versie",
+  "build": "build",
+  "onboardingWelcome": "Welkom bij TeleRetrò Italia",
+  "onboardingWelcomeDescription": "De app om RAI Televideo snel en eenvoudig te raadplegen",
+  "onboardingNavigation": "Navigatie",
+  "onboardingNavigationDescription": "Veeg naar links of rechts om van pagina te wisselen, tik op nummers om direct te navigeren",
+  "onboardingFavorites": "Favorieten",
+  "onboardingFavoritesDescription": "Voeg pagina's toe aan favorieten voor snelle toegang",
+  "onboardingRegions": "Regionaal Televideo",
+  "onboardingRegionsDescription": "Toegang tot de Televideo van uw regio",
+  "onboardingAutoRefresh": "Automatisch Vernieuwen",
+  "onboardingAutoRefreshDescription": "Subpagina's worden automatisch bijgewerkt",
+  "onboardingPause": "Vernieuwen Pauzeren",
+  "onboardingPauseDescription": "Tik op een leeg gebied om automatisch vernieuwen te pauzeren",
+  "onboardingPageSelector": "Paginakiezer",
+  "onboardingPageSelectorDescription": "Tik op het middelste nummer om direct een pagina in te voeren.\n\nVoer een nummer tussen 100 en 999 in om naar die pagina te springen.",
+  "onboardingSubpageNavigation": "Subpagina Navigatie",
+  "onboardingSubpageNavigationDescription": "Als de pagina subpagina's heeft, ziet u ook de indicator:\n• 1/3 betekent: eerste subpagina van drie beschikbare\n\nGebruik de middelste pijlen om tussen subpagina's te navigeren:\n\n• Pijl omhoog: ga naar volgende subpagina\n• Pijl omlaag: ga naar vorige subpagina\n\nDe pijlen zijn alleen actief als er subpagina's beschikbaar zijn.",
+  "onboardingSwipe": "Veeg Navigatie",
+  "onboardingSwipeDescription": "Navigeer eenvoudig tussen pagina's met de hierboven getoonde gebaren.",
+  "onboardingClickableNumbers": "Klikbare Paginanummers",
+  "onboardingClickableNumbersDescription": "Tik op de gemarkeerde paginanummers om direct naar die pagina te navigeren\n\nPagina's 100/1 van Nationaal Televideo en 300/1 van Regionaal Televideo zijn niet klikbaar",
+  "onboardingShortcuts": "Menu Snelkoppelingen",
+  "onboardingShortcutsDescription": "Krijg snel toegang tot de belangrijkste Televideo-pagina's.\n\nGebruik dit menu om direct naar:\n• Pagina 100: Nationale index\n• Pagina 200: Nieuws\n.....\nU kunt ook pagina's op titel zoeken door de optie Pagina zoeken te selecteren",
+  "onboardingFavoritesList": "Favorietenlijst",
+  "onboardingFavoritesListDescription": "Beheer uw favoriete pagina's:\n\n• Tik op een pagina om deze te openen\n• Veeg naar links om te verwijderen\n• Tik op het potlood om de beschrijving te bewerken\n• Houd ingedrukt om de volgorde te wijzigen\n\n",
+  "onboardingSettingsDescription": "Pas de app aan volgens uw voorkeuren:\n\n• Laad eerste favoriet bij opstarten: bepaal met welke Televideo-pagina te beginnen\n• Thema: kies tussen licht, donker of automatisch\n• Automatisch vernieuwen: schakel automatisch laden van subpagina's in\n• Cache: beheer de cache-duur van pagina's\n• Instructies: bekijk deze tutorial wanneer u maar wilt\n• Back-up Favorieten: sla uw favorieten op en herstel ze\n• Privacy-instellingen en reset: beheer of reset uw privacykeuzes",
+  "dontShowAgain": "Niet meer tonen",
+  "start": "Starten",
+  "reset": "Reset",
+  "backToPage": "Terug naar pagina {pageNumber}",
+  "@backToPage": {
+    "description": "Button text to go back to a specific page",
+    "placeholders": {
+      "pageNumber": {
+        "type": "int",
+        "example": "100"
+      }
+    }
+  },
+  "pageNotAvailableForRegionWithHint": "Pagina {pageNumber} is niet beschikbaar voor {regionName}.\nProbeer een ander nummer tussen 100 en 999.",
+  "@pageNotAvailableForRegionWithHint": {
+    "description": "Error message when a page is not available for a region, with hint",
+    "placeholders": {
+      "pageNumber": {
+        "type": "int",
+        "example": "100"
+      },
+      "regionName": {
+        "type": "String",
+        "example": "Lombardia"
+      }
+    }
+  }
+}

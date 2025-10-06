@@ -21,6 +21,11 @@ import 'package:cursor_televideo/core/tracking/tracking_service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cursor_televideo/core/analytics/analytics_service.dart';
 import 'package:cursor_televideo/firebase_options.dart';
+import 'package:cursor_televideo/core/l10n/app_localizations.dart';
+import 'package:cursor_televideo/core/l10n/language_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -59,14 +64,19 @@ void main() async {
     print('Stack trace: $stackTrace');
   }
   
-  // Inizializza le impostazioni
+  // Inizializza le impostazioni e i servizi
   try {
+    final prefs = await SharedPreferences.getInstance();
     await AppSettings.initialize();
     print('AppSettings initialized successfully');
     await OnboardingService().initialize();
     print('OnboardingService initialized successfully');
     await FavoritesService().initialize();
     print('FavoritesService initialized successfully');
+    
+    // Inizializza il servizio della lingua
+    final languageService = LanguageService(prefs);
+    print('LanguageService initialized successfully');
   } catch (e) {
     print('Error initializing services: $e');
   }
@@ -80,7 +90,11 @@ void main() async {
     print('Error initializing ReviewService: $e');
   }
   
-  runApp(const MyApp());
+  runApp(
+    Phoenix(
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatefulWidget {
@@ -90,9 +104,52 @@ class MyApp extends StatefulWidget {
   State<MyApp> createState() => _MyAppState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
+  late final LanguageService _languageService;
+  late final SharedPreferences _prefs;
+  Locale? _currentLocale;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    _initializeLanguage();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeLocales(List<Locale>? locales) {
+    _initializeLanguage();
+  }
+
+  Future<void> _initializeLanguage() async {
+    _prefs = await SharedPreferences.getInstance();
+    _languageService = LanguageService(_prefs);
+    final locale = await _languageService.getSelectedLocale();
+    if (mounted) {
+      setState(() {
+        _currentLocale = locale;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    if (_currentLocale == null) {
+      return const MaterialApp(
+        home: Scaffold(
+          body: Center(
+            child: CircularProgressIndicator(),
+          ),
+        ),
+      );
+    }
+
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -109,12 +166,47 @@ class _MyAppState extends State<MyApp> {
       ],
       child: BlocBuilder<ThemeBloc, ThemeState>(
         builder: (context, state) {
+          if (_currentLocale == null) {
+            return const MaterialApp(
+              home: Scaffold(
+                body: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              ),
+            );
+          }
+          
           return MaterialApp(
             title: 'TeleRetro Italia',
             theme: AppTheme.lightTheme,
             darkTheme: AppTheme.darkTheme,
             themeMode: state.themeMode,
-            home: const InitializeScreen(
+            locale: _currentLocale,
+            supportedLocales: const [
+              Locale('it'), // Italiano
+              Locale('en'), // Inglese
+              Locale('de'), // Tedesco
+              Locale('fr'), // Francese
+              Locale('es'), // Spagnolo
+              Locale('pt'), // Portoghese
+              Locale('nl'), // Olandese
+              Locale('da'), // Danese
+              Locale('sv'), // Svedese
+              Locale('fi'), // Finlandese
+              Locale('cs'), // Ceco
+              Locale('hr'), // Croato
+              Locale('sl'), // Sloveno
+              Locale('is'), // Islandese
+              Locale('hu'), // Ungherese
+              Locale('bs'), // Bosniaco
+            ],
+            localizationsDelegates: const [
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            home: InitializeScreen(
               targetWidget: SplashScreen(
                 child: OnboardingWrapper(
                   child: HomePage(),

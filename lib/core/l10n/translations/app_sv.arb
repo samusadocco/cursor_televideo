@@ -1,0 +1,226 @@
+{
+  "@@locale": "sv",
+  "appTitle": "TeleRetrò Italia",
+  "pageUnavailable": "Det går inte att ladda sidbilden.\nFörsök igen om en stund.",
+  "pageNotAvailable": "Den begärda sidan är inte tillgänglig",
+  "pageLoadError": "Ett fel uppstod när sidan laddades.\nTillbaka till sida 100",
+  "pageNotAvailableForRegion": "Sida {pageNumber} är inte tillgänglig för {regionName}",
+  "@pageNotAvailableForRegion": {
+    "description": "Error message when a page is not available for a specific region",
+    "placeholders": {
+      "pageNumber": {
+        "type": "int",
+        "example": "100"
+      },
+      "regionName": {
+        "type": "String",
+        "example": "Lombardia"
+      }
+    }
+  },
+  "noMorePagesForRegion": "Inga fler sidor tillgängliga för {regionName}",
+  "@noMorePagesForRegion": {
+    "description": "Error message when there are no more pages for a region",
+    "placeholders": {
+      "regionName": {
+        "type": "String",
+        "example": "Lombardia"
+      }
+    }
+  },
+  "noMorePages": "Inga fler sidor tillgängliga",
+  "invalidSubpageNumber": "Ogiltigt undersidesnummer",
+  "subpageError": "Fel vid laddning av undersida {current} av {total}",
+  "@subpageError": {
+    "description": "Error message when a subpage fails to load",
+    "placeholders": {
+      "current": {
+        "type": "int",
+        "example": "1"
+      },
+      "total": {
+        "type": "int",
+        "example": "8"
+      }
+    }
+  },
+  "swipePrevious": "← Föregående",
+  "swipeNext": "Nästa →",
+  "swipeNextUp": "Nästa ↑",
+  "swipePreviousDown": "Föregående ↓",
+  "swipeRefresh": "Uppdatera ↻",
+  "pageAddedToFavorites": "Sidan har lagts till i favoriter",
+  "pageRemovedFromFavorites": "Sidan har tagits bort från favoriter",
+  "editDescription": "Redigera beskrivning",
+  "pageAndRegion": "Sida {pageNumber} - {regionName}",
+  "@pageAndRegion": {
+    "description": "Page number and region name",
+    "placeholders": {
+      "pageNumber": {
+        "type": "int",
+        "example": "100"
+      },
+      "regionName": {
+        "type": "String",
+        "example": "Lombardia"
+      }
+    }
+  },
+  "description": "Beskrivning",
+  "enterCustomDescription": "Ange en anpassad beskrivning",
+  "restoreHint": "Tips: håll knappen \"ÅTERSTÄLL\" intryckt för att återgå till standardbeskrivningen.",
+  "restore": "ÅTERSTÄLL",
+  "cancel": "AVBRYT",
+  "save": "SPARA",
+  "searchHint": "Sök sida...",
+  "noResults": "Inga resultat",
+  "settings": "Inställningar",
+  "enterPageNumber": "Ange sidnummer",
+  "pageNumberRange": "Nummer från {minPage} till 999",
+  "@pageNumberRange": {
+    "description": "Hint text for page number input",
+    "placeholders": {
+      "minPage": {
+        "type": "int",
+        "example": "100"
+      }
+    }
+  },
+  "ok": "OK",
+  "favoritesList": "Favoritlista",
+  "confirmRemoval": "Bekräfta borttagning",
+  "confirmRemoveFromFavorites": "Vill du verkligen ta bort {description} från favoriter?",
+  "@confirmRemoveFromFavorites": {
+    "description": "Confirmation message when removing a page from favorites",
+    "placeholders": {
+      "description": {
+        "type": "String",
+        "example": "Sida 100"
+      }
+    }
+  },
+  "remove": "Ta bort",
+  "edit": "Redigera",
+  "close": "Stäng",
+  "noFavorites": "Inga favoriter",
+  "useFavoriteIcon": "Använd ❤️ ikonen för att lägga till sidor i favoriter",
+  "loadingPage": "Laddar sida {pageNumber}...",
+  "@loadingPage": {
+    "description": "Loading message when loading a page",
+    "placeholders": {
+      "pageNumber": {
+        "type": "int",
+        "example": "100"
+      }
+    }
+  },
+  "noPageToAddToFavorites": "Ingen sida att lägga till i favoriter",
+  "language": "Språk",
+  "systemLanguage": "Systemspråk",
+  "darkMode": "Mörkt läge",
+  "autoRefresh": "Automatisk uppdatering",
+  "favorites": "Favoriter",
+  "search": "Sök",
+  "regions": "Regioner",
+  "home": "Hem",
+  "addToFavorites": "Lägg till i favoriter",
+  "removeFromFavorites": "Ta bort från favoriter",
+  "loading": "Laddar...",
+  "error": "Fel",
+  "errorWithMessage": "Fel: {message}",
+  "@errorWithMessage": {
+    "description": "Error message with details",
+    "placeholders": {
+      "message": {
+        "type": "String",
+        "example": "Network error"
+      }
+    }
+  },
+  "retry": "Försök igen",
+  "next": "Nästa",
+  "previous": "Föregående",
+  "pageNotFound": "Sidan hittades inte",
+  "networkError": "Nätverksfel",
+  "connectionRequired": "Anslutning krävs",
+  "refreshing": "Uppdaterar...",
+  "lastUpdate": "Senaste uppdatering",
+  "theme": "Tema",
+  "systemTheme": "Systemtema",
+  "lightTheme": "Ljust tema",
+  "darkTheme": "Mörkt tema",
+  "selectTheme": "Välj tema",
+  "loadFirstFavorite": "Ladda första favoriten vid start",
+  "loadFirstFavoriteDescription": "Om aktiverad kommer den första favoriten i listan att laddas när appen startar",
+  "cacheDuration": "Cache-varaktighet för Televideo-sidbilder (0 sekunder för att inaktivera)",
+  "seconds": "sekunder",
+  "autoRefreshDescription": "Uppdatera undersidor automatiskt",
+  "refreshInterval": "Uppdateringsintervall",
+  "showOnboardingAtStartup": "Visa instruktioner vid start",
+  "showOnboardingAtStartupDescription": "Visa instruktioner varje gång du öppnar appen",
+  "showInstructions": "Visa instruktioner",
+  "showInstructionsDescription": "Granska appens användningsinstruktioner",
+  "backupFavorites": "Säkerhetskopiera favoriter",
+  "backupFavoritesDescription": "Spara och återställ dina favoriter",
+  "privacySettings": "Sekretessinställningar",
+  "privacySettingsDescription": "Ändra dina sekretessinställningar för annonser",
+  "resetPrivacySettings": "Återställ sekretessinställningar",
+  "resetPrivacySettingsDescription": "Återställ alla sekretessinställningar",
+  "resetPrivacyConfirm": "Vill du verkligen återställa sekretessinställningarna? Du kommer att bli ombedd om samtycke igen nästa gång du startar appen.",
+  "privacySettingsUnavailable": "Sekretessinställningar är inte tillgängliga för tillfället",
+  "privacySettingsReset": "Sekretessinställningar återställda. Starta om appen för nytt samtycke.",
+  "version": "Version",
+  "build": "build",
+  "onboardingWelcome": "Välkommen till TeleRetrò Italia",
+  "onboardingWelcomeDescription": "Appen för att snabbt och enkelt konsultera RAI Televideo",
+  "onboardingNavigation": "Navigation",
+  "onboardingNavigationDescription": "Svep åt vänster eller höger för att byta sida, tryck på siffror för att navigera direkt",
+  "onboardingFavorites": "Favoriter",
+  "onboardingFavoritesDescription": "Lägg till sidor i favoriter för snabb åtkomst",
+  "onboardingRegions": "Regional Televideo",
+  "onboardingRegionsDescription": "Få tillgång till din regions Televideo",
+  "onboardingAutoRefresh": "Automatisk Uppdatering",
+  "onboardingAutoRefreshDescription": "Undersidor uppdateras automatiskt",
+  "onboardingPause": "Pausa Uppdatering",
+  "onboardingPauseDescription": "Tryck på ett tomt område för att pausa automatisk uppdatering",
+  "onboardingPageSelector": "Sidväljare",
+  "onboardingPageSelectorDescription": "Tryck på det centrala numret för att direkt ange en sida.\n\nAnge ett nummer mellan 100 och 999 för att hoppa till den sidan.",
+  "onboardingSubpageNavigation": "Undersida Navigation",
+  "onboardingSubpageNavigationDescription": "Om sidan har undersidor kommer du också att se indikatorn:\n• 1/3 betyder: första undersidan av tre tillgängliga\n\nAnvänd de centrala pilarna för att navigera mellan undersidor:\n\n• Pil upp: gå till nästa undersida\n• Pil ner: gå till föregående undersida\n\nPilarna är endast aktiva när det finns undersidor tillgängliga.",
+  "onboardingSwipe": "Svepnavigation",
+  "onboardingSwipeDescription": "Navigera enkelt mellan sidor med gesterna som visas ovan.",
+  "onboardingClickableNumbers": "Klickbara Sidnummer",
+  "onboardingClickableNumbersDescription": "Tryck på de markerade sidnumren för att navigera direkt till den sidan\n\nSidorna 100/1 av National Televideo och 300/1 av Regional Televideo är inte klickbara",
+  "onboardingShortcuts": "Meny Genvägar",
+  "onboardingShortcutsDescription": "Snabb åtkomst till de viktigaste Televideo-sidorna.\n\nAnvänd denna meny för att hoppa direkt till:\n• Sida 100: Nationellt index\n• Sida 200: Nyheter\n.....\nDu kan också söka sidor efter titel genom att välja alternativet Sök sida",
+  "onboardingFavoritesList": "Favoritlista",
+  "onboardingFavoritesListDescription": "Hantera dina favoritsidor:\n\n• Tryck på en sida för att öppna den\n• Svep åt vänster för att ta bort den\n• Tryck på pennan för att redigera beskrivningen\n• Tryck och håll för att ändra ordningen\n\n",
+  "onboardingSettingsDescription": "Anpassa appen efter dina preferenser:\n\n• Ladda första favoriten vid start: bestäm vilken Televideo-sida att börja med\n• Tema: välj mellan ljust, mörkt eller automatiskt\n• Automatisk uppdatering: aktivera automatisk laddning av undersidor\n• Cache: hantera sidcachens varaktighet\n• Instruktioner: granska denna handledning när du vill\n• Säkerhetskopiera favoriter: spara och återställ dina favoriter\n• Sekretessinställningar och återställning: hantera eller återställ dina sekretessval",
+  "dontShowAgain": "Visa inte igen",
+  "start": "Starta",
+  "reset": "Återställ",
+  "backToPage": "Tillbaka till sida {pageNumber}",
+  "@backToPage": {
+    "description": "Button text to go back to a specific page",
+    "placeholders": {
+      "pageNumber": {
+        "type": "int",
+        "example": "100"
+      }
+    }
+  },
+  "pageNotAvailableForRegionWithHint": "Sida {pageNumber} är inte tillgänglig för {regionName}.\nPröva ett annat nummer mellan 100 och 999.",
+  "@pageNotAvailableForRegionWithHint": {
+    "description": "Error message when a page is not available for a region, with hint",
+    "placeholders": {
+      "pageNumber": {
+        "type": "int",
+        "example": "100"
+      },
+      "regionName": {
+        "type": "String",
+        "example": "Lombardia"
+      }
+    }
+  }
+}

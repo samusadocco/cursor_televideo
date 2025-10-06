@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cursor_televideo/core/descriptions/page_descriptions_service.dart';
 import 'package:cursor_televideo/core/storage/favorites_service.dart';
 import 'package:cursor_televideo/shared/models/region.dart';
+import 'package:cursor_televideo/core/l10n/app_localizations.dart';
 
 class EditDescriptionDialog extends StatefulWidget {
   final int pageNumber;
@@ -39,14 +40,14 @@ class _EditDescriptionDialogState extends State<EditDescriptionDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Modifica descrizione'),
+      title: Text(AppLocalizations.of(context)?.editDescription ?? 'Edit description'),
       content: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Pagina ${widget.pageNumber} - ${widget.regionName}',
+              AppLocalizations.of(context)?.pageAndRegion(widget.pageNumber, widget.regionName) ?? 'Page ${widget.pageNumber} - ${widget.regionName}',
               style: const TextStyle(
                 fontSize: 14,
                 color: Colors.grey,
@@ -55,18 +56,18 @@ class _EditDescriptionDialogState extends State<EditDescriptionDialog> {
             const SizedBox(height: 16),
             TextField(
               controller: _descriptionController,
-              decoration: const InputDecoration(
-                labelText: 'Descrizione',
-                border: OutlineInputBorder(),
-                hintText: 'Inserisci una descrizione personalizzata',
+              decoration: InputDecoration(
+                labelText: AppLocalizations.of(context)?.description ?? 'Description',
+                border: const OutlineInputBorder(),
+                hintText: AppLocalizations.of(context)?.enterCustomDescription ?? 'Enter a custom description',
               ),
               autofocus: true,
               maxLength: 50,
             ),
             const SizedBox(height: 8),
-            const Text(
-              'Suggerimento: tieni premuto il pulsante "RIPRISTINA" per tornare alla descrizione predefinita.',
-              style: TextStyle(
+            Text(
+              AppLocalizations.of(context)?.restoreHint ?? 'Tip: long press the "RESTORE" button to return to the default description.',
+              style: const TextStyle(
                 fontSize: 12,
                 color: Colors.grey,
                 fontStyle: FontStyle.italic,
@@ -88,12 +89,12 @@ class _EditDescriptionDialogState extends State<EditDescriptionDialog> {
           },
           child: TextButton(
             onPressed: () {},
-            child: const Text('RIPRISTINA'),
+            child: Text(AppLocalizations.of(context)?.restore ?? 'RESTORE'),
           ),
         ),
         TextButton(
           onPressed: () => Navigator.of(context).pop(false),
-          child: const Text('ANNULLA'),
+          child: Text(AppLocalizations.of(context)?.cancel ?? 'CANCEL'),
         ),
         TextButton(
           onPressed: () {
@@ -107,7 +108,7 @@ class _EditDescriptionDialogState extends State<EditDescriptionDialog> {
               Navigator.of(context).pop(true);
             }
           },
-          child: const Text('SALVA'),
+          child: Text(AppLocalizations.of(context)?.save ?? 'SAVE'),
         ),
       ],
     );

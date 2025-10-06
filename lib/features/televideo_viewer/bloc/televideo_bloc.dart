@@ -39,11 +39,12 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
     bool isRegional = false,
     Region? region,
     int subPage = 1,
-    bool updateContext = true
+    bool updateContext = true,
+    bool forceRefresh = false
   }) async {
-    final page = isRegional && region != null
-        ? await _repository.getRegionalPage(region.code, pageNumber: pageNumber, subPage: subPage)
-        : await _repository.getNationalPage(pageNumber, subPage: subPage);
+      final page = isRegional && region != null
+        ? await _repository.getRegionalPage(region.code, pageNumber: pageNumber, subPage: subPage, forceRefresh: forceRefresh)
+        : await _repository.getNationalPage(pageNumber, subPage: subPage, forceRefresh: forceRefresh);
     
     if (updateContext) {
       _updateAdContext(pageNumber, isRegional: isRegional, region: region);
@@ -52,13 +53,14 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
     return page;
   }
 
-  Future<TelevideoPage?> _tryLoadPage(int pageNumber, {bool isRegional = false}) async {
+  Future<TelevideoPage?> _tryLoadPage(int pageNumber, {bool isRegional = false, bool forceRefresh = false}) async {
     try {
       return await _loadPageWithContext(
         pageNumber,
         isRegional: isRegional,
         region: _currentRegion,
-        updateContext: true
+        updateContext: true,
+        forceRefresh: forceRefresh
       );
     } catch (e) {
       return null;
@@ -80,8 +82,10 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
     );
   }
 
-  TelevideoBloc({required TelevideoRepository repository, RegionBloc? regionBloc})
-      : _repository = repository,
+  TelevideoBloc({
+    required TelevideoRepository repository,
+    RegionBloc? regionBloc,
+  })  : _repository = repository,
         _regionBloc = regionBloc,
         super(const TelevideoState.initial()) {
     on<TelevideoEvent>((event, emit) async {
@@ -159,7 +163,7 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
 
     try {
       print('[TelevideoBloc] Fetching national page from repository'); // Debug print
-      final page = await _loadPageWithContext(pageNumber);
+      final page = await _loadPageWithContext(pageNumber, forceRefresh: true);
       print('[TelevideoBloc] National page loaded successfully'); // Debug print
       if (!emit.isDone) {
         emit(TelevideoState.loaded(page, currentSubPage: 1, isAutoRefreshPaused: false));
@@ -192,7 +196,7 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
     try {
       // Prima carichiamo la pagina regionale
       print('[TelevideoBloc] Fetching regional page from repository'); // Debug print
-      final page = await _loadPageWithContext(pageNumber, isRegional: true, region: region);
+      final page = await _loadPageWithContext(pageNumber, isRegional: true, region: region, forceRefresh: true);
       
       // Solo dopo un caricamento riuscito, aggiorniamo lo stato e le variabili
       _currentRegion = region;
@@ -211,7 +215,7 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
       print('[TelevideoBloc] Error loading regional page: $e'); // Debug print
       final message = e.toString().contains('404') || e.toString().contains('non trovata')
         ? 'La pagina $pageNumber non è disponibile per la regione ${region.name}.\nProva con un altro numero tra 100 e 999.'
-        : 'Si è verificato un errore durante il caricamento della pagina.\nRiprova tra qualche istante.';
+        : 'Si è verificato un errore durante il caricamento della pagina';
       if (!emit.isDone) {
         emit(TelevideoState.error(message));
       }
@@ -253,7 +257,7 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
       }
       
       if (currentPage >= 899) {
-        final message = _currentRegion != null
+      final message = _currentRegion != null
           ? 'Non sono disponibili altre pagine per la regione ${_currentRegion!.name}.'
           : 'Non sono disponibili altre pagine.';
         emit(TelevideoState.error(message));
@@ -262,9 +266,9 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
       currentPage++;
       attempts++;
     }
-    final message = _currentRegion != null
-      ? 'Non sono disponibili altre pagine per la regione ${_currentRegion!.name}.'
-      : 'Non sono disponibili altre pagine.';
+      final message = _currentRegion != null
+          ? 'Non sono disponibili altre pagine per la regione ${_currentRegion!.name}.'
+          : 'Non sono disponibili altre pagine.';
     emit(TelevideoState.error(message));
   }
 
@@ -284,7 +288,7 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
       }
       
       if (currentPage <= _minPage) {
-        final message = _currentRegion != null
+      final message = _currentRegion != null
           ? 'Non sono disponibili altre pagine per la regione ${_currentRegion!.name}.'
           : 'Non sono disponibili altre pagine.';
         emit(TelevideoState.error(message));
@@ -293,9 +297,9 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
       currentPage--;
       attempts++;
     }
-    final message = _currentRegion != null
-      ? 'Non sono disponibili altre pagine per la regione ${_currentRegion!.name}.'
-      : 'Non sono disponibili altre pagine.';
+      final message = _currentRegion != null
+          ? 'Non sono disponibili altre pagine per la regione ${_currentRegion!.name}.'
+          : 'Non sono disponibili altre pagine.';
     emit(TelevideoState.error(message));
   }
 
@@ -313,8 +317,15 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
         
         try {
           final newPage = await _currentRegion != null
-              ? await _repository.getRegionalPage(_currentRegion!.code, pageNumber: page.pageNumber, subPage: newSubPage)
-              : await _repository.getNationalPage(page.pageNumber, subPage: newSubPage);
+              ? await _repository.getRegionalPage(
+                  _currentRegion!.code,
+                  pageNumber: page.pageNumber,
+                  subPage: newSubPage,
+                )
+              : await _repository.getNationalPage(
+                  page.pageNumber,
+                  subPage: newSubPage,
+                );
           
           // Usa il maxSubPages della nuova pagina per validare la sottopagina
           final validSubPage = newSubPage <= newPage.maxSubPages ? newSubPage : 1;
@@ -356,8 +367,15 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
         
         try {
           final newPage = await _currentRegion != null
-              ? await _repository.getRegionalPage(_currentRegion!.code, pageNumber: page.pageNumber, subPage: newSubPage)
-              : await _repository.getNationalPage(page.pageNumber, subPage: newSubPage);
+              ? await _repository.getRegionalPage(
+                  _currentRegion!.code,
+                  pageNumber: page.pageNumber,
+                  subPage: newSubPage,
+                )
+              : await _repository.getNationalPage(
+                  page.pageNumber,
+                  subPage: newSubPage,
+                );
           
           // Usa il maxSubPages della nuova pagina per validare la sottopagina
           final validSubPage = newSubPage <= newPage.maxSubPages ? newSubPage : 1;

@@ -1,0 +1,254 @@
+{
+  "@@locale": "en",
+  "appTitle": "TeleRetrò Italia",
+  "pageUnavailable": "Unable to load the page image.\nPlease try again in a moment.",
+  "pageNotAvailable": "The requested page is not available",
+  "pageLoadError": "An error occurred while loading the page.\nReturn to page 100",
+  "pageNotAvailableForRegion": "Page {pageNumber} is not available for {regionName}",
+  "@pageNotAvailableForRegion": {
+    "description": "Error message when a page is not available for a specific region",
+    "placeholders": {
+      "pageNumber": {
+        "type": "int",
+        "example": "100"
+      },
+      "regionName": {
+        "type": "String",
+        "example": "Lombardia"
+      }
+    }
+  },
+  "pageNotAvailableForRegionWithHint": "Page {pageNumber} is not available for {regionName}.\nTry another number between 100 and 999.",
+  "@pageNotAvailableForRegionWithHint": {
+    "description": "Error message when a page is not available for a region, with hint",
+    "placeholders": {
+      "pageNumber": {
+        "type": "int",
+        "example": "100"
+      },
+      "regionName": {
+        "type": "String",
+        "example": "Lombardia"
+      }
+    }
+  },
+  "noMorePagesForRegion": "No more pages available for {regionName}",
+  "@noMorePagesForRegion": {
+    "description": "Error message when there are no more pages for a region",
+    "placeholders": {
+      "regionName": {
+        "type": "String",
+        "example": "Lombardia"
+      }
+    }
+  },
+  "noMorePages": "No more pages available",
+  "invalidSubpageNumber": "Invalid subpage number",
+  "subpageError": "Error loading subpage {current} of {total}",
+  "@subpageError": {
+    "description": "Error message when a subpage fails to load",
+    "placeholders": {
+      "current": {
+        "type": "int",
+        "example": "1"
+      },
+      "total": {
+        "type": "int",
+        "example": "8"
+      }
+    }
+  },
+  "swipePrevious": "← Previous",
+  "swipeNext": "Next →",
+  "swipeNextUp": "Next ↑",
+  "swipePreviousDown": "Previous ↓",
+  "swipeRefresh": "Refresh ↻",
+  "pageAddedToFavorites": "Page added to favorites",
+  "pageRemovedFromFavorites": "Page removed from favorites",
+  "editDescription": "Edit description",
+  "pageAndRegion": "Page {pageNumber} - {regionName}",
+  "@pageAndRegion": {
+    "description": "Page number and region name",
+    "placeholders": {
+      "pageNumber": {
+        "type": "int",
+        "example": "100"
+      },
+      "regionName": {
+        "type": "String",
+        "example": "Lombardia"
+      }
+    }
+  },
+  "description": "Description",
+  "enterCustomDescription": "Enter a custom description",
+  "restoreHint": "Tip: long press the \"RESTORE\" button to return to the default description.",
+  "restore": "RESTORE",
+  "cancel": "CANCEL",
+  "save": "SAVE",
+  "searchHint": "Search page...",
+  "noResults": "No results",
+  "settings": "Settings",
+  "enterPageNumber": "Enter page number",
+  "pageNumberRange": "Number from {minPage} to 999",
+  "@pageNumberRange": {
+    "description": "Hint text for page number input",
+    "placeholders": {
+      "minPage": {
+        "type": "int",
+        "example": "100"
+      }
+    }
+  },
+  "ok": "OK",
+  "favoritesList": "Favorites list",
+  "confirmRemoval": "Confirm removal",
+  "confirmRemoveFromFavorites": "Do you really want to remove {description} from favorites?",
+  "@confirmRemoveFromFavorites": {
+    "description": "Confirmation message when removing a page from favorites",
+    "placeholders": {
+      "description": {
+        "type": "String",
+        "example": "Page 100"
+      }
+    }
+  },
+  "remove": "Remove",
+  "edit": "Edit",
+  "close": "Close",
+  "noFavorites": "No favorites",
+  "useFavoriteIcon": "Use the ❤️ icon to add pages to favorites",
+  "loadingPage": "Loading page {pageNumber}...",
+  "@loadingPage": {
+    "description": "Loading message when loading a page",
+    "placeholders": {
+      "pageNumber": {
+        "type": "int",
+        "example": "100"
+      }
+    }
+  },
+  "noPageToAddToFavorites": "No page to add to favorites",
+  "language": "Language",
+  "systemLanguage": "System language",
+  "darkMode": "Dark mode",
+  "autoRefresh": "Auto refresh",
+  "favorites": "Favorites",
+  "search": "Search",
+  "regions": "Regions",
+  "home": "Home",
+  "addToFavorites": "Add to favorites",
+  "removeFromFavorites": "Remove from favorites",
+  "loading": "Loading...",
+  "error": "Error",
+  "errorWithMessage": "Error: {message}",
+  "@errorWithMessage": {
+    "description": "Error message with details",
+    "placeholders": {
+      "message": {
+        "type": "String",
+        "example": "Network error"
+      }
+    }
+  },
+  "retry": "Retry",
+  "next": "Next",
+  "previous": "Previous",
+  "pageNotFound": "Page not found",
+  "networkError": "Network error",
+  "connectionRequired": "Connection required",
+  "refreshing": "Refreshing...",
+  "lastUpdate": "Last update",
+  "theme": "Theme",
+  "systemTheme": "System theme",
+  "lightTheme": "Light theme",
+  "darkTheme": "Dark theme",
+  "selectTheme": "Select theme",
+  "loadFirstFavorite": "Load first favorite at startup",
+  "loadFirstFavoriteDescription": "If enabled, the first favorite in the list will be loaded when the app starts",
+  "cacheDuration": "Televideo page images cache duration (0 seconds to disable)",
+  "seconds": "seconds",
+  "autoRefreshDescription": "Automatically refresh subpages",
+  "refreshInterval": "Refresh interval",
+  "showOnboardingAtStartup": "Show instructions at startup",
+  "showOnboardingAtStartupDescription": "Show instructions every time you open the app",
+  "showInstructions": "Show instructions",
+  "showInstructionsDescription": "Review the app usage instructions",
+  "backupFavorites": "Backup favorites",
+  "backupFavoritesDescription": "Save and restore your favorites",
+  "privacySettings": "Privacy Settings",
+  "privacySettingsDescription": "Modify your privacy preferences for ads",
+  "resetPrivacySettings": "Reset Privacy Settings",
+  "resetPrivacySettingsDescription": "Completely reset privacy settings",
+  "resetPrivacyConfirm": "Do you really want to reset privacy settings? You will be asked for consent again the next time you start the app.",
+  "privacySettingsUnavailable": "Privacy settings are not available at the moment",
+  "privacySettingsReset": "Privacy settings reset. Restart the app for new consent.",
+  "version": "Version",
+  "build": "build",
+  "onboardingWelcome": "Welcome to TeleRetrò Italia",
+  "onboardingWelcomeDescription": "The app to consult RAI Televideo quickly and easily",
+  "onboardingNavigation": "Navigation",
+  "onboardingNavigationDescription": "Swipe left or right to change page, tap numbers to navigate directly",
+  "onboardingFavorites": "Favorites",
+  "onboardingFavoritesDescription": "Add pages to favorites for quick access",
+  "onboardingRegions": "Regional Televideo",
+  "onboardingRegionsDescription": "Access your region's Televideo",
+  "onboardingAutoRefresh": "Auto Refresh",
+  "onboardingAutoRefreshDescription": "Subpages update automatically",
+  "onboardingPause": "Pause Update",
+  "onboardingPauseDescription": "Tap an empty area to pause automatic refresh",
+  "onboardingPageSelector": "Page Selector",
+  "onboardingPageSelectorDescription": "Tap the central number to directly enter a page.\n\nEnter a number between 100 and 999 to jump to that page.",
+  "onboardingSubpageNavigation": "Subpage Navigation",
+  "onboardingSubpageNavigationDescription": "If the page has subpages, you'll also see the indicator:\n• 1/3 means: first subpage of three available\n\nUse the central arrows to navigate between subpages:\n\n• Up arrow: go to next subpage\n• Down arrow: go to previous subpage\n\nThe arrows are active only when there are subpages available.",
+  "onboardingSwipe": "Swipe Navigation",
+  "onboardingSwipeDescription": "Navigate easily between pages with the gestures shown above.",
+  "onboardingClickableNumbers": "Clickable Page Numbers",
+  "onboardingClickableNumbersDescription": "Tap the highlighted page numbers to navigate directly to that page\n\nPages 100/1 of National Televideo and 300/1 of Regional Televideo are not clickable",
+  "onboardingShortcuts": "Menu Shortcuts",
+  "onboardingShortcutsDescription": "Quickly access the most important Televideo pages.\n\nUse this menu to jump directly to:\n• Page 100: National index\n• Page 200: News\n.....\nYou can also search pages by title by selecting the Search page option",
+  "onboardingFavoritesList": "Favorites List",
+  "onboardingFavoritesListDescription": "Manage your favorite pages:\n\n• Tap a page to open it\n• Swipe left to remove it\n• Tap the pencil to edit the description\n• Long press to change the order\n\n",
+  "onboardingSettingsDescription": "Customize the app according to your preferences:\n\n• Load first favorite at startup: decide which Televideo page to start with\n• Theme: choose between light, dark or automatic\n• Auto refresh: enable automatic loading of subpages\n• Cache: manage page cache duration\n• Instructions: review this tutorial whenever you want\n• Backup Favorites: save and restore your favorites\n• Privacy Settings and reset: manage or reset your privacy choices",
+  "dontShowAgain": "Don't show again",
+  "start": "Start",
+  "reset": "Reset",
+  "backToPage": "Back to page {pageNumber}",
+  "@backToPage": {
+    "description": "Button text to go back to a specific page",
+    "placeholders": {
+      "pageNumber": {
+        "type": "int",
+        "example": "100"
+      }
+    }
+  },
+  "pageUnavailableWithHint": "Page {pageNumber} is not available.\nTry another number between {minPage} and 999.\nBack to {backPage}",
+  "@pageUnavailableWithHint": {
+    "description": "Error message when a page is not available, with hint",
+    "placeholders": {
+      "pageNumber": {
+        "type": "int",
+        "example": "100"
+      },
+      "minPage": {
+        "type": "int",
+        "example": "100"
+      },
+      "backPage": {
+        "type": "int",
+        "example": "100"
+      }
+    }
+  },
+  "pageLoadErrorWithHint": "An error occurred while loading the page.\nBack to {minPage}",
+  "@pageLoadErrorWithHint": {
+    "description": "Error message when page loading fails, with hint",
+    "placeholders": {
+      "minPage": {
+        "type": "int",
+        "example": "100"
+      }
+    }
+  }
+}

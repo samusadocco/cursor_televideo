@@ -1,0 +1,226 @@
+{
+  "@@locale": "is",
+  "appTitle": "TeleRetrò Italia",
+  "pageUnavailable": "Ekki er hægt að hlaða síðumynd.\nVinsamlegast reyndu aftur eftir smástund.",
+  "pageNotAvailable": "Umbeðin síða er ekki í boði",
+  "pageLoadError": "Villa kom upp við að hlaða síðuna.\nTil baka á síðu 100",
+  "pageNotAvailableForRegion": "Síða {pageNumber} er ekki í boði fyrir {regionName}",
+  "@pageNotAvailableForRegion": {
+    "description": "Error message when a page is not available for a specific region",
+    "placeholders": {
+      "pageNumber": {
+        "type": "int",
+        "example": "100"
+      },
+      "regionName": {
+        "type": "String",
+        "example": "Lombardia"
+      }
+    }
+  },
+  "noMorePagesForRegion": "Engar fleiri síður í boði fyrir {regionName}",
+  "@noMorePagesForRegion": {
+    "description": "Error message when there are no more pages for a region",
+    "placeholders": {
+      "regionName": {
+        "type": "String",
+        "example": "Lombardia"
+      }
+    }
+  },
+  "noMorePages": "Engar fleiri síður í boði",
+  "invalidSubpageNumber": "Ógilt undirsíðunúmer",
+  "subpageError": "Villa við að hlaða undirsíðu {current} af {total}",
+  "@subpageError": {
+    "description": "Error message when a subpage fails to load",
+    "placeholders": {
+      "current": {
+        "type": "int",
+        "example": "1"
+      },
+      "total": {
+        "type": "int",
+        "example": "8"
+      }
+    }
+  },
+  "swipePrevious": "← Fyrri",
+  "swipeNext": "Næsta →",
+  "swipeNextUp": "Næsta ↑",
+  "swipePreviousDown": "Fyrri ↓",
+  "swipeRefresh": "Endurnýja ↻",
+  "pageAddedToFavorites": "Síðu bætt við eftirlæti",
+  "pageRemovedFromFavorites": "Síða fjarlægð úr eftirlætum",
+  "editDescription": "Breyta lýsingu",
+  "pageAndRegion": "Síða {pageNumber} - {regionName}",
+  "@pageAndRegion": {
+    "description": "Page number and region name",
+    "placeholders": {
+      "pageNumber": {
+        "type": "int",
+        "example": "100"
+      },
+      "regionName": {
+        "type": "String",
+        "example": "Lombardia"
+      }
+    }
+  },
+  "description": "Lýsing",
+  "enterCustomDescription": "Sláðu inn sérsniðna lýsingu",
+  "restoreHint": "Ábending: ýttu lengi á \"ENDURHEIMTA\" hnappinn til að fara aftur í sjálfgefna lýsingu.",
+  "restore": "ENDURHEIMTA",
+  "cancel": "HÆTTA VIÐ",
+  "save": "VISTA",
+  "searchHint": "Leita að síðu...",
+  "noResults": "Engar niðurstöður",
+  "settings": "Stillingar",
+  "enterPageNumber": "Sláðu inn síðunúmer",
+  "pageNumberRange": "Númer frá {minPage} til 999",
+  "@pageNumberRange": {
+    "description": "Hint text for page number input",
+    "placeholders": {
+      "minPage": {
+        "type": "int",
+        "example": "100"
+      }
+    }
+  },
+  "ok": "Í lagi",
+  "favoritesList": "Eftirlætislisti",
+  "confirmRemoval": "Staðfesta fjarlægingu",
+  "confirmRemoveFromFavorites": "Viltu örugglega fjarlægja {description} úr eftirlætum?",
+  "@confirmRemoveFromFavorites": {
+    "description": "Confirmation message when removing a page from favorites",
+    "placeholders": {
+      "description": {
+        "type": "String",
+        "example": "Síða 100"
+      }
+    }
+  },
+  "remove": "Fjarlægja",
+  "edit": "Breyta",
+  "close": "Loka",
+  "noFavorites": "Engin eftirlæti",
+  "useFavoriteIcon": "Notaðu ❤️ táknið til að bæta síðum við eftirlæti",
+  "loadingPage": "Hleð síðu {pageNumber}...",
+  "@loadingPage": {
+    "description": "Loading message when loading a page",
+    "placeholders": {
+      "pageNumber": {
+        "type": "int",
+        "example": "100"
+      }
+    }
+  },
+  "noPageToAddToFavorites": "Engin síða til að bæta við eftirlæti",
+  "language": "Tungumál",
+  "systemLanguage": "Kerfisstungumál",
+  "darkMode": "Dökkur hamur",
+  "autoRefresh": "Sjálfvirk endurnýjun",
+  "favorites": "Eftirlæti",
+  "search": "Leita",
+  "regions": "Svæði",
+  "home": "Heim",
+  "addToFavorites": "Bæta við eftirlæti",
+  "removeFromFavorites": "Fjarlægja úr eftirlætum",
+  "loading": "Hleður...",
+  "error": "Villa",
+  "errorWithMessage": "Villa: {message}",
+  "@errorWithMessage": {
+    "description": "Error message with details",
+    "placeholders": {
+      "message": {
+        "type": "String",
+        "example": "Network error"
+      }
+    }
+  },
+  "retry": "Reyna aftur",
+  "next": "Áfram",
+  "previous": "Til baka",
+  "pageNotFound": "Síða fannst ekki",
+  "networkError": "Netvilla",
+  "connectionRequired": "Tenging nauðsynleg",
+  "refreshing": "Endurnýjar...",
+  "lastUpdate": "Síðasta uppfærsla",
+  "theme": "Þema",
+  "systemTheme": "Kerfisþema",
+  "lightTheme": "Ljóst þema",
+  "darkTheme": "Dökkt þema",
+  "selectTheme": "Veldu þema",
+  "loadFirstFavorite": "Hlaða fyrsta eftirlæti við ræsingu",
+  "loadFirstFavoriteDescription": "Ef virkt, verður fyrsta eftirlætissíðan á listanum hlaðin þegar forritið er ræst",
+  "cacheDuration": "Skyndiminni Televideo síðumynda (0 sekúndur til að slökkva)",
+  "seconds": "sekúndur",
+  "autoRefreshDescription": "Endurnýja undirsíður sjálfkrafa",
+  "refreshInterval": "Endurnýjunarbil",
+  "showOnboardingAtStartup": "Sýna leiðbeiningar við ræsingu",
+  "showOnboardingAtStartupDescription": "Sýna leiðbeiningar í hvert skipti sem þú opnar forritið",
+  "showInstructions": "Sýna leiðbeiningar",
+  "showInstructionsDescription": "Skoða notkunarleiðbeiningar forritsins",
+  "backupFavorites": "Afrita eftirlæti",
+  "backupFavoritesDescription": "Vista og endurheimta eftirlætin þín",
+  "privacySettings": "Persónuverndstillingar",
+  "privacySettingsDescription": "Breyta persónuverndarvalkostum þínum fyrir auglýsingar",
+  "resetPrivacySettings": "Endurstilla persónuverndstillingar",
+  "resetPrivacySettingsDescription": "Endurstilla allar persónuverndstillingar",
+  "resetPrivacyConfirm": "Viltu örugglega endurstilla persónuverndstillingar? Þú verður beðin/n um samþykki aftur næst þegar þú ræsir forritið.",
+  "privacySettingsUnavailable": "Persónuverndstillingar eru ekki í boði núna",
+  "privacySettingsReset": "Persónuverndstillingar endurstilltar. Endurræstu forritið fyrir nýtt samþykki.",
+  "version": "Útgáfa",
+  "build": "build",
+  "onboardingWelcome": "Velkomin í TeleRetrò Italia",
+  "onboardingWelcomeDescription": "Forritið til að skoða RAI Televideo á fljótlegan og auðveldan hátt",
+  "onboardingNavigation": "Leiðsögn",
+  "onboardingNavigationDescription": "Strjúktu til vinstri eða hægri til að skipta um síðu, ýttu á númer fyrir beina leiðsögn",
+  "onboardingFavorites": "Eftirlæti",
+  "onboardingFavoritesDescription": "Bættu síðum við eftirlæti fyrir fljótan aðgang",
+  "onboardingRegions": "Svæðisbundið Televideo",
+  "onboardingRegionsDescription": "Fáðu aðgang að Televideo svæðisins þíns",
+  "onboardingAutoRefresh": "Sjálfvirk Endurnýjun",
+  "onboardingAutoRefreshDescription": "Undirsíður uppfærast sjálfkrafa",
+  "onboardingPause": "Gera hlé á Endurnýjun",
+  "onboardingPauseDescription": "Ýttu á autt svæði til að gera hlé á sjálfvirkri endurnýjun",
+  "onboardingPageSelector": "Síðuval",
+  "onboardingPageSelectorDescription": "Ýttu á miðjunúmerið til að slá beint inn síðu.\n\nSláðu inn númer á milli 100 og 999 til að hoppa á þá síðu.",
+  "onboardingSubpageNavigation": "Undirsíðuleiðsögn",
+  "onboardingSubpageNavigationDescription": "Ef síðan hefur undirsíður, muntu einnig sjá vísinn:\n• 1/3 þýðir: fyrsta undirsíða af þremur í boði\n\nNotaðu miðjuörvarnar til að fara á milli undirsíða:\n\n• Ör upp: fara á næstu undirsíðu\n• Ör niður: fara á fyrri undirsíðu\n\nÖrvarnar eru aðeins virkar þegar undirsíður eru í boði.",
+  "onboardingSwipe": "Strjúkleiðsögn",
+  "onboardingSwipeDescription": "Ferðastu auðveldlega á milli síðna með bendingunum sem sýndar eru fyrir ofan.",
+  "onboardingClickableNumbers": "Smellanlegar Síðunúmer",
+  "onboardingClickableNumbersDescription": "Ýttu á auðkennd síðunúmer til að fara beint á þá síðu\n\nSíður 100/1 af Þjóðar Televideo og 300/1 af Svæðisbundnu Televideo eru ekki smellanlegar",
+  "onboardingShortcuts": "Valmynd Flýtileiða",
+  "onboardingShortcutsDescription": "Fljótur aðgangur að mikilvægustu Televideo síðunum.\n\nNotaðu þessa valmynd til að hoppa beint á:\n• Síða 100: Þjóðaryfirlit\n• Síða 200: Fréttir\n.....\nÞú getur líka leitað að síðum eftir titli með því að velja Leita að síðu valkostinn",
+  "onboardingFavoritesList": "Eftirlætislisti",
+  "onboardingFavoritesListDescription": "Stjórnaðu eftirlætissíðunum þínum:\n\n• Ýttu á síðu til að opna hana\n• Strjúktu til vinstri til að fjarlægja hana\n• Ýttu á blýantinn til að breyta lýsingu\n• Ýttu lengi til að breyta röðun\n\n",
+  "onboardingSettingsDescription": "Sérsníðdu forritið að þínum þörfum:\n\n• Hlaða fyrsta eftirlæti við ræsingu: ákveddu hvaða Televideo síðu á að byrja á\n• Þema: veldu á milli ljóss, dökks eða sjálfvirks\n• Sjálfvirk endurnýjun: virkjaðu sjálfvirka hleðslu undirsíða\n• Skyndiminni: stjórnaðu tímalengd síðuskyndiminnis\n• Leiðbeiningar: skoðaðu þessa kennslu hvenær sem er\n• Afrita eftirlæti: vistaðu og endurheimtu eftirlætin þín\n• Persónuverndstillingar og endurstilling: stjórnaðu eða endurstilltu persónuverndarval þitt",
+  "dontShowAgain": "Ekki sýna aftur",
+  "start": "Byrja",
+  "reset": "Endurstilla",
+  "backToPage": "Til baka á síðu {pageNumber}",
+  "@backToPage": {
+    "description": "Button text to go back to a specific page",
+    "placeholders": {
+      "pageNumber": {
+        "type": "int",
+        "example": "100"
+      }
+    }
+  },
+  "pageNotAvailableForRegionWithHint": "Síða {pageNumber} er ekki í boði fyrir {regionName}.\nPrófaðu annað númer á milli 100 og 999.",
+  "@pageNotAvailableForRegionWithHint": {
+    "description": "Error message when a page is not available for a region, with hint",
+    "placeholders": {
+      "pageNumber": {
+        "type": "int",
+        "example": "100"
+      },
+      "regionName": {
+        "type": "String",
+        "example": "Lombardia"
+      }
+    }
+  }
+}

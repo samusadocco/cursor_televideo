@@ -1,0 +1,451 @@
+import 'package:bloc/bloc.dart';
+import 'package:cursor_televideo/core/network/televideo_repository.dart';
+import 'package:cursor_televideo/core/ads/ad_service.dart';
+import 'package:cursor_televideo/core/settings/app_settings.dart';
+import 'package:cursor_televideo/core/storage/favorites_service.dart';
+import 'package:cursor_televideo/features/televideo_viewer/bloc/region_bloc.dart';
+import 'package:cursor_televideo/features/televideo_viewer/bloc/televideo_event.dart';
+import 'package:cursor_televideo/features/televideo_viewer/bloc/televideo_state.dart';
+import 'package:cursor_televideo/shared/models/televideo_page.dart';
+import 'package:cursor_televideo/shared/models/region.dart';
+import 'package:cursor_televideo/core/analytics/analytics_service.dart';
+import 'package:cursor_televideo/core/descriptions/page_descriptions_service.dart';
+import 'package:cursor_televideo/core/l10n/app_localizations.dart';
+import 'package:flutter/widgets.dart';
+
+class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
+  final TelevideoRepository _repository;
+  final AdService _adService = AdService();
+  RegionBloc? _regionBloc;
+  late final int _minPage; // Minima pagina disponibile (100 o 101)
+  bool _isPage100Available = true; // Inizialmente assumiamo che sia disponibile
+  Region? _currentRegion;
+  int _currentPage = 100;
+  TelevideoEvent? _lastEvent;
+
+  /// L'ultimo evento ricevuto dal bloc
+  TelevideoEvent? get lastEvent => _lastEvent;
+
+  /// La minima pagina disponibile (100 o 101)
+  int get minPage => _minPage;
+
+  /// Indica se la pagina 100 è disponibile
+  bool get isPage100Available => _isPage100Available;
+
+  /// Imposta il RegionBloc da utilizzare per la sincronizzazione dello stato
+  void setRegionBloc(RegionBloc regionBloc) {
+    _regionBloc = regionBloc;
+  }
+
+  Future<TelevideoPage> _loadPageWithContext(int pageNumber, {
+    bool isRegional = false,
+    Region? region,
+    int subPage = 1,
+    bool updateContext = true
+  }) async {
+      final page = isRegional && region != null
+        ? await _repository.getRegionalPage(context, region.code, pageNumber: pageNumber, subPage: subPage)
+        : await _repository.getNationalPage(context, pageNumber, subPage: subPage);
+    
+    if (updateContext) {
+      _updateAdContext(pageNumber, isRegional: isRegional, region: region);
+      _adService.incrementPageView(isSubPage: subPage > 1, pageNumber: pageNumber.toString());
+    }
+    return page;
+  }
+
+  Future<TelevideoPage?> _tryLoadPage(int pageNumber, {bool isRegional = false}) async {
+    try {
+      return await _loadPageWithContext(
+        pageNumber,
+        isRegional: isRegional,
+        region: _currentRegion,
+        updateContext: true
+      );
+    } catch (e) {
+      return null;
+    }
+  }
+
+  void _updateAdContext(int pageNumber, {bool isRegional = false, Region? region}) {
+    // Ottieni la descrizione della pagina
+    final description = PageDescriptionsService().getDescription(
+      pageNumber,
+      isRegional: isRegional,
+    );
+
+    _adService.setContext(
+      pageNumber: pageNumber.toString(),
+      section: description,
+      isRegional: isRegional,
+      region: region,
+    );
+  }
+
+  TelevideoBloc({required TelevideoRepository repository, RegionBloc? regionBloc})
+      : _repository = repository,
+        _regionBloc = regionBloc,
+        super(const TelevideoState.initial()) {
+    on<TelevideoEvent>((event, emit) async {
+      _lastEvent = event;
+      print('[TelevideoBloc] Received event: $event'); // Debug print
+      await event.when(
+        loadNationalPage: (pageNumber) => _onLoadNationalPage(pageNumber, emit),
+        loadRegionalPage: (region, pageNumber) => _onLoadRegionalPage(region, pageNumber, emit),
+        nextPage: (currentPage) => _onNextPage(currentPage, emit),
+        previousPage: (currentPage) => _onPreviousPage(currentPage, emit),
+        nextSubPage: () => _onNextSubPage(emit),
+        previousSubPage: () => _onPreviousSubPage(emit),
+        startLoading: () => _onStartLoading(emit),
+        toggleAutoRefreshPause: () => _onToggleAutoRefreshPause(emit),
+      );
+    });
+
+    // Verifica la disponibilità della pagina 100 all'avvio
+    _initializeBloc();
+  }
+
+  Future<void> _initializeBloc() async {
+    await _checkPage100Availability();
+    
+    // Se l'impostazione è abilitata e ci sono preferiti, carica il primo preferito
+    if (AppSettings.loadFirstFavorite) {
+      final favorites = FavoritesService().getFavorites();
+      if (favorites.isNotEmpty) {
+        final firstFavorite = favorites.first;
+        if (firstFavorite.regionCode != null) {
+          // Se è una pagina regionale, carica la regione corrispondente
+          final region = Region.fromCode(firstFavorite.regionCode!);
+          add(TelevideoEvent.loadRegionalPage(region, firstFavorite.pageNumber));
+        } else {
+          // Se è una pagina nazionale, caricala direttamente
+          add(TelevideoEvent.loadNationalPage(firstFavorite.pageNumber));
+        }
+        return; // Esce dalla funzione per evitare il caricamento della pagina predefinita
+      }
+    }
+    
+    // Se non ci sono preferiti o l'impostazione è disabilitata, carica la pagina predefinita
+    add(TelevideoEvent.loadNationalPage(_minPage));
+  }
+
+  Future<void> _checkPage100Availability() async {
+    try {
+      _isPage100Available = await _repository.isPage100Available();
+      _minPage = _isPage100Available ? 100 : 101;
+      _currentPage = _minPage;
+    } catch (e) {
+      // In caso di errore, assumiamo che la pagina 100 non sia disponibile
+      _isPage100Available = false;
+      _minPage = 101;
+      _currentPage = 101;
+    }
+  }
+
+  Future<void> _onStartLoading(Emitter<TelevideoState> emit) async {
+    emit(TelevideoState.loading(pageNumber: _currentPage));
+  }
+
+  Future<void> _onLoadNationalPage(int pageNumber, Emitter<TelevideoState> emit) async {
+    print('[TelevideoBloc] Loading national page: $pageNumber'); // Debug print
+    
+    _currentPage = pageNumber;
+    emit(TelevideoState.loading(pageNumber: pageNumber));
+    _currentRegion = null; // Reset della regione quando si carica una pagina nazionale
+    
+    // Aggiorna il RegionBloc se disponibile
+    _regionBloc?.add(const RegionEvent.selectRegion(null));
+
+    final startTime = DateTime.now();
+    bool isError = false;
+
+    try {
+      print('[TelevideoBloc] Fetching national page from repository'); // Debug print
+      final page = await _loadPageWithContext(pageNumber);
+      print('[TelevideoBloc] National page loaded successfully'); // Debug print
+      if (!emit.isDone) {
+        emit(TelevideoState.loaded(page, currentSubPage: 1, isAutoRefreshPaused: false));
+      }
+    } catch (e) {
+      isError = true;
+      print('[TelevideoBloc] Error loading national page: $e'); // Debug print
+      final message = e.toString().contains('404') || e.toString().contains('non trovata')
+        ? '$pageNotAvailable\nProva con un altro numero tra $_minPage e 999.\nTorna a $_minPage'
+        : '$pageLoadError\nTorna a $_minPage';
+      if (!emit.isDone) {
+        emit(TelevideoState.error(message));
+      }
+    } finally {
+      final duration = DateTime.now().difference(startTime).inMilliseconds;
+      await AnalyticsService().logLoadTime(
+        pageNumber.toString(),
+        durationMillis: duration,
+        isError: isError,
+      );
+    }
+  }
+
+  Future<void> _onLoadRegionalPage(Region region, int pageNumber, Emitter<TelevideoState> emit) async {
+    print('[TelevideoBloc] Loading regional page: $pageNumber for region ${region.code}'); // Debug print
+    
+    final startTime = DateTime.now();
+    bool isError = false;
+    
+    try {
+      // Prima carichiamo la pagina regionale
+      print('[TelevideoBloc] Fetching regional page from repository'); // Debug print
+      final page = await _loadPageWithContext(pageNumber, isRegional: true, region: region);
+      
+      // Solo dopo un caricamento riuscito, aggiorniamo lo stato e le variabili
+      _currentRegion = region;
+      _currentPage = pageNumber;
+      emit(TelevideoState.loading(pageNumber: pageNumber));
+      
+      // Aggiorna il RegionBloc se disponibile
+      _regionBloc?.add(RegionEvent.selectRegion(region));
+      
+      print('[TelevideoBloc] Regional page loaded successfully'); // Debug print
+      if (!emit.isDone) {
+        emit(TelevideoState.loaded(page, currentSubPage: 1, isAutoRefreshPaused: false));
+      }
+    } catch (e) {
+      isError = true;
+      print('[TelevideoBloc] Error loading regional page: $e'); // Debug print
+      final message = e.toString().contains('404') || e.toString().contains('non trovata')
+        ? pageNotAvailableForRegion.replaceAll('{pageNumber}', pageNumber.toString()).replaceAll('{regionName}', region.name)
+        : pageLoadError;
+      if (!emit.isDone) {
+        emit(TelevideoState.error(message));
+      }
+    } finally {
+      final duration = DateTime.now().difference(startTime).inMilliseconds;
+      await AnalyticsService().logLoadTime(
+        pageNumber.toString(),
+        durationMillis: duration,
+        isError: isError,
+      );
+    }
+  }
+
+  Future<void> _onNextPage(int currentPage, Emitter<TelevideoState> emit) async {
+    if (currentPage < 899) {
+      await _findNextAvailablePage(currentPage + 1, emit);
+    }
+  }
+
+  Future<void> _onPreviousPage(int currentPage, Emitter<TelevideoState> emit) async {
+    if (currentPage > _minPage) {
+      await _findPreviousAvailablePage(currentPage - 1, emit);
+    }
+  }
+
+  Future<void> _findNextAvailablePage(int startPage, Emitter<TelevideoState> emit) async {
+    int currentPage = startPage;
+    int maxAttempts = 100; // Limita il numero di tentativi per evitare loop infiniti
+    int attempts = 0;
+
+    while (currentPage <= 899 && attempts < maxAttempts) {
+      // Emetti lo stato di loading con la pagina corrente che stiamo provando
+      emit(TelevideoState.loading(pageNumber: currentPage));
+      final page = await _tryLoadPage(currentPage, isRegional: _currentRegion != null);
+      if (page != null) {
+        _currentPage = currentPage;
+        emit(TelevideoState.loaded(page, currentSubPage: 1, isAutoRefreshPaused: false));
+        return;
+      }
+      
+      if (currentPage >= 899) {
+        final l10n = AppLocalizations.of(context)!;
+      final message = _currentRegion != null
+          ? l10n.noMorePagesForRegion(_currentRegion!.name)
+          : l10n.noMorePages;
+        emit(TelevideoState.error(message));
+        return;
+      }
+      currentPage++;
+      attempts++;
+    }
+      final l10n = AppLocalizations.of(context)!;
+      final message = _currentRegion != null
+          ? l10n.noMorePagesForRegion(_currentRegion!.name)
+          : l10n.noMorePages;
+    emit(TelevideoState.error(message));
+  }
+
+  Future<void> _findPreviousAvailablePage(int startPage, Emitter<TelevideoState> emit) async {
+    int currentPage = startPage;
+    int maxAttempts = 100; // Limita il numero di tentativi per evitare loop infiniti
+    int attempts = 0;
+
+    while (currentPage >= _minPage && attempts < maxAttempts) {
+      // Emetti lo stato di loading con la pagina corrente che stiamo provando
+      emit(TelevideoState.loading(pageNumber: currentPage));
+      final page = await _tryLoadPage(currentPage, isRegional: _currentRegion != null);
+      if (page != null) {
+        _currentPage = currentPage;
+        emit(TelevideoState.loaded(page, currentSubPage: 1, isAutoRefreshPaused: false));
+        return;
+      }
+      
+      if (currentPage <= _minPage) {
+        final l10n = AppLocalizations.of(context)!;
+      final message = _currentRegion != null
+          ? l10n.noMorePagesForRegion(_currentRegion!.name)
+          : l10n.noMorePages;
+        emit(TelevideoState.error(message));
+        return;
+      }
+      currentPage--;
+      attempts++;
+    }
+      final l10n = AppLocalizations.of(context)!;
+      final message = _currentRegion != null
+          ? l10n.noMorePagesForRegion(_currentRegion!.name)
+          : l10n.noMorePages;
+    emit(TelevideoState.error(message));
+  }
+
+  Future<void> _onNextSubPage(Emitter<TelevideoState> emit) async {
+    await state.maybeWhen(
+      loaded: (page, currentSubPage, isAutoRefreshPaused) async {
+        if (page.maxSubPages <= 1) return; // Non fare nulla se non ci sono sottopagine
+        
+        final nextSubPage = currentSubPage + 1;
+        final maxSubPages = page.maxSubPages;
+        final newSubPage = nextSubPage > maxSubPages ? 1 : nextSubPage;
+        
+        final startTime = DateTime.now();
+        bool isError = false;
+        
+        try {
+          final newPage = await _currentRegion != null
+              ? await _repository.getRegionalPage(
+                  _currentRegion!.code,
+                  pageNumber: page.pageNumber,
+                  subPage: newSubPage,
+                  invalidSubpageNumber: invalidSubpageNumber,
+                  subpageError: subpageError,
+                  pageNotAvailable: pageNotAvailable,
+                  pageLoadError: pageLoadError,
+                )
+              : await _repository.getNationalPage(
+                  page.pageNumber,
+                  subPage: newSubPage,
+                  invalidSubpageNumber: invalidSubpageNumber,
+                  subpageError: subpageError,
+                  pageNotAvailable: pageNotAvailable,
+                  pageLoadError: pageLoadError,
+                );
+          
+          // Usa il maxSubPages della nuova pagina per validare la sottopagina
+          final validSubPage = newSubPage <= newPage.maxSubPages ? newSubPage : 1;
+          if (!emit.isDone) {
+            _adService.incrementPageView(isSubPage: true);
+            emit(TelevideoState.loaded(newPage, currentSubPage: validSubPage, isAutoRefreshPaused: isAutoRefreshPaused));
+          }
+        } catch (e) {
+          isError = true;
+          // Se c'è un errore nel caricamento della sottopagina, mantieni la pagina corrente
+          if (!emit.isDone) {
+            emit(TelevideoState.loaded(page, currentSubPage: currentSubPage, isAutoRefreshPaused: isAutoRefreshPaused));
+          }
+        } finally {
+          final duration = DateTime.now().difference(startTime).inMilliseconds;
+          await AnalyticsService().logLoadTime(
+            page.pageNumber.toString(),
+            subPage: newSubPage.toString(),
+            durationMillis: duration,
+            isError: isError,
+          );
+        }
+      },
+      orElse: () async {},
+    );
+  }
+
+  Future<void> _onPreviousSubPage(Emitter<TelevideoState> emit) async {
+    await state.maybeWhen(
+      loaded: (page, currentSubPage, isAutoRefreshPaused) async {
+        if (page.maxSubPages <= 1) return; // Non fare nulla se non ci sono sottopagine
+        
+        final prevSubPage = currentSubPage - 1;
+        final maxSubPages = page.maxSubPages;
+        final newSubPage = prevSubPage < 1 ? maxSubPages : prevSubPage;
+        
+        final startTime = DateTime.now();
+        bool isError = false;
+        
+        try {
+          final newPage = await _currentRegion != null
+              ? await _repository.getRegionalPage(
+                  _currentRegion!.code,
+                  pageNumber: page.pageNumber,
+                  subPage: newSubPage,
+                  invalidSubpageNumber: invalidSubpageNumber,
+                  subpageError: subpageError,
+                  pageNotAvailable: pageNotAvailable,
+                  pageLoadError: pageLoadError,
+                )
+              : await _repository.getNationalPage(
+                  page.pageNumber,
+                  subPage: newSubPage,
+                  invalidSubpageNumber: invalidSubpageNumber,
+                  subpageError: subpageError,
+                  pageNotAvailable: pageNotAvailable,
+                  pageLoadError: pageLoadError,
+                );
+          
+          // Usa il maxSubPages della nuova pagina per validare la sottopagina
+          final validSubPage = newSubPage <= newPage.maxSubPages ? newSubPage : 1;
+          if (!emit.isDone) {
+            _adService.incrementPageView(isSubPage: true);
+            emit(TelevideoState.loaded(newPage, currentSubPage: validSubPage, isAutoRefreshPaused: isAutoRefreshPaused));
+          }
+        } catch (e) {
+          isError = true;
+          // Se c'è un errore nel caricamento della sottopagina, mantieni la pagina corrente
+          if (!emit.isDone) {
+            emit(TelevideoState.loaded(page, currentSubPage: currentSubPage, isAutoRefreshPaused: isAutoRefreshPaused));
+          }
+        } finally {
+          final duration = DateTime.now().difference(startTime).inMilliseconds;
+          await AnalyticsService().logLoadTime(
+            page.pageNumber.toString(),
+            subPage: newSubPage.toString(),
+            durationMillis: duration,
+            isError: isError,
+          );
+        }
+      },
+      orElse: () async {},
+    );
+  }
+
+  @override
+  Future<void> close() {
+    _adService.dispose();
+    return super.close();
+  }
+
+  Future<void> _onToggleAutoRefreshPause(Emitter<TelevideoState> emit) async {
+    await state.maybeWhen(
+      loaded: (page, currentSubPage, isAutoRefreshPaused) async {
+        // Logga l'evento di pausa/play
+        AnalyticsService().logSubpageChange(
+          page.pageNumber.toString(),
+          currentSubPage.toString(),
+          isAutoRefreshPaused ? 'auto_refresh_resume' : 'auto_refresh_pause',
+        );
+        
+        // Emetti il nuovo stato con lo stato di pausa invertito
+        emit(TelevideoState.loaded(
+          page,
+          currentSubPage: currentSubPage,
+          isAutoRefreshPaused: !isAutoRefreshPaused,
+        ));
+      },
+      orElse: () async {},
+    );
+  }
+}
+

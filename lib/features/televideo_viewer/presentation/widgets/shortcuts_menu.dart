@@ -5,6 +5,7 @@ import 'package:cursor_televideo/shared/models/region.dart';
 import 'package:cursor_televideo/features/televideo_viewer/presentation/widgets/page_search_dialog.dart';
 import 'package:cursor_televideo/features/televideo_viewer/bloc/televideo_bloc.dart';
 import 'package:cursor_televideo/features/televideo_viewer/bloc/televideo_state.dart';
+import 'package:cursor_televideo/core/l10n/app_localizations.dart';
 
 class ShortcutsMenu extends StatefulWidget {
   final bool isNational;
@@ -85,9 +86,9 @@ class _ShortcutsMenuState extends State<ShortcutsMenu> {
             MenuItemButton(
               onPressed: _showSearchDialog,
               leadingIcon: const Icon(Icons.search),
-              child: const Text(
-                'Cerca pagina...',
-                style: TextStyle(fontSize: 14),
+              child: Text(
+                AppLocalizations.of(context)?.searchHint ?? 'Search page...',
+                style: const TextStyle(fontSize: 14),
               ),
             ),
             const PopupMenuDivider(),
@@ -105,7 +106,7 @@ class _ShortcutsMenuState extends State<ShortcutsMenu> {
           builder: (context, controller, child) {
             return IconButton(
               icon: const Icon(Icons.menu_book),
-              tooltip: 'Menu Shortcuts',
+              tooltip: AppLocalizations.of(context)?.onboardingShortcuts ?? 'Menu Shortcuts',
               onPressed: () {
                 if (controller.isOpen) {
                   controller.close();

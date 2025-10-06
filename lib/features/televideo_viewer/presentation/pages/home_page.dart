@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'dart:ui' show lerpDouble;
+import 'package:cursor_televideo/core/l10n/app_localizations.dart';
 import 'package:cursor_televideo/features/televideo_viewer/bloc/televideo_bloc.dart';
 import 'package:cursor_televideo/features/televideo_viewer/bloc/televideo_event.dart';
 import 'package:cursor_televideo/features/televideo_viewer/bloc/televideo_state.dart';
@@ -84,7 +85,7 @@ class _HomePageState extends State<HomePage> {
     return showDialog(
       context: context,
       builder: (dialogContext) => AlertDialog(
-        title: const Text('Inserisci numero pagina'),
+        title: Text(AppLocalizations.of(context)?.enterPageNumber ?? 'Enter page number'),
         content: TextField(
           controller: _pageNumberController,
           keyboardType: TextInputType.number,
@@ -93,7 +94,7 @@ class _HomePageState extends State<HomePage> {
             LengthLimitingTextInputFormatter(3),
           ],
           decoration: InputDecoration(
-            hintText: 'Numero da $minPage a 999',
+            hintText: AppLocalizations.of(context)?.pageNumberRange(minPage) ?? 'Number from $minPage to 999',
             border: OutlineInputBorder(),
             errorMaxLines: 2,
           ),
@@ -115,7 +116,7 @@ class _HomePageState extends State<HomePage> {
         actions: [
           TextButton(
             onPressed: () => Navigator.of(dialogContext).pop(),
-            child: const Text('Annulla'),
+            child: Text(AppLocalizations.of(context)?.cancel ?? 'Cancel'),
           ),
           TextButton(
             onPressed: () {
@@ -131,7 +132,7 @@ class _HomePageState extends State<HomePage> {
                 }
               }
             },
-            child: const Text('OK'),
+            child: Text(AppLocalizations.of(context)?.ok ?? 'OK'),
           ),
         ],
       ),
@@ -215,9 +216,9 @@ class _HomePageState extends State<HomePage> {
                       regionCode: currentRegion?.code,
                     );
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Pagina rimossa dai preferiti'),
-                        duration: Duration(seconds: 2),
+                      SnackBar(
+                        content: Text(AppLocalizations.of(context)?.pageRemovedFromFavorites ?? 'Page removed from favorites'),
+                        duration: const Duration(seconds: 2),
                       ),
                     );
                   } else {
@@ -226,19 +227,19 @@ class _HomePageState extends State<HomePage> {
                       regionCode: currentRegion?.code,
                     );
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Pagina aggiunta ai preferiti'),
-                        duration: Duration(seconds: 2),
+                      SnackBar(
+                        content: Text(AppLocalizations.of(context)?.pageAddedToFavorites ?? 'Page added to favorites'),
+                        duration: const Duration(seconds: 2),
                       ),
                     );
                   }
                   setState(() {}); // Forza l'aggiornamento dell'icona
                 },
                 orElse: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Nessuna pagina da aggiungere ai preferiti'),
-                      duration: Duration(seconds: 2),
+                    ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(AppLocalizations.of(context)?.noPageToAddToFavorites ?? 'No page to add to favorites'),
+                      duration: const Duration(seconds: 2),
                     ),
                   );
                 },
@@ -248,7 +249,7 @@ class _HomePageState extends State<HomePage> {
           // Lista preferiti
           IconButton(
             icon: const Icon(Icons.list),
-            tooltip: 'Lista preferiti',
+              tooltip: AppLocalizations.of(context)?.favoritesList ?? 'Favorites list',
             onPressed: () => _showFavoritesDialog(context),
           ),
           // Impostazioni
@@ -306,18 +307,18 @@ class _HomePageState extends State<HomePage> {
               return await showDialog<bool>(
                 context: dialogContext,
                 builder: (confirmContext) => AlertDialog(
-                  title: const Text('Conferma rimozione'),
+                  title: Text(AppLocalizations.of(context)?.confirmRemoval ?? 'Confirm removal'),
                   content: Text(
-                    'Vuoi davvero rimuovere ${favorite.displayDescription} dai preferiti?'
+                    AppLocalizations.of(context)?.confirmRemoveFromFavorites(favorite.displayDescription) ?? 'Do you really want to remove ${favorite.displayDescription} from favorites?'
                   ),
                   actions: [
                     TextButton(
                       onPressed: () => Navigator.of(confirmContext).pop(false),
-                      child: const Text('ANNULLA'),
+                      child: Text(AppLocalizations.of(context)?.cancel ?? 'Cancel'),
                     ),
                     TextButton(
                       onPressed: () => Navigator.of(confirmContext).pop(true),
-                      child: const Text('RIMUOVI'),
+                      child: Text(AppLocalizations.of(context)?.remove ?? 'Remove'),
                     ),
                   ],
                 ),
@@ -375,7 +376,7 @@ class _HomePageState extends State<HomePage> {
               ),
               trailing: IconButton(
                 icon: const Icon(Icons.edit_outlined),
-                tooltip: 'Modifica descrizione',
+                tooltip: AppLocalizations.of(context)?.edit ?? 'Edit',
                 onPressed: () {
                   showDialog<bool>(
                     context: dialogContext,
@@ -427,12 +428,12 @@ class _HomePageState extends State<HomePage> {
             children: [
               const Icon(Icons.favorite),
               const SizedBox(width: 8),
-              const Text('Preferiti'),
+              Text(AppLocalizations.of(context)?.favoritesList ?? 'Favorites list'),
               const Spacer(),
               IconButton(
                 icon: const Icon(Icons.close),
                 onPressed: () => Navigator.of(dialogContext).pop(),
-                tooltip: 'Chiudi',
+                tooltip: AppLocalizations.of(context)?.close ?? 'Close',
               ),
             ],
           ),
@@ -440,29 +441,29 @@ class _HomePageState extends State<HomePage> {
             width: MediaQuery.of(context).size.width * 0.9,
             height: MediaQuery.of(context).size.height * 0.7, // Limitiamo l'altezza al 70% dello schermo
             child: _favorites.isEmpty
-                ? const Center(
+                ? Center(
                     child: Padding(
-                      padding: EdgeInsets.all(16.0),
+                      padding: const EdgeInsets.all(16.0),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Icon(
+                          const Icon(
                             Icons.favorite_border,
                             size: 48,
                             color: Colors.grey,
                           ),
-                          SizedBox(height: 16),
+                          const SizedBox(height: 16),
                           Text(
-                            'Nessun preferito salvato',
-                            style: TextStyle(
+                            AppLocalizations.of(context)?.noFavorites ?? 'No favorites',
+                            style: const TextStyle(
                               color: Colors.grey,
                               fontSize: 16,
                             ),
                           ),
-                          SizedBox(height: 8),
+                          const SizedBox(height: 8),
                           Text(
-                            'Usa l\'icona ❤️ per aggiungere pagine ai preferiti',
-                            style: TextStyle(
+                            AppLocalizations.of(context)?.useFavoriteIcon ?? 'Use the ❤️ icon to add pages to favorites',
+                            style: const TextStyle(
                               color: Colors.grey,
                               fontSize: 14,
                             ),
@@ -720,7 +721,7 @@ class _HomePageState extends State<HomePage> {
                                   const CircularProgressIndicator(),
                                   const SizedBox(height: 16),
                                   Text(
-                                    'Caricamento pagina $pageNumber...',
+                                    AppLocalizations.of(context)?.loadingPage(pageNumber) ?? 'Loading page $pageNumber...',
                                     style: const TextStyle(
                                       fontSize: 16,
                                       color: Colors.white,

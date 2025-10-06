@@ -7,7 +7,7 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:876587734466:android:08364a88df1f8e94b6f25b",
+        "mobilesdk_app_id": "1:876587734466:android:34c9e06d4f1aabe4b6f25b",
         "android_client_info": {
           "package_name": "it.codebysam.televideo"
         }
@@ -22,7 +22,8 @@
         "appinvite_service": {
           "other_platform_oauth_client": []
         }
-      }
+      },
+      "admob_app_id": "ca-app-pub-5405772972501741~8859179946"
     }
   ],
   "configuration_version": "1"

@@ -1,0 +1,226 @@
+{
+  "@@locale": "fi",
+  "appTitle": "TeleRetrò Italia",
+  "pageUnavailable": "Sivun kuvaa ei voida ladata.\nYritä uudelleen hetken kuluttua.",
+  "pageNotAvailable": "Pyydetty sivu ei ole saatavilla",
+  "pageLoadError": "Sivun lataamisessa tapahtui virhe.\nPalaa sivulle 100",
+  "pageNotAvailableForRegion": "Sivu {pageNumber} ei ole saatavilla alueelle {regionName}",
+  "@pageNotAvailableForRegion": {
+    "description": "Error message when a page is not available for a specific region",
+    "placeholders": {
+      "pageNumber": {
+        "type": "int",
+        "example": "100"
+      },
+      "regionName": {
+        "type": "String",
+        "example": "Lombardia"
+      }
+    }
+  },
+  "noMorePagesForRegion": "Ei enempää sivuja saatavilla alueelle {regionName}",
+  "@noMorePagesForRegion": {
+    "description": "Error message when there are no more pages for a region",
+    "placeholders": {
+      "regionName": {
+        "type": "String",
+        "example": "Lombardia"
+      }
+    }
+  },
+  "noMorePages": "Ei enempää sivuja saatavilla",
+  "invalidSubpageNumber": "Virheellinen alasivun numero",
+  "subpageError": "Virhe ladattaessa alasivua {current}/{total}",
+  "@subpageError": {
+    "description": "Error message when a subpage fails to load",
+    "placeholders": {
+      "current": {
+        "type": "int",
+        "example": "1"
+      },
+      "total": {
+        "type": "int",
+        "example": "8"
+      }
+    }
+  },
+  "swipePrevious": "← Edellinen",
+  "swipeNext": "Seuraava →",
+  "swipeNextUp": "Seuraava ↑",
+  "swipePreviousDown": "Edellinen ↓",
+  "swipeRefresh": "Päivitä ↻",
+  "pageAddedToFavorites": "Sivu lisätty suosikkeihin",
+  "pageRemovedFromFavorites": "Sivu poistettu suosikeista",
+  "editDescription": "Muokkaa kuvausta",
+  "pageAndRegion": "Sivu {pageNumber} - {regionName}",
+  "@pageAndRegion": {
+    "description": "Page number and region name",
+    "placeholders": {
+      "pageNumber": {
+        "type": "int",
+        "example": "100"
+      },
+      "regionName": {
+        "type": "String",
+        "example": "Lombardia"
+      }
+    }
+  },
+  "description": "Kuvaus",
+  "enterCustomDescription": "Syötä mukautettu kuvaus",
+  "restoreHint": "Vinkki: paina pitkään \"PALAUTA\"-painiketta palataksesi oletuskuvaukseen.",
+  "restore": "PALAUTA",
+  "cancel": "PERUUTA",
+  "save": "TALLENNA",
+  "searchHint": "Hae sivua...",
+  "noResults": "Ei tuloksia",
+  "settings": "Asetukset",
+  "enterPageNumber": "Syötä sivunumero",
+  "pageNumberRange": "Numero väliltä {minPage}-999",
+  "@pageNumberRange": {
+    "description": "Hint text for page number input",
+    "placeholders": {
+      "minPage": {
+        "type": "int",
+        "example": "100"
+      }
+    }
+  },
+  "ok": "OK",
+  "favoritesList": "Suosikkilista",
+  "confirmRemoval": "Vahvista poisto",
+  "confirmRemoveFromFavorites": "Haluatko varmasti poistaa {description} suosikeista?",
+  "@confirmRemoveFromFavorites": {
+    "description": "Confirmation message when removing a page from favorites",
+    "placeholders": {
+      "description": {
+        "type": "String",
+        "example": "Sivu 100"
+      }
+    }
+  },
+  "remove": "Poista",
+  "edit": "Muokkaa",
+  "close": "Sulje",
+  "noFavorites": "Ei suosikkeja",
+  "useFavoriteIcon": "Käytä ❤️ kuvaketta lisätäksesi sivuja suosikkeihin",
+  "loadingPage": "Ladataan sivua {pageNumber}...",
+  "@loadingPage": {
+    "description": "Loading message when loading a page",
+    "placeholders": {
+      "pageNumber": {
+        "type": "int",
+        "example": "100"
+      }
+    }
+  },
+  "noPageToAddToFavorites": "Ei sivua lisättäväksi suosikkeihin",
+  "language": "Kieli",
+  "systemLanguage": "Järjestelmän kieli",
+  "darkMode": "Tumma tila",
+  "autoRefresh": "Automaattinen päivitys",
+  "favorites": "Suosikit",
+  "search": "Haku",
+  "regions": "Alueet",
+  "home": "Koti",
+  "addToFavorites": "Lisää suosikkeihin",
+  "removeFromFavorites": "Poista suosikeista",
+  "loading": "Ladataan...",
+  "error": "Virhe",
+  "errorWithMessage": "Virhe: {message}",
+  "@errorWithMessage": {
+    "description": "Error message with details",
+    "placeholders": {
+      "message": {
+        "type": "String",
+        "example": "Network error"
+      }
+    }
+  },
+  "retry": "Yritä uudelleen",
+  "next": "Seuraava",
+  "previous": "Edellinen",
+  "pageNotFound": "Sivua ei löydy",
+  "networkError": "Verkkovirhe",
+  "connectionRequired": "Yhteys vaaditaan",
+  "refreshing": "Päivitetään...",
+  "lastUpdate": "Viimeisin päivitys",
+  "theme": "Teema",
+  "systemTheme": "Järjestelmän teema",
+  "lightTheme": "Vaalea teema",
+  "darkTheme": "Tumma teema",
+  "selectTheme": "Valitse teema",
+  "loadFirstFavorite": "Lataa ensimmäinen suosikki käynnistettäessä",
+  "loadFirstFavoriteDescription": "Jos käytössä, ensimmäinen suosikki listalta ladataan sovelluksen käynnistyessä",
+  "cacheDuration": "Televideo-sivukuvien välimuistin kesto (0 sekuntia poistaaksesi käytöstä)",
+  "seconds": "sekuntia",
+  "autoRefreshDescription": "Päivitä alasivut automaattisesti",
+  "refreshInterval": "Päivitysväli",
+  "showOnboardingAtStartup": "Näytä ohjeet käynnistettäessä",
+  "showOnboardingAtStartupDescription": "Näytä ohjeet aina kun avaat sovelluksen",
+  "showInstructions": "Näytä ohjeet",
+  "showInstructionsDescription": "Katso sovelluksen käyttöohjeet",
+  "backupFavorites": "Varmuuskopioi suosikit",
+  "backupFavoritesDescription": "Tallenna ja palauta suosikkisi",
+  "privacySettings": "Yksityisyysasetukset",
+  "privacySettingsDescription": "Muuta yksityisyysasetuksiasi mainoksia varten",
+  "resetPrivacySettings": "Nollaa yksityisyysasetukset",
+  "resetPrivacySettingsDescription": "Nollaa kaikki yksityisyysasetukset",
+  "resetPrivacyConfirm": "Haluatko varmasti nollata yksityisyysasetukset? Sinulta pyydetään suostumus uudelleen seuraavan kerran käynnistäessäsi sovelluksen.",
+  "privacySettingsUnavailable": "Yksityisyysasetukset eivät ole tällä hetkellä saatavilla",
+  "privacySettingsReset": "Yksityisyysasetukset nollattu. Käynnistä sovellus uudelleen uutta suostumusta varten.",
+  "version": "Versio",
+  "build": "build",
+  "onboardingWelcome": "Tervetuloa TeleRetrò Italiaan",
+  "onboardingWelcomeDescription": "Sovellus RAI Televideon nopeaan ja helppoon selaamiseen",
+  "onboardingNavigation": "Navigointi",
+  "onboardingNavigationDescription": "Pyyhkäise vasemmalle tai oikealle vaihtaaksesi sivua, napauta numeroita navigoidaksesi suoraan",
+  "onboardingFavorites": "Suosikit",
+  "onboardingFavoritesDescription": "Lisää sivuja suosikkeihin nopeaa pääsyä varten",
+  "onboardingRegions": "Alueellinen Televideo",
+  "onboardingRegionsDescription": "Pääsy alueesi Televideoon",
+  "onboardingAutoRefresh": "Automaattinen Päivitys",
+  "onboardingAutoRefreshDescription": "Alasivut päivittyvät automaattisesti",
+  "onboardingPause": "Keskeytä Päivitys",
+  "onboardingPauseDescription": "Napauta tyhjää aluetta keskeyttääksesi automaattisen päivityksen",
+  "onboardingPageSelector": "Sivunvalitsin",
+  "onboardingPageSelectorDescription": "Napauta keskimmäistä numeroa syöttääksesi sivun suoraan.\n\nSyötä numero väliltä 100-999 siirtyäksesi kyseiselle sivulle.",
+  "onboardingSubpageNavigation": "Alasivujen Navigointi",
+  "onboardingSubpageNavigationDescription": "Jos sivulla on alasivuja, näet myös ilmaisimen:\n• 1/3 tarkoittaa: ensimmäinen alasivu kolmesta saatavilla olevasta\n\nKäytä keskellä olevia nuolia navigoidaksesi alasivujen välillä:\n\n• Nuoli ylös: siirry seuraavalle alasivulle\n• Nuoli alas: siirry edelliselle alasivulle\n\nNuolet ovat aktiivisia vain, kun alasivuja on saatavilla.",
+  "onboardingSwipe": "Pyyhkäisynavigointi",
+  "onboardingSwipeDescription": "Navigoi helposti sivujen välillä yllä näytetyillä eleillä.",
+  "onboardingClickableNumbers": "Napsautettavat Sivunumerot",
+  "onboardingClickableNumbersDescription": "Napauta korostettuja sivunumeroita siirtyäksesi suoraan kyseiselle sivulle\n\nSivut 100/1 Kansallisesta Televideosta ja 300/1 Alueellisesta Televideosta eivät ole napsautettavia",
+  "onboardingShortcuts": "Valikko Pikakuvakkeet",
+  "onboardingShortcutsDescription": "Pääse nopeasti tärkeimmille Televideo-sivuille.\n\nKäytä tätä valikkoa siirtyäksesi suoraan:\n• Sivu 100: Kansallinen hakemisto\n• Sivu 200: Uutiset\n.....\nVoit myös hakea sivuja otsikon perusteella valitsemalla Hae sivu -vaihtoehdon",
+  "onboardingFavoritesList": "Suosikkilista",
+  "onboardingFavoritesListDescription": "Hallitse suosikkisivujasi:\n\n• Napauta sivua avataksesi sen\n• Pyyhkäise vasemmalle poistaaksesi sen\n• Napauta kynää muokataksesi kuvausta\n• Paina pitkään muuttaaksesi järjestystä\n\n",
+  "onboardingSettingsDescription": "Mukauta sovellus mieltymystesi mukaan:\n\n• Lataa ensimmäinen suosikki käynnistettäessä: päätä millä Televideo-sivulla aloitat\n• Teema: valitse vaalean, tumman tai automaattisen väliltä\n• Automaattinen päivitys: ota käyttöön alasivujen automaattinen lataus\n• Välimuisti: hallitse sivujen välimuistin kestoa\n• Ohjeet: katso tämä opastus milloin haluat\n• Varmuuskopioi suosikit: tallenna ja palauta suosikkisi\n• Yksityisyysasetukset ja nollaus: hallitse tai nollaa yksityisyysvalintasi",
+  "dontShowAgain": "Älä näytä uudelleen",
+  "start": "Aloita",
+  "reset": "Nollaa",
+  "backToPage": "Takaisin sivulle {pageNumber}",
+  "@backToPage": {
+    "description": "Button text to go back to a specific page",
+    "placeholders": {
+      "pageNumber": {
+        "type": "int",
+        "example": "100"
+      }
+    }
+  },
+  "pageNotAvailableForRegionWithHint": "Sivu {pageNumber} ei ole saatavilla alueelle {regionName}.\nKokeile toista numeroa väliltä 100-999.",
+  "@pageNotAvailableForRegionWithHint": {
+    "description": "Error message when a page is not available for a region, with hint",
+    "placeholders": {
+      "pageNumber": {
+        "type": "int",
+        "example": "100"
+      },
+      "regionName": {
+        "type": "String",
+        "example": "Lombardia"
+      }
+    }
+  }
+}

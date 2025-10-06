@@ -1,0 +1,226 @@
+{
+  "@@locale": "da",
+  "appTitle": "TeleRetrò Italia",
+  "pageUnavailable": "Kan ikke indlæse sidebilledet.\nPrøv igen om et øjeblik.",
+  "pageNotAvailable": "Den ønskede side er ikke tilgængelig",
+  "pageLoadError": "Der opstod en fejl under indlæsning af siden.\nTilbage til side 100",
+  "pageNotAvailableForRegion": "Side {pageNumber} er ikke tilgængelig for {regionName}",
+  "@pageNotAvailableForRegion": {
+    "description": "Error message when a page is not available for a specific region",
+    "placeholders": {
+      "pageNumber": {
+        "type": "int",
+        "example": "100"
+      },
+      "regionName": {
+        "type": "String",
+        "example": "Lombardia"
+      }
+    }
+  },
+  "noMorePagesForRegion": "Ingen flere sider tilgængelige for {regionName}",
+  "@noMorePagesForRegion": {
+    "description": "Error message when there are no more pages for a region",
+    "placeholders": {
+      "regionName": {
+        "type": "String",
+        "example": "Lombardia"
+      }
+    }
+  },
+  "noMorePages": "Ingen flere sider tilgængelige",
+  "invalidSubpageNumber": "Ugyldigt undersidenummer",
+  "subpageError": "Fejl ved indlæsning af underside {current} af {total}",
+  "@subpageError": {
+    "description": "Error message when a subpage fails to load",
+    "placeholders": {
+      "current": {
+        "type": "int",
+        "example": "1"
+      },
+      "total": {
+        "type": "int",
+        "example": "8"
+      }
+    }
+  },
+  "swipePrevious": "← Forrige",
+  "swipeNext": "Næste →",
+  "swipeNextUp": "Næste ↑",
+  "swipePreviousDown": "Forrige ↓",
+  "swipeRefresh": "Opdater ↻",
+  "pageAddedToFavorites": "Side tilføjet til favoritter",
+  "pageRemovedFromFavorites": "Side fjernet fra favoritter",
+  "editDescription": "Rediger beskrivelse",
+  "pageAndRegion": "Side {pageNumber} - {regionName}",
+  "@pageAndRegion": {
+    "description": "Page number and region name",
+    "placeholders": {
+      "pageNumber": {
+        "type": "int",
+        "example": "100"
+      },
+      "regionName": {
+        "type": "String",
+        "example": "Lombardia"
+      }
+    }
+  },
+  "description": "Beskrivelse",
+  "enterCustomDescription": "Indtast en tilpasset beskrivelse",
+  "restoreHint": "Tip: tryk længe på \"GENDAN\" knappen for at vende tilbage til standardbeskrivelsen.",
+  "restore": "GENDAN",
+  "cancel": "ANNULLER",
+  "save": "GEM",
+  "searchHint": "Søg side...",
+  "noResults": "Ingen resultater",
+  "settings": "Indstillinger",
+  "enterPageNumber": "Indtast sidenummer",
+  "pageNumberRange": "Nummer fra {minPage} til 999",
+  "@pageNumberRange": {
+    "description": "Hint text for page number input",
+    "placeholders": {
+      "minPage": {
+        "type": "int",
+        "example": "100"
+      }
+    }
+  },
+  "ok": "OK",
+  "favoritesList": "Favoritliste",
+  "confirmRemoval": "Bekræft fjernelse",
+  "confirmRemoveFromFavorites": "Vil du virkelig fjerne {description} fra favoritter?",
+  "@confirmRemoveFromFavorites": {
+    "description": "Confirmation message when removing a page from favorites",
+    "placeholders": {
+      "description": {
+        "type": "String",
+        "example": "Side 100"
+      }
+    }
+  },
+  "remove": "Fjern",
+  "edit": "Rediger",
+  "close": "Luk",
+  "noFavorites": "Ingen favoritter",
+  "useFavoriteIcon": "Brug ❤️ ikonet til at tilføje sider til favoritter",
+  "loadingPage": "Indlæser side {pageNumber}...",
+  "@loadingPage": {
+    "description": "Loading message when loading a page",
+    "placeholders": {
+      "pageNumber": {
+        "type": "int",
+        "example": "100"
+      }
+    }
+  },
+  "noPageToAddToFavorites": "Ingen side at tilføje til favoritter",
+  "language": "Sprog",
+  "systemLanguage": "Systemsprog",
+  "darkMode": "Mørk tilstand",
+  "autoRefresh": "Automatisk opdatering",
+  "favorites": "Favoritter",
+  "search": "Søg",
+  "regions": "Regioner",
+  "home": "Hjem",
+  "addToFavorites": "Tilføj til favoritter",
+  "removeFromFavorites": "Fjern fra favoritter",
+  "loading": "Indlæser...",
+  "error": "Fejl",
+  "errorWithMessage": "Fejl: {message}",
+  "@errorWithMessage": {
+    "description": "Error message with details",
+    "placeholders": {
+      "message": {
+        "type": "String",
+        "example": "Network error"
+      }
+    }
+  },
+  "retry": "Prøv igen",
+  "next": "Næste",
+  "previous": "Forrige",
+  "pageNotFound": "Side ikke fundet",
+  "networkError": "Netværksfejl",
+  "connectionRequired": "Forbindelse påkrævet",
+  "refreshing": "Opdaterer...",
+  "lastUpdate": "Seneste opdatering",
+  "theme": "Tema",
+  "systemTheme": "Systemtema",
+  "lightTheme": "Lyst tema",
+  "darkTheme": "Mørkt tema",
+  "selectTheme": "Vælg tema",
+  "loadFirstFavorite": "Indlæs første favorit ved opstart",
+  "loadFirstFavoriteDescription": "Hvis aktiveret, vil den første favorit på listen blive indlæst når appen starter",
+  "cacheDuration": "Cache-varighed for Televideo-sidebilleder (0 sekunder for at deaktivere)",
+  "seconds": "sekunder",
+  "autoRefreshDescription": "Opdater undersider automatisk",
+  "refreshInterval": "Opdateringsinterval",
+  "showOnboardingAtStartup": "Vis instruktioner ved opstart",
+  "showOnboardingAtStartupDescription": "Vis instruktioner hver gang du åbner appen",
+  "showInstructions": "Vis instruktioner",
+  "showInstructionsDescription": "Gennemgå appens brugsvejledning",
+  "backupFavorites": "Backup favoritter",
+  "backupFavoritesDescription": "Gem og gendan dine favoritter",
+  "privacySettings": "Privatlivsindstillinger",
+  "privacySettingsDescription": "Ændre dine privatlivsindstillinger for annoncer",
+  "resetPrivacySettings": "Nulstil privatlivsindstillinger",
+  "resetPrivacySettingsDescription": "Nulstil alle privatlivsindstillinger",
+  "resetPrivacyConfirm": "Vil du virkelig nulstille privatlivsindstillingerne? Du vil blive bedt om samtykke igen næste gang du starter appen.",
+  "privacySettingsUnavailable": "Privatlivsindstillinger er ikke tilgængelige i øjeblikket",
+  "privacySettingsReset": "Privatlivsindstillinger nulstillet. Genstart appen for nyt samtykke.",
+  "version": "Version",
+  "build": "build",
+  "onboardingWelcome": "Velkommen til TeleRetrò Italia",
+  "onboardingWelcomeDescription": "Appen til at konsultere RAI Televideo hurtigt og nemt",
+  "onboardingNavigation": "Navigation",
+  "onboardingNavigationDescription": "Stryg til venstre eller højre for at skifte side, tryk på tal for at navigere direkte",
+  "onboardingFavorites": "Favoritter",
+  "onboardingFavoritesDescription": "Tilføj sider til favoritter for hurtig adgang",
+  "onboardingRegions": "Regional Televideo",
+  "onboardingRegionsDescription": "Få adgang til din regions Televideo",
+  "onboardingAutoRefresh": "Automatisk Opdatering",
+  "onboardingAutoRefreshDescription": "Undersider opdateres automatisk",
+  "onboardingPause": "Pause Opdatering",
+  "onboardingPauseDescription": "Tryk på et tomt område for at pause automatisk opdatering",
+  "onboardingPageSelector": "Sidevælger",
+  "onboardingPageSelectorDescription": "Tryk på det midterste tal for at indtaste en side direkte.\n\nIndtast et nummer mellem 100 og 999 for at springe til den side.",
+  "onboardingSubpageNavigation": "Underside Navigation",
+  "onboardingSubpageNavigationDescription": "Hvis siden har undersider, vil du også se indikatoren:\n• 1/3 betyder: første underside af tre tilgængelige\n\nBrug de midterste pile til at navigere mellem undersider:\n\n• Pil op: gå til næste underside\n• Pil ned: gå til forrige underside\n\nPilene er kun aktive når der er undersider tilgængelige.",
+  "onboardingSwipe": "Stryg Navigation",
+  "onboardingSwipeDescription": "Naviger nemt mellem sider med bevægelserne vist ovenfor.",
+  "onboardingClickableNumbers": "Klikkelige Sidenumre",
+  "onboardingClickableNumbersDescription": "Tryk på de fremhævede sidenumre for at navigere direkte til den side\n\nSide 100/1 af National Televideo og 300/1 af Regional Televideo kan ikke klikkes på",
+  "onboardingShortcuts": "Menu Genveje",
+  "onboardingShortcutsDescription": "Få hurtig adgang til de vigtigste Televideo-sider.\n\nBrug denne menu til at springe direkte til:\n• Side 100: Nationalt indeks\n• Side 200: Nyheder\n.....\nDu kan også søge efter sider efter titel ved at vælge Søg side muligheden",
+  "onboardingFavoritesList": "Favoritliste",
+  "onboardingFavoritesListDescription": "Administrer dine favoritside:\n\n• Tryk på en side for at åbne den\n• Stryg til venstre for at fjerne den\n• Tryk på blyanten for at redigere beskrivelsen\n• Tryk længe for at ændre rækkefølgen\n\n",
+  "onboardingSettingsDescription": "Tilpas appen efter dine præferencer:\n\n• Indlæs første favorit ved opstart: beslut hvilken Televideo-side at starte med\n• Tema: vælg mellem lyst, mørkt eller automatisk\n• Automatisk opdatering: aktiver automatisk indlæsning af undersider\n• Cache: administrer sidernes cache-varighed\n• Instruktioner: gennemgå denne vejledning når som helst\n• Backup Favoritter: gem og gendan dine favoritter\n• Privatlivsindstillinger og nulstilling: administrer eller nulstil dine privatlivsvalg",
+  "dontShowAgain": "Vis ikke igen",
+  "start": "Start",
+  "reset": "Nulstil",
+  "backToPage": "Tilbage til side {pageNumber}",
+  "@backToPage": {
+    "description": "Button text to go back to a specific page",
+    "placeholders": {
+      "pageNumber": {
+        "type": "int",
+        "example": "100"
+      }
+    }
+  },
+  "pageNotAvailableForRegionWithHint": "Side {pageNumber} er ikke tilgængelig for {regionName}.\nPrøv et andet nummer mellem 100 og 999.",
+  "@pageNotAvailableForRegionWithHint": {
+    "description": "Error message when a page is not available for a region, with hint",
+    "placeholders": {
+      "pageNumber": {
+        "type": "int",
+        "example": "100"
+      },
+      "regionName": {
+        "type": "String",
+        "example": "Lombardia"
+      }
+    }
+  }
+}

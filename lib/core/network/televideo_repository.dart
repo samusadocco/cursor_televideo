@@ -3,6 +3,7 @@ import 'package:html/parser.dart' as html_parser;
 import 'package:cursor_televideo/shared/models/televideo_page.dart';
 import 'package:flutter/foundation.dart';
 import 'dart:math';
+import 'package:cursor_televideo/core/settings/app_settings.dart';
 
 class TelevideoRepository {
   final Dio _dio;
@@ -10,8 +11,33 @@ class TelevideoRepository {
   final String _htmlBaseUrl = 'https://www.televideo.rai.it/televideo/pub/pagina.jsp';
   final String _htmlRegionalBaseUrl = 'https://www.televideo.rai.it/televideo/pub/homeregione.jsp';
   final String _corsProxy = 'https://corsproxy.io/?';
+  TelevideoRepository({Dio? dio}) : _dio = dio ?? Dio() {
+    // Configura Dio per utilizzare la durata della cache dalle impostazioni
+    _dio.options.headers = {
+      'Cache-Control': 'max-age=${AppSettings.cacheDurationInSeconds}',
+    };
 
-  TelevideoRepository({Dio? dio}) : _dio = dio ?? Dio();
+    // Aggiungi interceptor per loggare le richieste dalla cache
+    _dio.interceptors.add(InterceptorsWrapper(
+      onResponse: (response, handler) {
+        final fromCache = response.headers['x-cache']?.contains('HIT') ?? false;
+        print('\n=== CACHE INFO ===');
+        print('URL: ${response.requestOptions.uri}');
+        print('Cache Headers:');
+        response.headers.forEach((name, values) {
+          if (name.toLowerCase().contains('cache') || 
+              name.toLowerCase() == 'age' || 
+              name.toLowerCase() == 'expires' ||
+              name.toLowerCase() == 'etag') {
+            print('  $name: $values');
+          }
+        });
+        print('Caricato da: ${fromCache ? "CACHE" : "RETE"}');
+        print('================\n');
+        handler.next(response);
+      },
+    ));
+  }
 
   /// Verifica se la pagina 100 è disponibile
   Future<bool> isPage100Available() async {
@@ -152,7 +178,16 @@ class TelevideoRepository {
     return '$baseUrl/$path/$imagePath';
   }
 
-  Future<TelevideoPage> getNationalPage(int pageNumber, {int subPage = 1}) async {
+  Future<TelevideoPage> getNationalPage(int pageNumber, {int subPage = 1, bool forceRefresh = false}) async {
+    if (forceRefresh) {
+      _dio.options.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate';
+      _dio.options.headers['Pragma'] = 'no-cache';
+      _dio.options.headers['Expires'] = '0';
+    } else {
+      _dio.options.headers['Cache-Control'] = 'max-age=${AppSettings.cacheDurationInSeconds}';
+      _dio.options.headers.remove('Pragma');
+      _dio.options.headers.remove('Expires');
+    }
     try {
       if (subPage < 1) {
         throw ArgumentError('Il numero di sottopagina deve essere maggiore di 0');
@@ -210,7 +245,16 @@ class TelevideoRepository {
     }
   }
 
-  Future<TelevideoPage> getRegionalPage(String region, {int pageNumber = 300, int subPage = 1}) async {
+  Future<TelevideoPage> getRegionalPage(String region, {int pageNumber = 300, int subPage = 1, bool forceRefresh = false}) async {
+    if (forceRefresh) {
+      _dio.options.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate';
+      _dio.options.headers['Pragma'] = 'no-cache';
+      _dio.options.headers['Expires'] = '0';
+    } else {
+      _dio.options.headers['Cache-Control'] = 'max-age=${AppSettings.cacheDurationInSeconds}';
+      _dio.options.headers.remove('Pragma');
+      _dio.options.headers.remove('Expires');
+    }
     try {
       if (subPage < 1) {
         throw ArgumentError('Il numero di sottopagina deve essere maggiore di 0');

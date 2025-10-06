@@ -1,0 +1,226 @@
+{
+  "@@locale": "hu",
+  "appTitle": "TeleRetrò Italia",
+  "pageUnavailable": "Az oldal képét nem lehet betölteni.\nKérjük, próbálja újra később.",
+  "pageNotAvailable": "A kért oldal nem érhető el",
+  "pageLoadError": "Hiba történt az oldal betöltése közben.\nVissza a 100. oldalra",
+  "pageNotAvailableForRegion": "A(z) {pageNumber}. oldal nem érhető el a következő régióban: {regionName}",
+  "@pageNotAvailableForRegion": {
+    "description": "Error message when a page is not available for a specific region",
+    "placeholders": {
+      "pageNumber": {
+        "type": "int",
+        "example": "100"
+      },
+      "regionName": {
+        "type": "String",
+        "example": "Lombardia"
+      }
+    }
+  },
+  "noMorePagesForRegion": "Nincs több elérhető oldal a következő régióban: {regionName}",
+  "@noMorePagesForRegion": {
+    "description": "Error message when there are no more pages for a region",
+    "placeholders": {
+      "regionName": {
+        "type": "String",
+        "example": "Lombardia"
+      }
+    }
+  },
+  "noMorePages": "Nincs több elérhető oldal",
+  "invalidSubpageNumber": "Érvénytelen aloldal szám",
+  "subpageError": "Hiba történt a(z) {current}/{total} aloldal betöltése közben",
+  "@subpageError": {
+    "description": "Error message when a subpage fails to load",
+    "placeholders": {
+      "current": {
+        "type": "int",
+        "example": "1"
+      },
+      "total": {
+        "type": "int",
+        "example": "8"
+      }
+    }
+  },
+  "swipePrevious": "← Előző",
+  "swipeNext": "Következő →",
+  "swipeNextUp": "Következő ↑",
+  "swipePreviousDown": "Előző ↓",
+  "swipeRefresh": "Frissítés ↻",
+  "pageAddedToFavorites": "Oldal hozzáadva a kedvencekhez",
+  "pageRemovedFromFavorites": "Oldal eltávolítva a kedvencekből",
+  "editDescription": "Leírás szerkesztése",
+  "pageAndRegion": "Oldal {pageNumber} - {regionName}",
+  "@pageAndRegion": {
+    "description": "Page number and region name",
+    "placeholders": {
+      "pageNumber": {
+        "type": "int",
+        "example": "100"
+      },
+      "regionName": {
+        "type": "String",
+        "example": "Lombardia"
+      }
+    }
+  },
+  "description": "Leírás",
+  "enterCustomDescription": "Adjon meg egyéni leírást",
+  "restoreHint": "Tipp: tartsa nyomva a \"VISSZAÁLLÍTÁS\" gombot az alapértelmezett leíráshoz való visszatéréshez.",
+  "restore": "VISSZAÁLLÍTÁS",
+  "cancel": "MÉGSE",
+  "save": "MENTÉS",
+  "searchHint": "Oldal keresése...",
+  "noResults": "Nincs találat",
+  "settings": "Beállítások",
+  "enterPageNumber": "Adja meg az oldalszámot",
+  "pageNumberRange": "Szám {minPage}-tól 999-ig",
+  "@pageNumberRange": {
+    "description": "Hint text for page number input",
+    "placeholders": {
+      "minPage": {
+        "type": "int",
+        "example": "100"
+      }
+    }
+  },
+  "ok": "OK",
+  "favoritesList": "Kedvencek listája",
+  "confirmRemoval": "Törlés megerősítése",
+  "confirmRemoveFromFavorites": "Biztosan el szeretné távolítani a következőt a kedvencekből: {description}?",
+  "@confirmRemoveFromFavorites": {
+    "description": "Confirmation message when removing a page from favorites",
+    "placeholders": {
+      "description": {
+        "type": "String",
+        "example": "100. oldal"
+      }
+    }
+  },
+  "remove": "Eltávolítás",
+  "edit": "Szerkesztés",
+  "close": "Bezárás",
+  "noFavorites": "Nincsenek kedvencek",
+  "useFavoriteIcon": "Használja a ❤️ ikont oldalak kedvencekhez adásához",
+  "loadingPage": "Oldal betöltése: {pageNumber}...",
+  "@loadingPage": {
+    "description": "Loading message when loading a page",
+    "placeholders": {
+      "pageNumber": {
+        "type": "int",
+        "example": "100"
+      }
+    }
+  },
+  "noPageToAddToFavorites": "Nincs oldal a kedvencekhez adáshoz",
+  "language": "Nyelv",
+  "systemLanguage": "Rendszer nyelve",
+  "darkMode": "Sötét mód",
+  "autoRefresh": "Automatikus frissítés",
+  "favorites": "Kedvencek",
+  "search": "Keresés",
+  "regions": "Régiók",
+  "home": "Kezdőlap",
+  "addToFavorites": "Hozzáadás a kedvencekhez",
+  "removeFromFavorites": "Eltávolítás a kedvencekből",
+  "loading": "Betöltés...",
+  "error": "Hiba",
+  "errorWithMessage": "Hiba: {message}",
+  "@errorWithMessage": {
+    "description": "Error message with details",
+    "placeholders": {
+      "message": {
+        "type": "String",
+        "example": "Network error"
+      }
+    }
+  },
+  "retry": "Újrapróbálás",
+  "next": "Következő",
+  "previous": "Előző",
+  "pageNotFound": "Az oldal nem található",
+  "networkError": "Hálózati hiba",
+  "connectionRequired": "Kapcsolat szükséges",
+  "refreshing": "Frissítés...",
+  "lastUpdate": "Utolsó frissítés",
+  "theme": "Téma",
+  "systemTheme": "Rendszer téma",
+  "lightTheme": "Világos téma",
+  "darkTheme": "Sötét téma",
+  "selectTheme": "Téma kiválasztása",
+  "loadFirstFavorite": "Első kedvenc betöltése indításkor",
+  "loadFirstFavoriteDescription": "Ha engedélyezve van, az alkalmazás indításakor az első kedvenc oldal töltődik be",
+  "cacheDuration": "Televideo oldalképek gyorsítótár időtartama (0 másodperc a kikapcsoláshoz)",
+  "seconds": "másodperc",
+  "autoRefreshDescription": "Aloldalak automatikus frissítése",
+  "refreshInterval": "Frissítési időköz",
+  "showOnboardingAtStartup": "Útmutató megjelenítése indításkor",
+  "showOnboardingAtStartupDescription": "Útmutató megjelenítése minden alkalommal, amikor megnyitja az alkalmazást",
+  "showInstructions": "Útmutató megjelenítése",
+  "showInstructionsDescription": "Az alkalmazás használati útmutatójának megtekintése",
+  "backupFavorites": "Kedvencek biztonsági mentése",
+  "backupFavoritesDescription": "Kedvencek mentése és visszaállítása",
+  "privacySettings": "Adatvédelmi beállítások",
+  "privacySettingsDescription": "Hirdetésekkel kapcsolatos adatvédelmi beállítások módosítása",
+  "resetPrivacySettings": "Adatvédelmi beállítások visszaállítása",
+  "resetPrivacySettingsDescription": "Minden adatvédelmi beállítás visszaállítása",
+  "resetPrivacyConfirm": "Biztosan visszaállítja az adatvédelmi beállításokat? Az alkalmazás következő indításakor újra meg kell adnia a hozzájárulását.",
+  "privacySettingsUnavailable": "Az adatvédelmi beállítások jelenleg nem érhetők el",
+  "privacySettingsReset": "Adatvédelmi beállítások visszaállítva. Indítsa újra az alkalmazást az új hozzájáruláshoz.",
+  "version": "Verzió",
+  "build": "build",
+  "onboardingWelcome": "Üdvözöljük a TeleRetrò Italia-ban",
+  "onboardingWelcomeDescription": "Az alkalmazás a RAI Televideo gyors és egyszerű használatához",
+  "onboardingNavigation": "Navigáció",
+  "onboardingNavigationDescription": "Húzza balra vagy jobbra az oldal váltásához, érintse meg a számokat a közvetlen navigációhoz",
+  "onboardingFavorites": "Kedvencek",
+  "onboardingFavoritesDescription": "Adjon oldalakat a kedvencekhez a gyors hozzáféréshez",
+  "onboardingRegions": "Regionális Televideo",
+  "onboardingRegionsDescription": "Hozzáférés a régiója Televideo-jához",
+  "onboardingAutoRefresh": "Automatikus Frissítés",
+  "onboardingAutoRefreshDescription": "Az aloldalak automatikusan frissülnek",
+  "onboardingPause": "Frissítés Szüneteltetése",
+  "onboardingPauseDescription": "Érintsen meg egy üres területet az automatikus frissítés szüneteltetéséhez",
+  "onboardingPageSelector": "Oldalválasztó",
+  "onboardingPageSelectorDescription": "Érintse meg a középső számot az oldal közvetlen megadásához.\n\nAdjon meg egy számot 100 és 999 között az adott oldalra ugráshoz.",
+  "onboardingSubpageNavigation": "Aloldal Navigáció",
+  "onboardingSubpageNavigationDescription": "Ha az oldalnak vannak aloldalai, látni fogja a jelzőt:\n• 1/3 jelentése: első aloldal a három elérhetőből\n\nHasználja a középső nyilakat az aloldalak közötti navigációhoz:\n\n• Felfelé nyíl: következő aloldalra\n• Lefelé nyíl: előző aloldalra\n\nA nyilak csak akkor aktívak, ha vannak elérhető aloldalak.",
+  "onboardingSwipe": "Húzás Navigáció",
+  "onboardingSwipeDescription": "Könnyen navigálhat az oldalak között a fent bemutatott gesztusokkal.",
+  "onboardingClickableNumbers": "Kattintható Oldalszámok",
+  "onboardingClickableNumbersDescription": "Érintse meg a kiemelt oldalszámokat az adott oldalra való közvetlen navigációhoz\n\nA Nemzeti Televideo 100/1 és a Regionális Televideo 300/1 oldalai nem kattinthatók",
+  "onboardingShortcuts": "Menü Parancsikonok",
+  "onboardingShortcutsDescription": "Gyors hozzáférés a legfontosabb Televideo oldalakhoz.\n\nHasználja ezt a menüt a közvetlen ugráshoz:\n• 100. oldal: Nemzeti index\n• 200. oldal: Hírek\n.....\nKereshet oldalakat cím szerint is az Oldal keresése opció kiválasztásával",
+  "onboardingFavoritesList": "Kedvencek Lista",
+  "onboardingFavoritesListDescription": "Kezelje kedvenc oldalait:\n\n• Érintse meg az oldalt a megnyitáshoz\n• Húzza balra az eltávolításhoz\n• Érintse meg a ceruzát a leírás szerkesztéséhez\n• Tartsa nyomva a sorrend módosításához\n\n",
+  "onboardingSettingsDescription": "Testreszabhatja az alkalmazást preferenciái szerint:\n\n• Első kedvenc betöltése indításkor: döntse el, melyik Televideo oldallal kezdjen\n• Téma: válasszon világos, sötét vagy automatikus között\n• Automatikus frissítés: engedélyezze az aloldalak automatikus betöltését\n• Gyorsítótár: kezelje az oldalak gyorsítótár időtartamát\n• Útmutató: tekintse meg ezt az oktatóanyagot bármikor\n• Kedvencek biztonsági mentése: mentse és állítsa vissza kedvenceit\n• Adatvédelmi beállítások és visszaállítás: kezelje vagy állítsa vissza adatvédelmi választásait",
+  "dontShowAgain": "Ne mutassa újra",
+  "start": "Indítás",
+  "reset": "Visszaállítás",
+  "backToPage": "Vissza a(z) {pageNumber}. oldalra",
+  "@backToPage": {
+    "description": "Button text to go back to a specific page",
+    "placeholders": {
+      "pageNumber": {
+        "type": "int",
+        "example": "100"
+      }
+    }
+  },
+  "pageNotAvailableForRegionWithHint": "A(z) {pageNumber}. oldal nem érhető el a következő régióban: {regionName}.\nPróbáljon meg egy másik számot 100 és 999 között.",
+  "@pageNotAvailableForRegionWithHint": {
+    "description": "Error message when a page is not available for a region, with hint",
+    "placeholders": {
+      "pageNumber": {
+        "type": "int",
+        "example": "100"
+      },
+      "regionName": {
+        "type": "String",
+        "example": "Lombardia"
+      }
+    }
+  }
+}

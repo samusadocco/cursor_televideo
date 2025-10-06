@@ -1,0 +1,226 @@
+{
+  "@@locale": "pt",
+  "appTitle": "TeleRetrò Italia",
+  "pageUnavailable": "Não é possível carregar a imagem da página.\nPor favor, tente novamente em um momento.",
+  "pageNotAvailable": "A página solicitada não está disponível",
+  "pageLoadError": "Ocorreu um erro ao carregar a página.\nVoltar à página 100",
+  "pageNotAvailableForRegion": "A página {pageNumber} não está disponível para {regionName}",
+  "@pageNotAvailableForRegion": {
+    "description": "Error message when a page is not available for a specific region",
+    "placeholders": {
+      "pageNumber": {
+        "type": "int",
+        "example": "100"
+      },
+      "regionName": {
+        "type": "String",
+        "example": "Lombardia"
+      }
+    }
+  },
+  "noMorePagesForRegion": "Não há mais páginas disponíveis para {regionName}",
+  "@noMorePagesForRegion": {
+    "description": "Error message when there are no more pages for a region",
+    "placeholders": {
+      "regionName": {
+        "type": "String",
+        "example": "Lombardia"
+      }
+    }
+  },
+  "noMorePages": "Não há mais páginas disponíveis",
+  "invalidSubpageNumber": "Número de subpágina inválido",
+  "subpageError": "Erro ao carregar a subpágina {current} de {total}",
+  "@subpageError": {
+    "description": "Error message when a subpage fails to load",
+    "placeholders": {
+      "current": {
+        "type": "int",
+        "example": "1"
+      },
+      "total": {
+        "type": "int",
+        "example": "8"
+      }
+    }
+  },
+  "swipePrevious": "← Anterior",
+  "swipeNext": "Próxima →",
+  "swipeNextUp": "Próxima ↑",
+  "swipePreviousDown": "Anterior ↓",
+  "swipeRefresh": "Atualizar ↻",
+  "pageAddedToFavorites": "Página adicionada aos favoritos",
+  "pageRemovedFromFavorites": "Página removida dos favoritos",
+  "editDescription": "Editar descrição",
+  "pageAndRegion": "Página {pageNumber} - {regionName}",
+  "@pageAndRegion": {
+    "description": "Page number and region name",
+    "placeholders": {
+      "pageNumber": {
+        "type": "int",
+        "example": "100"
+      },
+      "regionName": {
+        "type": "String",
+        "example": "Lombardia"
+      }
+    }
+  },
+  "description": "Descrição",
+  "enterCustomDescription": "Digite uma descrição personalizada",
+  "restoreHint": "Dica: pressione e segure o botão \"RESTAURAR\" para voltar à descrição padrão.",
+  "restore": "RESTAURAR",
+  "cancel": "CANCELAR",
+  "save": "SALVAR",
+  "searchHint": "Pesquisar página...",
+  "noResults": "Sem resultados",
+  "settings": "Configurações",
+  "enterPageNumber": "Digite o número da página",
+  "pageNumberRange": "Número de {minPage} até 999",
+  "@pageNumberRange": {
+    "description": "Hint text for page number input",
+    "placeholders": {
+      "minPage": {
+        "type": "int",
+        "example": "100"
+      }
+    }
+  },
+  "ok": "OK",
+  "favoritesList": "Lista de favoritos",
+  "confirmRemoval": "Confirmar remoção",
+  "confirmRemoveFromFavorites": "Deseja realmente remover {description} dos favoritos?",
+  "@confirmRemoveFromFavorites": {
+    "description": "Confirmation message when removing a page from favorites",
+    "placeholders": {
+      "description": {
+        "type": "String",
+        "example": "Página 100"
+      }
+    }
+  },
+  "remove": "Remover",
+  "edit": "Editar",
+  "close": "Fechar",
+  "noFavorites": "Sem favoritos",
+  "useFavoriteIcon": "Use o ícone ❤️ para adicionar páginas aos favoritos",
+  "loadingPage": "Carregando página {pageNumber}...",
+  "@loadingPage": {
+    "description": "Loading message when loading a page",
+    "placeholders": {
+      "pageNumber": {
+        "type": "int",
+        "example": "100"
+      }
+    }
+  },
+  "noPageToAddToFavorites": "Nenhuma página para adicionar aos favoritos",
+  "language": "Idioma",
+  "systemLanguage": "Idioma do sistema",
+  "darkMode": "Modo escuro",
+  "autoRefresh": "Atualização automática",
+  "favorites": "Favoritos",
+  "search": "Pesquisar",
+  "regions": "Regiões",
+  "home": "Início",
+  "addToFavorites": "Adicionar aos favoritos",
+  "removeFromFavorites": "Remover dos favoritos",
+  "loading": "Carregando...",
+  "error": "Erro",
+  "errorWithMessage": "Erro: {message}",
+  "@errorWithMessage": {
+    "description": "Error message with details",
+    "placeholders": {
+      "message": {
+        "type": "String",
+        "example": "Network error"
+      }
+    }
+  },
+  "retry": "Tentar novamente",
+  "next": "Próxima",
+  "previous": "Anterior",
+  "pageNotFound": "Página não encontrada",
+  "networkError": "Erro de rede",
+  "connectionRequired": "Conexão necessária",
+  "refreshing": "Atualizando...",
+  "lastUpdate": "Última atualização",
+  "theme": "Tema",
+  "systemTheme": "Tema do sistema",
+  "lightTheme": "Tema claro",
+  "darkTheme": "Tema escuro",
+  "selectTheme": "Selecionar tema",
+  "loadFirstFavorite": "Carregar primeiro favorito na inicialização",
+  "loadFirstFavoriteDescription": "Se ativado, o primeiro favorito da lista será carregado ao iniciar o aplicativo",
+  "cacheDuration": "Duração do cache de imagens das páginas Televideo (0 segundos para desativar)",
+  "seconds": "segundos",
+  "autoRefreshDescription": "Atualizar subpáginas automaticamente",
+  "refreshInterval": "Intervalo de atualização",
+  "showOnboardingAtStartup": "Mostrar instruções na inicialização",
+  "showOnboardingAtStartupDescription": "Mostrar instruções sempre que você abrir o aplicativo",
+  "showInstructions": "Mostrar instruções",
+  "showInstructionsDescription": "Revisar as instruções de uso do aplicativo",
+  "backupFavorites": "Backup dos favoritos",
+  "backupFavoritesDescription": "Salvar e restaurar seus favoritos",
+  "privacySettings": "Configurações de privacidade",
+  "privacySettingsDescription": "Modificar suas preferências de privacidade para anúncios",
+  "resetPrivacySettings": "Redefinir configurações de privacidade",
+  "resetPrivacySettingsDescription": "Redefinir completamente as configurações de privacidade",
+  "resetPrivacyConfirm": "Deseja realmente redefinir as configurações de privacidade? Você será solicitado a dar consentimento novamente na próxima vez que iniciar o aplicativo.",
+  "privacySettingsUnavailable": "As configurações de privacidade não estão disponíveis no momento",
+  "privacySettingsReset": "Configurações de privacidade redefinidas. Reinicie o aplicativo para novo consentimento.",
+  "version": "Versão",
+  "build": "build",
+  "onboardingWelcome": "Bem-vindo ao TeleRetrò Italia",
+  "onboardingWelcomeDescription": "O aplicativo para consultar o RAI Televideo de forma rápida e fácil",
+  "onboardingNavigation": "Navegação",
+  "onboardingNavigationDescription": "Deslize para a esquerda ou direita para mudar de página, toque nos números para navegar diretamente",
+  "onboardingFavorites": "Favoritos",
+  "onboardingFavoritesDescription": "Adicione páginas aos favoritos para acesso rápido",
+  "onboardingRegions": "Televideo Regional",
+  "onboardingRegionsDescription": "Acesse o Televideo da sua região",
+  "onboardingAutoRefresh": "Atualização Automática",
+  "onboardingAutoRefreshDescription": "As subpáginas são atualizadas automaticamente",
+  "onboardingPause": "Pausar Atualização",
+  "onboardingPauseDescription": "Toque em uma área vazia para pausar a atualização automática",
+  "onboardingPageSelector": "Seletor de Página",
+  "onboardingPageSelectorDescription": "Toque no número central para inserir diretamente uma página.\n\nDigite um número entre 100 e 999 para pular para essa página.",
+  "onboardingSubpageNavigation": "Navegação de Subpáginas",
+  "onboardingSubpageNavigationDescription": "Se a página tiver subpáginas, você também verá o indicador:\n• 1/3 significa: primeira subpágina de três disponíveis\n\nUse as setas centrais para navegar entre subpáginas:\n\n• Seta para cima: ir para a próxima subpágina\n• Seta para baixo: ir para a subpágina anterior\n\nAs setas estão ativas apenas quando há subpáginas disponíveis.",
+  "onboardingSwipe": "Navegação por Deslize",
+  "onboardingSwipeDescription": "Navegue facilmente entre as páginas com os gestos mostrados acima.",
+  "onboardingClickableNumbers": "Números de Página Clicáveis",
+  "onboardingClickableNumbersDescription": "Toque nos números de página destacados para navegar diretamente para essa página\n\nAs páginas 100/1 do Televideo Nacional e 300/1 do Televideo Regional não são clicáveis",
+  "onboardingShortcuts": "Menu de Atalhos",
+  "onboardingShortcutsDescription": "Acesso rápido às páginas mais importantes do Televideo.\n\nUse este menu para pular diretamente para:\n• Página 100: Índice nacional\n• Página 200: Notícias\n.....\nVocê também pode pesquisar páginas por título selecionando a opção Pesquisar página",
+  "onboardingFavoritesList": "Lista de Favoritos",
+  "onboardingFavoritesListDescription": "Gerencie suas páginas favoritas:\n\n• Toque em uma página para abri-la\n• Deslize para a esquerda para removê-la\n• Toque no lápis para editar a descrição\n• Pressione e segure para alterar a ordem\n\n",
+  "onboardingSettingsDescription": "Personalize o aplicativo de acordo com suas preferências:\n\n• Carregar primeiro favorito na inicialização: decida com qual página do Televideo começar\n• Tema: escolha entre claro, escuro ou automático\n• Atualização automática: ative o carregamento automático de subpáginas\n• Cache: gerencie a duração do cache das páginas\n• Instruções: revise este tutorial quando quiser\n• Backup dos favoritos: salve e restaure seus favoritos\n• Configurações de privacidade e redefinição: gerencie ou redefina suas escolhas de privacidade",
+  "dontShowAgain": "Não mostrar novamente",
+  "start": "Começar",
+  "reset": "Redefinir",
+  "backToPage": "Voltar à página {pageNumber}",
+  "@backToPage": {
+    "description": "Button text to go back to a specific page",
+    "placeholders": {
+      "pageNumber": {
+        "type": "int",
+        "example": "100"
+      }
+    }
+  },
+  "pageNotAvailableForRegionWithHint": "A página {pageNumber} não está disponível para {regionName}.\nTente outro número entre 100 e 999.",
+  "@pageNotAvailableForRegionWithHint": {
+    "description": "Error message when a page is not available for a region, with hint",
+    "placeholders": {
+      "pageNumber": {
+        "type": "int",
+        "example": "100"
+      },
+      "regionName": {
+        "type": "String",
+        "example": "Lombardia"
+      }
+    }
+  }
+}

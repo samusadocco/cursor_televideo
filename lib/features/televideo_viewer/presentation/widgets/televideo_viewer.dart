@@ -14,6 +14,7 @@ import 'package:cursor_televideo/features/televideo_viewer/bloc/region_bloc.dart
 import 'package:cursor_televideo/shared/widgets/error_page_view.dart';
 import 'package:cursor_televideo/core/analytics/analytics_service.dart';
 import 'package:cursor_televideo/features/televideo_viewer/presentation/widgets/auto_refresh_overlay.dart';
+import 'package:cursor_televideo/core/l10n/app_localizations.dart';
 
 class TelevideoViewer extends StatefulWidget {
   final TelevideoPage page;
@@ -441,7 +442,7 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
                                 const CircularProgressIndicator(),
                                 const SizedBox(height: 16),
                                 Text(
-                                  'Caricamento pagina $pageNumber...',
+                                  AppLocalizations.of(context)!.loadingPage(pageNumber),
                                   style: const TextStyle(
                                     fontSize: 16,
                                     color: Colors.white,
@@ -492,7 +493,7 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
                                 fit: BoxFit.fill,
                                 errorBuilder: (context, error, stackTrace) {
                                   return ErrorPageView(
-                                    message: 'Impossibile caricare l\'immagine della pagina.\nRiprova tra qualche istante.',
+                                    message: AppLocalizations.of(context)!.pageUnavailable,
                                     onRetry: () {
                                       final regionState = context.read<RegionBloc>().state;
                                       if (regionState.selectedRegion != null) {
