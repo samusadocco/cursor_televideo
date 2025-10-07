@@ -1,0 +1,47 @@
+{
+  "versions": [
+    {
+      "version": "1.0.8",
+      "changes": [
+        "Added pause and play function for automatic subpage refresh",
+        "Added application language management"        
+      ]
+    },
+    {
+      "version": "1.0.7",
+      "changes": [
+        "Improved review management"
+      ]
+    },
+    {
+        "version": "1.0.6",
+        "changes": [
+          "Performance optimizations",
+          "Fixed tracking authorization message"
+        ]
+      },
+    {
+        "version": "1.0.5",
+        "changes": [
+          "Show changelog at startup after an update"
+        ]
+      },
+    {
+        "version": "1.0.4",
+        "changes": [
+          "Load first favorite at startup: choose which Televideo page to start with (go to Settings)",
+          "GDPR: manage your privacy choices",
+          "Performance optimizations",
+          "Show version in Settings"
+        ]
+      },
+    {
+      "version": "1.0.3",
+      "changes": [
+        "Minor bug fixes"
+      ]
+    }
+    
+  ]
+}
+

@@ -1,0 +1,47 @@
+{
+  "versions": [
+    {
+      "version": "1.0.8",
+      "changes": [
+        "Pause- und Wiedergabefunktion für automatische Unterseiten-Aktualisierung hinzugefügt",
+        "Verwaltung der Anwendungssprache hinzugefügt"        
+      ]
+    },
+    {
+      "version": "1.0.7",
+      "changes": [
+        "Verbesserte Bewertungsverwaltung"
+      ]
+    },
+    {
+        "version": "1.0.6",
+        "changes": [
+          "Leistungsoptimierungen",
+          "Tracking-Autorisierungsnachricht behoben"
+        ]
+      },
+    {
+        "version": "1.0.5",
+        "changes": [
+          "Änderungsprotokoll beim Start nach einem Update anzeigen"
+        ]
+      },
+    {
+        "version": "1.0.4",
+        "changes": [
+          "Ersten Favoriten beim Start laden: Wählen Sie, mit welcher Televideo-Seite Sie starten möchten (gehen Sie zu Einstellungen)",
+          "DSGVO: Verwalten Sie Ihre Datenschutzoptionen",
+          "Leistungsoptimierungen",
+          "Version in den Einstellungen anzeigen"
+        ]
+      },
+    {
+      "version": "1.0.3",
+      "changes": [
+        "Kleinere Fehlerbehebungen"
+      ]
+    }
+    
+  ]
+}
+

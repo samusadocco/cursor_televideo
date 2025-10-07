@@ -1,0 +1,47 @@
+{
+  "versions": [
+    {
+      "version": "1.0.8",
+      "changes": [
+        "Tilføjet pause- og afspilningsfunktion til automatisk opdatering af undersider",
+        "Tilføjet administration af applikationssprog"        
+      ]
+    },
+    {
+      "version": "1.0.7",
+      "changes": [
+        "Forbedret anmeldelseshåndtering"
+      ]
+    },
+    {
+        "version": "1.0.6",
+        "changes": [
+          "Ydeevneoptimeringer",
+          "Rettet sporingsautorisationsmeddelelse"
+        ]
+      },
+    {
+        "version": "1.0.5",
+        "changes": [
+          "Vis ændringslog ved opstart efter en opdatering"
+        ]
+      },
+    {
+        "version": "1.0.4",
+        "changes": [
+          "Indlæs første favorit ved opstart: vælg hvilken Tekst-TV-side du vil starte med (gå til Indstillinger)",
+          "GDPR: administrer dine fortrolighedsvalg",
+          "Ydeevneoptimeringer",
+          "Vis version i Indstillinger"
+        ]
+      },
+    {
+      "version": "1.0.3",
+      "changes": [
+        "Mindre fejlrettelser"
+      ]
+    }
+    
+  ]
+}
+

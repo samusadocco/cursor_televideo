@@ -1,0 +1,47 @@
+{
+  "versions": [
+    {
+      "version": "1.0.8",
+      "changes": [
+        "Adicionada função de pausa e reprodução para atualização automática de subpáginas",
+        "Adicionada gestão do idioma da aplicação"        
+      ]
+    },
+    {
+      "version": "1.0.7",
+      "changes": [
+        "Melhoria na gestão de avaliações"
+      ]
+    },
+    {
+        "version": "1.0.6",
+        "changes": [
+          "Otimizações de desempenho",
+          "Corrigida a mensagem de autorização de rastreamento"
+        ]
+      },
+    {
+        "version": "1.0.5",
+        "changes": [
+          "Mostrar registo de alterações no início após uma atualização"
+        ]
+      },
+    {
+        "version": "1.0.4",
+        "changes": [
+          "Carregar o primeiro favorito no início: escolha com que página de Teletexto começar (vá para Definições)",
+          "RGPD: gerencie suas opções de privacidade",
+          "Otimizações de desempenho",
+          "Mostrar versão nas Definições"
+        ]
+      },
+    {
+      "version": "1.0.3",
+      "changes": [
+        "Correções de bugs menores"
+      ]
+    }
+    
+  ]
+}
+

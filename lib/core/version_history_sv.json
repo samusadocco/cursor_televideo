@@ -1,0 +1,47 @@
+{
+  "versions": [
+    {
+      "version": "1.0.8",
+      "changes": [
+        "Tillagd paus- och uppspelningsfunktion för automatisk uppdatering av undersidor",
+        "Tillagd hantering av applikationsspråk"        
+      ]
+    },
+    {
+      "version": "1.0.7",
+      "changes": [
+        "Förbättrad recensionshantering"
+      ]
+    },
+    {
+        "version": "1.0.6",
+        "changes": [
+          "Prestandaoptimeringar",
+          "Korrigerat spårningsauktoriseringsmeddelande"
+        ]
+      },
+    {
+        "version": "1.0.5",
+        "changes": [
+          "Visa ändringslogg vid uppstart efter en uppdatering"
+        ]
+      },
+    {
+        "version": "1.0.4",
+        "changes": [
+          "Ladda första favoriten vid uppstart: välj vilken Text-TV-sida du vill börja med (gå till Inställningar)",
+          "GDPR: hantera dina integritetsval",
+          "Prestandaoptimeringar",
+          "Visa version i Inställningar"
+        ]
+      },
+    {
+      "version": "1.0.3",
+      "changes": [
+        "Mindre buggfixar"
+      ]
+    }
+    
+  ]
+}
+

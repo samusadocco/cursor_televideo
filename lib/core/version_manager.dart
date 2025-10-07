@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ui';
 import 'package:flutter/services.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -23,8 +24,23 @@ class VersionManager {
   
   Future<List<VersionInfo>> getVersionHistory() async {
     try {
-      // Carica il file JSON
-      final String jsonString = await rootBundle.loadString('lib/core/version_history.json');
+      // Ottiene la lingua corrente dal dispositivo
+      final locale = PlatformDispatcher.instance.locale;
+      final languageCode = locale.languageCode.toLowerCase();
+      
+      // Determina quale file caricare in base alla lingua
+      String fileName = 'lib/core/version_history_$languageCode.json';
+      
+      // Prova a caricare il file per la lingua corrente
+      String jsonString;
+      try {
+        jsonString = await rootBundle.loadString(fileName);
+      } catch (e) {
+        // Se il file per la lingua corrente non esiste, usa l'italiano come fallback
+        print('File per lingua $languageCode non trovato, uso italiano come fallback');
+        jsonString = await rootBundle.loadString('lib/core/version_history_it.json');
+      }
+      
       final Map<String, dynamic> jsonMap = json.decode(jsonString);
       
       // Converte il JSON in una lista di VersionInfo

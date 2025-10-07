@@ -107,7 +107,22 @@ flutter:
     - assets/images/regions/
     - assets/icons/
     - scripts/limits_IT_regions.geojson
-    - lib/core/version_history.json
+    - lib/core/version_history_it.json
+    - lib/core/version_history_en.json
+    - lib/core/version_history_de.json
+    - lib/core/version_history_fr.json
+    - lib/core/version_history_es.json
+    - lib/core/version_history_pt.json
+    - lib/core/version_history_nl.json
+    - lib/core/version_history_da.json
+    - lib/core/version_history_sv.json
+    - lib/core/version_history_fi.json
+    - lib/core/version_history_cs.json
+    - lib/core/version_history_hr.json
+    - lib/core/version_history_sl.json
+    - lib/core/version_history_is.json
+    - lib/core/version_history_hu.json
+    - lib/core/version_history_bs.json
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

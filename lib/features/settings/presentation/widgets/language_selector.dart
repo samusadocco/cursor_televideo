@@ -1,39 +1,41 @@
 import 'package:flutter/material.dart';
-import 'package:cursor_televideo/core/l10n/app_localizations.dart';
 import 'package:cursor_televideo/core/l10n/language_service.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 
-class LanguageSelector extends StatefulWidget {
+class LanguageSelector extends StatelessWidget {
   final LanguageService languageService;
-  final VoidCallback onLanguageChanged;
+  final Locale currentLocale;
 
   const LanguageSelector({
     super.key,
     required this.languageService,
-    required this.onLanguageChanged,
+    required this.currentLocale,
   });
 
-  @override
-  State<LanguageSelector> createState() => _LanguageSelectorState();
-}
-
-class _LanguageSelectorState extends State<LanguageSelector> {
-  late bool _useSystemLanguage;
-  late String _selectedLanguageCode;
-
-  @override
-  void initState() {
-    super.initState();
-    _useSystemLanguage = widget.languageService.isUsingSystemLanguage();
-    _loadSelectedLanguage();
+  /// Mappa delle bandiere emoji per ogni lingua
+  String _getFlag(String languageCode) {
+    switch (languageCode) {
+      case 'it': return '🇮🇹'; // Italia
+      case 'en': return '🇬🇧'; // Regno Unito
+      case 'de': return '🇩🇪'; // Germania
+      case 'fr': return '🇫🇷'; // Francia
+      case 'es': return '🇪🇸'; // Spagna
+      case 'pt': return '🇵🇹'; // Portogallo
+      case 'nl': return '🇳🇱'; // Paesi Bassi
+      case 'da': return '🇩🇰'; // Danimarca
+      case 'sv': return '🇸🇪'; // Svezia
+      case 'fi': return '🇫🇮'; // Finlandia
+      case 'cs': return '🇨🇿'; // Repubblica Ceca
+      case 'hr': return '🇭🇷'; // Croazia
+      case 'sl': return '🇸🇮'; // Slovenia
+      case 'is': return '🇮🇸'; // Islanda
+      case 'hu': return '🇭🇺'; // Ungheria
+      case 'bs': return '🇧🇦'; // Bosnia ed Erzegovina
+      default: return '🌍'; // Globo generico
+    }
   }
 
-  Future<void> _loadSelectedLanguage() async {
-    final locale = await widget.languageService.getSelectedLocale();
-    setState(() {
-      _selectedLanguageCode = locale.languageCode;
-    });
-  }
-
+  /// Nomi delle lingue nella loro lingua nativa
   String _getLanguageName(String languageCode) {
     switch (languageCode) {
       case 'it': return 'Italiano';
@@ -52,80 +54,59 @@ class _LanguageSelectorState extends State<LanguageSelector> {
       case 'is': return 'Íslenska';
       case 'hu': return 'Magyar';
       case 'bs': return 'Bosanski';
-      default: return languageCode;
+      default: return languageCode.toUpperCase();
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context);
-
     return Column(
-      children: [
-        ListTile(
-          title: Text(l10n.language),
-          subtitle: Text(_useSystemLanguage 
-            ? l10n.systemLanguage 
-            : _getLanguageName(_selectedLanguageCode)),
-          onTap: _showLanguageDialog,
-        ),
-      ],
-    );
-  }
-
-  void _showLanguageDialog() {
-    showDialog(
-      context: context,
-      builder: (context) {
-        final l10n = AppLocalizations.of(context);
-
-        return AlertDialog(
-          title: Text(l10n.language),
-          content: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                // Opzione lingua di sistema
-                RadioListTile<String>(
-                  title: Text(l10n.systemLanguage),
-                  value: 'system',
-                  groupValue: _useSystemLanguage ? 'system' : _selectedLanguageCode,
-                  onChanged: (value) async {
-                    if (value == 'system') {
-                      await widget.languageService.useSystemLanguage();
-                      setState(() {
-                        _useSystemLanguage = true;
-                      });
-                      widget.onLanguageChanged();
-                      if (mounted) Navigator.of(context).pop();
-                    }
-                  },
-                ),
-                // Lista delle lingue supportate
-                ...supportedLocales.map((locale) {
-                  return RadioListTile<String>(
-                    title: Text(_getLanguageName(locale.languageCode)),
-                    value: locale.languageCode,
-                    groupValue: _useSystemLanguage ? 'system' : _selectedLanguageCode,
-                    onChanged: (value) async {
-                      if (value != null) {
-                        await widget.languageService.setLocale(Locale(value));
-                        setState(() {
-                          _useSystemLanguage = false;
-                          _selectedLanguageCode = value;
-                        });
-                        widget.onLanguageChanged();
-                        if (mounted) Navigator.of(context).pop();
-                      }
-                    },
-                  );
-                }).toList(),
-              ],
-            ),
+      mainAxisSize: MainAxisSize.min,
+      children: const [
+        Locale('it'), // Italiano
+        Locale('en'), // Inglese
+        Locale('de'), // Tedesco
+        Locale('fr'), // Francese
+        Locale('es'), // Spagnolo
+        Locale('pt'), // Portoghese
+        Locale('nl'), // Olandese
+        Locale('da'), // Danese
+        Locale('sv'), // Svedese
+        Locale('fi'), // Finlandese
+        Locale('cs'), // Ceco
+        Locale('hr'), // Croato
+        Locale('sl'), // Sloveno
+        Locale('is'), // Islandese
+        Locale('hu'), // Ungherese
+        Locale('bs'), // Bosniaco
+      ].map((locale) {
+        return RadioListTile<String>(
+          title: Row(
+            children: [
+              // Bandiera emoji
+              Text(
+                _getFlag(locale.languageCode),
+                style: const TextStyle(fontSize: 24),
+              ),
+              const SizedBox(width: 12),
+              // Nome della lingua
+              Text(_getLanguageName(locale.languageCode)),
+            ],
           ),
+          value: locale.languageCode,
+          groupValue: currentLocale.languageCode,
+          onChanged: (value) async {
+            if (value != null) {
+              await languageService.setLocale(Locale(value));
+              if (context.mounted) {
+                Navigator.of(context).pop();
+                // Riavvia l'app per applicare la nuova lingua
+                Phoenix.rebirth(context);
+              }
+            }
+          },
         );
-      },
+      }).toList(),
     );
   }
 }
-

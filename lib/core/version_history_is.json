@@ -1,0 +1,47 @@
+{
+  "versions": [
+    {
+      "version": "1.0.8",
+      "changes": [
+        "Bætt við hlé og spilunarvirkni fyrir sjálfvirka uppfærslu undirsíða",
+        "Bætt við stjórnun tungumáls forrits"        
+      ]
+    },
+    {
+      "version": "1.0.7",
+      "changes": [
+        "Bætt umsagnastjórnun"
+      ]
+    },
+    {
+        "version": "1.0.6",
+        "changes": [
+          "Afkastabestun",
+          "Lagað rakningarheimildarboð"
+        ]
+      },
+    {
+        "version": "1.0.5",
+        "changes": [
+          "Sýna breytingaskrá við ræsingu eftir uppfærslu"
+        ]
+      },
+    {
+        "version": "1.0.4",
+        "changes": [
+          "Hlaða fyrsta uppáhalds við ræsingu: veldu hvaða textasíðu þú vilt byrja á (farðu í Stillingar)",
+          "GDPR: stjórnaðu friðhelgisvalkostum þínum",
+          "Afkastabestun",
+          "Sýna útgáfu í Stillingum"
+        ]
+      },
+    {
+      "version": "1.0.3",
+      "changes": [
+        "Minni háttar villuleiðréttingar"
+      ]
+    }
+    
+  ]
+}
+

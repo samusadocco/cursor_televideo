@@ -1,0 +1,47 @@
+{
+  "versions": [
+    {
+      "version": "1.0.8",
+      "changes": [
+        "Pauzeer- en afspeelfunctie toegevoegd voor automatische verversing van subpagina's",
+        "Beheer van applicatietaal toegevoegd"        
+      ]
+    },
+    {
+      "version": "1.0.7",
+      "changes": [
+        "Verbeterd recensiebeheer"
+      ]
+    },
+    {
+        "version": "1.0.6",
+        "changes": [
+          "Prestatieoptimalisaties",
+          "Trackingautorisatiebericht opgelost"
+        ]
+      },
+    {
+        "version": "1.0.5",
+        "changes": [
+          "Wijzigingslogboek weergeven bij opstarten na een update"
+        ]
+      },
+    {
+        "version": "1.0.4",
+        "changes": [
+          "Eerste favoriet laden bij opstarten: kies met welke Teletekstpagina je wilt beginnen (ga naar Instellingen)",
+          "AVG: beheer uw privacykeuzes",
+          "Prestatieoptimalisaties",
+          "Versie weergeven in Instellingen"
+        ]
+      },
+    {
+      "version": "1.0.3",
+      "changes": [
+        "Kleine bugfixes"
+      ]
+    }
+    
+  ]
+}
+

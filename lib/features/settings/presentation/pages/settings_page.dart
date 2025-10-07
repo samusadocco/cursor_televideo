@@ -7,12 +7,12 @@ import 'package:cursor_televideo/core/theme/theme_bloc.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:cursor_televideo/core/onboarding/onboarding_service.dart';
 import 'package:cursor_televideo/features/settings/presentation/pages/backup_page.dart';
+import 'package:cursor_televideo/features/settings/presentation/widgets/language_selector.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:cursor_televideo/core/l10n/app_localizations.dart';
 import 'package:cursor_televideo/core/l10n/language_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_phoenix/flutter_phoenix.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -288,45 +288,9 @@ class _SettingsPageState extends State<SettingsPage> {
                 builder: (context) => AlertDialog(
                   title: Text(l10n.language),
                   content: SingleChildScrollView(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        // Lista delle lingue supportate
-                        ...const [
-                          Locale('it'), // Italiano
-                          Locale('en'), // Inglese
-                          Locale('de'), // Tedesco
-                          Locale('fr'), // Francese
-                          Locale('es'), // Spagnolo
-                          Locale('pt'), // Portoghese
-                          Locale('nl'), // Olandese
-                          Locale('da'), // Danese
-                          Locale('sv'), // Svedese
-                          Locale('fi'), // Finlandese
-                          Locale('cs'), // Ceco
-                          Locale('hr'), // Croato
-                          Locale('sl'), // Sloveno
-                          Locale('is'), // Islandese
-                          Locale('hu'), // Ungherese
-                          Locale('bs'), // Bosniaco
-                        ].map((locale) {
-                          return RadioListTile<String>(
-                            title: Text(_getLanguageName(locale.languageCode)),
-                            value: locale.languageCode,
-                            groupValue: currentLocale.languageCode,
-                            onChanged: (value) async {
-                              if (value != null) {
-                                await _languageService?.setLocale(Locale(value));
-                                if (mounted) {
-                                  Navigator.of(context).pop();
-                                  // Riavvia l'app per applicare la nuova lingua
-                                  Phoenix.rebirth(context);
-                                }
-                              }
-                            },
-                          );
-                        }).toList(),
-                      ],
+                    child: LanguageSelector(
+                      languageService: _languageService!,
+                      currentLocale: currentLocale,
                     ),
                   ),
                 ),

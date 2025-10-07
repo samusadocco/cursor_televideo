@@ -1,0 +1,47 @@
+{
+  "versions": [
+    {
+      "version": "1.0.8",
+      "changes": [
+        "Szüneteltetés és lejátszás funkció hozzáadva az aloldalak automatikus frissítéséhez",
+        "Alkalmazás nyelvkezelés hozzáadva"        
+      ]
+    },
+    {
+      "version": "1.0.7",
+      "changes": [
+        "Javított értékeléskezelés"
+      ]
+    },
+    {
+        "version": "1.0.6",
+        "changes": [
+          "Teljesítményoptimalizálások",
+          "Követési engedélyezési üzenet javítva"
+        ]
+      },
+    {
+        "version": "1.0.5",
+        "changes": [
+          "Változásnapló megjelenítése indításkor frissítés után"
+        ]
+      },
+    {
+        "version": "1.0.4",
+        "changes": [
+          "Első kedvenc betöltése indításkor: válassza ki, melyik Teletext oldallal szeretne kezdeni (menjen a Beállításokhoz)",
+          "GDPR: kezelje adatvédelmi választásait",
+          "Teljesítményoptimalizálások",
+          "Verzió megjelenítése a Beállításokban"
+        ]
+      },
+    {
+      "version": "1.0.3",
+      "changes": [
+        "Kisebb hibajavítások"
+      ]
+    }
+    
+  ]
+}
+
