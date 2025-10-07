@@ -36,9 +36,9 @@ class VersionManager {
       try {
         jsonString = await rootBundle.loadString(fileName);
       } catch (e) {
-        // Se il file per la lingua corrente non esiste, usa l'italiano come fallback
-        print('File per lingua $languageCode non trovato, uso italiano come fallback');
-        jsonString = await rootBundle.loadString('lib/core/version_history_it.json');
+        // Se il file per la lingua corrente non esiste, usa l'inglese come fallback
+        print('File per lingua $languageCode non trovato, uso inglese come fallback');
+        jsonString = await rootBundle.loadString('lib/core/version_history_en.json');
       }
       
       final Map<String, dynamic> jsonMap = json.decode(jsonString);
