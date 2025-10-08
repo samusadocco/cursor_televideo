@@ -7,6 +7,7 @@ import 'package:cursor_televideo/core/theme/theme_bloc.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:cursor_televideo/core/onboarding/onboarding_service.dart';
 import 'package:cursor_televideo/features/settings/presentation/pages/backup_page.dart';
+import 'package:cursor_televideo/features/settings/presentation/pages/support_page.dart';
 import 'package:cursor_televideo/features/settings/presentation/widgets/language_selector.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -259,6 +260,21 @@ class _SettingsPageState extends State<SettingsPage> {
                 context,
                 MaterialPageRoute(
                   builder: (context) => const BackupPage(),
+                ),
+              );
+            },
+          ),
+          
+          // Supporto
+          ListTile(
+            title: Text(l10n.support),
+            subtitle: const Text('Contattaci per assistenza'),
+            trailing: const Icon(Icons.support_agent),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const SupportPage(),
                 ),
               );
             },

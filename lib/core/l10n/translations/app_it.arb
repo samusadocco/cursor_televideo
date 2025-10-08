@@ -250,5 +250,29 @@
         "example": "Lombardia"
       }
     }
-  }
+  },
+  "support": "Supporto",
+  "supportTitle": "Siamo qui per aiutarti!",
+  "supportSubtitle": "Per qualsiasi domanda o assistenza, non esitare a contattarci",
+  "directContact": "Contatto Diretto",
+  "emailLabel": "Email",
+  "websiteLabel": "Sito Web",
+  "responseTime": "Tempo di risposta medio: 24-48 ore",
+  "faq": "Domande Frequenti",
+  "faqGeolocation": "Come funziona la geolocalizzazione?",
+  "faqGeolocationAnswer": "L'app utilizza la posizione del dispositivo per identificare automaticamente la tua regione e mostrarti le notizie locali pertinenti. Puoi disattivare questa funzione nelle impostazioni dell'app.",
+  "faqFavorites": "Come salvare una pagina nei preferiti?",
+  "faqFavoritesAnswer": "Mentre visualizzi una pagina, tocca l'icona della stella per aggiungerla ai preferiti. Puoi accedere alle tue pagine preferite dal menu principale.",
+  "faqTheme": "Come cambiare il tema dell'app?",
+  "faqThemeAnswer": "Vai nelle impostazioni dell'app e seleziona il tema desiderato (chiaro/scuro). L'app supporta anche l'impostazione automatica basata sul tema di sistema.",
+  "faqOffline": "L'app funziona offline?",
+  "faqOfflineAnswer": "No, è necessaria una connessione internet attiva per accedere alle pagine del Televideo in tempo reale.",
+  "faqReportProblem": "Come segnalare un problema?",
+  "faqReportProblemAnswer": "Invia una email dettagliata a samuele@codebysam.it descrivendo il problema riscontrato.",
+  "reportBugTitle": "Segnala un problema",
+  "reportBugInstructions": "Quando segnali un problema, includi se possibile:",
+  "reportBugItems": "Versione dell'app\nModello del dispositivo\nSistema operativo\nScreenshot del problema",
+  "developedBy": "Sviluppato da CodeBySam",
+  "errorOpeningLink": "Impossibile aprire il link",
+  "errorOpeningEmail": "Impossibile aprire l'email"
 }
