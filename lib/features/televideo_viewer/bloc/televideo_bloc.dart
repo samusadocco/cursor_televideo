@@ -10,6 +10,7 @@ import 'package:cursor_televideo/shared/models/televideo_page.dart';
 import 'package:cursor_televideo/shared/models/region.dart';
 import 'package:cursor_televideo/core/analytics/analytics_service.dart';
 import 'package:cursor_televideo/core/descriptions/page_descriptions_service.dart';
+import 'package:cursor_televideo/core/teletext/teletext_channels.dart';
 
 class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
   final TelevideoRepository _repository;
@@ -100,6 +101,7 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
         previousSubPage: () => _onPreviousSubPage(emit),
         startLoading: () => _onStartLoading(emit),
         toggleAutoRefreshPause: () => _onToggleAutoRefreshPause(emit),
+        changeChannel: (channel) => _onChangeChannel(channel, emit),
       );
     });
 
@@ -145,14 +147,16 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
   }
 
   Future<void> _onStartLoading(Emitter<TelevideoState> emit) async {
-    emit(TelevideoState.loading(pageNumber: _currentPage));
+    final currentChannel = state.selectedChannel;
+    emit(TelevideoState.loading(pageNumber: _currentPage, selectedChannel: currentChannel));
   }
 
   Future<void> _onLoadNationalPage(int pageNumber, Emitter<TelevideoState> emit) async {
     print('[TelevideoBloc] Loading national page: $pageNumber'); // Debug print
     
+    final currentChannel = state.selectedChannel;
     _currentPage = pageNumber;
-    emit(TelevideoState.loading(pageNumber: pageNumber));
+    emit(TelevideoState.loading(pageNumber: pageNumber, selectedChannel: currentChannel));
     _currentRegion = null; // Reset della regione quando si carica una pagina nazionale
     
     // Aggiorna il RegionBloc se disponibile
@@ -166,7 +170,7 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
       final page = await _loadPageWithContext(pageNumber, forceRefresh: true);
       print('[TelevideoBloc] National page loaded successfully'); // Debug print
       if (!emit.isDone) {
-        emit(TelevideoState.loaded(page, currentSubPage: 1, isAutoRefreshPaused: false));
+        emit(TelevideoState.loaded(page, currentSubPage: 1, isAutoRefreshPaused: false, selectedChannel: currentChannel));
       }
     } catch (e) {
       isError = true;
@@ -175,7 +179,7 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
         ? 'La pagina $pageNumber non è disponibile.\nProva con un altro numero tra $_minPage e 999.\nTorna a $_minPage'
         : 'Si è verificato un errore durante il caricamento della pagina.\nTorna a $_minPage';
       if (!emit.isDone) {
-        emit(TelevideoState.error(message));
+        emit(TelevideoState.error(message, selectedChannel: currentChannel));
       }
     } finally {
       final duration = DateTime.now().difference(startTime).inMilliseconds;
@@ -190,6 +194,7 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
   Future<void> _onLoadRegionalPage(Region region, int pageNumber, Emitter<TelevideoState> emit) async {
     print('[TelevideoBloc] Loading regional page: $pageNumber for region ${region.code}'); // Debug print
     
+    final currentChannel = state.selectedChannel;
     final startTime = DateTime.now();
     bool isError = false;
     
@@ -201,14 +206,14 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
       // Solo dopo un caricamento riuscito, aggiorniamo lo stato e le variabili
       _currentRegion = region;
       _currentPage = pageNumber;
-      emit(TelevideoState.loading(pageNumber: pageNumber));
+      emit(TelevideoState.loading(pageNumber: pageNumber, selectedChannel: currentChannel));
       
       // Aggiorna il RegionBloc se disponibile
       _regionBloc?.add(RegionEvent.selectRegion(region));
       
       print('[TelevideoBloc] Regional page loaded successfully'); // Debug print
       if (!emit.isDone) {
-        emit(TelevideoState.loaded(page, currentSubPage: 1, isAutoRefreshPaused: false));
+        emit(TelevideoState.loaded(page, currentSubPage: 1, isAutoRefreshPaused: false, selectedChannel: currentChannel));
       }
     } catch (e) {
       isError = true;
@@ -217,7 +222,7 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
         ? 'La pagina $pageNumber non è disponibile per la regione ${region.name}.\nProva con un altro numero tra 100 e 999.'
         : 'Si è verificato un errore durante il caricamento della pagina';
       if (!emit.isDone) {
-        emit(TelevideoState.error(message));
+        emit(TelevideoState.error(message, selectedChannel: currentChannel));
       }
     } finally {
       final duration = DateTime.now().difference(startTime).inMilliseconds;
@@ -242,17 +247,18 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
   }
 
   Future<void> _findNextAvailablePage(int startPage, Emitter<TelevideoState> emit) async {
+    final currentChannel = state.selectedChannel;
     int currentPage = startPage;
     int maxAttempts = 100; // Limita il numero di tentativi per evitare loop infiniti
     int attempts = 0;
 
     while (currentPage <= 899 && attempts < maxAttempts) {
       // Emetti lo stato di loading con la pagina corrente che stiamo provando
-      emit(TelevideoState.loading(pageNumber: currentPage));
+      emit(TelevideoState.loading(pageNumber: currentPage, selectedChannel: currentChannel));
       final page = await _tryLoadPage(currentPage, isRegional: _currentRegion != null);
       if (page != null) {
         _currentPage = currentPage;
-        emit(TelevideoState.loaded(page, currentSubPage: 1, isAutoRefreshPaused: false));
+        emit(TelevideoState.loaded(page, currentSubPage: 1, isAutoRefreshPaused: false, selectedChannel: currentChannel));
         return;
       }
       
@@ -260,7 +266,7 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
       final message = _currentRegion != null
           ? 'Non sono disponibili altre pagine per la regione ${_currentRegion!.name}.'
           : 'Non sono disponibili altre pagine.';
-        emit(TelevideoState.error(message));
+        emit(TelevideoState.error(message, selectedChannel: currentChannel));
         return;
       }
       currentPage++;
@@ -269,21 +275,22 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
       final message = _currentRegion != null
           ? 'Non sono disponibili altre pagine per la regione ${_currentRegion!.name}.'
           : 'Non sono disponibili altre pagine.';
-    emit(TelevideoState.error(message));
+    emit(TelevideoState.error(message, selectedChannel: currentChannel));
   }
 
   Future<void> _findPreviousAvailablePage(int startPage, Emitter<TelevideoState> emit) async {
+    final currentChannel = state.selectedChannel;
     int currentPage = startPage;
     int maxAttempts = 100; // Limita il numero di tentativi per evitare loop infiniti
     int attempts = 0;
 
     while (currentPage >= _minPage && attempts < maxAttempts) {
       // Emetti lo stato di loading con la pagina corrente che stiamo provando
-      emit(TelevideoState.loading(pageNumber: currentPage));
+      emit(TelevideoState.loading(pageNumber: currentPage, selectedChannel: currentChannel));
       final page = await _tryLoadPage(currentPage, isRegional: _currentRegion != null);
       if (page != null) {
         _currentPage = currentPage;
-        emit(TelevideoState.loaded(page, currentSubPage: 1, isAutoRefreshPaused: false));
+        emit(TelevideoState.loaded(page, currentSubPage: 1, isAutoRefreshPaused: false, selectedChannel: currentChannel));
         return;
       }
       
@@ -291,7 +298,7 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
       final message = _currentRegion != null
           ? 'Non sono disponibili altre pagine per la regione ${_currentRegion!.name}.'
           : 'Non sono disponibili altre pagine.';
-        emit(TelevideoState.error(message));
+        emit(TelevideoState.error(message, selectedChannel: currentChannel));
         return;
       }
       currentPage--;
@@ -300,12 +307,12 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
       final message = _currentRegion != null
           ? 'Non sono disponibili altre pagine per la regione ${_currentRegion!.name}.'
           : 'Non sono disponibili altre pagine.';
-    emit(TelevideoState.error(message));
+    emit(TelevideoState.error(message, selectedChannel: currentChannel));
   }
 
   Future<void> _onNextSubPage(Emitter<TelevideoState> emit) async {
     await state.maybeWhen(
-      loaded: (page, currentSubPage, isAutoRefreshPaused) async {
+      loaded: (page, currentSubPage, isAutoRefreshPaused, selectedChannel) async {
         if (page.maxSubPages <= 1) return; // Non fare nulla se non ci sono sottopagine
         
         final nextSubPage = currentSubPage + 1;
@@ -331,13 +338,13 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
           final validSubPage = newSubPage <= newPage.maxSubPages ? newSubPage : 1;
           if (!emit.isDone) {
             _adService.incrementPageView(isSubPage: true);
-            emit(TelevideoState.loaded(newPage, currentSubPage: validSubPage, isAutoRefreshPaused: isAutoRefreshPaused));
+            emit(TelevideoState.loaded(newPage, currentSubPage: validSubPage, isAutoRefreshPaused: isAutoRefreshPaused, selectedChannel: selectedChannel));
           }
         } catch (e) {
           isError = true;
           // Se c'è un errore nel caricamento della sottopagina, mantieni la pagina corrente
           if (!emit.isDone) {
-            emit(TelevideoState.loaded(page, currentSubPage: currentSubPage, isAutoRefreshPaused: isAutoRefreshPaused));
+            emit(TelevideoState.loaded(page, currentSubPage: currentSubPage, isAutoRefreshPaused: isAutoRefreshPaused, selectedChannel: selectedChannel));
           }
         } finally {
           final duration = DateTime.now().difference(startTime).inMilliseconds;
@@ -355,7 +362,7 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
 
   Future<void> _onPreviousSubPage(Emitter<TelevideoState> emit) async {
     await state.maybeWhen(
-      loaded: (page, currentSubPage, isAutoRefreshPaused) async {
+      loaded: (page, currentSubPage, isAutoRefreshPaused, selectedChannel) async {
         if (page.maxSubPages <= 1) return; // Non fare nulla se non ci sono sottopagine
         
         final prevSubPage = currentSubPage - 1;
@@ -381,13 +388,13 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
           final validSubPage = newSubPage <= newPage.maxSubPages ? newSubPage : 1;
           if (!emit.isDone) {
             _adService.incrementPageView(isSubPage: true);
-            emit(TelevideoState.loaded(newPage, currentSubPage: validSubPage, isAutoRefreshPaused: isAutoRefreshPaused));
+            emit(TelevideoState.loaded(newPage, currentSubPage: validSubPage, isAutoRefreshPaused: isAutoRefreshPaused, selectedChannel: selectedChannel));
           }
         } catch (e) {
           isError = true;
           // Se c'è un errore nel caricamento della sottopagina, mantieni la pagina corrente
           if (!emit.isDone) {
-            emit(TelevideoState.loaded(page, currentSubPage: currentSubPage, isAutoRefreshPaused: isAutoRefreshPaused));
+            emit(TelevideoState.loaded(page, currentSubPage: currentSubPage, isAutoRefreshPaused: isAutoRefreshPaused, selectedChannel: selectedChannel));
           }
         } finally {
           final duration = DateTime.now().difference(startTime).inMilliseconds;
@@ -411,7 +418,7 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
 
   Future<void> _onToggleAutoRefreshPause(Emitter<TelevideoState> emit) async {
     await state.maybeWhen(
-      loaded: (page, currentSubPage, isAutoRefreshPaused) async {
+      loaded: (page, currentSubPage, isAutoRefreshPaused, selectedChannel) async {
         // Logga l'evento di pausa/play
         AnalyticsService().logSubpageChange(
           page.pageNumber.toString(),
@@ -424,9 +431,59 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
           page,
           currentSubPage: currentSubPage,
           isAutoRefreshPaused: !isAutoRefreshPaused,
+          selectedChannel: selectedChannel,
         ));
       },
       orElse: () async {},
     );
+  }
+
+  Future<void> _onChangeChannel(TeletextChannel channel, Emitter<TelevideoState> emit) async {
+    print('[TelevideoBloc] Cambiamento canale: ${channel.name}');
+    
+    // TODO: Aggiungere analytics per cambio canale quando il metodo sarà disponibile
+    // AnalyticsService().logChannelChange(channel.id, channel.name, channel.countryCode);
+
+    // Emetti stato di caricamento con il nuovo canale
+    emit(TelevideoState.loading(pageNumber: 100, selectedChannel: channel));
+
+    // Determina quale pagina caricare in base al canale selezionato
+    if (channel.id == 'rai_nazionale') {
+      // RAI Nazionale - usa la logica esistente
+      _currentRegion = null;
+      add(TelevideoEvent.loadNationalPage(_minPage));
+    } else if (channel.id.startsWith('rai_') && channel.regions != null && channel.regions!.isNotEmpty) {
+      // RAI Regionale - usa Region.fromCode per ottenere la regione completa con imagePath
+      try {
+        final region = Region.fromCode(channel.regions!.first);
+        _currentRegion = region;
+        
+        // Sincronizza con RegionBloc se disponibile
+        if (_regionBloc != null) {
+          _regionBloc!.add(RegionEvent.selectRegion(region));
+        }
+
+        add(TelevideoEvent.loadRegionalPage(region, 300));
+      } catch (e) {
+        print('[TelevideoBloc] Errore nel trovare la regione per il codice ${channel.regions!.first}: $e');
+        emit(TelevideoState.error(
+          'Errore nel caricare la regione per il canale ${channel.name}.',
+          selectedChannel: channel,
+        ));
+      }
+    } else {
+      // Altri canali europei - per ora mostra messaggio di non supportato
+      emit(TelevideoState.error(
+        'Il canale ${channel.name} non è ancora supportato.\nAl momento solo RAI Televideo è disponibile.',
+        selectedChannel: channel,
+      ));
+      
+      // Dopo 3 secondi torna al canale RAI
+      await Future.delayed(const Duration(seconds: 3));
+      final raiChannel = TeletextChannels.getChannelById('rai_nazionale');
+      if (raiChannel != null && !emit.isDone) {
+        add(TelevideoEvent.changeChannel(raiChannel));
+      }
+    }
   }
 }

@@ -9,6 +9,7 @@ import 'package:cursor_televideo/features/televideo_viewer/bloc/televideo_state.
 import 'package:cursor_televideo/features/televideo_viewer/bloc/region_bloc.dart';
 import 'package:cursor_televideo/features/televideo_viewer/presentation/widgets/televideo_viewer.dart';
 import 'package:cursor_televideo/features/televideo_viewer/presentation/widgets/region_selector.dart';
+import 'package:cursor_televideo/features/televideo_viewer/presentation/widgets/channel_selector_button.dart';
 import 'package:cursor_televideo/features/televideo_viewer/presentation/widgets/shortcuts_menu.dart';
 import 'package:cursor_televideo/features/settings/presentation/pages/settings_page.dart';
 import 'package:cursor_televideo/shared/widgets/ad_banner.dart';
@@ -161,30 +162,14 @@ class _HomePageState extends State<HomePage> {
               );
             },
           ),
-          // Selezione Nazionale/Regionale
-          BlocBuilder<RegionBloc, RegionState>(
-            builder: (context, regionState) {
-              return UnifiedSelector(
-                selectedRegion: regionState.selectedRegion,
-                onSelectionChanged: (region) {
-                  if (region == null) {
-                    _regionBloc.add(const RegionEvent.selectRegion(null));
-                    final minPage = context.read<TelevideoBloc>().minPage;
-                    _televideoBloc.add(TelevideoEvent.loadNationalPage(minPage));
-                  } else {
-                    _regionBloc.add(RegionEvent.selectRegion(region));
-                    _televideoBloc.add(TelevideoEvent.loadRegionalPage(region, 300));
-                  }
-                },
-              );
-            },
-          ),
+          // Selezione Canale
+          const ChannelSelectorButton(),
           // Preferiti
           IconButton(
             icon: BlocBuilder<TelevideoBloc, TelevideoState>(
               builder: (context, state) {
                 return state.maybeWhen(
-                  loaded: (page, currentSubPage, isAutoRefreshPaused) {
+                  loaded: (page, currentSubPage, isAutoRefreshPaused, selectedChannel) {
                     final isFavorite = FavoritesService().isFavorite(
                       page.pageNumber,
                       _regionBloc.state.selectedRegion?.code,
@@ -203,7 +188,7 @@ class _HomePageState extends State<HomePage> {
               final currentRegion = _regionBloc.state.selectedRegion;
               
               state.maybeWhen(
-                loaded: (page, currentSubPage, isAutoRefreshPaused) {
+                loaded: (page, currentSubPage, isAutoRefreshPaused, selectedChannel) {
                   final favoritesService = FavoritesService();
                   final isFavorite = favoritesService.isFavorite(
                     page.pageNumber,
@@ -533,7 +518,7 @@ class _HomePageState extends State<HomePage> {
         leading: BlocBuilder<TelevideoBloc, TelevideoState>(
           builder: (context, state) {
             return state.maybeWhen(
-                loaded: (page, currentSubPage, isAutoRefreshPaused) => Row(
+                loaded: (page, currentSubPage, isAutoRefreshPaused, selectedChannel) => Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     IconButton(
@@ -556,7 +541,7 @@ class _HomePageState extends State<HomePage> {
           BlocBuilder<TelevideoBloc, TelevideoState>(
             builder: (context, state) {
               return state.maybeWhen(
-                loaded: (page, currentSubPage, isAutoRefreshPaused) => Row(
+                loaded: (page, currentSubPage, isAutoRefreshPaused, selectedChannel) => Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     IconButton(
@@ -582,15 +567,15 @@ class _HomePageState extends State<HomePage> {
             return BlocBuilder<TelevideoBloc, TelevideoState>(
               builder: (context, state) {
                 return state.when(
-                  initial: () => const SizedBox(),
-                  loading: (pageNumber) => Text(
+                  initial: (selectedChannel) => const SizedBox(),
+                  loading: (pageNumber, selectedChannel) => Text(
                     '...$pageNumber...',
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  loaded: (page, currentSubPage, isAutoRefreshPaused) => Row(
+                  loaded: (page, currentSubPage, isAutoRefreshPaused, selectedChannel) => Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Expanded(
@@ -673,7 +658,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ],
                   ),
-                  error: (message) => Text(
+                  error: (message, selectedChannel) => Text(
                     "",
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.error,
@@ -713,8 +698,8 @@ class _HomePageState extends State<HomePage> {
                       return BlocBuilder<TelevideoBloc, TelevideoState>(
                         builder: (context, state) {
                           return state.when(
-                            initial: () => const Center(child: CircularProgressIndicator()),
-                            loading: (pageNumber) => Center(
+                            initial: (selectedChannel) => const Center(child: CircularProgressIndicator()),
+                            loading: (pageNumber, selectedChannel) => Center(
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
@@ -730,7 +715,7 @@ class _HomePageState extends State<HomePage> {
                                 ],
                               ),
                             ),
-                            loaded: (page, currentSubPage, isAutoRefreshPaused) => TelevideoViewer(
+                            loaded: (page, currentSubPage, isAutoRefreshPaused, selectedChannel) => TelevideoViewer(
                               page: page,
                               onPageNumberSubmitted: (pageNumber) {
                                 context.read<TelevideoBloc>().add(TelevideoEvent.loadNationalPage(pageNumber));
@@ -738,7 +723,7 @@ class _HomePageState extends State<HomePage> {
                               showControls: _showControls,
                               isNationalMode: regionState.selectedRegion == null,
                             ),
-                            error: (message) => ErrorPageView(message: message),
+                            error: (message, selectedChannel) => ErrorPageView(message: message),
                           );
                         },
                       );

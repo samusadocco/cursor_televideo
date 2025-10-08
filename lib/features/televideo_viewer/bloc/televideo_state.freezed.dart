@@ -16,34 +16,38 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$TelevideoState {
+  TeletextChannel? get selectedChannel => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function(int pageNumber) loading,
-    required TResult Function(
-            TelevideoPage page, int currentSubPage, bool isAutoRefreshPaused)
+    required TResult Function(TeletextChannel? selectedChannel) initial,
+    required TResult Function(int pageNumber, TeletextChannel? selectedChannel)
+        loading,
+    required TResult Function(TelevideoPage page, int currentSubPage,
+            bool isAutoRefreshPaused, TeletextChannel? selectedChannel)
         loaded,
-    required TResult Function(String message) error,
+    required TResult Function(String message, TeletextChannel? selectedChannel)
+        error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function(int pageNumber)? loading,
-    TResult? Function(
-            TelevideoPage page, int currentSubPage, bool isAutoRefreshPaused)?
+    TResult? Function(TeletextChannel? selectedChannel)? initial,
+    TResult? Function(int pageNumber, TeletextChannel? selectedChannel)?
+        loading,
+    TResult? Function(TelevideoPage page, int currentSubPage,
+            bool isAutoRefreshPaused, TeletextChannel? selectedChannel)?
         loaded,
-    TResult? Function(String message)? error,
+    TResult? Function(String message, TeletextChannel? selectedChannel)? error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function(int pageNumber)? loading,
-    TResult Function(
-            TelevideoPage page, int currentSubPage, bool isAutoRefreshPaused)?
+    TResult Function(TeletextChannel? selectedChannel)? initial,
+    TResult Function(int pageNumber, TeletextChannel? selectedChannel)? loading,
+    TResult Function(TelevideoPage page, int currentSubPage,
+            bool isAutoRefreshPaused, TeletextChannel? selectedChannel)?
         loaded,
-    TResult Function(String message)? error,
+    TResult Function(String message, TeletextChannel? selectedChannel)? error,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -72,6 +76,12 @@ mixin _$TelevideoState {
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
+
+  /// Create a copy of TelevideoState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $TelevideoStateCopyWith<TelevideoState> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -79,6 +89,10 @@ abstract class $TelevideoStateCopyWith<$Res> {
   factory $TelevideoStateCopyWith(
           TelevideoState value, $Res Function(TelevideoState) then) =
       _$TelevideoStateCopyWithImpl<$Res, TelevideoState>;
+  @useResult
+  $Res call({TeletextChannel? selectedChannel});
+
+  $TeletextChannelCopyWith<$Res>? get selectedChannel;
 }
 
 /// @nodoc
@@ -93,13 +107,46 @@ class _$TelevideoStateCopyWithImpl<$Res, $Val extends TelevideoState>
 
   /// Create a copy of TelevideoState
   /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? selectedChannel = freezed,
+  }) {
+    return _then(_value.copyWith(
+      selectedChannel: freezed == selectedChannel
+          ? _value.selectedChannel
+          : selectedChannel // ignore: cast_nullable_to_non_nullable
+              as TeletextChannel?,
+    ) as $Val);
+  }
+
+  /// Create a copy of TelevideoState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $TeletextChannelCopyWith<$Res>? get selectedChannel {
+    if (_value.selectedChannel == null) {
+      return null;
+    }
+
+    return $TeletextChannelCopyWith<$Res>(_value.selectedChannel!, (value) {
+      return _then(_value.copyWith(selectedChannel: value) as $Val);
+    });
+  }
 }
 
 /// @nodoc
-abstract class _$$InitialImplCopyWith<$Res> {
+abstract class _$$InitialImplCopyWith<$Res>
+    implements $TelevideoStateCopyWith<$Res> {
   factory _$$InitialImplCopyWith(
           _$InitialImpl value, $Res Function(_$InitialImpl) then) =
       __$$InitialImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({TeletextChannel? selectedChannel});
+
+  @override
+  $TeletextChannelCopyWith<$Res>? get selectedChannel;
 }
 
 /// @nodoc
@@ -112,66 +159,95 @@ class __$$InitialImplCopyWithImpl<$Res>
 
   /// Create a copy of TelevideoState
   /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? selectedChannel = freezed,
+  }) {
+    return _then(_$InitialImpl(
+      selectedChannel: freezed == selectedChannel
+          ? _value.selectedChannel
+          : selectedChannel // ignore: cast_nullable_to_non_nullable
+              as TeletextChannel?,
+    ));
+  }
 }
 
 /// @nodoc
 
 class _$InitialImpl implements _Initial {
-  const _$InitialImpl();
+  const _$InitialImpl({this.selectedChannel});
+
+  @override
+  final TeletextChannel? selectedChannel;
 
   @override
   String toString() {
-    return 'TelevideoState.initial()';
+    return 'TelevideoState.initial(selectedChannel: $selectedChannel)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$InitialImpl);
+        (other.runtimeType == runtimeType &&
+            other is _$InitialImpl &&
+            (identical(other.selectedChannel, selectedChannel) ||
+                other.selectedChannel == selectedChannel));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode => Object.hash(runtimeType, selectedChannel);
+
+  /// Create a copy of TelevideoState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$InitialImplCopyWith<_$InitialImpl> get copyWith =>
+      __$$InitialImplCopyWithImpl<_$InitialImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function(int pageNumber) loading,
-    required TResult Function(
-            TelevideoPage page, int currentSubPage, bool isAutoRefreshPaused)
+    required TResult Function(TeletextChannel? selectedChannel) initial,
+    required TResult Function(int pageNumber, TeletextChannel? selectedChannel)
+        loading,
+    required TResult Function(TelevideoPage page, int currentSubPage,
+            bool isAutoRefreshPaused, TeletextChannel? selectedChannel)
         loaded,
-    required TResult Function(String message) error,
+    required TResult Function(String message, TeletextChannel? selectedChannel)
+        error,
   }) {
-    return initial();
+    return initial(selectedChannel);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function(int pageNumber)? loading,
-    TResult? Function(
-            TelevideoPage page, int currentSubPage, bool isAutoRefreshPaused)?
+    TResult? Function(TeletextChannel? selectedChannel)? initial,
+    TResult? Function(int pageNumber, TeletextChannel? selectedChannel)?
+        loading,
+    TResult? Function(TelevideoPage page, int currentSubPage,
+            bool isAutoRefreshPaused, TeletextChannel? selectedChannel)?
         loaded,
-    TResult? Function(String message)? error,
+    TResult? Function(String message, TeletextChannel? selectedChannel)? error,
   }) {
-    return initial?.call();
+    return initial?.call(selectedChannel);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function(int pageNumber)? loading,
-    TResult Function(
-            TelevideoPage page, int currentSubPage, bool isAutoRefreshPaused)?
+    TResult Function(TeletextChannel? selectedChannel)? initial,
+    TResult Function(int pageNumber, TeletextChannel? selectedChannel)? loading,
+    TResult Function(TelevideoPage page, int currentSubPage,
+            bool isAutoRefreshPaused, TeletextChannel? selectedChannel)?
         loaded,
-    TResult Function(String message)? error,
+    TResult Function(String message, TeletextChannel? selectedChannel)? error,
     required TResult orElse(),
   }) {
     if (initial != null) {
-      return initial();
+      return initial(selectedChannel);
     }
     return orElse();
   }
@@ -215,16 +291,32 @@ class _$InitialImpl implements _Initial {
 }
 
 abstract class _Initial implements TelevideoState {
-  const factory _Initial() = _$InitialImpl;
+  const factory _Initial({final TeletextChannel? selectedChannel}) =
+      _$InitialImpl;
+
+  @override
+  TeletextChannel? get selectedChannel;
+
+  /// Create a copy of TelevideoState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$InitialImplCopyWith<_$InitialImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$LoadingImplCopyWith<$Res> {
+abstract class _$$LoadingImplCopyWith<$Res>
+    implements $TelevideoStateCopyWith<$Res> {
   factory _$$LoadingImplCopyWith(
           _$LoadingImpl value, $Res Function(_$LoadingImpl) then) =
       __$$LoadingImplCopyWithImpl<$Res>;
+  @override
   @useResult
-  $Res call({int pageNumber});
+  $Res call({int pageNumber, TeletextChannel? selectedChannel});
+
+  @override
+  $TeletextChannelCopyWith<$Res>? get selectedChannel;
 }
 
 /// @nodoc
@@ -241,12 +333,17 @@ class __$$LoadingImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? pageNumber = null,
+    Object? selectedChannel = freezed,
   }) {
     return _then(_$LoadingImpl(
       pageNumber: null == pageNumber
           ? _value.pageNumber
           : pageNumber // ignore: cast_nullable_to_non_nullable
               as int,
+      selectedChannel: freezed == selectedChannel
+          ? _value.selectedChannel
+          : selectedChannel // ignore: cast_nullable_to_non_nullable
+              as TeletextChannel?,
     ));
   }
 }
@@ -254,14 +351,16 @@ class __$$LoadingImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$LoadingImpl implements _Loading {
-  const _$LoadingImpl({required this.pageNumber});
+  const _$LoadingImpl({required this.pageNumber, this.selectedChannel});
 
   @override
   final int pageNumber;
+  @override
+  final TeletextChannel? selectedChannel;
 
   @override
   String toString() {
-    return 'TelevideoState.loading(pageNumber: $pageNumber)';
+    return 'TelevideoState.loading(pageNumber: $pageNumber, selectedChannel: $selectedChannel)';
   }
 
   @override
@@ -270,11 +369,13 @@ class _$LoadingImpl implements _Loading {
         (other.runtimeType == runtimeType &&
             other is _$LoadingImpl &&
             (identical(other.pageNumber, pageNumber) ||
-                other.pageNumber == pageNumber));
+                other.pageNumber == pageNumber) &&
+            (identical(other.selectedChannel, selectedChannel) ||
+                other.selectedChannel == selectedChannel));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, pageNumber);
+  int get hashCode => Object.hash(runtimeType, pageNumber, selectedChannel);
 
   /// Create a copy of TelevideoState
   /// with the given fields replaced by the non-null parameter values.
@@ -287,42 +388,45 @@ class _$LoadingImpl implements _Loading {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function(int pageNumber) loading,
-    required TResult Function(
-            TelevideoPage page, int currentSubPage, bool isAutoRefreshPaused)
+    required TResult Function(TeletextChannel? selectedChannel) initial,
+    required TResult Function(int pageNumber, TeletextChannel? selectedChannel)
+        loading,
+    required TResult Function(TelevideoPage page, int currentSubPage,
+            bool isAutoRefreshPaused, TeletextChannel? selectedChannel)
         loaded,
-    required TResult Function(String message) error,
+    required TResult Function(String message, TeletextChannel? selectedChannel)
+        error,
   }) {
-    return loading(pageNumber);
+    return loading(pageNumber, selectedChannel);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function(int pageNumber)? loading,
-    TResult? Function(
-            TelevideoPage page, int currentSubPage, bool isAutoRefreshPaused)?
+    TResult? Function(TeletextChannel? selectedChannel)? initial,
+    TResult? Function(int pageNumber, TeletextChannel? selectedChannel)?
+        loading,
+    TResult? Function(TelevideoPage page, int currentSubPage,
+            bool isAutoRefreshPaused, TeletextChannel? selectedChannel)?
         loaded,
-    TResult? Function(String message)? error,
+    TResult? Function(String message, TeletextChannel? selectedChannel)? error,
   }) {
-    return loading?.call(pageNumber);
+    return loading?.call(pageNumber, selectedChannel);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function(int pageNumber)? loading,
-    TResult Function(
-            TelevideoPage page, int currentSubPage, bool isAutoRefreshPaused)?
+    TResult Function(TeletextChannel? selectedChannel)? initial,
+    TResult Function(int pageNumber, TeletextChannel? selectedChannel)? loading,
+    TResult Function(TelevideoPage page, int currentSubPage,
+            bool isAutoRefreshPaused, TeletextChannel? selectedChannel)?
         loaded,
-    TResult Function(String message)? error,
+    TResult Function(String message, TeletextChannel? selectedChannel)? error,
     required TResult orElse(),
   }) {
     if (loading != null) {
-      return loading(pageNumber);
+      return loading(pageNumber, selectedChannel);
     }
     return orElse();
   }
@@ -366,26 +470,39 @@ class _$LoadingImpl implements _Loading {
 }
 
 abstract class _Loading implements TelevideoState {
-  const factory _Loading({required final int pageNumber}) = _$LoadingImpl;
+  const factory _Loading(
+      {required final int pageNumber,
+      final TeletextChannel? selectedChannel}) = _$LoadingImpl;
 
   int get pageNumber;
+  @override
+  TeletextChannel? get selectedChannel;
 
   /// Create a copy of TelevideoState
   /// with the given fields replaced by the non-null parameter values.
+  @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$LoadingImplCopyWith<_$LoadingImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$LoadedImplCopyWith<$Res> {
+abstract class _$$LoadedImplCopyWith<$Res>
+    implements $TelevideoStateCopyWith<$Res> {
   factory _$$LoadedImplCopyWith(
           _$LoadedImpl value, $Res Function(_$LoadedImpl) then) =
       __$$LoadedImplCopyWithImpl<$Res>;
+  @override
   @useResult
-  $Res call({TelevideoPage page, int currentSubPage, bool isAutoRefreshPaused});
+  $Res call(
+      {TelevideoPage page,
+      int currentSubPage,
+      bool isAutoRefreshPaused,
+      TeletextChannel? selectedChannel});
 
   $TelevideoPageCopyWith<$Res> get page;
+  @override
+  $TeletextChannelCopyWith<$Res>? get selectedChannel;
 }
 
 /// @nodoc
@@ -404,6 +521,7 @@ class __$$LoadedImplCopyWithImpl<$Res>
     Object? page = null,
     Object? currentSubPage = null,
     Object? isAutoRefreshPaused = null,
+    Object? selectedChannel = freezed,
   }) {
     return _then(_$LoadedImpl(
       null == page
@@ -418,6 +536,10 @@ class __$$LoadedImplCopyWithImpl<$Res>
           ? _value.isAutoRefreshPaused
           : isAutoRefreshPaused // ignore: cast_nullable_to_non_nullable
               as bool,
+      selectedChannel: freezed == selectedChannel
+          ? _value.selectedChannel
+          : selectedChannel // ignore: cast_nullable_to_non_nullable
+              as TeletextChannel?,
     ));
   }
 
@@ -436,7 +558,9 @@ class __$$LoadedImplCopyWithImpl<$Res>
 
 class _$LoadedImpl implements _Loaded {
   const _$LoadedImpl(this.page,
-      {this.currentSubPage = 1, this.isAutoRefreshPaused = false});
+      {this.currentSubPage = 1,
+      this.isAutoRefreshPaused = false,
+      this.selectedChannel});
 
   @override
   final TelevideoPage page;
@@ -446,10 +570,12 @@ class _$LoadedImpl implements _Loaded {
   @override
   @JsonKey()
   final bool isAutoRefreshPaused;
+  @override
+  final TeletextChannel? selectedChannel;
 
   @override
   String toString() {
-    return 'TelevideoState.loaded(page: $page, currentSubPage: $currentSubPage, isAutoRefreshPaused: $isAutoRefreshPaused)';
+    return 'TelevideoState.loaded(page: $page, currentSubPage: $currentSubPage, isAutoRefreshPaused: $isAutoRefreshPaused, selectedChannel: $selectedChannel)';
   }
 
   @override
@@ -461,12 +587,14 @@ class _$LoadedImpl implements _Loaded {
             (identical(other.currentSubPage, currentSubPage) ||
                 other.currentSubPage == currentSubPage) &&
             (identical(other.isAutoRefreshPaused, isAutoRefreshPaused) ||
-                other.isAutoRefreshPaused == isAutoRefreshPaused));
+                other.isAutoRefreshPaused == isAutoRefreshPaused) &&
+            (identical(other.selectedChannel, selectedChannel) ||
+                other.selectedChannel == selectedChannel));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, page, currentSubPage, isAutoRefreshPaused);
+  int get hashCode => Object.hash(
+      runtimeType, page, currentSubPage, isAutoRefreshPaused, selectedChannel);
 
   /// Create a copy of TelevideoState
   /// with the given fields replaced by the non-null parameter values.
@@ -479,42 +607,46 @@ class _$LoadedImpl implements _Loaded {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function(int pageNumber) loading,
-    required TResult Function(
-            TelevideoPage page, int currentSubPage, bool isAutoRefreshPaused)
+    required TResult Function(TeletextChannel? selectedChannel) initial,
+    required TResult Function(int pageNumber, TeletextChannel? selectedChannel)
+        loading,
+    required TResult Function(TelevideoPage page, int currentSubPage,
+            bool isAutoRefreshPaused, TeletextChannel? selectedChannel)
         loaded,
-    required TResult Function(String message) error,
+    required TResult Function(String message, TeletextChannel? selectedChannel)
+        error,
   }) {
-    return loaded(page, currentSubPage, isAutoRefreshPaused);
+    return loaded(page, currentSubPage, isAutoRefreshPaused, selectedChannel);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function(int pageNumber)? loading,
-    TResult? Function(
-            TelevideoPage page, int currentSubPage, bool isAutoRefreshPaused)?
+    TResult? Function(TeletextChannel? selectedChannel)? initial,
+    TResult? Function(int pageNumber, TeletextChannel? selectedChannel)?
+        loading,
+    TResult? Function(TelevideoPage page, int currentSubPage,
+            bool isAutoRefreshPaused, TeletextChannel? selectedChannel)?
         loaded,
-    TResult? Function(String message)? error,
+    TResult? Function(String message, TeletextChannel? selectedChannel)? error,
   }) {
-    return loaded?.call(page, currentSubPage, isAutoRefreshPaused);
+    return loaded?.call(
+        page, currentSubPage, isAutoRefreshPaused, selectedChannel);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function(int pageNumber)? loading,
-    TResult Function(
-            TelevideoPage page, int currentSubPage, bool isAutoRefreshPaused)?
+    TResult Function(TeletextChannel? selectedChannel)? initial,
+    TResult Function(int pageNumber, TeletextChannel? selectedChannel)? loading,
+    TResult Function(TelevideoPage page, int currentSubPage,
+            bool isAutoRefreshPaused, TeletextChannel? selectedChannel)?
         loaded,
-    TResult Function(String message)? error,
+    TResult Function(String message, TeletextChannel? selectedChannel)? error,
     required TResult orElse(),
   }) {
     if (loaded != null) {
-      return loaded(page, currentSubPage, isAutoRefreshPaused);
+      return loaded(page, currentSubPage, isAutoRefreshPaused, selectedChannel);
     }
     return orElse();
   }
@@ -560,26 +692,35 @@ class _$LoadedImpl implements _Loaded {
 abstract class _Loaded implements TelevideoState {
   const factory _Loaded(final TelevideoPage page,
       {final int currentSubPage,
-      final bool isAutoRefreshPaused}) = _$LoadedImpl;
+      final bool isAutoRefreshPaused,
+      final TeletextChannel? selectedChannel}) = _$LoadedImpl;
 
   TelevideoPage get page;
   int get currentSubPage;
   bool get isAutoRefreshPaused;
+  @override
+  TeletextChannel? get selectedChannel;
 
   /// Create a copy of TelevideoState
   /// with the given fields replaced by the non-null parameter values.
+  @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$LoadedImplCopyWith<_$LoadedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$ErrorImplCopyWith<$Res> {
+abstract class _$$ErrorImplCopyWith<$Res>
+    implements $TelevideoStateCopyWith<$Res> {
   factory _$$ErrorImplCopyWith(
           _$ErrorImpl value, $Res Function(_$ErrorImpl) then) =
       __$$ErrorImplCopyWithImpl<$Res>;
+  @override
   @useResult
-  $Res call({String message});
+  $Res call({String message, TeletextChannel? selectedChannel});
+
+  @override
+  $TeletextChannelCopyWith<$Res>? get selectedChannel;
 }
 
 /// @nodoc
@@ -596,12 +737,17 @@ class __$$ErrorImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? message = null,
+    Object? selectedChannel = freezed,
   }) {
     return _then(_$ErrorImpl(
       null == message
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
               as String,
+      selectedChannel: freezed == selectedChannel
+          ? _value.selectedChannel
+          : selectedChannel // ignore: cast_nullable_to_non_nullable
+              as TeletextChannel?,
     ));
   }
 }
@@ -609,14 +755,16 @@ class __$$ErrorImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$ErrorImpl implements _Error {
-  const _$ErrorImpl(this.message);
+  const _$ErrorImpl(this.message, {this.selectedChannel});
 
   @override
   final String message;
+  @override
+  final TeletextChannel? selectedChannel;
 
   @override
   String toString() {
-    return 'TelevideoState.error(message: $message)';
+    return 'TelevideoState.error(message: $message, selectedChannel: $selectedChannel)';
   }
 
   @override
@@ -624,11 +772,13 @@ class _$ErrorImpl implements _Error {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ErrorImpl &&
-            (identical(other.message, message) || other.message == message));
+            (identical(other.message, message) || other.message == message) &&
+            (identical(other.selectedChannel, selectedChannel) ||
+                other.selectedChannel == selectedChannel));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, message);
+  int get hashCode => Object.hash(runtimeType, message, selectedChannel);
 
   /// Create a copy of TelevideoState
   /// with the given fields replaced by the non-null parameter values.
@@ -641,42 +791,45 @@ class _$ErrorImpl implements _Error {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function(int pageNumber) loading,
-    required TResult Function(
-            TelevideoPage page, int currentSubPage, bool isAutoRefreshPaused)
+    required TResult Function(TeletextChannel? selectedChannel) initial,
+    required TResult Function(int pageNumber, TeletextChannel? selectedChannel)
+        loading,
+    required TResult Function(TelevideoPage page, int currentSubPage,
+            bool isAutoRefreshPaused, TeletextChannel? selectedChannel)
         loaded,
-    required TResult Function(String message) error,
+    required TResult Function(String message, TeletextChannel? selectedChannel)
+        error,
   }) {
-    return error(message);
+    return error(message, selectedChannel);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function(int pageNumber)? loading,
-    TResult? Function(
-            TelevideoPage page, int currentSubPage, bool isAutoRefreshPaused)?
+    TResult? Function(TeletextChannel? selectedChannel)? initial,
+    TResult? Function(int pageNumber, TeletextChannel? selectedChannel)?
+        loading,
+    TResult? Function(TelevideoPage page, int currentSubPage,
+            bool isAutoRefreshPaused, TeletextChannel? selectedChannel)?
         loaded,
-    TResult? Function(String message)? error,
+    TResult? Function(String message, TeletextChannel? selectedChannel)? error,
   }) {
-    return error?.call(message);
+    return error?.call(message, selectedChannel);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function(int pageNumber)? loading,
-    TResult Function(
-            TelevideoPage page, int currentSubPage, bool isAutoRefreshPaused)?
+    TResult Function(TeletextChannel? selectedChannel)? initial,
+    TResult Function(int pageNumber, TeletextChannel? selectedChannel)? loading,
+    TResult Function(TelevideoPage page, int currentSubPage,
+            bool isAutoRefreshPaused, TeletextChannel? selectedChannel)?
         loaded,
-    TResult Function(String message)? error,
+    TResult Function(String message, TeletextChannel? selectedChannel)? error,
     required TResult orElse(),
   }) {
     if (error != null) {
-      return error(message);
+      return error(message, selectedChannel);
     }
     return orElse();
   }
@@ -720,12 +873,16 @@ class _$ErrorImpl implements _Error {
 }
 
 abstract class _Error implements TelevideoState {
-  const factory _Error(final String message) = _$ErrorImpl;
+  const factory _Error(final String message,
+      {final TeletextChannel? selectedChannel}) = _$ErrorImpl;
 
   String get message;
+  @override
+  TeletextChannel? get selectedChannel;
 
   /// Create a copy of TelevideoState
   /// with the given fields replaced by the non-null parameter values.
+  @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ErrorImplCopyWith<_$ErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;

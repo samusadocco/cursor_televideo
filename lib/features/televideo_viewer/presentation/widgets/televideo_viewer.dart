@@ -145,7 +145,7 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
 
     // Verifica se il timer è in pausa
     final isPaused = context.read<TelevideoBloc>().state.maybeWhen(
-      loaded: (_, __, isAutoRefreshPaused) => isAutoRefreshPaused,
+      loaded: (_, __, isAutoRefreshPaused, ___) => isAutoRefreshPaused,
       orElse: () => false,
     );
 
@@ -354,7 +354,7 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
     
     // Verifica se ci sono sottopagine e se l'aggiornamento automatico è abilitato
     final hasSubPages = state.maybeWhen(
-      loaded: (page, _, __) => page.maxSubPages > 1,
+      loaded: (page, _, __, ___) => page.maxSubPages > 1,
       orElse: () => false,
     );
     if (!hasSubPages || !AppSettings.liveShowEnabled) return;
@@ -378,7 +378,7 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
 
     // Gestisci il timer in base allo stato di pausa
     final isPaused = state.maybeWhen(
-      loaded: (_, __, isAutoRefreshPaused) => !isAutoRefreshPaused, // Invertiamo perché lo stato non è ancora aggiornato
+      loaded: (_, __, isAutoRefreshPaused, ___) => !isAutoRefreshPaused, // Invertiamo perché lo stato non è ancora aggiornato
       orElse: () => false,
     );
 
@@ -397,7 +397,7 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
     return BlocListener<TelevideoBloc, TelevideoState>(
       listener: (context, state) {
         state.maybeWhen(
-          loaded: (page, currentSubPage, isAutoRefreshPaused) {
+          loaded: (page, currentSubPage, isAutoRefreshPaused, selectedChannel) {
             setState(() {
               _currentSubPage = currentSubPage;
               _maxSubPages = page.maxSubPages;
@@ -434,8 +434,8 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
                     child: BlocBuilder<TelevideoBloc, TelevideoState>(
                       builder: (context, state) {
                         Widget content = state.when(
-                          initial: () => const Center(child: CircularProgressIndicator()),
-                          loading: (pageNumber) => Center(
+                          initial: (selectedChannel) => const Center(child: CircularProgressIndicator()),
+                          loading: (pageNumber, selectedChannel) => Center(
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
@@ -451,7 +451,7 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
                               ],
                             ),
                           ),
-                          loaded: (page, currentSubPage, isAutoRefreshPaused) {
+                          loaded: (page, currentSubPage, isAutoRefreshPaused, selectedChannel) {
                             final lastEvent = context.read<TelevideoBloc>().lastEvent;
                             var transitionType = PageTransitionType.fade;
                             var forward = true;
@@ -478,6 +478,7 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
                                 },
                                 startLoading: () => transitionType = PageTransitionType.fade,
                                 toggleAutoRefreshPause: () => transitionType = PageTransitionType.fade,
+                                changeChannel: (_) => transitionType = PageTransitionType.fade,
                               );
                             }
 
@@ -514,7 +515,7 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
                               ),
                             );
                           },
-                          error: (message) => ErrorPageView(
+                          error: (message, selectedChannel) => ErrorPageView(
                             message: message,
                             onRetry: () {
                               final regionState = context.read<RegionBloc>().state;
@@ -557,6 +558,11 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
                                 toggleAutoRefreshPause: () {
                                   // Non fare nulla in questo caso
                                 },
+                                changeChannel: (channel) {
+                                  context.read<TelevideoBloc>().add(
+                                    TelevideoEvent.changeChannel(channel),
+                                  );
+                                },
                               );
                             },
                           ),
@@ -582,7 +588,7 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
           ),
           // Indicatore di caricamento
           if (_isRefreshing || context.watch<TelevideoBloc>().state.maybeWhen(
-            loading: (_) => true,
+            loading: (_, __) => true,
             orElse: () => false,
           ))
             Container(
@@ -597,7 +603,7 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
           BlocBuilder<TelevideoBloc, TelevideoState>(
             builder: (context, state) {
               final isPaused = state.maybeWhen(
-                loaded: (_, __, isAutoRefreshPaused) => isAutoRefreshPaused,
+                loaded: (_, __, isAutoRefreshPaused, ___) => isAutoRefreshPaused,
                 orElse: () => false,
               );
               return AutoRefreshOverlay(

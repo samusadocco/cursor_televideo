@@ -26,6 +26,7 @@ mixin _$TelevideoEvent {
     required TResult Function() previousSubPage,
     required TResult Function() startLoading,
     required TResult Function() toggleAutoRefreshPause,
+    required TResult Function(TeletextChannel channel) changeChannel,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -38,6 +39,7 @@ mixin _$TelevideoEvent {
     TResult? Function()? previousSubPage,
     TResult? Function()? startLoading,
     TResult? Function()? toggleAutoRefreshPause,
+    TResult? Function(TeletextChannel channel)? changeChannel,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -50,6 +52,7 @@ mixin _$TelevideoEvent {
     TResult Function()? previousSubPage,
     TResult Function()? startLoading,
     TResult Function()? toggleAutoRefreshPause,
+    TResult Function(TeletextChannel channel)? changeChannel,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -64,6 +67,7 @@ mixin _$TelevideoEvent {
     required TResult Function(_StartLoading value) startLoading,
     required TResult Function(_ToggleAutoRefreshPause value)
         toggleAutoRefreshPause,
+    required TResult Function(_ChangeChannel value) changeChannel,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -76,6 +80,7 @@ mixin _$TelevideoEvent {
     TResult? Function(_PreviousSubPage value)? previousSubPage,
     TResult? Function(_StartLoading value)? startLoading,
     TResult? Function(_ToggleAutoRefreshPause value)? toggleAutoRefreshPause,
+    TResult? Function(_ChangeChannel value)? changeChannel,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -88,6 +93,7 @@ mixin _$TelevideoEvent {
     TResult Function(_PreviousSubPage value)? previousSubPage,
     TResult Function(_StartLoading value)? startLoading,
     TResult Function(_ToggleAutoRefreshPause value)? toggleAutoRefreshPause,
+    TResult Function(_ChangeChannel value)? changeChannel,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -192,6 +198,7 @@ class _$LoadNationalPageImpl implements _LoadNationalPage {
     required TResult Function() previousSubPage,
     required TResult Function() startLoading,
     required TResult Function() toggleAutoRefreshPause,
+    required TResult Function(TeletextChannel channel) changeChannel,
   }) {
     return loadNationalPage(pageNumber);
   }
@@ -207,6 +214,7 @@ class _$LoadNationalPageImpl implements _LoadNationalPage {
     TResult? Function()? previousSubPage,
     TResult? Function()? startLoading,
     TResult? Function()? toggleAutoRefreshPause,
+    TResult? Function(TeletextChannel channel)? changeChannel,
   }) {
     return loadNationalPage?.call(pageNumber);
   }
@@ -222,6 +230,7 @@ class _$LoadNationalPageImpl implements _LoadNationalPage {
     TResult Function()? previousSubPage,
     TResult Function()? startLoading,
     TResult Function()? toggleAutoRefreshPause,
+    TResult Function(TeletextChannel channel)? changeChannel,
     required TResult orElse(),
   }) {
     if (loadNationalPage != null) {
@@ -242,6 +251,7 @@ class _$LoadNationalPageImpl implements _LoadNationalPage {
     required TResult Function(_StartLoading value) startLoading,
     required TResult Function(_ToggleAutoRefreshPause value)
         toggleAutoRefreshPause,
+    required TResult Function(_ChangeChannel value) changeChannel,
   }) {
     return loadNationalPage(this);
   }
@@ -257,6 +267,7 @@ class _$LoadNationalPageImpl implements _LoadNationalPage {
     TResult? Function(_PreviousSubPage value)? previousSubPage,
     TResult? Function(_StartLoading value)? startLoading,
     TResult? Function(_ToggleAutoRefreshPause value)? toggleAutoRefreshPause,
+    TResult? Function(_ChangeChannel value)? changeChannel,
   }) {
     return loadNationalPage?.call(this);
   }
@@ -272,6 +283,7 @@ class _$LoadNationalPageImpl implements _LoadNationalPage {
     TResult Function(_PreviousSubPage value)? previousSubPage,
     TResult Function(_StartLoading value)? startLoading,
     TResult Function(_ToggleAutoRefreshPause value)? toggleAutoRefreshPause,
+    TResult Function(_ChangeChannel value)? changeChannel,
     required TResult orElse(),
   }) {
     if (loadNationalPage != null) {
@@ -380,6 +392,7 @@ class _$LoadRegionalPageImpl implements _LoadRegionalPage {
     required TResult Function() previousSubPage,
     required TResult Function() startLoading,
     required TResult Function() toggleAutoRefreshPause,
+    required TResult Function(TeletextChannel channel) changeChannel,
   }) {
     return loadRegionalPage(region, pageNumber);
   }
@@ -395,6 +408,7 @@ class _$LoadRegionalPageImpl implements _LoadRegionalPage {
     TResult? Function()? previousSubPage,
     TResult? Function()? startLoading,
     TResult? Function()? toggleAutoRefreshPause,
+    TResult? Function(TeletextChannel channel)? changeChannel,
   }) {
     return loadRegionalPage?.call(region, pageNumber);
   }
@@ -410,6 +424,7 @@ class _$LoadRegionalPageImpl implements _LoadRegionalPage {
     TResult Function()? previousSubPage,
     TResult Function()? startLoading,
     TResult Function()? toggleAutoRefreshPause,
+    TResult Function(TeletextChannel channel)? changeChannel,
     required TResult orElse(),
   }) {
     if (loadRegionalPage != null) {
@@ -430,6 +445,7 @@ class _$LoadRegionalPageImpl implements _LoadRegionalPage {
     required TResult Function(_StartLoading value) startLoading,
     required TResult Function(_ToggleAutoRefreshPause value)
         toggleAutoRefreshPause,
+    required TResult Function(_ChangeChannel value) changeChannel,
   }) {
     return loadRegionalPage(this);
   }
@@ -445,6 +461,7 @@ class _$LoadRegionalPageImpl implements _LoadRegionalPage {
     TResult? Function(_PreviousSubPage value)? previousSubPage,
     TResult? Function(_StartLoading value)? startLoading,
     TResult? Function(_ToggleAutoRefreshPause value)? toggleAutoRefreshPause,
+    TResult? Function(_ChangeChannel value)? changeChannel,
   }) {
     return loadRegionalPage?.call(this);
   }
@@ -460,6 +477,7 @@ class _$LoadRegionalPageImpl implements _LoadRegionalPage {
     TResult Function(_PreviousSubPage value)? previousSubPage,
     TResult Function(_StartLoading value)? startLoading,
     TResult Function(_ToggleAutoRefreshPause value)? toggleAutoRefreshPause,
+    TResult Function(_ChangeChannel value)? changeChannel,
     required TResult orElse(),
   }) {
     if (loadRegionalPage != null) {
@@ -560,6 +578,7 @@ class _$NextPageImpl implements _NextPage {
     required TResult Function() previousSubPage,
     required TResult Function() startLoading,
     required TResult Function() toggleAutoRefreshPause,
+    required TResult Function(TeletextChannel channel) changeChannel,
   }) {
     return nextPage(currentPage);
   }
@@ -575,6 +594,7 @@ class _$NextPageImpl implements _NextPage {
     TResult? Function()? previousSubPage,
     TResult? Function()? startLoading,
     TResult? Function()? toggleAutoRefreshPause,
+    TResult? Function(TeletextChannel channel)? changeChannel,
   }) {
     return nextPage?.call(currentPage);
   }
@@ -590,6 +610,7 @@ class _$NextPageImpl implements _NextPage {
     TResult Function()? previousSubPage,
     TResult Function()? startLoading,
     TResult Function()? toggleAutoRefreshPause,
+    TResult Function(TeletextChannel channel)? changeChannel,
     required TResult orElse(),
   }) {
     if (nextPage != null) {
@@ -610,6 +631,7 @@ class _$NextPageImpl implements _NextPage {
     required TResult Function(_StartLoading value) startLoading,
     required TResult Function(_ToggleAutoRefreshPause value)
         toggleAutoRefreshPause,
+    required TResult Function(_ChangeChannel value) changeChannel,
   }) {
     return nextPage(this);
   }
@@ -625,6 +647,7 @@ class _$NextPageImpl implements _NextPage {
     TResult? Function(_PreviousSubPage value)? previousSubPage,
     TResult? Function(_StartLoading value)? startLoading,
     TResult? Function(_ToggleAutoRefreshPause value)? toggleAutoRefreshPause,
+    TResult? Function(_ChangeChannel value)? changeChannel,
   }) {
     return nextPage?.call(this);
   }
@@ -640,6 +663,7 @@ class _$NextPageImpl implements _NextPage {
     TResult Function(_PreviousSubPage value)? previousSubPage,
     TResult Function(_StartLoading value)? startLoading,
     TResult Function(_ToggleAutoRefreshPause value)? toggleAutoRefreshPause,
+    TResult Function(_ChangeChannel value)? changeChannel,
     required TResult orElse(),
   }) {
     if (nextPage != null) {
@@ -738,6 +762,7 @@ class _$PreviousPageImpl implements _PreviousPage {
     required TResult Function() previousSubPage,
     required TResult Function() startLoading,
     required TResult Function() toggleAutoRefreshPause,
+    required TResult Function(TeletextChannel channel) changeChannel,
   }) {
     return previousPage(currentPage);
   }
@@ -753,6 +778,7 @@ class _$PreviousPageImpl implements _PreviousPage {
     TResult? Function()? previousSubPage,
     TResult? Function()? startLoading,
     TResult? Function()? toggleAutoRefreshPause,
+    TResult? Function(TeletextChannel channel)? changeChannel,
   }) {
     return previousPage?.call(currentPage);
   }
@@ -768,6 +794,7 @@ class _$PreviousPageImpl implements _PreviousPage {
     TResult Function()? previousSubPage,
     TResult Function()? startLoading,
     TResult Function()? toggleAutoRefreshPause,
+    TResult Function(TeletextChannel channel)? changeChannel,
     required TResult orElse(),
   }) {
     if (previousPage != null) {
@@ -788,6 +815,7 @@ class _$PreviousPageImpl implements _PreviousPage {
     required TResult Function(_StartLoading value) startLoading,
     required TResult Function(_ToggleAutoRefreshPause value)
         toggleAutoRefreshPause,
+    required TResult Function(_ChangeChannel value) changeChannel,
   }) {
     return previousPage(this);
   }
@@ -803,6 +831,7 @@ class _$PreviousPageImpl implements _PreviousPage {
     TResult? Function(_PreviousSubPage value)? previousSubPage,
     TResult? Function(_StartLoading value)? startLoading,
     TResult? Function(_ToggleAutoRefreshPause value)? toggleAutoRefreshPause,
+    TResult? Function(_ChangeChannel value)? changeChannel,
   }) {
     return previousPage?.call(this);
   }
@@ -818,6 +847,7 @@ class _$PreviousPageImpl implements _PreviousPage {
     TResult Function(_PreviousSubPage value)? previousSubPage,
     TResult Function(_StartLoading value)? startLoading,
     TResult Function(_ToggleAutoRefreshPause value)? toggleAutoRefreshPause,
+    TResult Function(_ChangeChannel value)? changeChannel,
     required TResult orElse(),
   }) {
     if (previousPage != null) {
@@ -889,6 +919,7 @@ class _$NextSubPageImpl implements _NextSubPage {
     required TResult Function() previousSubPage,
     required TResult Function() startLoading,
     required TResult Function() toggleAutoRefreshPause,
+    required TResult Function(TeletextChannel channel) changeChannel,
   }) {
     return nextSubPage();
   }
@@ -904,6 +935,7 @@ class _$NextSubPageImpl implements _NextSubPage {
     TResult? Function()? previousSubPage,
     TResult? Function()? startLoading,
     TResult? Function()? toggleAutoRefreshPause,
+    TResult? Function(TeletextChannel channel)? changeChannel,
   }) {
     return nextSubPage?.call();
   }
@@ -919,6 +951,7 @@ class _$NextSubPageImpl implements _NextSubPage {
     TResult Function()? previousSubPage,
     TResult Function()? startLoading,
     TResult Function()? toggleAutoRefreshPause,
+    TResult Function(TeletextChannel channel)? changeChannel,
     required TResult orElse(),
   }) {
     if (nextSubPage != null) {
@@ -939,6 +972,7 @@ class _$NextSubPageImpl implements _NextSubPage {
     required TResult Function(_StartLoading value) startLoading,
     required TResult Function(_ToggleAutoRefreshPause value)
         toggleAutoRefreshPause,
+    required TResult Function(_ChangeChannel value) changeChannel,
   }) {
     return nextSubPage(this);
   }
@@ -954,6 +988,7 @@ class _$NextSubPageImpl implements _NextSubPage {
     TResult? Function(_PreviousSubPage value)? previousSubPage,
     TResult? Function(_StartLoading value)? startLoading,
     TResult? Function(_ToggleAutoRefreshPause value)? toggleAutoRefreshPause,
+    TResult? Function(_ChangeChannel value)? changeChannel,
   }) {
     return nextSubPage?.call(this);
   }
@@ -969,6 +1004,7 @@ class _$NextSubPageImpl implements _NextSubPage {
     TResult Function(_PreviousSubPage value)? previousSubPage,
     TResult Function(_StartLoading value)? startLoading,
     TResult Function(_ToggleAutoRefreshPause value)? toggleAutoRefreshPause,
+    TResult Function(_ChangeChannel value)? changeChannel,
     required TResult orElse(),
   }) {
     if (nextSubPage != null) {
@@ -1031,6 +1067,7 @@ class _$PreviousSubPageImpl implements _PreviousSubPage {
     required TResult Function() previousSubPage,
     required TResult Function() startLoading,
     required TResult Function() toggleAutoRefreshPause,
+    required TResult Function(TeletextChannel channel) changeChannel,
   }) {
     return previousSubPage();
   }
@@ -1046,6 +1083,7 @@ class _$PreviousSubPageImpl implements _PreviousSubPage {
     TResult? Function()? previousSubPage,
     TResult? Function()? startLoading,
     TResult? Function()? toggleAutoRefreshPause,
+    TResult? Function(TeletextChannel channel)? changeChannel,
   }) {
     return previousSubPage?.call();
   }
@@ -1061,6 +1099,7 @@ class _$PreviousSubPageImpl implements _PreviousSubPage {
     TResult Function()? previousSubPage,
     TResult Function()? startLoading,
     TResult Function()? toggleAutoRefreshPause,
+    TResult Function(TeletextChannel channel)? changeChannel,
     required TResult orElse(),
   }) {
     if (previousSubPage != null) {
@@ -1081,6 +1120,7 @@ class _$PreviousSubPageImpl implements _PreviousSubPage {
     required TResult Function(_StartLoading value) startLoading,
     required TResult Function(_ToggleAutoRefreshPause value)
         toggleAutoRefreshPause,
+    required TResult Function(_ChangeChannel value) changeChannel,
   }) {
     return previousSubPage(this);
   }
@@ -1096,6 +1136,7 @@ class _$PreviousSubPageImpl implements _PreviousSubPage {
     TResult? Function(_PreviousSubPage value)? previousSubPage,
     TResult? Function(_StartLoading value)? startLoading,
     TResult? Function(_ToggleAutoRefreshPause value)? toggleAutoRefreshPause,
+    TResult? Function(_ChangeChannel value)? changeChannel,
   }) {
     return previousSubPage?.call(this);
   }
@@ -1111,6 +1152,7 @@ class _$PreviousSubPageImpl implements _PreviousSubPage {
     TResult Function(_PreviousSubPage value)? previousSubPage,
     TResult Function(_StartLoading value)? startLoading,
     TResult Function(_ToggleAutoRefreshPause value)? toggleAutoRefreshPause,
+    TResult Function(_ChangeChannel value)? changeChannel,
     required TResult orElse(),
   }) {
     if (previousSubPage != null) {
@@ -1173,6 +1215,7 @@ class _$StartLoadingImpl implements _StartLoading {
     required TResult Function() previousSubPage,
     required TResult Function() startLoading,
     required TResult Function() toggleAutoRefreshPause,
+    required TResult Function(TeletextChannel channel) changeChannel,
   }) {
     return startLoading();
   }
@@ -1188,6 +1231,7 @@ class _$StartLoadingImpl implements _StartLoading {
     TResult? Function()? previousSubPage,
     TResult? Function()? startLoading,
     TResult? Function()? toggleAutoRefreshPause,
+    TResult? Function(TeletextChannel channel)? changeChannel,
   }) {
     return startLoading?.call();
   }
@@ -1203,6 +1247,7 @@ class _$StartLoadingImpl implements _StartLoading {
     TResult Function()? previousSubPage,
     TResult Function()? startLoading,
     TResult Function()? toggleAutoRefreshPause,
+    TResult Function(TeletextChannel channel)? changeChannel,
     required TResult orElse(),
   }) {
     if (startLoading != null) {
@@ -1223,6 +1268,7 @@ class _$StartLoadingImpl implements _StartLoading {
     required TResult Function(_StartLoading value) startLoading,
     required TResult Function(_ToggleAutoRefreshPause value)
         toggleAutoRefreshPause,
+    required TResult Function(_ChangeChannel value) changeChannel,
   }) {
     return startLoading(this);
   }
@@ -1238,6 +1284,7 @@ class _$StartLoadingImpl implements _StartLoading {
     TResult? Function(_PreviousSubPage value)? previousSubPage,
     TResult? Function(_StartLoading value)? startLoading,
     TResult? Function(_ToggleAutoRefreshPause value)? toggleAutoRefreshPause,
+    TResult? Function(_ChangeChannel value)? changeChannel,
   }) {
     return startLoading?.call(this);
   }
@@ -1253,6 +1300,7 @@ class _$StartLoadingImpl implements _StartLoading {
     TResult Function(_PreviousSubPage value)? previousSubPage,
     TResult Function(_StartLoading value)? startLoading,
     TResult Function(_ToggleAutoRefreshPause value)? toggleAutoRefreshPause,
+    TResult Function(_ChangeChannel value)? changeChannel,
     required TResult orElse(),
   }) {
     if (startLoading != null) {
@@ -1318,6 +1366,7 @@ class _$ToggleAutoRefreshPauseImpl implements _ToggleAutoRefreshPause {
     required TResult Function() previousSubPage,
     required TResult Function() startLoading,
     required TResult Function() toggleAutoRefreshPause,
+    required TResult Function(TeletextChannel channel) changeChannel,
   }) {
     return toggleAutoRefreshPause();
   }
@@ -1333,6 +1382,7 @@ class _$ToggleAutoRefreshPauseImpl implements _ToggleAutoRefreshPause {
     TResult? Function()? previousSubPage,
     TResult? Function()? startLoading,
     TResult? Function()? toggleAutoRefreshPause,
+    TResult? Function(TeletextChannel channel)? changeChannel,
   }) {
     return toggleAutoRefreshPause?.call();
   }
@@ -1348,6 +1398,7 @@ class _$ToggleAutoRefreshPauseImpl implements _ToggleAutoRefreshPause {
     TResult Function()? previousSubPage,
     TResult Function()? startLoading,
     TResult Function()? toggleAutoRefreshPause,
+    TResult Function(TeletextChannel channel)? changeChannel,
     required TResult orElse(),
   }) {
     if (toggleAutoRefreshPause != null) {
@@ -1368,6 +1419,7 @@ class _$ToggleAutoRefreshPauseImpl implements _ToggleAutoRefreshPause {
     required TResult Function(_StartLoading value) startLoading,
     required TResult Function(_ToggleAutoRefreshPause value)
         toggleAutoRefreshPause,
+    required TResult Function(_ChangeChannel value) changeChannel,
   }) {
     return toggleAutoRefreshPause(this);
   }
@@ -1383,6 +1435,7 @@ class _$ToggleAutoRefreshPauseImpl implements _ToggleAutoRefreshPause {
     TResult? Function(_PreviousSubPage value)? previousSubPage,
     TResult? Function(_StartLoading value)? startLoading,
     TResult? Function(_ToggleAutoRefreshPause value)? toggleAutoRefreshPause,
+    TResult? Function(_ChangeChannel value)? changeChannel,
   }) {
     return toggleAutoRefreshPause?.call(this);
   }
@@ -1398,6 +1451,7 @@ class _$ToggleAutoRefreshPauseImpl implements _ToggleAutoRefreshPause {
     TResult Function(_PreviousSubPage value)? previousSubPage,
     TResult Function(_StartLoading value)? startLoading,
     TResult Function(_ToggleAutoRefreshPause value)? toggleAutoRefreshPause,
+    TResult Function(_ChangeChannel value)? changeChannel,
     required TResult orElse(),
   }) {
     if (toggleAutoRefreshPause != null) {
@@ -1409,4 +1463,200 @@ class _$ToggleAutoRefreshPauseImpl implements _ToggleAutoRefreshPause {
 
 abstract class _ToggleAutoRefreshPause implements TelevideoEvent {
   const factory _ToggleAutoRefreshPause() = _$ToggleAutoRefreshPauseImpl;
+}
+
+/// @nodoc
+abstract class _$$ChangeChannelImplCopyWith<$Res> {
+  factory _$$ChangeChannelImplCopyWith(
+          _$ChangeChannelImpl value, $Res Function(_$ChangeChannelImpl) then) =
+      __$$ChangeChannelImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({TeletextChannel channel});
+
+  $TeletextChannelCopyWith<$Res> get channel;
+}
+
+/// @nodoc
+class __$$ChangeChannelImplCopyWithImpl<$Res>
+    extends _$TelevideoEventCopyWithImpl<$Res, _$ChangeChannelImpl>
+    implements _$$ChangeChannelImplCopyWith<$Res> {
+  __$$ChangeChannelImplCopyWithImpl(
+      _$ChangeChannelImpl _value, $Res Function(_$ChangeChannelImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of TelevideoEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? channel = null,
+  }) {
+    return _then(_$ChangeChannelImpl(
+      null == channel
+          ? _value.channel
+          : channel // ignore: cast_nullable_to_non_nullable
+              as TeletextChannel,
+    ));
+  }
+
+  /// Create a copy of TelevideoEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $TeletextChannelCopyWith<$Res> get channel {
+    return $TeletextChannelCopyWith<$Res>(_value.channel, (value) {
+      return _then(_value.copyWith(channel: value));
+    });
+  }
+}
+
+/// @nodoc
+
+class _$ChangeChannelImpl implements _ChangeChannel {
+  const _$ChangeChannelImpl(this.channel);
+
+  @override
+  final TeletextChannel channel;
+
+  @override
+  String toString() {
+    return 'TelevideoEvent.changeChannel(channel: $channel)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$ChangeChannelImpl &&
+            (identical(other.channel, channel) || other.channel == channel));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, channel);
+
+  /// Create a copy of TelevideoEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$ChangeChannelImplCopyWith<_$ChangeChannelImpl> get copyWith =>
+      __$$ChangeChannelImplCopyWithImpl<_$ChangeChannelImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(int pageNumber) loadNationalPage,
+    required TResult Function(Region region, int pageNumber) loadRegionalPage,
+    required TResult Function(int currentPage) nextPage,
+    required TResult Function(int currentPage) previousPage,
+    required TResult Function() nextSubPage,
+    required TResult Function() previousSubPage,
+    required TResult Function() startLoading,
+    required TResult Function() toggleAutoRefreshPause,
+    required TResult Function(TeletextChannel channel) changeChannel,
+  }) {
+    return changeChannel(channel);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(int pageNumber)? loadNationalPage,
+    TResult? Function(Region region, int pageNumber)? loadRegionalPage,
+    TResult? Function(int currentPage)? nextPage,
+    TResult? Function(int currentPage)? previousPage,
+    TResult? Function()? nextSubPage,
+    TResult? Function()? previousSubPage,
+    TResult? Function()? startLoading,
+    TResult? Function()? toggleAutoRefreshPause,
+    TResult? Function(TeletextChannel channel)? changeChannel,
+  }) {
+    return changeChannel?.call(channel);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(int pageNumber)? loadNationalPage,
+    TResult Function(Region region, int pageNumber)? loadRegionalPage,
+    TResult Function(int currentPage)? nextPage,
+    TResult Function(int currentPage)? previousPage,
+    TResult Function()? nextSubPage,
+    TResult Function()? previousSubPage,
+    TResult Function()? startLoading,
+    TResult Function()? toggleAutoRefreshPause,
+    TResult Function(TeletextChannel channel)? changeChannel,
+    required TResult orElse(),
+  }) {
+    if (changeChannel != null) {
+      return changeChannel(channel);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_LoadNationalPage value) loadNationalPage,
+    required TResult Function(_LoadRegionalPage value) loadRegionalPage,
+    required TResult Function(_NextPage value) nextPage,
+    required TResult Function(_PreviousPage value) previousPage,
+    required TResult Function(_NextSubPage value) nextSubPage,
+    required TResult Function(_PreviousSubPage value) previousSubPage,
+    required TResult Function(_StartLoading value) startLoading,
+    required TResult Function(_ToggleAutoRefreshPause value)
+        toggleAutoRefreshPause,
+    required TResult Function(_ChangeChannel value) changeChannel,
+  }) {
+    return changeChannel(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_LoadNationalPage value)? loadNationalPage,
+    TResult? Function(_LoadRegionalPage value)? loadRegionalPage,
+    TResult? Function(_NextPage value)? nextPage,
+    TResult? Function(_PreviousPage value)? previousPage,
+    TResult? Function(_NextSubPage value)? nextSubPage,
+    TResult? Function(_PreviousSubPage value)? previousSubPage,
+    TResult? Function(_StartLoading value)? startLoading,
+    TResult? Function(_ToggleAutoRefreshPause value)? toggleAutoRefreshPause,
+    TResult? Function(_ChangeChannel value)? changeChannel,
+  }) {
+    return changeChannel?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_LoadNationalPage value)? loadNationalPage,
+    TResult Function(_LoadRegionalPage value)? loadRegionalPage,
+    TResult Function(_NextPage value)? nextPage,
+    TResult Function(_PreviousPage value)? previousPage,
+    TResult Function(_NextSubPage value)? nextSubPage,
+    TResult Function(_PreviousSubPage value)? previousSubPage,
+    TResult Function(_StartLoading value)? startLoading,
+    TResult Function(_ToggleAutoRefreshPause value)? toggleAutoRefreshPause,
+    TResult Function(_ChangeChannel value)? changeChannel,
+    required TResult orElse(),
+  }) {
+    if (changeChannel != null) {
+      return changeChannel(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _ChangeChannel implements TelevideoEvent {
+  const factory _ChangeChannel(final TeletextChannel channel) =
+      _$ChangeChannelImpl;
+
+  TeletextChannel get channel;
+
+  /// Create a copy of TelevideoEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$ChangeChannelImplCopyWith<_$ChangeChannelImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }
