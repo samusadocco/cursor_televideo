@@ -222,5 +222,30 @@
         "example": "Lombardia"
       }
     }
-  }
+  },
+  "support": "Podpora",
+  "supportDescription": "Kontaktujte nás pro pomoc",
+  "supportTitle": "Jsme tu, abychom vám pomohli!",
+  "supportSubtitle": "V případě jakýchkoli dotazů nebo pomoci nás neváhejte kontaktovat",
+  "directContact": "Přímý Kontakt",
+  "emailLabel": "E-mail",
+  "websiteLabel": "Webová Stránka",
+  "responseTime": "Průměrná doba odezvy: 24-48 hodin",
+  "faq": "Často Kladené Otázky",
+  "faqGeolocation": "Jak funguje geolokace?",
+  "faqGeolocationAnswer": "Aplikace používá polohu vašeho zařízení k automatické identifikaci vašeho regionu a zobrazování relevantních místních zpráv. Tuto funkci můžete deaktivovat v nastavení aplikace.",
+  "faqFavorites": "Jak uložit stránku do oblíbených?",
+  "faqFavoritesAnswer": "Při prohlížení stránky klepněte na ikonu hvězdičky a přidejte ji do oblíbených. K oblíbeným stránkám máte přístup z hlavní nabídky.",
+  "faqTheme": "Jak změnit motiv aplikace?",
+  "faqThemeAnswer": "Přejděte do nastavení aplikace a vyberte požadovaný motiv (světlý/tmavý). Aplikace také podporuje automatické nastavení na základě systémových nastavení.",
+  "faqOffline": "Funguje aplikace offline?",
+  "faqOfflineAnswer": "Ne, pro přístup k real-time teletextovým stránkám je vyžadováno aktivní připojení k internetu.",
+  "faqReportProblem": "Jak nahlásit problém?",
+  "faqReportProblemAnswer": "Pošlete podrobný e-mail na samuele@codebysam.it s popisem problému.",
+  "reportBugTitle": "Nahlásit Problém",
+  "reportBugInstructions": "Při hlášení problému uveďte pokud možno:",
+  "reportBugItems": "Verze aplikace\\nModel zařízení\\nOperační systém\\nSnímek obrazovky problému",
+  "developedBy": "Vyvinuto CodeBySam",
+  "errorOpeningLink": "Nelze otevřít odkaz",
+  "errorOpeningEmail": "Nelze otevřít e-mail"
 }

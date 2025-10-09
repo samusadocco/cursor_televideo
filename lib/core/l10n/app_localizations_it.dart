@@ -418,4 +418,87 @@ class AppLocalizationsIt extends AppLocalizations {
   String pageLoadErrorWithHint(int minPage) {
     return 'Si è verificato un errore durante il caricamento della pagina.\nTorna a $minPage';
   }
+
+  @override
+  String get support => 'Supporto';
+
+  @override
+  String get supportDescription => 'Contattaci per assistenza';
+
+  @override
+  String get supportTitle => 'Siamo qui per aiutarti!';
+
+  @override
+  String get supportSubtitle =>
+      'Per qualsiasi domanda o assistenza, non esitare a contattarci';
+
+  @override
+  String get directContact => 'Contatto Diretto';
+
+  @override
+  String get emailLabel => 'Email';
+
+  @override
+  String get websiteLabel => 'Sito Web';
+
+  @override
+  String get responseTime => 'Tempo di risposta medio: 24-48 ore';
+
+  @override
+  String get faq => 'Domande Frequenti';
+
+  @override
+  String get faqGeolocation => 'Come funziona la geolocalizzazione?';
+
+  @override
+  String get faqGeolocationAnswer =>
+      'L\'app utilizza la posizione del dispositivo per identificare automaticamente la tua regione e mostrarti le notizie locali pertinenti. Puoi disattivare questa funzione nelle impostazioni dell\'app.';
+
+  @override
+  String get faqFavorites => 'Come salvare una pagina nei preferiti?';
+
+  @override
+  String get faqFavoritesAnswer =>
+      'Mentre visualizzi una pagina, tocca l\'icona della stella per aggiungerla ai preferiti. Puoi accedere alle tue pagine preferite dal menu principale.';
+
+  @override
+  String get faqTheme => 'Come cambiare il tema dell\'app?';
+
+  @override
+  String get faqThemeAnswer =>
+      'Vai nelle impostazioni dell\'app e seleziona il tema desiderato (chiaro/scuro). L\'app supporta anche l\'impostazione automatica basata sul tema di sistema.';
+
+  @override
+  String get faqOffline => 'L\'app funziona offline?';
+
+  @override
+  String get faqOfflineAnswer =>
+      'No, è necessaria una connessione internet attiva per accedere alle pagine del Televideo in tempo reale.';
+
+  @override
+  String get faqReportProblem => 'Come segnalare un problema?';
+
+  @override
+  String get faqReportProblemAnswer =>
+      'Invia una email dettagliata a samuele@codebysam.it descrivendo il problema riscontrato.';
+
+  @override
+  String get reportBugTitle => 'Segnala un problema';
+
+  @override
+  String get reportBugInstructions =>
+      'Quando segnali un problema, includi se possibile:';
+
+  @override
+  String get reportBugItems =>
+      'Versione dell\'app\nModello del dispositivo\nSistema operativo\nScreenshot del problema';
+
+  @override
+  String get developedBy => 'Sviluppato da CodeBySam';
+
+  @override
+  String get errorOpeningLink => 'Impossibile aprire il link';
+
+  @override
+  String get errorOpeningEmail => 'Impossibile aprire l\'email';
 }

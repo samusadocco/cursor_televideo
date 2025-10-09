@@ -222,5 +222,30 @@
         "example": "Lombardia"
       }
     }
-  }
+  },
+  "support": "Podpora",
+  "supportDescription": "Kontaktirajte nas za pomoč",
+  "supportTitle": "Tukaj smo, da pomagamo!",
+  "supportSubtitle": "Za vsa vprašanja ali pomoč nas ne oklevajte kontaktirati",
+  "directContact": "Neposredni Stik",
+  "emailLabel": "E-pošta",
+  "websiteLabel": "Spletna Stran",
+  "responseTime": "Povprečni odzivni čas: 24-48 ur",
+  "faq": "Pogosto Zastavljena Vprašanja",
+  "faqGeolocation": "Kako deluje geolokacija?",
+  "faqGeolocationAnswer": "Aplikacija uporablja lokacijo vaše naprave za samodejno identifikacijo vaše regije in prikaz ustreznih lokalnih novic. To funkcijo lahko deaktivirate v nastavitvah aplikacije.",
+  "faqFavorites": "Kako shraniti stran v priljubljene?",
+  "faqFavoritesAnswer": "Med gledanjem strani se dotaknite ikone zvezdice, da jo dodate med priljubljene. Do svojih priljubljenih strani lahko dostopate iz glavnega menija.",
+  "faqTheme": "Kako spremeniti temo aplikacije?",
+  "faqThemeAnswer": "Pojdite v nastavitve aplikacije in izberite želeno temo (svetlo/temno). Aplikacija podpira tudi samodejno nastavitev na podlagi sistemskih nastavitev.",
+  "faqOffline": "Ali aplikacija deluje brez povezave?",
+  "faqOfflineAnswer": "Ne, aktivna internetna povezava je potrebna za dostop do teletekst strani v realnem času.",
+  "faqReportProblem": "Kako prijaviti težavo?",
+  "faqReportProblemAnswer": "Pošljite podrobno e-pošto na samuele@codebysam.it s opisom težave.",
+  "reportBugTitle": "Prijavite Težavo",
+  "reportBugInstructions": "Pri prijavljanju težave vključite, če je mogoče:",
+  "reportBugItems": "Različica aplikacije\\nModel naprave\\nOperacijski sistem\\nPosnetek zaslona težave",
+  "developedBy": "Razvil CodeBySam",
+  "errorOpeningLink": "Povezave ni mogoče odpreti",
+  "errorOpeningEmail": "E-pošte ni mogoče odpreti"
 }

@@ -264,21 +264,6 @@ class _SettingsPageState extends State<SettingsPage> {
               );
             },
           ),
-          
-          // Supporto
-          ListTile(
-            title: Text(l10n.support),
-            subtitle: const Text('Contattaci per assistenza'),
-            trailing: const Icon(Icons.support_agent),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const SupportPage(),
-                ),
-              );
-            },
-          ),
           const Divider(),
 
           // Sezione Lingua
@@ -428,6 +413,22 @@ class _SettingsPageState extends State<SettingsPage> {
             subtitle: Text(l10n.resetPrivacySettingsDescription),
             trailing: const Icon(Icons.restore),
             onTap: _resetConsentSettings,
+          ),
+          const Divider(),
+
+          // Supporto
+          ListTile(
+            title: Text(l10n.support),
+            subtitle: Text(l10n.supportDescription),
+            trailing: const Icon(Icons.support_agent),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const SupportPage(),
+                ),
+              );
+            },
           ),
           const Divider(),
 

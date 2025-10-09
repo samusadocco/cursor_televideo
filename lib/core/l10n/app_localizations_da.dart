@@ -413,4 +413,87 @@ class AppLocalizationsDa extends AppLocalizations {
   String pageLoadErrorWithHint(int minPage) {
     return 'An error occurred while loading the page.\nBack to $minPage';
   }
+
+  @override
+  String get support => 'Support';
+
+  @override
+  String get supportDescription => 'Kontakt os for hjælp';
+
+  @override
+  String get supportTitle => 'Vi er her for at hjælpe!';
+
+  @override
+  String get supportSubtitle =>
+      'Hvis du har spørgsmål eller brug for hjælp, så tøv ikke med at kontakte os';
+
+  @override
+  String get directContact => 'Direkte Kontakt';
+
+  @override
+  String get emailLabel => 'E-mail';
+
+  @override
+  String get websiteLabel => 'Hjemmeside';
+
+  @override
+  String get responseTime => 'Gennemsnitlig svartid: 24-48 timer';
+
+  @override
+  String get faq => 'Ofte Stillede Spørgsmål';
+
+  @override
+  String get faqGeolocation => 'Hvordan virker geolokalisering?';
+
+  @override
+  String get faqGeolocationAnswer =>
+      'Appen bruger din enheds placering til automatisk at identificere din region og vise relevante lokale nyheder. Du kan deaktivere denne funktion i app-indstillingerne.';
+
+  @override
+  String get faqFavorites => 'Hvordan gemmer jeg en side i favoritter?';
+
+  @override
+  String get faqFavoritesAnswer =>
+      'Mens du ser en side, skal du trykke på stjerneikonet for at tilføje den til favoritter. Du kan få adgang til dine yndlingssider fra hovedmenuen.';
+
+  @override
+  String get faqTheme => 'Hvordan ændrer jeg app-temaet?';
+
+  @override
+  String get faqThemeAnswer =>
+      'Gå til app-indstillingerne og vælg dit ønskede tema (lyst/mørkt). Appen understøtter også automatisk indstilling baseret på systemindstillinger.';
+
+  @override
+  String get faqOffline => 'Virker appen offline?';
+
+  @override
+  String get faqOfflineAnswer =>
+      'Nej, en aktiv internetforbindelse er nødvendig for at få adgang til tekst-TV-sider i realtid.';
+
+  @override
+  String get faqReportProblem => 'Hvordan rapporterer jeg et problem?';
+
+  @override
+  String get faqReportProblemAnswer =>
+      'Send en detaljeret e-mail til samuele@codebysam.it, hvor du beskriver problemet.';
+
+  @override
+  String get reportBugTitle => 'Rapporter et Problem';
+
+  @override
+  String get reportBugInstructions =>
+      'Når du rapporterer et problem, bedes du inkludere hvis muligt:';
+
+  @override
+  String get reportBugItems =>
+      'App-version\\nEnhedsmodel\\nOperativsystem\\nSkærmbillede af problemet';
+
+  @override
+  String get developedBy => 'Udviklet af CodeBySam';
+
+  @override
+  String get errorOpeningLink => 'Kan ikke åbne link';
+
+  @override
+  String get errorOpeningEmail => 'Kan ikke åbne e-mail';
 }

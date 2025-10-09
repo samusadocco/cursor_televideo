@@ -1,6 +1,14 @@
 {
   "versions": [
     {
+      "version": "1.0.9",
+      "changes": [
+        "Added Support section in Settings",
+        "Full support for 16 European languages",
+        "Improved user experience"
+      ]
+    },
+    {
       "version": "1.0.8",
       "changes": [
         "Added pause and play function for automatic subpage refresh",

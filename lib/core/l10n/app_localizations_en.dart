@@ -411,4 +411,87 @@ class AppLocalizationsEn extends AppLocalizations {
   String pageLoadErrorWithHint(int minPage) {
     return 'An error occurred while loading the page.\nBack to $minPage';
   }
+
+  @override
+  String get support => 'Support';
+
+  @override
+  String get supportDescription => 'Contact us for assistance';
+
+  @override
+  String get supportTitle => 'We\'re here to help!';
+
+  @override
+  String get supportSubtitle =>
+      'For any questions or assistance, please don\'t hesitate to contact us';
+
+  @override
+  String get directContact => 'Direct Contact';
+
+  @override
+  String get emailLabel => 'Email';
+
+  @override
+  String get websiteLabel => 'Website';
+
+  @override
+  String get responseTime => 'Average response time: 24-48 hours';
+
+  @override
+  String get faq => 'Frequently Asked Questions';
+
+  @override
+  String get faqGeolocation => 'How does geolocation work?';
+
+  @override
+  String get faqGeolocationAnswer =>
+      'The app uses your device\'s location to automatically identify your region and show you relevant local news. You can disable this feature in the app settings.';
+
+  @override
+  String get faqFavorites => 'How to save a page to favorites?';
+
+  @override
+  String get faqFavoritesAnswer =>
+      'While viewing a page, tap the star icon to add it to favorites. You can access your favorite pages from the main menu.';
+
+  @override
+  String get faqTheme => 'How to change the app theme?';
+
+  @override
+  String get faqThemeAnswer =>
+      'Go to the app settings and select your desired theme (light/dark). The app also supports automatic theme based on system settings.';
+
+  @override
+  String get faqOffline => 'Does the app work offline?';
+
+  @override
+  String get faqOfflineAnswer =>
+      'No, an active internet connection is required to access real-time Teletext pages.';
+
+  @override
+  String get faqReportProblem => 'How to report a problem?';
+
+  @override
+  String get faqReportProblemAnswer =>
+      'Send a detailed email to samuele@codebysam.it describing the issue you encountered.';
+
+  @override
+  String get reportBugTitle => 'Report a Problem';
+
+  @override
+  String get reportBugInstructions =>
+      'When reporting a problem, please include if possible:';
+
+  @override
+  String get reportBugItems =>
+      'App version\nDevice model\nOperating system\nScreenshot of the problem';
+
+  @override
+  String get developedBy => 'Developed by CodeBySam';
+
+  @override
+  String get errorOpeningLink => 'Unable to open link';
+
+  @override
+  String get errorOpeningEmail => 'Unable to open email';
 }

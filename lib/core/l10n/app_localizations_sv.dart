@@ -414,4 +414,87 @@ class AppLocalizationsSv extends AppLocalizations {
   String pageLoadErrorWithHint(int minPage) {
     return 'An error occurred while loading the page.\nBack to $minPage';
   }
+
+  @override
+  String get support => 'Support';
+
+  @override
+  String get supportDescription => 'Kontakta oss för hjälp';
+
+  @override
+  String get supportTitle => 'Vi är här för att hjälpa!';
+
+  @override
+  String get supportSubtitle =>
+      'För frågor eller hjälp, tveka inte att kontakta oss';
+
+  @override
+  String get directContact => 'Direkt Kontakt';
+
+  @override
+  String get emailLabel => 'E-post';
+
+  @override
+  String get websiteLabel => 'Webbplats';
+
+  @override
+  String get responseTime => 'Genomsnittlig svarstid: 24-48 timmar';
+
+  @override
+  String get faq => 'Vanliga Frågor';
+
+  @override
+  String get faqGeolocation => 'Hur fungerar geolokalisering?';
+
+  @override
+  String get faqGeolocationAnswer =>
+      'Appen använder din enhets plats för att automatiskt identifiera din region och visa relevanta lokala nyheter. Du kan inaktivera den här funktionen i appinställningarna.';
+
+  @override
+  String get faqFavorites => 'Hur sparar jag en sida i favoriter?';
+
+  @override
+  String get faqFavoritesAnswer =>
+      'När du visar en sida, tryck på stjärnikonen för att lägga till den i favoriter. Du kan komma åt dina favoritlidor från huvudmenyn.';
+
+  @override
+  String get faqTheme => 'Hur ändrar jag apptemat?';
+
+  @override
+  String get faqThemeAnswer =>
+      'Gå till appinställningar och välj önskat tema (ljust/mörkt). Appen stöder också automatisk inställning baserat på systeminställningar.';
+
+  @override
+  String get faqOffline => 'Fungerar appen offline?';
+
+  @override
+  String get faqOfflineAnswer =>
+      'Nej, en aktiv internetanslutning krävs för att komma åt text-TV-sidor i realtid.';
+
+  @override
+  String get faqReportProblem => 'Hur rapporterar jag ett problem?';
+
+  @override
+  String get faqReportProblemAnswer =>
+      'Skicka ett detaljerat e-postmeddelande till samuele@codebysam.it som beskriver problemet.';
+
+  @override
+  String get reportBugTitle => 'Rapportera ett Problem';
+
+  @override
+  String get reportBugInstructions =>
+      'När du rapporterar ett problem, inkludera om möjligt:';
+
+  @override
+  String get reportBugItems =>
+      'App-version\\nEnhetsmodell\\nOperativsystem\\nSkärmdump av problemet';
+
+  @override
+  String get developedBy => 'Utvecklad av CodeBySam';
+
+  @override
+  String get errorOpeningLink => 'Kan inte öppna länk';
+
+  @override
+  String get errorOpeningEmail => 'Kan inte öppna e-post';
 }

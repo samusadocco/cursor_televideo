@@ -839,6 +839,156 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'An error occurred while loading the page.\nBack to {minPage}'**
   String pageLoadErrorWithHint(int minPage);
+
+  /// No description provided for @support.
+  ///
+  /// In en, this message translates to:
+  /// **'Support'**
+  String get support;
+
+  /// No description provided for @supportDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact us for assistance'**
+  String get supportDescription;
+
+  /// No description provided for @supportTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'We\'re here to help!'**
+  String get supportTitle;
+
+  /// No description provided for @supportSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'For any questions or assistance, please don\'t hesitate to contact us'**
+  String get supportSubtitle;
+
+  /// No description provided for @directContact.
+  ///
+  /// In en, this message translates to:
+  /// **'Direct Contact'**
+  String get directContact;
+
+  /// No description provided for @emailLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get emailLabel;
+
+  /// No description provided for @websiteLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Website'**
+  String get websiteLabel;
+
+  /// No description provided for @responseTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Average response time: 24-48 hours'**
+  String get responseTime;
+
+  /// No description provided for @faq.
+  ///
+  /// In en, this message translates to:
+  /// **'Frequently Asked Questions'**
+  String get faq;
+
+  /// No description provided for @faqGeolocation.
+  ///
+  /// In en, this message translates to:
+  /// **'How does geolocation work?'**
+  String get faqGeolocation;
+
+  /// No description provided for @faqGeolocationAnswer.
+  ///
+  /// In en, this message translates to:
+  /// **'The app uses your device\'s location to automatically identify your region and show you relevant local news. You can disable this feature in the app settings.'**
+  String get faqGeolocationAnswer;
+
+  /// No description provided for @faqFavorites.
+  ///
+  /// In en, this message translates to:
+  /// **'How to save a page to favorites?'**
+  String get faqFavorites;
+
+  /// No description provided for @faqFavoritesAnswer.
+  ///
+  /// In en, this message translates to:
+  /// **'While viewing a page, tap the star icon to add it to favorites. You can access your favorite pages from the main menu.'**
+  String get faqFavoritesAnswer;
+
+  /// No description provided for @faqTheme.
+  ///
+  /// In en, this message translates to:
+  /// **'How to change the app theme?'**
+  String get faqTheme;
+
+  /// No description provided for @faqThemeAnswer.
+  ///
+  /// In en, this message translates to:
+  /// **'Go to the app settings and select your desired theme (light/dark). The app also supports automatic theme based on system settings.'**
+  String get faqThemeAnswer;
+
+  /// No description provided for @faqOffline.
+  ///
+  /// In en, this message translates to:
+  /// **'Does the app work offline?'**
+  String get faqOffline;
+
+  /// No description provided for @faqOfflineAnswer.
+  ///
+  /// In en, this message translates to:
+  /// **'No, an active internet connection is required to access real-time Teletext pages.'**
+  String get faqOfflineAnswer;
+
+  /// No description provided for @faqReportProblem.
+  ///
+  /// In en, this message translates to:
+  /// **'How to report a problem?'**
+  String get faqReportProblem;
+
+  /// No description provided for @faqReportProblemAnswer.
+  ///
+  /// In en, this message translates to:
+  /// **'Send a detailed email to samuele@codebysam.it describing the issue you encountered.'**
+  String get faqReportProblemAnswer;
+
+  /// No description provided for @reportBugTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Report a Problem'**
+  String get reportBugTitle;
+
+  /// No description provided for @reportBugInstructions.
+  ///
+  /// In en, this message translates to:
+  /// **'When reporting a problem, please include if possible:'**
+  String get reportBugInstructions;
+
+  /// No description provided for @reportBugItems.
+  ///
+  /// In en, this message translates to:
+  /// **'App version\nDevice model\nOperating system\nScreenshot of the problem'**
+  String get reportBugItems;
+
+  /// No description provided for @developedBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Developed by CodeBySam'**
+  String get developedBy;
+
+  /// No description provided for @errorOpeningLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Unable to open link'**
+  String get errorOpeningLink;
+
+  /// No description provided for @errorOpeningEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Unable to open email'**
+  String get errorOpeningEmail;
 }
 
 class _AppLocalizationsDelegate

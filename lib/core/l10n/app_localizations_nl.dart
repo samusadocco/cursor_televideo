@@ -415,4 +415,87 @@ class AppLocalizationsNl extends AppLocalizations {
   String pageLoadErrorWithHint(int minPage) {
     return 'An error occurred while loading the page.\nBack to $minPage';
   }
+
+  @override
+  String get support => 'Ondersteuning';
+
+  @override
+  String get supportDescription => 'Neem contact met ons op voor hulp';
+
+  @override
+  String get supportTitle => 'We zijn hier om te helpen!';
+
+  @override
+  String get supportSubtitle =>
+      'Voor vragen of hulp, aarzel niet om contact met ons op te nemen';
+
+  @override
+  String get directContact => 'Direct Contact';
+
+  @override
+  String get emailLabel => 'E-mail';
+
+  @override
+  String get websiteLabel => 'Website';
+
+  @override
+  String get responseTime => 'Gemiddelde responstijd: 24-48 uur';
+
+  @override
+  String get faq => 'Veelgestelde Vragen';
+
+  @override
+  String get faqGeolocation => 'Hoe werkt geolocatie?';
+
+  @override
+  String get faqGeolocationAnswer =>
+      'De app gebruikt de locatie van uw apparaat om automatisch uw regio te identificeren en relevante lokale nieuws te tonen. U kunt deze functie uitschakelen in de app-instellingen.';
+
+  @override
+  String get faqFavorites => 'Hoe sla ik een pagina op in favorieten?';
+
+  @override
+  String get faqFavoritesAnswer =>
+      'Tik tijdens het bekijken van een pagina op het sterpictogram om deze aan favorieten toe te voegen. U heeft toegang tot uw favoriete pagina\'s via het hoofdmenu.';
+
+  @override
+  String get faqTheme => 'Hoe verander ik het app-thema?';
+
+  @override
+  String get faqThemeAnswer =>
+      'Ga naar de app-instellingen en selecteer uw gewenste thema (licht/donker). De app ondersteunt ook automatische instelling op basis van systeeminstellingen.';
+
+  @override
+  String get faqOffline => 'Werkt de app offline?';
+
+  @override
+  String get faqOfflineAnswer =>
+      'Nee, een actieve internetverbinding is vereist voor toegang tot realtime teletekstpagina\'s.';
+
+  @override
+  String get faqReportProblem => 'Hoe meld ik een probleem?';
+
+  @override
+  String get faqReportProblemAnswer =>
+      'Stuur een gedetailleerde e-mail naar samuele@codebysam.it waarin u het probleem beschrijft.';
+
+  @override
+  String get reportBugTitle => 'Een Probleem Melden';
+
+  @override
+  String get reportBugInstructions =>
+      'Bij het melden van een probleem, vermeld indien mogelijk:';
+
+  @override
+  String get reportBugItems =>
+      'App-versie\\nApparaatmodel\\nBesturingssysteem\\nSchermafbeelding van het probleem';
+
+  @override
+  String get developedBy => 'Ontwikkeld door CodeBySam';
+
+  @override
+  String get errorOpeningLink => 'Kan link niet openen';
+
+  @override
+  String get errorOpeningEmail => 'Kan e-mail niet openen';
 }

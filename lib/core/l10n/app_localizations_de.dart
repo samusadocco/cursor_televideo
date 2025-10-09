@@ -416,4 +416,87 @@ class AppLocalizationsDe extends AppLocalizations {
   String pageLoadErrorWithHint(int minPage) {
     return 'An error occurred while loading the page.\nBack to $minPage';
   }
+
+  @override
+  String get support => 'Unterstützung';
+
+  @override
+  String get supportDescription => 'Kontaktieren Sie uns für Hilfe';
+
+  @override
+  String get supportTitle => 'Wir sind hier, um zu helfen!';
+
+  @override
+  String get supportSubtitle =>
+      'Bei Fragen oder Hilfe zögern Sie nicht, uns zu kontaktieren';
+
+  @override
+  String get directContact => 'Direkter Kontakt';
+
+  @override
+  String get emailLabel => 'E-Mail';
+
+  @override
+  String get websiteLabel => 'Webseite';
+
+  @override
+  String get responseTime => 'Durchschnittliche Antwortzeit: 24-48 Stunden';
+
+  @override
+  String get faq => 'Häufig gestellte Fragen';
+
+  @override
+  String get faqGeolocation => 'Wie funktioniert die Geolokalisierung?';
+
+  @override
+  String get faqGeolocationAnswer =>
+      'Die App verwendet den Standort Ihres Geräts, um automatisch Ihre Region zu identifizieren und Ihnen relevante lokale Nachrichten anzuzeigen. Sie können diese Funktion in den App-Einstellungen deaktivieren.';
+
+  @override
+  String get faqFavorites => 'Wie speichere ich eine Seite in Favoriten?';
+
+  @override
+  String get faqFavoritesAnswer =>
+      'Während Sie eine Seite anzeigen, tippen Sie auf das Sternsymbol, um sie zu den Favoriten hinzuzufügen. Sie können über das Hauptmenü auf Ihre Favoritenseiten zugreifen.';
+
+  @override
+  String get faqTheme => 'Wie ändere ich das App-Theme?';
+
+  @override
+  String get faqThemeAnswer =>
+      'Gehen Sie zu den App-Einstellungen und wählen Sie Ihr gewünschtes Theme (hell/dunkel). Die App unterstützt auch die automatische Einstellung basierend auf den Systemeinstellungen.';
+
+  @override
+  String get faqOffline => 'Funktioniert die App offline?';
+
+  @override
+  String get faqOfflineAnswer =>
+      'Nein, eine aktive Internetverbindung ist erforderlich, um auf Echtzeit-Teletext-Seiten zuzugreifen.';
+
+  @override
+  String get faqReportProblem => 'Wie melde ich ein Problem?';
+
+  @override
+  String get faqReportProblemAnswer =>
+      'Senden Sie eine detaillierte E-Mail an samuele@codebysam.it und beschreiben Sie das aufgetretene Problem.';
+
+  @override
+  String get reportBugTitle => 'Problem melden';
+
+  @override
+  String get reportBugInstructions =>
+      'Wenn Sie ein Problem melden, geben Sie bitte wenn möglich an:';
+
+  @override
+  String get reportBugItems =>
+      'App-Version\nGerätmodell\nBetriebssystem\nScreenshot des Problems';
+
+  @override
+  String get developedBy => 'Entwickelt von CodeBySam';
+
+  @override
+  String get errorOpeningLink => 'Link kann nicht geöffnet werden';
+
+  @override
+  String get errorOpeningEmail => 'E-Mail kann nicht geöffnet werden';
 }

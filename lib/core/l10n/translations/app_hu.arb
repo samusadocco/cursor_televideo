@@ -222,5 +222,30 @@
         "example": "Lombardia"
       }
     }
-  }
+  },
+  "support": "Támogatás",
+  "supportDescription": "Lépjen kapcsolatba velünk segítségért",
+  "supportTitle": "Itt vagyunk, hogy segítsünk!",
+  "supportSubtitle": "Bármilyen kérdés vagy segítség esetén ne habozzon kapcsolatba lépni velünk",
+  "directContact": "Közvetlen Kapcsolat",
+  "emailLabel": "E-mail",
+  "websiteLabel": "Weboldal",
+  "responseTime": "Átlagos válaszidő: 24-48 óra",
+  "faq": "Gyakran Ismételt Kérdések",
+  "faqGeolocation": "Hogyan működik a geolokáció?",
+  "faqGeolocationAnswer": "Az alkalmazás az eszköz helyét használja a régió automatikus azonosításához és a releváns helyi hírek megjelenítéséhez. Ezt a funkciót letilthatja az alkalmazás beállításaiban.",
+  "faqFavorites": "Hogyan menthetem el egy oldalt a kedvencekbe?",
+  "faqFavoritesAnswer": "Oldal megtekintése közben érintse meg a csillag ikont a kedvencekhez való hozzáadáshoz. Kedvenc oldalaihoz a főmenüből férhet hozzá.",
+  "faqTheme": "Hogyan változtathatom meg az alkalmazás témáját?",
+  "faqThemeAnswer": "Lépjen az alkalmazás beállításaihoz, és válassza ki a kívánt témát (világos/sötét). Az alkalmazás támogatja az automatikus beállítást is a rendszerbeállítások alapján.",
+  "faqOffline": "Működik az alkalmazás offline?",
+  "faqOfflineAnswer": "Nem, aktív internetkapcsolat szükséges a valós idejű teletext oldalak eléréséhez.",
+  "faqReportProblem": "Hogyan jelentsek problémát?",
+  "faqReportProblemAnswer": "Küldjön részletes e-mailt a samuele@codebysam.it címre, amelyben leírja a problémát.",
+  "reportBugTitle": "Probléma Jelentése",
+  "reportBugInstructions": "Probléma jelentésekor kérjük, ha lehetséges, adja meg:",
+  "reportBugItems": "Alkalmazás verziója\\nEszköz modellje\\nOperációs rendszer\\nKépernyőkép a problémáról",
+  "developedBy": "Fejlesztette: CodeBySam",
+  "errorOpeningLink": "A link nem nyitható meg",
+  "errorOpeningEmail": "Az e-mail nem nyitható meg"
 }

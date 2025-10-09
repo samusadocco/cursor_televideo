@@ -1,10 +1,18 @@
 {
   "versions": [
     {
+      "version": "1.0.9",
+      "changes": [
+        "Añadida sección de Soporte en Configuración",
+        "Soporte completo para 16 idiomas europeos",
+        "Experiencia de usuario mejorada"
+      ]
+    },
+    {
       "version": "1.0.8",
       "changes": [
         "Añadida función de pausa y reproducción para la actualización automática de subpáginas",
-        "Añadida gestión del idioma de la aplicación"        
+        "Añadida gestión del idioma de la aplicación"
       ]
     },
     {
@@ -14,34 +22,32 @@
       ]
     },
     {
-        "version": "1.0.6",
-        "changes": [
-          "Optimizaciones de rendimiento",
-          "Corregido el mensaje de autorización de seguimiento"
-        ]
-      },
+      "version": "1.0.6",
+      "changes": [
+        "Optimizaciones de rendimiento",
+        "Corregido el mensaje de autorización de seguimiento"
+      ]
+    },
     {
-        "version": "1.0.5",
-        "changes": [
-          "Mostrar registro de cambios al inicio después de una actualización"
-        ]
-      },
+      "version": "1.0.5",
+      "changes": [
+        "Mostrar registro de cambios al inicio después de una actualización"
+      ]
+    },
     {
-        "version": "1.0.4",
-        "changes": [
-          "Cargar el primer favorito al inicio: elige con qué página de Teletexto comenzar (ve a Ajustes)",
-          "RGPD: gestiona tus opciones de privacidad",
-          "Optimizaciones de rendimiento",
-          "Mostrar versión en Ajustes"
-        ]
-      },
+      "version": "1.0.4",
+      "changes": [
+        "Cargar el primer favorito al inicio: elige con qué página de Teletexto comenzar (ve a Ajustes)",
+        "RGPD: gestiona tus opciones de privacidad",
+        "Optimizaciones de rendimiento",
+        "Mostrar versión en Ajustes"
+      ]
+    },
     {
       "version": "1.0.3",
       "changes": [
         "Correcciones de errores menores"
       ]
     }
-    
   ]
 }
-

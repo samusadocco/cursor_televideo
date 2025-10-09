@@ -1,10 +1,18 @@
 {
   "versions": [
     {
+      "version": "1.0.9",
+      "changes": [
+        "Dodata sekcija Podrška u Podešavanjima",
+        "Puna podrška za 16 evropskih jezika",
+        "Poboljšano korisničko iskustvo"
+      ]
+    },
+    {
       "version": "1.0.8",
       "changes": [
         "Dodana funkcija pauze i reprodukcije za automatsko osvježavanje podstranica",
-        "Dodano upravljanje jezikom aplikacije"        
+        "Dodano upravljanje jezikom aplikacije"
       ]
     },
     {
@@ -14,34 +22,32 @@
       ]
     },
     {
-        "version": "1.0.6",
-        "changes": [
-          "Optimizacije performansi",
-          "Ispravljena poruka o autorizaciji praćenja"
-        ]
-      },
+      "version": "1.0.6",
+      "changes": [
+        "Optimizacije performansi",
+        "Ispravljena poruka o autorizaciji praćenja"
+      ]
+    },
     {
-        "version": "1.0.5",
-        "changes": [
-          "Prikaži dnevnik promjena pri pokretanju nakon ažuriranja"
-        ]
-      },
+      "version": "1.0.5",
+      "changes": [
+        "Prikaži dnevnik promjena pri pokretanju nakon ažuriranja"
+      ]
+    },
     {
-        "version": "1.0.4",
-        "changes": [
-          "Učitaj prvi favorit pri pokretanju: odaberite s kojom stranicom Teleteksta želite početi (idite na Postavke)",
-          "GDPR: upravljajte svojim izborima privatnosti",
-          "Optimizacije performansi",
-          "Prikaži verziju u Postavkama"
-        ]
-      },
+      "version": "1.0.4",
+      "changes": [
+        "Učitaj prvi favorit pri pokretanju: odaberite s kojom stranicom Teleteksta želite početi (idite na Postavke)",
+        "GDPR: upravljajte svojim izborima privatnosti",
+        "Optimizacije performansi",
+        "Prikaži verziju u Postavkama"
+      ]
+    },
     {
       "version": "1.0.3",
       "changes": [
         "Manje ispravke grešaka"
       ]
     }
-    
   ]
 }
-

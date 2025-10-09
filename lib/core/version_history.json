@@ -1,18 +1,10 @@
 {
   "versions": [
     {
-      "version": "1.0.9",
-      "changes": [
-        "Aggiunta la sezione Supporto all'interno delle Impostazioni",
-        "Supporto completo per 16 lingue europee",
-        "Migliorata l'esperienza utente"
-      ]
-    },
-    {
       "version": "1.0.8",
       "changes": [
         "Aggiunta la funzione di pausa e play dell' aggiornamento automatico di sottopagine",
-        "Aggiunta la gestione della lingua dell' applicazione"
+        "Aggiunta la gestione della lingua dell' applicazione"        
       ]
     },
     {

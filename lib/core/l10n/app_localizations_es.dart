@@ -415,4 +415,87 @@ class AppLocalizationsEs extends AppLocalizations {
   String pageLoadErrorWithHint(int minPage) {
     return 'An error occurred while loading the page.\nBack to $minPage';
   }
+
+  @override
+  String get support => 'Soporte';
+
+  @override
+  String get supportDescription => 'Contáctenos para obtener asistencia';
+
+  @override
+  String get supportTitle => '¡Estamos aquí para ayudarte!';
+
+  @override
+  String get supportSubtitle =>
+      'Para cualquier pregunta o asistencia, no dudes en contactarnos';
+
+  @override
+  String get directContact => 'Contacto Directo';
+
+  @override
+  String get emailLabel => 'Correo electrónico';
+
+  @override
+  String get websiteLabel => 'Sitio Web';
+
+  @override
+  String get responseTime => 'Tiempo de respuesta promedio: 24-48 horas';
+
+  @override
+  String get faq => 'Preguntas Frecuentes';
+
+  @override
+  String get faqGeolocation => '¿Cómo funciona la geolocalización?';
+
+  @override
+  String get faqGeolocationAnswer =>
+      'La aplicación utiliza la ubicación de tu dispositivo para identificar automáticamente tu región y mostrarte noticias locales relevantes. Puedes desactivar esta función en la configuración de la aplicación.';
+
+  @override
+  String get faqFavorites => '¿Cómo guardar una página en favoritos?';
+
+  @override
+  String get faqFavoritesAnswer =>
+      'Mientras ves una página, toca el ícono de estrella para añadirla a favoritos. Puedes acceder a tus páginas favoritas desde el menú principal.';
+
+  @override
+  String get faqTheme => '¿Cómo cambiar el tema de la aplicación?';
+
+  @override
+  String get faqThemeAnswer =>
+      'Ve a la configuración de la aplicación y selecciona tu tema deseado (claro/oscuro). La aplicación también admite la configuración automática basada en la configuración del sistema.';
+
+  @override
+  String get faqOffline => '¿La aplicación funciona sin conexión?';
+
+  @override
+  String get faqOfflineAnswer =>
+      'No, se requiere una conexión a Internet activa para acceder a las páginas de teletexto en tiempo real.';
+
+  @override
+  String get faqReportProblem => '¿Cómo reportar un problema?';
+
+  @override
+  String get faqReportProblemAnswer =>
+      'Envía un correo electrónico detallado a samuele@codebysam.it describiendo el problema encontrado.';
+
+  @override
+  String get reportBugTitle => 'Reportar un Problema';
+
+  @override
+  String get reportBugInstructions =>
+      'Al reportar un problema, incluye si es posible:';
+
+  @override
+  String get reportBugItems =>
+      'Versión de la aplicación\nModelo del dispositivo\nSistema operativo\nCaptura de pantalla del problema';
+
+  @override
+  String get developedBy => 'Desarrollado por CodeBySam';
+
+  @override
+  String get errorOpeningLink => 'No se puede abrir el enlace';
+
+  @override
+  String get errorOpeningEmail => 'No se puede abrir el correo electrónico';
 }

@@ -222,5 +222,30 @@
         "example": "Lombardia"
       }
     }
-  }
+  },
+  "support": "Unterstützung",
+  "supportDescription": "Kontaktieren Sie uns für Hilfe",
+  "supportTitle": "Wir sind hier, um zu helfen!",
+  "supportSubtitle": "Bei Fragen oder Hilfe zögern Sie nicht, uns zu kontaktieren",
+  "directContact": "Direkter Kontakt",
+  "emailLabel": "E-Mail",
+  "websiteLabel": "Webseite",
+  "responseTime": "Durchschnittliche Antwortzeit: 24-48 Stunden",
+  "faq": "Häufig gestellte Fragen",
+  "faqGeolocation": "Wie funktioniert die Geolokalisierung?",
+  "faqGeolocationAnswer": "Die App verwendet den Standort Ihres Geräts, um automatisch Ihre Region zu identifizieren und Ihnen relevante lokale Nachrichten anzuzeigen. Sie können diese Funktion in den App-Einstellungen deaktivieren.",
+  "faqFavorites": "Wie speichere ich eine Seite in Favoriten?",
+  "faqFavoritesAnswer": "Während Sie eine Seite anzeigen, tippen Sie auf das Sternsymbol, um sie zu den Favoriten hinzuzufügen. Sie können über das Hauptmenü auf Ihre Favoritenseiten zugreifen.",
+  "faqTheme": "Wie ändere ich das App-Theme?",
+  "faqThemeAnswer": "Gehen Sie zu den App-Einstellungen und wählen Sie Ihr gewünschtes Theme (hell/dunkel). Die App unterstützt auch die automatische Einstellung basierend auf den Systemeinstellungen.",
+  "faqOffline": "Funktioniert die App offline?",
+  "faqOfflineAnswer": "Nein, eine aktive Internetverbindung ist erforderlich, um auf Echtzeit-Teletext-Seiten zuzugreifen.",
+  "faqReportProblem": "Wie melde ich ein Problem?",
+  "faqReportProblemAnswer": "Senden Sie eine detaillierte E-Mail an samuele@codebysam.it und beschreiben Sie das aufgetretene Problem.",
+  "reportBugTitle": "Problem melden",
+  "reportBugInstructions": "Wenn Sie ein Problem melden, geben Sie bitte wenn möglich an:",
+  "reportBugItems": "App-Version\nGerätmodell\nBetriebssystem\nScreenshot des Problems",
+  "developedBy": "Entwickelt von CodeBySam",
+  "errorOpeningLink": "Link kann nicht geöffnet werden",
+  "errorOpeningEmail": "E-Mail kann nicht geöffnet werden"
 }

@@ -222,5 +222,30 @@
         "example": "Lombardia"
       }
     }
-  }
+  },
+  "support": "Stuðningur",
+  "supportDescription": "Hafðu samband fyrir aðstoð",
+  "supportTitle": "Við erum hér til að hjálpa!",
+  "supportSubtitle": "Fyrir allar spurningar eða aðstoð, ekki hika við að hafa samband við okkur",
+  "directContact": "Beinn Tengiliður",
+  "emailLabel": "Netfang",
+  "websiteLabel": "Vefsíða",
+  "responseTime": "Meðalsvörunartími: 24-48 klukkustundir",
+  "faq": "Algengar Spurningar",
+  "faqGeolocation": "Hvernig virkar staðsetning?",
+  "faqGeolocationAnswer": "Forritið notar staðsetningu tækisins til að auðkenna sjálfkrafa svæðið þitt og sýna viðeigandi staðbundnar fréttir. Þú getur slökkt á þessari aðgerð í stillingum forritsins.",
+  "faqFavorites": "Hvernig vista ég síðu í eftirlæti?",
+  "faqFavoritesAnswer": "Þegar þú skoðar síðu skaltu ýta á stjörnutáknið til að bæta henni við eftirlæti. Þú getur nálgast eftirlætissíður þínar frá aðalvalmyndinni.",
+  "faqTheme": "Hvernig breyti ég þema forritsins?",
+  "faqThemeAnswer": "Farðu í stillingar forritsins og veldu þitt æskilega þema (ljóst/dökkt). Forritið styður einnig sjálfvirka stillingu byggða á kerfisst illum.",
+  "faqOffline": "Virkar forritið án nettengingar?",
+  "faqOfflineAnswer": "Nei, virk nettenging er nauðsynleg til að fá aðgang að texta-sjónvarps síðum í rauntíma.",
+  "faqReportProblem": "Hvernig tilkynni ég um vandamál?",
+  "faqReportProblemAnswer": "Sendu ítarlegt netfang á samuele@codebysam.it með lýsingu á vandamálinu.",
+  "reportBugTitle": "Tilkynna Vandamál",
+  "reportBugInstructions": "Þegar þú tilkynnir vandamál skaltu innihalda ef mögulegt:",
+  "reportBugItems": "Útgáfa forrits\\nTæki líkan\\nStýrikerfi\\nSkjámynd af vandamáli",
+  "developedBy": "Þróað af CodeBySam",
+  "errorOpeningLink": "Get ekki opnað tengil",
+  "errorOpeningEmail": "Get ekki opnað netfang"
 }

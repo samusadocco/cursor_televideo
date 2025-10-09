@@ -414,4 +414,87 @@ class AppLocalizationsHr extends AppLocalizations {
   String pageLoadErrorWithHint(int minPage) {
     return 'An error occurred while loading the page.\nBack to $minPage';
   }
+
+  @override
+  String get support => 'Podrška';
+
+  @override
+  String get supportDescription => 'Kontaktirajte nas za pomoć';
+
+  @override
+  String get supportTitle => 'Tu smo da pomognemo!';
+
+  @override
+  String get supportSubtitle =>
+      'Za bilo kakva pitanja ili pomoć, ne ustručavajte se kontaktirati nas';
+
+  @override
+  String get directContact => 'Izravni Kontakt';
+
+  @override
+  String get emailLabel => 'E-mail';
+
+  @override
+  String get websiteLabel => 'Web Stranica';
+
+  @override
+  String get responseTime => 'Prosječno vrijeme odgovora: 24-48 sati';
+
+  @override
+  String get faq => 'Često Postavljena Pitanja';
+
+  @override
+  String get faqGeolocation => 'Kako funkcionira geolokacija?';
+
+  @override
+  String get faqGeolocationAnswer =>
+      'Aplikacija koristi lokaciju vašeg uređaja za automatsku identifikaciju vaše regije i prikazivanje relevantnih lokalnih vijesti. Ovu funkciju možete deaktivirati u postavkama aplikacije.';
+
+  @override
+  String get faqFavorites => 'Kako spremiti stranicu u favorite?';
+
+  @override
+  String get faqFavoritesAnswer =>
+      'Dok gledate stranicu, dodirnite ikonu zvijezde da je dodate u favorite. Svojim omiljenim stranicama možete pristupiti iz glavnog izbornika.';
+
+  @override
+  String get faqTheme => 'Kako promijeniti temu aplikacije?';
+
+  @override
+  String get faqThemeAnswer =>
+      'Idite u postavke aplikacije i odaberite željenu temu (svijetla/tamna). Aplikacija također podržava automatsko postavljanje na temelju sistemskih postavki.';
+
+  @override
+  String get faqOffline => 'Funkcionira li aplikacija offline?';
+
+  @override
+  String get faqOfflineAnswer =>
+      'Ne, aktivna internetska veza je potrebna za pristup teletekst stranicama u realnom vremenu.';
+
+  @override
+  String get faqReportProblem => 'Kako prijaviti problem?';
+
+  @override
+  String get faqReportProblemAnswer =>
+      'Pošaljite detaljan e-mail na samuele@codebysam.it opisujući problem.';
+
+  @override
+  String get reportBugTitle => 'Prijavi Problem';
+
+  @override
+  String get reportBugInstructions =>
+      'Prilikom prijavljivanja problema, navedite ako je moguće:';
+
+  @override
+  String get reportBugItems =>
+      'Verzija aplikacije\\nModel uređaja\\nOperativni sustav\\nSnimka zaslona problema';
+
+  @override
+  String get developedBy => 'Razvijeno od CodeBySam';
+
+  @override
+  String get errorOpeningLink => 'Nije moguće otvoriti poveznicu';
+
+  @override
+  String get errorOpeningEmail => 'Nije moguće otvoriti e-mail';
 }

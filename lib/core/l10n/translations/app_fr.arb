@@ -222,5 +222,30 @@
         "example": "Lombardia"
       }
     }
-  }
+  },
+  "support": "Support",
+  "supportDescription": "Contactez-nous pour obtenir de l'aide",
+  "supportTitle": "Nous sommes là pour vous aider!",
+  "supportSubtitle": "Pour toute question ou assistance, n'hésitez pas à nous contacter",
+  "directContact": "Contact Direct",
+  "emailLabel": "E-mail",
+  "websiteLabel": "Site Web",
+  "responseTime": "Temps de réponse moyen: 24-48 heures",
+  "faq": "Questions Fréquemment Posées",
+  "faqGeolocation": "Comment fonctionne la géolocalisation?",
+  "faqGeolocationAnswer": "L'application utilise la localisation de votre appareil pour identifier automatiquement votre région et vous montrer les actualités locales pertinentes. Vous pouvez désactiver cette fonctionnalité dans les paramètres de l'application.",
+  "faqFavorites": "Comment enregistrer une page dans les favoris?",
+  "faqFavoritesAnswer": "Lorsque vous visualisez une page, appuyez sur l'icône étoile pour l'ajouter aux favoris. Vous pouvez accéder à vos pages favorites depuis le menu principal.",
+  "faqTheme": "Comment changer le thème de l'application?",
+  "faqThemeAnswer": "Allez dans les paramètres de l'application et sélectionnez votre thème souhaité (clair/sombre). L'application prend également en charge le réglage automatique basé sur les paramètres système.",
+  "faqOffline": "L'application fonctionne-t-elle hors ligne?",
+  "faqOfflineAnswer": "Non, une connexion Internet active est nécessaire pour accéder aux pages télétexte en temps réel.",
+  "faqReportProblem": "Comment signaler un problème?",
+  "faqReportProblemAnswer": "Envoyez un e-mail détaillé à samuele@codebysam.it en décrivant le problème rencontré.",
+  "reportBugTitle": "Signaler un Problème",
+  "reportBugInstructions": "Lorsque vous signalez un problème, veuillez inclure si possible:",
+  "reportBugItems": "Version de l'application\nModèle de l'appareil\nSystème d'exploitation\nCapture d'écran du problème",
+  "developedBy": "Développé par CodeBySam",
+  "errorOpeningLink": "Impossible d'ouvrir le lien",
+  "errorOpeningEmail": "Impossible d'ouvrir l'e-mail"
 }

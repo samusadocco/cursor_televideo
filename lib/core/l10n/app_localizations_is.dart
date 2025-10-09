@@ -415,4 +415,87 @@ class AppLocalizationsIs extends AppLocalizations {
   String pageLoadErrorWithHint(int minPage) {
     return 'An error occurred while loading the page.\nBack to $minPage';
   }
+
+  @override
+  String get support => 'Stuðningur';
+
+  @override
+  String get supportDescription => 'Hafðu samband fyrir aðstoð';
+
+  @override
+  String get supportTitle => 'Við erum hér til að hjálpa!';
+
+  @override
+  String get supportSubtitle =>
+      'Fyrir allar spurningar eða aðstoð, ekki hika við að hafa samband við okkur';
+
+  @override
+  String get directContact => 'Beinn Tengiliður';
+
+  @override
+  String get emailLabel => 'Netfang';
+
+  @override
+  String get websiteLabel => 'Vefsíða';
+
+  @override
+  String get responseTime => 'Meðalsvörunartími: 24-48 klukkustundir';
+
+  @override
+  String get faq => 'Algengar Spurningar';
+
+  @override
+  String get faqGeolocation => 'Hvernig virkar staðsetning?';
+
+  @override
+  String get faqGeolocationAnswer =>
+      'Forritið notar staðsetningu tækisins til að auðkenna sjálfkrafa svæðið þitt og sýna viðeigandi staðbundnar fréttir. Þú getur slökkt á þessari aðgerð í stillingum forritsins.';
+
+  @override
+  String get faqFavorites => 'Hvernig vista ég síðu í eftirlæti?';
+
+  @override
+  String get faqFavoritesAnswer =>
+      'Þegar þú skoðar síðu skaltu ýta á stjörnutáknið til að bæta henni við eftirlæti. Þú getur nálgast eftirlætissíður þínar frá aðalvalmyndinni.';
+
+  @override
+  String get faqTheme => 'Hvernig breyti ég þema forritsins?';
+
+  @override
+  String get faqThemeAnswer =>
+      'Farðu í stillingar forritsins og veldu þitt æskilega þema (ljóst/dökkt). Forritið styður einnig sjálfvirka stillingu byggða á kerfisst illum.';
+
+  @override
+  String get faqOffline => 'Virkar forritið án nettengingar?';
+
+  @override
+  String get faqOfflineAnswer =>
+      'Nei, virk nettenging er nauðsynleg til að fá aðgang að texta-sjónvarps síðum í rauntíma.';
+
+  @override
+  String get faqReportProblem => 'Hvernig tilkynni ég um vandamál?';
+
+  @override
+  String get faqReportProblemAnswer =>
+      'Sendu ítarlegt netfang á samuele@codebysam.it með lýsingu á vandamálinu.';
+
+  @override
+  String get reportBugTitle => 'Tilkynna Vandamál';
+
+  @override
+  String get reportBugInstructions =>
+      'Þegar þú tilkynnir vandamál skaltu innihalda ef mögulegt:';
+
+  @override
+  String get reportBugItems =>
+      'Útgáfa forrits\\nTæki líkan\\nStýrikerfi\\nSkjámynd af vandamáli';
+
+  @override
+  String get developedBy => 'Þróað af CodeBySam';
+
+  @override
+  String get errorOpeningLink => 'Get ekki opnað tengil';
+
+  @override
+  String get errorOpeningEmail => 'Get ekki opnað netfang';
 }

@@ -1,10 +1,18 @@
 {
   "versions": [
     {
+      "version": "1.0.9",
+      "changes": [
+        "Ajout de la section Support dans les Paramètres",
+        "Support complet de 16 langues européennes",
+        "Amélioration de l'expérience utilisateur"
+      ]
+    },
+    {
       "version": "1.0.8",
       "changes": [
         "Ajout de la fonction pause et lecture pour l'actualisation automatique des sous-pages",
-        "Ajout de la gestion de la langue de l'application"        
+        "Ajout de la gestion de la langue de l'application"
       ]
     },
     {
@@ -14,34 +22,32 @@
       ]
     },
     {
-        "version": "1.0.6",
-        "changes": [
-          "Optimisations des performances",
-          "Correction du message d'autorisation de suivi"
-        ]
-      },
+      "version": "1.0.6",
+      "changes": [
+        "Optimisations des performances",
+        "Correction du message d'autorisation de suivi"
+      ]
+    },
     {
-        "version": "1.0.5",
-        "changes": [
-          "Afficher le journal des modifications au démarrage après une mise à jour"
-        ]
-      },
+      "version": "1.0.5",
+      "changes": [
+        "Afficher le journal des modifications au démarrage après une mise à jour"
+      ]
+    },
     {
-        "version": "1.0.4",
-        "changes": [
-          "Charger le premier favori au démarrage: choisissez avec quelle page Télétexte commencer (allez dans Paramètres)",
-          "RGPD: gérez vos choix de confidentialité",
-          "Optimisations des performances",
-          "Afficher la version dans les paramètres"
-        ]
-      },
+      "version": "1.0.4",
+      "changes": [
+        "Charger le premier favori au démarrage: choisissez avec quelle page Télétexte commencer (allez dans Paramètres)",
+        "RGPD: gérez vos choix de confidentialité",
+        "Optimisations des performances",
+        "Afficher la version dans les paramètres"
+      ]
+    },
     {
       "version": "1.0.3",
       "changes": [
         "Corrections de bugs mineurs"
       ]
     }
-    
   ]
 }
-

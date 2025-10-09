@@ -222,5 +222,30 @@
         "example": "Lombardia"
       }
     }
-  }
+  },
+  "support": "Tuki",
+  "supportDescription": "Ota yhteyttä saadaksesi apua",
+  "supportTitle": "Olemme täällä auttamassa!",
+  "supportSubtitle": "Jos sinulla on kysyttävää tai tarvitset apua, älä epäröi ottaa yhteyttä",
+  "directContact": "Suora Yhteys",
+  "emailLabel": "Sähköposti",
+  "websiteLabel": "Verkkosivusto",
+  "responseTime": "Keskimääräinen vastausaika: 24-48 tuntia",
+  "faq": "Usein Kysytyt Kysymykset",
+  "faqGeolocation": "Miten paikannuspalvelu toimii?",
+  "faqGeolocationAnswer": "Sovellus käyttää laitteesi sijaintia tunnistaakseen automaattisesti alueesi ja näyttääkseen asiaankuuluvia paikallisia uutisia. Voit poistaa tämän toiminnon käytöstä sovelluksen asetuksista.",
+  "faqFavorites": "Kuinka tallennan sivun suosikkeihin?",
+  "faqFavoritesAnswer": "Kun katselet sivua, napauta tähti-kuvaketta lisätäksesi sen suosikkeihin. Pääset suosikkisivuillesi päävalikosta.",
+  "faqTheme": "Kuinka vaihdan sovelluksen teemaa?",
+  "faqThemeAnswer": "Siirry sovelluksen asetuksiin ja valitse haluamasi teema (vaalea/tumma). Sovellus tukee myös automaattista asetusta järjestelmäasetusten perusteella.",
+  "faqOffline": "Toimiiko sovellus offline-tilassa?",
+  "faqOfflineAnswer": "Ei, aktiivinen internet-yhteys vaaditaan reaaliaikaisten teksti-TV-sivujen käyttämiseen.",
+  "faqReportProblem": "Kuinka ilmoitan ongelmasta?",
+  "faqReportProblemAnswer": "Lähetä yksityiskohtainen sähköposti osoitteeseen samuele@codebysam.it kuvaillen kohdattua ongelmaa.",
+  "reportBugTitle": "Ilmoita Ongelmasta",
+  "reportBugInstructions": "Ilmoittaessasi ongelmasta, sisällytä jos mahdollista:",
+  "reportBugItems": "Sovelluksen versio\\nLaitteen malli\\nKäyttöjärjestelmä\\nKuvakaappaus ongelmasta",
+  "developedBy": "Kehittänyt CodeBySam",
+  "errorOpeningLink": "Linkin avaaminen epäonnistui",
+  "errorOpeningEmail": "Sähköpostin avaaminen epäonnistui"
 }

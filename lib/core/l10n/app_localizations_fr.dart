@@ -418,4 +418,87 @@ class AppLocalizationsFr extends AppLocalizations {
   String pageLoadErrorWithHint(int minPage) {
     return 'An error occurred while loading the page.\nBack to $minPage';
   }
+
+  @override
+  String get support => 'Support';
+
+  @override
+  String get supportDescription => 'Contactez-nous pour obtenir de l\'aide';
+
+  @override
+  String get supportTitle => 'Nous sommes là pour vous aider!';
+
+  @override
+  String get supportSubtitle =>
+      'Pour toute question ou assistance, n\'hésitez pas à nous contacter';
+
+  @override
+  String get directContact => 'Contact Direct';
+
+  @override
+  String get emailLabel => 'E-mail';
+
+  @override
+  String get websiteLabel => 'Site Web';
+
+  @override
+  String get responseTime => 'Temps de réponse moyen: 24-48 heures';
+
+  @override
+  String get faq => 'Questions Fréquemment Posées';
+
+  @override
+  String get faqGeolocation => 'Comment fonctionne la géolocalisation?';
+
+  @override
+  String get faqGeolocationAnswer =>
+      'L\'application utilise la localisation de votre appareil pour identifier automatiquement votre région et vous montrer les actualités locales pertinentes. Vous pouvez désactiver cette fonctionnalité dans les paramètres de l\'application.';
+
+  @override
+  String get faqFavorites => 'Comment enregistrer une page dans les favoris?';
+
+  @override
+  String get faqFavoritesAnswer =>
+      'Lorsque vous visualisez une page, appuyez sur l\'icône étoile pour l\'ajouter aux favoris. Vous pouvez accéder à vos pages favorites depuis le menu principal.';
+
+  @override
+  String get faqTheme => 'Comment changer le thème de l\'application?';
+
+  @override
+  String get faqThemeAnswer =>
+      'Allez dans les paramètres de l\'application et sélectionnez votre thème souhaité (clair/sombre). L\'application prend également en charge le réglage automatique basé sur les paramètres système.';
+
+  @override
+  String get faqOffline => 'L\'application fonctionne-t-elle hors ligne?';
+
+  @override
+  String get faqOfflineAnswer =>
+      'Non, une connexion Internet active est nécessaire pour accéder aux pages télétexte en temps réel.';
+
+  @override
+  String get faqReportProblem => 'Comment signaler un problème?';
+
+  @override
+  String get faqReportProblemAnswer =>
+      'Envoyez un e-mail détaillé à samuele@codebysam.it en décrivant le problème rencontré.';
+
+  @override
+  String get reportBugTitle => 'Signaler un Problème';
+
+  @override
+  String get reportBugInstructions =>
+      'Lorsque vous signalez un problème, veuillez inclure si possible:';
+
+  @override
+  String get reportBugItems =>
+      'Version de l\'application\nModèle de l\'appareil\nSystème d\'exploitation\nCapture d\'écran du problème';
+
+  @override
+  String get developedBy => 'Développé par CodeBySam';
+
+  @override
+  String get errorOpeningLink => 'Impossible d\'ouvrir le lien';
+
+  @override
+  String get errorOpeningEmail => 'Impossible d\'ouvrir l\'e-mail';
 }

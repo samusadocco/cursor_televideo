@@ -1,10 +1,18 @@
 {
   "versions": [
     {
+      "version": "1.0.9",
+      "changes": [
+        "Lisätty tukiosio Asetuksiin",
+        "Täysi tuki 16 eurooppalaiselle kielelle",
+        "Parannettu käyttökokemus"
+      ]
+    },
+    {
       "version": "1.0.8",
       "changes": [
         "Lisätty tauko- ja toistotoiminto automaattiseen alasivujen päivitykseen",
-        "Lisätty sovelluskielen hallinta"        
+        "Lisätty sovelluskielen hallinta"
       ]
     },
     {
@@ -14,34 +22,32 @@
       ]
     },
     {
-        "version": "1.0.6",
-        "changes": [
-          "Suorituskykyoptimointeja",
-          "Korjattu seurannan valtuutusviesti"
-        ]
-      },
+      "version": "1.0.6",
+      "changes": [
+        "Suorituskykyoptimointeja",
+        "Korjattu seurannan valtuutusviesti"
+      ]
+    },
     {
-        "version": "1.0.5",
-        "changes": [
-          "Näytä muutosloki käynnistyksessä päivityksen jälkeen"
-        ]
-      },
+      "version": "1.0.5",
+      "changes": [
+        "Näytä muutosloki käynnistyksessä päivityksen jälkeen"
+      ]
+    },
     {
-        "version": "1.0.4",
-        "changes": [
-          "Lataa ensimmäinen suosikki käynnistyksessä: valitse millä Teksti-TV-sivulla haluat aloittaa (siirry Asetuksiin)",
-          "GDPR: hallinnoi yksityisyysvalintojasi",
-          "Suorituskykyoptimointeja",
-          "Näytä versio Asetuksissa"
-        ]
-      },
+      "version": "1.0.4",
+      "changes": [
+        "Lataa ensimmäinen suosikki käynnistyksessä: valitse millä Teksti-TV-sivulla haluat aloittaa (siirry Asetuksiin)",
+        "GDPR: hallinnoi yksityisyysvalintojasi",
+        "Suorituskykyoptimointeja",
+        "Näytä versio Asetuksissa"
+      ]
+    },
     {
       "version": "1.0.3",
       "changes": [
         "Pieniä bugien korjauksia"
       ]
     }
-    
   ]
 }
-

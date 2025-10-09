@@ -1,10 +1,18 @@
 {
   "versions": [
     {
+      "version": "1.0.9",
+      "changes": [
+        "Přidána sekce Podpora v Nastavení",
+        "Plná podpora pro 16 evropských jazyků",
+        "Vylepšené uživatelské rozhraní"
+      ]
+    },
+    {
       "version": "1.0.8",
       "changes": [
         "Přidána funkce pozastavení a přehrávání pro automatickou aktualizaci podstránek",
-        "Přidána správa jazyka aplikace"        
+        "Přidána správa jazyka aplikace"
       ]
     },
     {
@@ -14,34 +22,32 @@
       ]
     },
     {
-        "version": "1.0.6",
-        "changes": [
-          "Optimalizace výkonu",
-          "Opravena zpráva o autorizaci sledování"
-        ]
-      },
+      "version": "1.0.6",
+      "changes": [
+        "Optimalizace výkonu",
+        "Opravena zpráva o autorizaci sledování"
+      ]
+    },
     {
-        "version": "1.0.5",
-        "changes": [
-          "Zobrazit protokol změn při spuštění po aktualizaci"
-        ]
-      },
+      "version": "1.0.5",
+      "changes": [
+        "Zobrazit protokol změn při spuštění po aktualizaci"
+      ]
+    },
     {
-        "version": "1.0.4",
-        "changes": [
-          "Načíst první oblíbenou položku při spuštění: vyberte, se kterou stránkou Teletextu chcete začít (přejděte do Nastavení)",
-          "GDPR: spravujte své možnosti ochrany soukromí",
-          "Optimalizace výkonu",
-          "Zobrazit verzi v Nastavení"
-        ]
-      },
+      "version": "1.0.4",
+      "changes": [
+        "Načíst první oblíbenou položku při spuštění: vyberte, se kterou stránkou Teletextu chcete začít (přejděte do Nastavení)",
+        "GDPR: spravujte své možnosti ochrany soukromí",
+        "Optimalizace výkonu",
+        "Zobrazit verzi v Nastavení"
+      ]
+    },
     {
       "version": "1.0.3",
       "changes": [
         "Drobné opravy chyb"
       ]
     }
-    
   ]
 }
-

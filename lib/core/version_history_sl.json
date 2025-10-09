@@ -1,10 +1,18 @@
 {
   "versions": [
     {
+      "version": "1.0.9",
+      "changes": [
+        "Dodana sekcija Podpora v Nastavitvah",
+        "Polna podpora za 16 evropskih jezikov",
+        "Izboljšana uporabniška izkušnja"
+      ]
+    },
+    {
       "version": "1.0.8",
       "changes": [
         "Dodana funkcija pavze in predvajanja za samodejno osvežitev podstrani",
-        "Dodano upravljanje jezika aplikacije"        
+        "Dodano upravljanje jezika aplikacije"
       ]
     },
     {
@@ -14,34 +22,32 @@
       ]
     },
     {
-        "version": "1.0.6",
-        "changes": [
-          "Optimizacije zmogljivosti",
-          "Popravljena avtorizacijska sporočila za sledenje"
-        ]
-      },
+      "version": "1.0.6",
+      "changes": [
+        "Optimizacije zmogljivosti",
+        "Popravljena avtorizacijska sporočila za sledenje"
+      ]
+    },
     {
-        "version": "1.0.5",
-        "changes": [
-          "Prikaži dnevnik sprememb ob zagonu po posodobitvi"
-        ]
-      },
+      "version": "1.0.5",
+      "changes": [
+        "Prikaži dnevnik sprememb ob zagonu po posodobitvi"
+      ]
+    },
     {
-        "version": "1.0.4",
-        "changes": [
-          "Naloži prvo priljubljeno ob zagonu: izberite s katero stranjo Teleteksta želite začeti (pojdite v Nastavitve)",
-          "GDPR: upravljajte svoje izbire zasebnosti",
-          "Optimizacije zmogljivosti",
-          "Prikaži različico v Nastavitvah"
-        ]
-      },
+      "version": "1.0.4",
+      "changes": [
+        "Naloži prvo priljubljeno ob zagonu: izberite s katero stranjo Teleteksta želite začeti (pojdite v Nastavitve)",
+        "GDPR: upravljajte svoje izbire zasebnosti",
+        "Optimizacije zmogljivosti",
+        "Prikaži različico v Nastavitvah"
+      ]
+    },
     {
       "version": "1.0.3",
       "changes": [
         "Manjše popravke napak"
       ]
     }
-    
   ]
 }
-

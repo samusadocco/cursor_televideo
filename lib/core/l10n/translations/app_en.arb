@@ -250,5 +250,30 @@
         "example": "100"
       }
     }
-  }
+  },
+  "support": "Support",
+  "supportDescription": "Contact us for assistance",
+  "supportTitle": "We're here to help!",
+  "supportSubtitle": "For any questions or assistance, please don't hesitate to contact us",
+  "directContact": "Direct Contact",
+  "emailLabel": "Email",
+  "websiteLabel": "Website",
+  "responseTime": "Average response time: 24-48 hours",
+  "faq": "Frequently Asked Questions",
+  "faqGeolocation": "How does geolocation work?",
+  "faqGeolocationAnswer": "The app uses your device's location to automatically identify your region and show you relevant local news. You can disable this feature in the app settings.",
+  "faqFavorites": "How to save a page to favorites?",
+  "faqFavoritesAnswer": "While viewing a page, tap the star icon to add it to favorites. You can access your favorite pages from the main menu.",
+  "faqTheme": "How to change the app theme?",
+  "faqThemeAnswer": "Go to the app settings and select your desired theme (light/dark). The app also supports automatic theme based on system settings.",
+  "faqOffline": "Does the app work offline?",
+  "faqOfflineAnswer": "No, an active internet connection is required to access real-time Teletext pages.",
+  "faqReportProblem": "How to report a problem?",
+  "faqReportProblemAnswer": "Send a detailed email to samuele@codebysam.it describing the issue you encountered.",
+  "reportBugTitle": "Report a Problem",
+  "reportBugInstructions": "When reporting a problem, please include if possible:",
+  "reportBugItems": "App version\nDevice model\nOperating system\nScreenshot of the problem",
+  "developedBy": "Developed by CodeBySam",
+  "errorOpeningLink": "Unable to open link",
+  "errorOpeningEmail": "Unable to open email"
 }

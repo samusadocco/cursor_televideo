@@ -412,4 +412,87 @@ class AppLocalizationsFi extends AppLocalizations {
   String pageLoadErrorWithHint(int minPage) {
     return 'An error occurred while loading the page.\nBack to $minPage';
   }
+
+  @override
+  String get support => 'Tuki';
+
+  @override
+  String get supportDescription => 'Ota yhteyttä saadaksesi apua';
+
+  @override
+  String get supportTitle => 'Olemme täällä auttamassa!';
+
+  @override
+  String get supportSubtitle =>
+      'Jos sinulla on kysyttävää tai tarvitset apua, älä epäröi ottaa yhteyttä';
+
+  @override
+  String get directContact => 'Suora Yhteys';
+
+  @override
+  String get emailLabel => 'Sähköposti';
+
+  @override
+  String get websiteLabel => 'Verkkosivusto';
+
+  @override
+  String get responseTime => 'Keskimääräinen vastausaika: 24-48 tuntia';
+
+  @override
+  String get faq => 'Usein Kysytyt Kysymykset';
+
+  @override
+  String get faqGeolocation => 'Miten paikannuspalvelu toimii?';
+
+  @override
+  String get faqGeolocationAnswer =>
+      'Sovellus käyttää laitteesi sijaintia tunnistaakseen automaattisesti alueesi ja näyttääkseen asiaankuuluvia paikallisia uutisia. Voit poistaa tämän toiminnon käytöstä sovelluksen asetuksista.';
+
+  @override
+  String get faqFavorites => 'Kuinka tallennan sivun suosikkeihin?';
+
+  @override
+  String get faqFavoritesAnswer =>
+      'Kun katselet sivua, napauta tähti-kuvaketta lisätäksesi sen suosikkeihin. Pääset suosikkisivuillesi päävalikosta.';
+
+  @override
+  String get faqTheme => 'Kuinka vaihdan sovelluksen teemaa?';
+
+  @override
+  String get faqThemeAnswer =>
+      'Siirry sovelluksen asetuksiin ja valitse haluamasi teema (vaalea/tumma). Sovellus tukee myös automaattista asetusta järjestelmäasetusten perusteella.';
+
+  @override
+  String get faqOffline => 'Toimiiko sovellus offline-tilassa?';
+
+  @override
+  String get faqOfflineAnswer =>
+      'Ei, aktiivinen internet-yhteys vaaditaan reaaliaikaisten teksti-TV-sivujen käyttämiseen.';
+
+  @override
+  String get faqReportProblem => 'Kuinka ilmoitan ongelmasta?';
+
+  @override
+  String get faqReportProblemAnswer =>
+      'Lähetä yksityiskohtainen sähköposti osoitteeseen samuele@codebysam.it kuvaillen kohdattua ongelmaa.';
+
+  @override
+  String get reportBugTitle => 'Ilmoita Ongelmasta';
+
+  @override
+  String get reportBugInstructions =>
+      'Ilmoittaessasi ongelmasta, sisällytä jos mahdollista:';
+
+  @override
+  String get reportBugItems =>
+      'Sovelluksen versio\\nLaitteen malli\\nKäyttöjärjestelmä\\nKuvakaappaus ongelmasta';
+
+  @override
+  String get developedBy => 'Kehittänyt CodeBySam';
+
+  @override
+  String get errorOpeningLink => 'Linkin avaaminen epäonnistui';
+
+  @override
+  String get errorOpeningEmail => 'Sähköpostin avaaminen epäonnistui';
 }

@@ -222,5 +222,30 @@
         "example": "Lombardia"
       }
     }
-  }
+  },
+  "support": "Ondersteuning",
+  "supportDescription": "Neem contact met ons op voor hulp",
+  "supportTitle": "We zijn hier om te helpen!",
+  "supportSubtitle": "Voor vragen of hulp, aarzel niet om contact met ons op te nemen",
+  "directContact": "Direct Contact",
+  "emailLabel": "E-mail",
+  "websiteLabel": "Website",
+  "responseTime": "Gemiddelde responstijd: 24-48 uur",
+  "faq": "Veelgestelde Vragen",
+  "faqGeolocation": "Hoe werkt geolocatie?",
+  "faqGeolocationAnswer": "De app gebruikt de locatie van uw apparaat om automatisch uw regio te identificeren en relevante lokale nieuws te tonen. U kunt deze functie uitschakelen in de app-instellingen.",
+  "faqFavorites": "Hoe sla ik een pagina op in favorieten?",
+  "faqFavoritesAnswer": "Tik tijdens het bekijken van een pagina op het sterpictogram om deze aan favorieten toe te voegen. U heeft toegang tot uw favoriete pagina's via het hoofdmenu.",
+  "faqTheme": "Hoe verander ik het app-thema?",
+  "faqThemeAnswer": "Ga naar de app-instellingen en selecteer uw gewenste thema (licht/donker). De app ondersteunt ook automatische instelling op basis van systeeminstellingen.",
+  "faqOffline": "Werkt de app offline?",
+  "faqOfflineAnswer": "Nee, een actieve internetverbinding is vereist voor toegang tot realtime teletekstpagina's.",
+  "faqReportProblem": "Hoe meld ik een probleem?",
+  "faqReportProblemAnswer": "Stuur een gedetailleerde e-mail naar samuele@codebysam.it waarin u het probleem beschrijft.",
+  "reportBugTitle": "Een Probleem Melden",
+  "reportBugInstructions": "Bij het melden van een probleem, vermeld indien mogelijk:",
+  "reportBugItems": "App-versie\\nApparaatmodel\\nBesturingssysteem\\nSchermafbeelding van het probleem",
+  "developedBy": "Ontwikkeld door CodeBySam",
+  "errorOpeningLink": "Kan link niet openen",
+  "errorOpeningEmail": "Kan e-mail niet openen"
 }

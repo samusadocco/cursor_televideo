@@ -222,5 +222,30 @@
         "example": "Lombardia"
       }
     }
-  }
+  },
+  "support": "Support",
+  "supportDescription": "Kontakt os for hjælp",
+  "supportTitle": "Vi er her for at hjælpe!",
+  "supportSubtitle": "Hvis du har spørgsmål eller brug for hjælp, så tøv ikke med at kontakte os",
+  "directContact": "Direkte Kontakt",
+  "emailLabel": "E-mail",
+  "websiteLabel": "Hjemmeside",
+  "responseTime": "Gennemsnitlig svartid: 24-48 timer",
+  "faq": "Ofte Stillede Spørgsmål",
+  "faqGeolocation": "Hvordan virker geolokalisering?",
+  "faqGeolocationAnswer": "Appen bruger din enheds placering til automatisk at identificere din region og vise relevante lokale nyheder. Du kan deaktivere denne funktion i app-indstillingerne.",
+  "faqFavorites": "Hvordan gemmer jeg en side i favoritter?",
+  "faqFavoritesAnswer": "Mens du ser en side, skal du trykke på stjerneikonet for at tilføje den til favoritter. Du kan få adgang til dine yndlingssider fra hovedmenuen.",
+  "faqTheme": "Hvordan ændrer jeg app-temaet?",
+  "faqThemeAnswer": "Gå til app-indstillingerne og vælg dit ønskede tema (lyst/mørkt). Appen understøtter også automatisk indstilling baseret på systemindstillinger.",
+  "faqOffline": "Virker appen offline?",
+  "faqOfflineAnswer": "Nej, en aktiv internetforbindelse er nødvendig for at få adgang til tekst-TV-sider i realtid.",
+  "faqReportProblem": "Hvordan rapporterer jeg et problem?",
+  "faqReportProblemAnswer": "Send en detaljeret e-mail til samuele@codebysam.it, hvor du beskriver problemet.",
+  "reportBugTitle": "Rapporter et Problem",
+  "reportBugInstructions": "Når du rapporterer et problem, bedes du inkludere hvis muligt:",
+  "reportBugItems": "App-version\\nEnhedsmodel\\nOperativsystem\\nSkærmbillede af problemet",
+  "developedBy": "Udviklet af CodeBySam",
+  "errorOpeningLink": "Kan ikke åbne link",
+  "errorOpeningEmail": "Kan ikke åbne e-mail"
 }

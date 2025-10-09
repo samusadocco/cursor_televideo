@@ -222,5 +222,30 @@
         "example": "Lombardia"
       }
     }
-  }
+  },
+  "support": "Soporte",
+  "supportDescription": "Contáctenos para obtener asistencia",
+  "supportTitle": "¡Estamos aquí para ayudarte!",
+  "supportSubtitle": "Para cualquier pregunta o asistencia, no dudes en contactarnos",
+  "directContact": "Contacto Directo",
+  "emailLabel": "Correo electrónico",
+  "websiteLabel": "Sitio Web",
+  "responseTime": "Tiempo de respuesta promedio: 24-48 horas",
+  "faq": "Preguntas Frecuentes",
+  "faqGeolocation": "¿Cómo funciona la geolocalización?",
+  "faqGeolocationAnswer": "La aplicación utiliza la ubicación de tu dispositivo para identificar automáticamente tu región y mostrarte noticias locales relevantes. Puedes desactivar esta función en la configuración de la aplicación.",
+  "faqFavorites": "¿Cómo guardar una página en favoritos?",
+  "faqFavoritesAnswer": "Mientras ves una página, toca el ícono de estrella para añadirla a favoritos. Puedes acceder a tus páginas favoritas desde el menú principal.",
+  "faqTheme": "¿Cómo cambiar el tema de la aplicación?",
+  "faqThemeAnswer": "Ve a la configuración de la aplicación y selecciona tu tema deseado (claro/oscuro). La aplicación también admite la configuración automática basada en la configuración del sistema.",
+  "faqOffline": "¿La aplicación funciona sin conexión?",
+  "faqOfflineAnswer": "No, se requiere una conexión a Internet activa para acceder a las páginas de teletexto en tiempo real.",
+  "faqReportProblem": "¿Cómo reportar un problema?",
+  "faqReportProblemAnswer": "Envía un correo electrónico detallado a samuele@codebysam.it describiendo el problema encontrado.",
+  "reportBugTitle": "Reportar un Problema",
+  "reportBugInstructions": "Al reportar un problema, incluye si es posible:",
+  "reportBugItems": "Versión de la aplicación\nModelo del dispositivo\nSistema operativo\nCaptura de pantalla del problema",
+  "developedBy": "Desarrollado por CodeBySam",
+  "errorOpeningLink": "No se puede abrir el enlace",
+  "errorOpeningEmail": "No se puede abrir el correo electrónico"
 }

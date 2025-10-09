@@ -415,4 +415,87 @@ class AppLocalizationsHu extends AppLocalizations {
   String pageLoadErrorWithHint(int minPage) {
     return 'An error occurred while loading the page.\nBack to $minPage';
   }
+
+  @override
+  String get support => 'Támogatás';
+
+  @override
+  String get supportDescription => 'Lépjen kapcsolatba velünk segítségért';
+
+  @override
+  String get supportTitle => 'Itt vagyunk, hogy segítsünk!';
+
+  @override
+  String get supportSubtitle =>
+      'Bármilyen kérdés vagy segítség esetén ne habozzon kapcsolatba lépni velünk';
+
+  @override
+  String get directContact => 'Közvetlen Kapcsolat';
+
+  @override
+  String get emailLabel => 'E-mail';
+
+  @override
+  String get websiteLabel => 'Weboldal';
+
+  @override
+  String get responseTime => 'Átlagos válaszidő: 24-48 óra';
+
+  @override
+  String get faq => 'Gyakran Ismételt Kérdések';
+
+  @override
+  String get faqGeolocation => 'Hogyan működik a geolokáció?';
+
+  @override
+  String get faqGeolocationAnswer =>
+      'Az alkalmazás az eszköz helyét használja a régió automatikus azonosításához és a releváns helyi hírek megjelenítéséhez. Ezt a funkciót letilthatja az alkalmazás beállításaiban.';
+
+  @override
+  String get faqFavorites => 'Hogyan menthetem el egy oldalt a kedvencekbe?';
+
+  @override
+  String get faqFavoritesAnswer =>
+      'Oldal megtekintése közben érintse meg a csillag ikont a kedvencekhez való hozzáadáshoz. Kedvenc oldalaihoz a főmenüből férhet hozzá.';
+
+  @override
+  String get faqTheme => 'Hogyan változtathatom meg az alkalmazás témáját?';
+
+  @override
+  String get faqThemeAnswer =>
+      'Lépjen az alkalmazás beállításaihoz, és válassza ki a kívánt témát (világos/sötét). Az alkalmazás támogatja az automatikus beállítást is a rendszerbeállítások alapján.';
+
+  @override
+  String get faqOffline => 'Működik az alkalmazás offline?';
+
+  @override
+  String get faqOfflineAnswer =>
+      'Nem, aktív internetkapcsolat szükséges a valós idejű teletext oldalak eléréséhez.';
+
+  @override
+  String get faqReportProblem => 'Hogyan jelentsek problémát?';
+
+  @override
+  String get faqReportProblemAnswer =>
+      'Küldjön részletes e-mailt a samuele@codebysam.it címre, amelyben leírja a problémát.';
+
+  @override
+  String get reportBugTitle => 'Probléma Jelentése';
+
+  @override
+  String get reportBugInstructions =>
+      'Probléma jelentésekor kérjük, ha lehetséges, adja meg:';
+
+  @override
+  String get reportBugItems =>
+      'Alkalmazás verziója\\nEszköz modellje\\nOperációs rendszer\\nKépernyőkép a problémáról';
+
+  @override
+  String get developedBy => 'Fejlesztette: CodeBySam';
+
+  @override
+  String get errorOpeningLink => 'A link nem nyitható meg';
+
+  @override
+  String get errorOpeningEmail => 'Az e-mail nem nyitható meg';
 }

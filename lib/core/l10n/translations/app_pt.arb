@@ -222,5 +222,30 @@
         "example": "Lombardia"
       }
     }
-  }
+  },
+  "support": "Suporte",
+  "supportDescription": "Entre em contato para obter assistência",
+  "supportTitle": "Estamos aqui para ajudar!",
+  "supportSubtitle": "Para qualquer dúvida ou assistência, não hesite em nos contatar",
+  "directContact": "Contato Direto",
+  "emailLabel": "E-mail",
+  "websiteLabel": "Site",
+  "responseTime": "Tempo médio de resposta: 24-48 horas",
+  "faq": "Perguntas Frequentes",
+  "faqGeolocation": "Como funciona a geolocalização?",
+  "faqGeolocationAnswer": "O aplicativo usa a localização do seu dispositivo para identificar automaticamente sua região e mostrar notícias locais relevantes. Você pode desativar esse recurso nas configurações do aplicativo.",
+  "faqFavorites": "Como salvar uma página nos favoritos?",
+  "faqFavoritesAnswer": "Ao visualizar uma página, toque no ícone de estrela para adicioná-la aos favoritos. Você pode acessar suas páginas favoritas no menu principal.",
+  "faqTheme": "Como mudar o tema do aplicativo?",
+  "faqThemeAnswer": "Vá para as configurações do aplicativo e selecione o tema desejado (claro/escuro). O aplicativo também suporta configuração automática baseada nas configurações do sistema.",
+  "faqOffline": "O aplicativo funciona offline?",
+  "faqOfflineAnswer": "Não, uma conexão ativa com a Internet é necessária para acessar páginas de teletexto em tempo real.",
+  "faqReportProblem": "Como relatar um problema?",
+  "faqReportProblemAnswer": "Envie um e-mail detalhado para samuele@codebysam.it descrevendo o problema encontrado.",
+  "reportBugTitle": "Relatar um Problema",
+  "reportBugInstructions": "Ao relatar um problema, inclua se possível:",
+  "reportBugItems": "Versão do aplicativo\nModelo do dispositivo\nSistema operacional\nCaptura de tela do problema",
+  "developedBy": "Desenvolvido por CodeBySam",
+  "errorOpeningLink": "Não foi possível abrir o link",
+  "errorOpeningEmail": "Não foi possível abrir o e-mail"
 }

@@ -414,4 +414,87 @@ class AppLocalizationsCs extends AppLocalizations {
   String pageLoadErrorWithHint(int minPage) {
     return 'An error occurred while loading the page.\nBack to $minPage';
   }
+
+  @override
+  String get support => 'Podpora';
+
+  @override
+  String get supportDescription => 'Kontaktujte nás pro pomoc';
+
+  @override
+  String get supportTitle => 'Jsme tu, abychom vám pomohli!';
+
+  @override
+  String get supportSubtitle =>
+      'V případě jakýchkoli dotazů nebo pomoci nás neváhejte kontaktovat';
+
+  @override
+  String get directContact => 'Přímý Kontakt';
+
+  @override
+  String get emailLabel => 'E-mail';
+
+  @override
+  String get websiteLabel => 'Webová Stránka';
+
+  @override
+  String get responseTime => 'Průměrná doba odezvy: 24-48 hodin';
+
+  @override
+  String get faq => 'Často Kladené Otázky';
+
+  @override
+  String get faqGeolocation => 'Jak funguje geolokace?';
+
+  @override
+  String get faqGeolocationAnswer =>
+      'Aplikace používá polohu vašeho zařízení k automatické identifikaci vašeho regionu a zobrazování relevantních místních zpráv. Tuto funkci můžete deaktivovat v nastavení aplikace.';
+
+  @override
+  String get faqFavorites => 'Jak uložit stránku do oblíbených?';
+
+  @override
+  String get faqFavoritesAnswer =>
+      'Při prohlížení stránky klepněte na ikonu hvězdičky a přidejte ji do oblíbených. K oblíbeným stránkám máte přístup z hlavní nabídky.';
+
+  @override
+  String get faqTheme => 'Jak změnit motiv aplikace?';
+
+  @override
+  String get faqThemeAnswer =>
+      'Přejděte do nastavení aplikace a vyberte požadovaný motiv (světlý/tmavý). Aplikace také podporuje automatické nastavení na základě systémových nastavení.';
+
+  @override
+  String get faqOffline => 'Funguje aplikace offline?';
+
+  @override
+  String get faqOfflineAnswer =>
+      'Ne, pro přístup k real-time teletextovým stránkám je vyžadováno aktivní připojení k internetu.';
+
+  @override
+  String get faqReportProblem => 'Jak nahlásit problém?';
+
+  @override
+  String get faqReportProblemAnswer =>
+      'Pošlete podrobný e-mail na samuele@codebysam.it s popisem problému.';
+
+  @override
+  String get reportBugTitle => 'Nahlásit Problém';
+
+  @override
+  String get reportBugInstructions =>
+      'Při hlášení problému uveďte pokud možno:';
+
+  @override
+  String get reportBugItems =>
+      'Verze aplikace\\nModel zařízení\\nOperační systém\\nSnímek obrazovky problému';
+
+  @override
+  String get developedBy => 'Vyvinuto CodeBySam';
+
+  @override
+  String get errorOpeningLink => 'Nelze otevřít odkaz';
+
+  @override
+  String get errorOpeningEmail => 'Nelze otevřít e-mail';
 }
