@@ -91,10 +91,10 @@ class AppLocalizationsIs extends AppLocalizations {
   String get restore => 'ENDURHEIMTA';
 
   @override
-  String get cancel => 'HÆTTA VIÐ';
+  String get cancel => 'Hætta við';
 
   @override
-  String get save => 'VISTA';
+  String get save => 'Vista';
 
   @override
   String get searchHint => 'Leita að síðu...';
@@ -415,4 +415,51 @@ class AppLocalizationsIs extends AppLocalizations {
   String pageLoadErrorWithHint(int minPage) {
     return 'An error occurred while loading the page.\nBack to $minPage';
   }
+
+  @override
+  String get channelSelection => 'Val á rás';
+
+  @override
+  String get favoriteChannels => 'Uppáhalds rásir';
+
+  @override
+  String get reorder => 'Endurraða';
+
+  @override
+  String get searchChannelOrCountry => 'Leita að rás eða landi...';
+
+  @override
+  String get showAllChannels => 'Sýna allar rásir';
+
+  @override
+  String channelsAvailableFromCountries(int count, int countries) {
+    return '$count rásir tiltækar frá $countries löndum';
+  }
+
+  @override
+  String get allChannels => 'Allar rásir';
+
+  @override
+  String get noFavoriteChannelsFound => 'Engar uppáhalds rásir fundust';
+
+  @override
+  String get noChannelsFound => 'Engar rásir fundust';
+
+  @override
+  String addedToFavorites(String emoji, String name) {
+    return '$emoji $name bætt við uppáhald';
+  }
+
+  @override
+  String removedFromFavorites(String emoji, String name) {
+    return '$emoji $name fjarlægt úr uppáhaldi';
+  }
+
+  @override
+  String regionsAvailable(int count) {
+    return '$count svæði tiltæk';
+  }
+
+  @override
+  String get reorderFavorites => 'Endurraða uppáhaldi';
 }

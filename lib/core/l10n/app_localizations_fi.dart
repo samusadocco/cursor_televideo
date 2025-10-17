@@ -91,10 +91,10 @@ class AppLocalizationsFi extends AppLocalizations {
   String get restore => 'PALAUTA';
 
   @override
-  String get cancel => 'PERUUTA';
+  String get cancel => 'Peruuta';
 
   @override
-  String get save => 'TALLENNA';
+  String get save => 'Tallenna';
 
   @override
   String get searchHint => 'Hae sivua...';
@@ -412,4 +412,51 @@ class AppLocalizationsFi extends AppLocalizations {
   String pageLoadErrorWithHint(int minPage) {
     return 'An error occurred while loading the page.\nBack to $minPage';
   }
+
+  @override
+  String get channelSelection => 'Kanavan valinta';
+
+  @override
+  String get favoriteChannels => 'Suosikkikanavat';
+
+  @override
+  String get reorder => 'Järjestä uudelleen';
+
+  @override
+  String get searchChannelOrCountry => 'Hae kanavaa tai maata...';
+
+  @override
+  String get showAllChannels => 'Näytä kaikki kanavat';
+
+  @override
+  String channelsAvailableFromCountries(int count, int countries) {
+    return '$count kanavaa saatavilla $countries maasta';
+  }
+
+  @override
+  String get allChannels => 'Kaikki kanavat';
+
+  @override
+  String get noFavoriteChannelsFound => 'Suosikkikanavia ei löytynyt';
+
+  @override
+  String get noChannelsFound => 'Kanavia ei löytynyt';
+
+  @override
+  String addedToFavorites(String emoji, String name) {
+    return '$emoji $name lisätty suosikkeihin';
+  }
+
+  @override
+  String removedFromFavorites(String emoji, String name) {
+    return '$emoji $name poistettu suosikeista';
+  }
+
+  @override
+  String regionsAvailable(int count) {
+    return '$count aluetta saatavilla';
+  }
+
+  @override
+  String get reorderFavorites => 'Järjestä suosikit uudelleen';
 }

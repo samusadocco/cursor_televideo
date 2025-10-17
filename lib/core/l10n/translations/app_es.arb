@@ -222,5 +222,68 @@
         "example": "Lombardia"
       }
     }
-  }
+  },
+  "channelSelection": "Selección de canal",
+  "favoriteChannels": "Canales favoritos",
+  "reorder": "Reordenar",
+  "searchChannelOrCountry": "Buscar canal o país...",
+  "showAllChannels": "Mostrar todos los canales",
+  "channelsAvailableFromCountries": "{count} canales disponibles de {countries} países",
+  "@channelsAvailableFromCountries": {
+    "description": "Number of channels available from countries",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "45"
+      },
+      "countries": {
+        "type": "int",
+        "example": "15"
+      }
+    }
+  },
+  "allChannels": "Todos los canales",
+  "noFavoriteChannelsFound": "No se encontraron canales favoritos",
+  "noChannelsFound": "No se encontraron canales",
+  "addedToFavorites": "{emoji} {name} añadido a favoritos",
+  "@addedToFavorites": {
+    "description": "Message when a channel is added to favorites",
+    "placeholders": {
+      "emoji": {
+        "type": "String",
+        "example": "🇮🇹"
+      },
+      "name": {
+        "type": "String",
+        "example": "RAI Nazionale"
+      }
+    }
+  },
+  "removedFromFavorites": "{emoji} {name} eliminado de favoritos",
+  "@removedFromFavorites": {
+    "description": "Message when a channel is removed from favorites",
+    "placeholders": {
+      "emoji": {
+        "type": "String",
+        "example": "🇮🇹"
+      },
+      "name": {
+        "type": "String",
+        "example": "RAI Nazionale"
+      }
+    }
+  },
+  "regionsAvailable": "{count} regiones disponibles",
+  "@regionsAvailable": {
+    "description": "Number of regions available for a channel",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "20"
+      }
+    }
+  },
+  "reorderFavorites": "Reordenar favoritos",
+  "cancel": "Cancelar",
+  "save": "Guardar"
 }

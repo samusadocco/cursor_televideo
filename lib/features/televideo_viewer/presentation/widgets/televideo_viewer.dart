@@ -15,6 +15,8 @@ import 'package:cursor_televideo/shared/widgets/error_page_view.dart';
 import 'package:cursor_televideo/core/analytics/analytics_service.dart';
 import 'package:cursor_televideo/features/televideo_viewer/presentation/widgets/auto_refresh_overlay.dart';
 import 'package:cursor_televideo/core/l10n/app_localizations.dart';
+import 'package:cursor_televideo/features/televideo_viewer/presentation/widgets/html_teletext_viewer.dart';
+import 'package:cursor_televideo/features/televideo_viewer/presentation/widgets/zdf_teletext_viewer.dart';
 
 class TelevideoViewer extends StatefulWidget {
   final TelevideoPage page;
@@ -126,6 +128,82 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
     final elapsed = DateTime.now().difference(_timerStartTime!);
     final remaining = Duration(seconds: AppSettings.liveShowIntervalSeconds) - elapsed;
     return remaining.isNegative ? Duration.zero : remaining;
+  }
+
+  /// Costruisce il viewer HTML appropriato in base al provider
+  Widget _buildHtmlViewer(TelevideoPage page, BuildContext context, int currentSubPage) {
+    // Determina quale viewer usare in base al provider
+    final isZDF = page.providerId == 'zdf_text' || 
+                  page.providerId == 'zdfinfo_text' || 
+                  page.providerId == 'zdfneo_text' || 
+                  page.providerId == '3sat_text';
+    
+    if (isZDF) {
+      return ZDFTeletextViewer(
+        key: ValueKey('zdf_${page.pageNumber}_$currentSubPage'),
+        page: page,
+        onPageNavigation: (pageNumber) {
+          // Naviga alla pagina tramite il Bloc
+          if (widget.onPageNumberSubmitted != null) {
+            widget.onPageNumberSubmitted!(pageNumber);
+          }
+        },
+        onTap: () {
+          // Gestisce il tap per play/pause delle sottopagine
+          final hasSubPages = page.maxSubPages > 1;
+          if (hasSubPages && AppSettings.liveShowEnabled) {
+            context.read<TelevideoBloc>().add(const TelevideoEvent.toggleAutoRefreshPause());
+            
+            // Mostra l'overlay
+            setState(() {
+              _showPauseOverlay = true;
+            });
+            
+            _overlayTimer?.cancel();
+            _overlayTimer = Timer(const Duration(seconds: 2), () {
+              if (mounted) {
+                setState(() {
+                  _showPauseOverlay = false;
+                });
+              }
+            });
+          }
+        },
+      );
+    } else {
+      // ARD o altri provider HTML
+      return HtmlTeletextViewer(
+        key: ValueKey('html_${page.pageNumber}_$currentSubPage'),
+        page: page,
+        onPageNavigation: (pageNumber) {
+          // Naviga alla pagina tramite il Bloc
+          if (widget.onPageNumberSubmitted != null) {
+            widget.onPageNumberSubmitted!(pageNumber);
+          }
+        },
+        onTap: () {
+          // Gestisce il tap per play/pause delle sottopagine
+          final hasSubPages = page.maxSubPages > 1;
+          if (hasSubPages && AppSettings.liveShowEnabled) {
+            context.read<TelevideoBloc>().add(const TelevideoEvent.toggleAutoRefreshPause());
+            
+            // Mostra l'overlay
+            setState(() {
+              _showPauseOverlay = true;
+            });
+            
+            _overlayTimer?.cancel();
+            _overlayTimer = Timer(const Duration(seconds: 2), () {
+              if (mounted) {
+                setState(() {
+                  _showPauseOverlay = false;
+                });
+              }
+            });
+          }
+        },
+      );
+    }
   }
 
   @override
@@ -304,24 +382,52 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
     // Converti le coordinate del tap in coordinate relative all'immagine
     final localPosition = details.localPosition;
     
+    // Determina le dimensioni originali in base al provider
+    double originalWidth;
+    double originalHeight;
+    
+    // Swiss Teletext ha dimensioni diverse da RAI
+    if (widget.page.providerId != null && 
+        (widget.page.providerId!.startsWith('rsi_') || 
+         widget.page.providerId!.startsWith('rts_') || 
+         widget.page.providerId!.startsWith('srf_'))) {
+      // Swiss Teletext: 640x460
+      originalWidth = 640.0;
+      originalHeight = 460.0;
+    } else {
+      // RAI Televideo: 360x400
+      originalWidth = 360.0;
+      originalHeight = 400.0;
+    }
+    
     // Con BoxFit.fill, dobbiamo calcolare il rapporto di scala per x e y separatamente
-    const originalWidth = 360.0; // Larghezza originale dell'immagine del Televideo
-    const originalHeight = 400.0; // Altezza originale dell'immagine del Televideo
     final scaleX = imageSize.width / originalWidth;
     final scaleY = imageSize.height / originalHeight;
+    
+    print('[TeletextViewer] Tap at: dx=${localPosition.dx}, dy=${localPosition.dy}');
+    print('[TeletextViewer] Image size: ${imageSize.width}x${imageSize.height}');
+    print('[TeletextViewer] Original size: ${originalWidth}x$originalHeight');
+    print('[TeletextViewer] Scale: X=$scaleX, Y=$scaleY');
     
     // Converti le coordinate del tap in coordinate dell'immagine originale
     final imageX = localPosition.dx / scaleX;
     final imageY = localPosition.dy / scaleY;
     
+    print('[TeletextViewer] Image coords: X=$imageX, Y=$imageY');
+    
     // Verifica se il tap è su un'area cliccabile
+    print('[TeletextViewer] Checking ${widget.page.clickableAreas.length} clickable areas...');
+    
     for (final area in widget.page.clickableAreas) {
       final bool isInArea = imageX >= area.x &&
           imageX <= (area.x + area.width) &&
           imageY >= area.y &&
           imageY <= (area.y + area.height);
       
+      print('[TeletextViewer] Area: x=${area.x}, y=${area.y}, w=${area.width}, h=${area.height}, target=${area.targetPage} → ${isInArea ? "HIT!" : "miss"}');
+      
       if (isInArea) {
+        print('[TeletextViewer] ✅ Tap on area! Navigating to page ${area.targetPage}');
         // Log dell'evento di navigazione tramite click
         AnalyticsService().logTelevideoPageView(
           area.targetPage.toString(),
@@ -406,8 +512,12 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
 
             // Gestisci il timer in base allo stato di pausa
             if (isAutoRefreshPaused) {
+              // Salva il tempo rimanente prima di cancellare
+              _remainingTime = _getTimeRemaining();
               _liveShowTimer?.cancel();
+              _refreshTimer?.cancel();
             } else {
+              // Riavvia il timer solo se non è in pausa
               _startLiveShowTimer();
             }
           },
@@ -485,40 +595,42 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
                             return AnimatedPageTransition(
                               type: transitionType,
                               forward: forward,
-                              child: Image.network(
-                                page.imageUrl,
-                                headers: const {
-                                  'Cache-Control': 'no-cache',
-                                  'Pragma': 'no-cache',
-                                },
-                                fit: BoxFit.fill,
-                                errorBuilder: (context, error, stackTrace) {
-                                  return ErrorPageView(
-                                    message: AppLocalizations.of(context)!.pageUnavailable,
-                                    onRetry: () {
-                                      final regionState = context.read<RegionBloc>().state;
-                                      if (regionState.selectedRegion != null) {
-                                        context.read<TelevideoBloc>().add(
-                                          TelevideoEvent.loadRegionalPage(
-                                            regionState.selectedRegion!,
-                                            page.pageNumber,
-                                          ),
+                              child: page.isHtmlContent
+                                  ? _buildHtmlViewer(page, context, currentSubPage)
+                                  
+                                  : Image.network(
+                                      page.imageUrl,
+                                      headers: const {
+                                        'Cache-Control': 'no-cache',
+                                        'Pragma': 'no-cache',
+                                      },
+                                      fit: BoxFit.fill,
+                                      errorBuilder: (context, error, stackTrace) {
+                                        return ErrorPageView(
+                                          message: AppLocalizations.of(context)!.pageUnavailable,
+                                          onRetry: () {
+                                            final regionState = context.read<RegionBloc>().state;
+                                            if (regionState.selectedRegion != null) {
+                                              context.read<TelevideoBloc>().add(
+                                                TelevideoEvent.loadRegionalPage(
+                                                  regionState.selectedRegion!,
+                                                  page.pageNumber,
+                                                ),
+                                              );
+                                            } else {
+                                              context.read<TelevideoBloc>().add(
+                                                TelevideoEvent.loadNationalPage(page.pageNumber),
+                                              );
+                                            }
+                                          },
                                         );
-                                      } else {
-                                        context.read<TelevideoBloc>().add(
-                                          TelevideoEvent.loadNationalPage(page.pageNumber),
-                                        );
-                                      }
-                                    },
-                                  );
-                                },
-                              ),
+                                      },
+                                    ),
                             );
                           },
                           error: (message, selectedChannel) => ErrorPageView(
                             message: message,
                             onRetry: () {
-                              final regionState = context.read<RegionBloc>().state;
                               final lastEvent = context.read<TelevideoBloc>().lastEvent;
                               
                               lastEvent?.when(

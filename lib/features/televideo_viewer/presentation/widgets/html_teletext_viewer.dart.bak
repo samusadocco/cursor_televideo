@@ -1,0 +1,215 @@
+import 'package:flutter/material.dart';
+import 'package:webview_flutter/webview_flutter.dart';
+import 'package:cursor_televideo/shared/models/televideo_page.dart';
+
+/// Widget per visualizzare pagine teletext in formato HTML (es. ARD)
+/// 
+/// Questo widget renderizza il contenuto HTML delle pagine teletext
+/// che non usano immagini PNG (come ARD, ZDF, ecc.)
+class HtmlTeletextViewer extends StatefulWidget {
+  final TelevideoPage page;
+  final VoidCallback? onLinkTap;
+
+  const HtmlTeletextViewer({
+    super.key,
+    required this.page,
+    this.onLinkTap,
+  });
+
+  @override
+  State<HtmlTeletextViewer> createState() => _HtmlTeletextViewerState();
+}
+
+class _HtmlTeletextViewerState extends State<HtmlTeletextViewer> {
+  late final WebViewController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeWebView();
+  }
+
+  void _initializeWebView() {
+    _controller = WebViewController()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..setBackgroundColor(Colors.black)
+      ..setNavigationDelegate(
+        NavigationDelegate(
+          onPageStarted: (String url) {
+            print('[HtmlTeletextViewer] Page started loading: $url');
+          },
+          onPageFinished: (String url) {
+            print('[HtmlTeletextViewer] Page finished loading: $url');
+            // Nascondi tutto tranne il div ardtext_classic usando JavaScript
+            _controller.runJavaScript('''
+              (function() {
+                // Nascondi header, footer e tutto il resto
+                var style = document.createElement('style');
+                style.textContent = `
+                  body > *:not(#ardtext_classic) { display: none !important; }
+                  body { margin: 0; padding: 0; background: black; }
+                  #ardtext_classic { display: block !important; }
+                `;
+                document.head.appendChild(style);
+                
+                // Log per debug
+                console.log('ARD Text view customized');
+              })();
+            ''');
+          },
+          onWebResourceError: (WebResourceError error) {
+            print('[HtmlTeletextViewer] Error: ${error.description}');
+          },
+          onNavigationRequest: (NavigationRequest request) {
+            print('[HtmlTeletextViewer] Navigation request: ${request.url}');
+            
+            // Permetti il caricamento iniziale
+            if (request.url == widget.page.imageUrl) {
+              return NavigationDecision.navigate;
+            }
+            
+            // Intercetta i click sui link
+            if (request.url.contains('index.php?page=')) {
+              _handleLinkTap(request.url);
+              return NavigationDecision.prevent;
+            }
+            
+            // Permetti risorse da ard-text.de
+            if (request.url.contains('ard-text.de')) {
+              return NavigationDecision.navigate;
+            }
+            
+            // Blocca tutto il resto
+            return NavigationDecision.prevent;
+          },
+        ),
+      )
+      ..loadRequest(Uri.parse(widget.page.imageUrl));
+  }
+
+  /// Prepara il contenuto HTML completo con stili e base URL
+  String _prepareHtmlContent() {
+    final baseUrl = 'https://www.ard-text.de';
+    
+    return '''
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <base href="$baseUrl/">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      background-color: #000000;
+      color: #FFFFFF;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 14px;
+      line-height: 1.2;
+      padding: 8px;
+    }
+    
+    /* Colori foreground teletext */
+    .fgw, .fgW { color: #FFFFFF !important; }
+    .fgb, .fgB { color: #000000 !important; }
+    .fgr, .fgR { color: #FF0000 !important; }
+    .fgg, .fgG { color: #00FF00 !important; }
+    .fgy, .fgY { color: #FFFF00 !important; }
+    .fgbl, .fgBl { color: #0000FF !important; }
+    .fgm, .fgM { color: #FF00FF !important; }
+    .fgc, .fgC { color: #00FFFF !important; }
+    
+    /* Colori background teletext */
+    .bgb, .bgB { background-color: #000000 !important; }
+    .bgw, .bgW { background-color: #FFFFFF !important; }
+    .bgr, .bgR { background-color: #FF0000 !important; }
+    .bgg, .bgG { background-color: #00FF00 !important; }
+    .bgy, .bgY { background-color: #FFFF00 !important; }
+    .bgbl, .bgBl { background-color: #0000FF !important; }
+    .bgm, .bgM { background-color: #FF00FF !important; }
+    .bgc, .bgC { background-color: #00FFFF !important; }
+    
+    /* Link */
+    a {
+      color: #00FFFF !important;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+    
+    /* Immagini inline */
+    img {
+      display: inline-block;
+      vertical-align: baseline;
+      max-width: 100%;
+    }
+    
+    /* Container principale */
+    #page_1 {
+      width: 100%;
+    }
+    
+    /* Debug */
+    .debug {
+      color: #FF00FF;
+      font-size: 12px;
+      margin: 10px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="debug">ARD Text - Pagina ${widget.page.pageNumber}</div>
+  ${widget.page.htmlContent ?? '<div class="debug">Contenuto non disponibile</div>'}
+</body>
+</html>
+    ''';
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (!widget.page.isHtmlContent || widget.page.htmlContent == null) {
+      return const Center(
+        child: Text('Contenuto HTML non disponibile'),
+      );
+    }
+
+    return Container(
+      color: Colors.black,
+      child: WebViewWidget(controller: _controller),
+    );
+  }
+
+  /// Gestisce il tap su un link
+  void _handleLinkTap(String url) {
+    print('[HtmlTeletextViewer] Link tapped: $url');
+    
+    // Estrai il numero di pagina dall'URL
+    final pageMatch = RegExp(r'page=(\d+)').firstMatch(url);
+    if (pageMatch != null) {
+      final pageNumber = int.tryParse(pageMatch.group(1)!);
+      if (pageNumber != null) {
+        print('[HtmlTeletextViewer] Navigating to page: $pageNumber');
+        
+        // TODO: Implementare navigazione tramite Bloc
+        // Per ora mostra un messaggio
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Navigazione alla pagina $pageNumber'),
+              duration: const Duration(seconds: 1),
+            ),
+          );
+        }
+        
+        if (widget.onLinkTap != null) {
+          widget.onLinkTap!();
+        }
+      }
+    }
+  }
+}
+

@@ -222,5 +222,68 @@
         "example": "Lombardia"
       }
     }
-  }
+  },
+  "channelSelection": "Csatorna választás",
+  "favoriteChannels": "Kedvenc csatornák",
+  "reorder": "Átrendezés",
+  "searchChannelOrCountry": "Csatorna vagy ország keresése...",
+  "showAllChannels": "Összes csatorna megjelenítése",
+  "channelsAvailableFromCountries": "{count} csatorna elérhető {countries} országból",
+  "@channelsAvailableFromCountries": {
+    "description": "Number of channels available from countries",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "45"
+      },
+      "countries": {
+        "type": "int",
+        "example": "15"
+      }
+    }
+  },
+  "allChannels": "Összes csatorna",
+  "noFavoriteChannelsFound": "Nem találhatók kedvenc csatornák",
+  "noChannelsFound": "Nem találhatók csatornák",
+  "addedToFavorites": "{emoji} {name} hozzáadva a kedvencekhez",
+  "@addedToFavorites": {
+    "description": "Message when a channel is added to favorites",
+    "placeholders": {
+      "emoji": {
+        "type": "String",
+        "example": "🇮🇹"
+      },
+      "name": {
+        "type": "String",
+        "example": "RAI Nazionale"
+      }
+    }
+  },
+  "removedFromFavorites": "{emoji} {name} eltávolítva a kedvencekből",
+  "@removedFromFavorites": {
+    "description": "Message when a channel is removed from favorites",
+    "placeholders": {
+      "emoji": {
+        "type": "String",
+        "example": "🇮🇹"
+      },
+      "name": {
+        "type": "String",
+        "example": "RAI Nazionale"
+      }
+    }
+  },
+  "regionsAvailable": "{count} régió elérhető",
+  "@regionsAvailable": {
+    "description": "Number of regions available for a channel",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "20"
+      }
+    }
+  },
+  "reorderFavorites": "Kedvencek átrendezése",
+  "cancel": "Mégse",
+  "save": "Mentés"
 }

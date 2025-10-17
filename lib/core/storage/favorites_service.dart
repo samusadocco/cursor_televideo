@@ -20,15 +20,17 @@ class FavoritesService {
           final favorite = FavoritePage.fromJson(jsonDecode(json));
           // Se non c'è descrizione, la aggiungiamo
           if (favorite.description == null) {
+            final descriptions = _descriptionsService.getDescriptionsForChannel(
+              channelId: favorite.channelId,
+              isRegional: favorite.regionCode != null,
+            );
             return FavoritePage(
               pageNumber: favorite.pageNumber,
               title: favorite.title,
-              description: _descriptionsService.getDescription(
-                favorite.pageNumber,
-                isRegional: favorite.regionCode != null,
-              ),
+              description: descriptions[favorite.pageNumber] ?? 'Pagina ${favorite.pageNumber}',
               regionCode: favorite.regionCode,
-              order: favorite.order ?? _favorites.length,
+              channelId: favorite.channelId,
+              order: favorite.order,
             );
           }
           return favorite;
@@ -42,18 +44,20 @@ class FavoritesService {
     await _saveFavorites();
   }
 
-  Future<void> addFavorite(int pageNumber, {String? regionCode}) async {
-    if (!_favorites.any((f) => f.pageNumber == pageNumber && f.regionCode == regionCode)) {
-      final description = _descriptionsService.getDescription(
-        pageNumber, 
+  Future<void> addFavorite(int pageNumber, {String? regionCode, String? channelId}) async {
+    if (!_favorites.any((f) => f.pageNumber == pageNumber && f.regionCode == regionCode && f.channelId == channelId)) {
+      final descriptions = _descriptionsService.getDescriptionsForChannel(
+        channelId: channelId,
         isRegional: regionCode != null,
       );
+      final description = descriptions[pageNumber] ?? 'Pagina $pageNumber';
       
       final favorite = FavoritePage(
         pageNumber: pageNumber,
         title: 'Pagina $pageNumber',
         description: description,
         regionCode: regionCode,
+        channelId: channelId,
         order: _favorites.length, // Aggiungi alla fine della lista
       );
       
@@ -62,17 +66,17 @@ class FavoritesService {
     }
   }
 
-  Future<void> removeFavorite(int pageNumber, {String? regionCode}) async {
+  Future<void> removeFavorite(int pageNumber, {String? regionCode, String? channelId}) async {
     _favorites.removeWhere(
-        (f) => f.pageNumber == pageNumber && f.regionCode == regionCode);
+        (f) => f.pageNumber == pageNumber && f.regionCode == regionCode && f.channelId == channelId);
     // Riordina gli indici dopo la rimozione
     _reorderIndexes();
     await _saveFavorites();
   }
 
-  Future<void> updateDescription(int pageNumber, String? regionCode, String newDescription) async {
+  Future<void> updateDescription(int pageNumber, String? regionCode, String? channelId, String newDescription) async {
     final index = _favorites.indexWhere(
-      (f) => f.pageNumber == pageNumber && f.regionCode == regionCode
+      (f) => f.pageNumber == pageNumber && f.regionCode == regionCode && f.channelId == channelId
     );
     
     if (index != -1) {
@@ -81,6 +85,7 @@ class FavoritesService {
         title: _favorites[index].title,
         description: newDescription,
         regionCode: _favorites[index].regionCode,
+        channelId: _favorites[index].channelId,
         order: _favorites[index].order,
       );
       await _saveFavorites();
@@ -110,6 +115,7 @@ class FavoritesService {
         title: favorite.title,
         description: favorite.description,
         regionCode: favorite.regionCode,
+        channelId: favorite.channelId,
         order: i,
       );
     }
@@ -126,14 +132,15 @@ class FavoritesService {
         title: favorite.title,
         description: favorite.description,
         regionCode: favorite.regionCode,
+        channelId: favorite.channelId,
         order: i,
       );
     }
   }
 
-  bool isFavorite(int pageNumber, String? regionCode) {
+  bool isFavorite(int pageNumber, String? regionCode, {String? channelId}) {
     return _favorites.any(
-        (f) => f.pageNumber == pageNumber && f.regionCode == regionCode);
+        (f) => f.pageNumber == pageNumber && f.regionCode == regionCode && f.channelId == channelId);
   }
 
   List<FavoritePage> getFavorites() {
@@ -160,7 +167,8 @@ class FavoritesService {
             isRegional: favorite.regionCode != null,
           ),
           regionCode: favorite.regionCode,
-          order: favorite.order ?? _favorites.length,
+          channelId: favorite.channelId,
+          order: favorite.order,
         );
       }
       return favorite;

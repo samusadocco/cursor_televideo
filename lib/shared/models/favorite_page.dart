@@ -12,6 +12,7 @@ class FavoritePage with _$FavoritePage {
     required String title,
     String? description,
     String? regionCode,
+    String? channelId,  // ID del canale (es. 'rai_nazionale', 'ard_text', 'zdf_text')
     @Default(0) int order,
   }) = _FavoritePage;
 

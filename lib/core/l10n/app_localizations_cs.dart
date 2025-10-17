@@ -91,10 +91,10 @@ class AppLocalizationsCs extends AppLocalizations {
   String get restore => 'OBNOVIT';
 
   @override
-  String get cancel => 'ZRUŠIT';
+  String get cancel => 'Zrušit';
 
   @override
-  String get save => 'ULOŽIT';
+  String get save => 'Uložit';
 
   @override
   String get searchHint => 'Hledat stránku...';
@@ -414,4 +414,51 @@ class AppLocalizationsCs extends AppLocalizations {
   String pageLoadErrorWithHint(int minPage) {
     return 'An error occurred while loading the page.\nBack to $minPage';
   }
+
+  @override
+  String get channelSelection => 'Výběr kanálu';
+
+  @override
+  String get favoriteChannels => 'Oblíbené kanály';
+
+  @override
+  String get reorder => 'Přeuspořádat';
+
+  @override
+  String get searchChannelOrCountry => 'Hledat kanál nebo zemi...';
+
+  @override
+  String get showAllChannels => 'Zobrazit všechny kanály';
+
+  @override
+  String channelsAvailableFromCountries(int count, int countries) {
+    return '$count kanálů dostupných z $countries zemí';
+  }
+
+  @override
+  String get allChannels => 'Všechny kanály';
+
+  @override
+  String get noFavoriteChannelsFound => 'Žádné oblíbené kanály nenalezeny';
+
+  @override
+  String get noChannelsFound => 'Žádné kanály nenalezeny';
+
+  @override
+  String addedToFavorites(String emoji, String name) {
+    return '$emoji $name přidán do oblíbených';
+  }
+
+  @override
+  String removedFromFavorites(String emoji, String name) {
+    return '$emoji $name odebrán z oblíbených';
+  }
+
+  @override
+  String regionsAvailable(int count) {
+    return '$count regionů dostupných';
+  }
+
+  @override
+  String get reorderFavorites => 'Přeuspořádat oblíbené';
 }

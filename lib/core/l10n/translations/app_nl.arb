@@ -222,5 +222,68 @@
         "example": "Lombardia"
       }
     }
-  }
+  },
+  "channelSelection": "Kanaalselectie",
+  "favoriteChannels": "Favoriete kanalen",
+  "reorder": "Herschikken",
+  "searchChannelOrCountry": "Zoek kanaal of land...",
+  "showAllChannels": "Toon alle kanalen",
+  "channelsAvailableFromCountries": "{count} kanalen beschikbaar uit {countries} landen",
+  "@channelsAvailableFromCountries": {
+    "description": "Number of channels available from countries",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "45"
+      },
+      "countries": {
+        "type": "int",
+        "example": "15"
+      }
+    }
+  },
+  "allChannels": "Alle kanalen",
+  "noFavoriteChannelsFound": "Geen favoriete kanalen gevonden",
+  "noChannelsFound": "Geen kanalen gevonden",
+  "addedToFavorites": "{emoji} {name} toegevoegd aan favorieten",
+  "@addedToFavorites": {
+    "description": "Message when a channel is added to favorites",
+    "placeholders": {
+      "emoji": {
+        "type": "String",
+        "example": "🇮🇹"
+      },
+      "name": {
+        "type": "String",
+        "example": "RAI Nazionale"
+      }
+    }
+  },
+  "removedFromFavorites": "{emoji} {name} verwijderd uit favorieten",
+  "@removedFromFavorites": {
+    "description": "Message when a channel is removed from favorites",
+    "placeholders": {
+      "emoji": {
+        "type": "String",
+        "example": "🇮🇹"
+      },
+      "name": {
+        "type": "String",
+        "example": "RAI Nazionale"
+      }
+    }
+  },
+  "regionsAvailable": "{count} regio's beschikbaar",
+  "@regionsAvailable": {
+    "description": "Number of regions available for a channel",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "20"
+      }
+    }
+  },
+  "reorderFavorites": "Favorieten herschikken",
+  "cancel": "Annuleren",
+  "save": "Opslaan"
 }

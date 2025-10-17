@@ -8,7 +8,6 @@ import 'package:cursor_televideo/features/televideo_viewer/bloc/televideo_event.
 import 'package:cursor_televideo/features/televideo_viewer/bloc/televideo_state.dart';
 import 'package:cursor_televideo/features/televideo_viewer/bloc/region_bloc.dart';
 import 'package:cursor_televideo/features/televideo_viewer/presentation/widgets/televideo_viewer.dart';
-import 'package:cursor_televideo/features/televideo_viewer/presentation/widgets/region_selector.dart';
 import 'package:cursor_televideo/features/televideo_viewer/presentation/widgets/channel_selector_button.dart';
 import 'package:cursor_televideo/features/televideo_viewer/presentation/widgets/shortcuts_menu.dart';
 import 'package:cursor_televideo/features/settings/presentation/pages/settings_page.dart';
@@ -21,6 +20,7 @@ import 'package:cursor_televideo/features/televideo_viewer/presentation/widgets/
 import 'package:cursor_televideo/core/settings/app_settings.dart';
 import 'package:cursor_televideo/features/televideo_viewer/presentation/widgets/page_number_indicator.dart';
 import 'package:cursor_televideo/core/analytics/analytics_service.dart';
+import 'package:cursor_televideo/core/teletext/teletext_channels.dart';
 
 // Funzione per determinare se il dispositivo è un tablet
 bool isTablet(BuildContext context) {
@@ -173,6 +173,7 @@ class _HomePageState extends State<HomePage> {
                     final isFavorite = FavoritesService().isFavorite(
                       page.pageNumber,
                       _regionBloc.state.selectedRegion?.code,
+                      channelId: selectedChannel?.id,
                     );
                     return Icon(
                       isFavorite ? Icons.favorite : Icons.favorite_border,
@@ -193,12 +194,14 @@ class _HomePageState extends State<HomePage> {
                   final isFavorite = favoritesService.isFavorite(
                     page.pageNumber,
                     currentRegion?.code,
+                    channelId: selectedChannel?.id,
                   );
 
                   if (isFavorite) {
                     favoritesService.removeFavorite(
                       page.pageNumber,
                       regionCode: currentRegion?.code,
+                      channelId: selectedChannel?.id,
                     );
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
@@ -210,6 +213,7 @@ class _HomePageState extends State<HomePage> {
                     favoritesService.addFavorite(
                       page.pageNumber,
                       regionCode: currentRegion?.code,
+                      channelId: selectedChannel?.id,
                     );
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
@@ -266,6 +270,11 @@ class _HomePageState extends State<HomePage> {
             orElse: () => Region.values.first,
           )
         : null;
+    
+    // Ottieni il canale se channelId è presente
+    final channel = favorite.channelId != null
+        ? TeletextChannels.getChannelById(favorite.channelId!)
+        : null;
 
     // Creiamo una chiave univoca per l'elemento che non cambia durante il riordino
     final itemKey = ObjectKey(favorite);
@@ -313,6 +322,7 @@ class _HomePageState extends State<HomePage> {
               await FavoritesService().removeFavorite(
                 favorite.pageNumber,
                 regionCode: favorite.regionCode,
+                channelId: favorite.channelId,
               );
               setDialogState(() {
                 _favorites = FavoritesService().getFavorites();
@@ -330,10 +340,15 @@ class _HomePageState extends State<HomePage> {
                       SizedBox(
                         width: 24,
                         height: 24,
-                        child: Image.asset(
-                          region?.imagePath ?? 'assets/images/italy.png',
-                          fit: BoxFit.contain,
-                        ),
+                        child: channel != null
+                            ? Text(
+                                channel.flagEmoji,
+                                style: const TextStyle(fontSize: 20),
+                              )
+                            : Image.asset(
+                                region?.imagePath ?? 'assets/images/italy.png',
+                                fit: BoxFit.contain,
+                              ),
                       ),
                       const SizedBox(height: 4),
                       Text(
@@ -354,7 +369,9 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               subtitle: Text(
-                region?.name ?? 'Nazionale',
+                channel != null 
+                    ? '${channel.name} ${channel.flagEmoji}'
+                    : (region?.name ?? 'Nazionale'),
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.secondary,
                 ),
@@ -368,8 +385,11 @@ class _HomePageState extends State<HomePage> {
                     builder: (editContext) => EditDescriptionDialog(
                       pageNumber: favorite.pageNumber,
                       regionCode: favorite.regionCode,
+                      channelId: favorite.channelId,
                       initialDescription: favorite.description,
-                      regionName: region?.name ?? 'Nazionale',
+                      regionName: channel != null 
+                          ? '${channel.name} ${channel.flagEmoji}'
+                          : (region?.name ?? 'Nazionale'),
                     ),
                   ).then((saved) async {
                     if (saved == true) {
@@ -382,13 +402,21 @@ class _HomePageState extends State<HomePage> {
               ),
               onTap: () {
                 Navigator.of(dialogContext).pop();
-                if (region != null) {
-                  // Se è una pagina regionale
+                
+                // Se ha un channelId, cambia prima il canale
+                if (channel != null) {
+                  _televideoBloc.add(TelevideoEvent.changeChannel(channel));
+                  // Aspetta che il canale cambi, poi carica la pagina
+                  Future.delayed(const Duration(milliseconds: 300), () {
+                    _televideoBloc.add(TelevideoEvent.loadNationalPage(favorite.pageNumber));
+                  });
+                } else if (region != null) {
+                  // Se è una pagina regionale RAI
                   _regionBloc.add(RegionEvent.selectRegion(region));
                   // Carica direttamente la pagina regionale
                   _televideoBloc.add(TelevideoEvent.loadRegionalPage(region, favorite.pageNumber));
                 } else {
-                  // Se è una pagina nazionale
+                  // Se è una pagina nazionale RAI
                   _regionBloc.add(const RegionEvent.selectRegion(null));
                   _televideoBloc.add(TelevideoEvent.loadNationalPage(favorite.pageNumber));
                 }
@@ -718,7 +746,18 @@ class _HomePageState extends State<HomePage> {
                             loaded: (page, currentSubPage, isAutoRefreshPaused, selectedChannel) => TelevideoViewer(
                               page: page,
                               onPageNumberSubmitted: (pageNumber) {
-                                context.read<TelevideoBloc>().add(TelevideoEvent.loadNationalPage(pageNumber));
+                                // Per canali RAI con regione selezionata, usa loadRegionalPage
+                                if (selectedChannel != null &&
+                                    (selectedChannel.id == 'rai_nazionale' || selectedChannel.id.startsWith('rai_')) 
+                                    && regionState.selectedRegion != null) {
+                                  context.read<TelevideoBloc>().add(
+                                    TelevideoEvent.loadRegionalPage(regionState.selectedRegion!, pageNumber)
+                                  );
+                                } else {
+                                  // Per tutti gli altri casi (RAI nazionale e altri canali), usa loadNationalPage
+                                  // che ora usa automaticamente il provider corretto basato sul canale corrente
+                                  context.read<TelevideoBloc>().add(TelevideoEvent.loadNationalPage(pageNumber));
+                                }
                               },
                               showControls: _showControls,
                               isNationalMode: regionState.selectedRegion == null,

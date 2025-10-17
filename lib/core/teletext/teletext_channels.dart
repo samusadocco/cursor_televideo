@@ -368,7 +368,137 @@ class TeletextChannels {
       flagEmoji: '🇩🇪',
       broadcasterName: 'ZDF',
       type: TeletextChannelType.national,
-      baseUrl: 'https://www.zdf.de/teletext',
+      baseUrl: 'https://teletext.zdf.de/teletext/zdf',
+      supportsRegions: false,
+    ),
+
+    // 🇩🇪 GERMANIA - ZDFinfo
+    TeletextChannel(
+      id: 'zdfinfo_text',
+      name: 'ZDFinfo Text',
+      countryCode: 'DE',
+      countryName: 'Germania',
+      flagEmoji: '🇩🇪',
+      broadcasterName: 'ZDF',
+      type: TeletextChannelType.national,
+      baseUrl: 'https://teletext.zdf.de/teletext/zdfinfo',
+      supportsRegions: false,
+    ),
+
+    // 🇩🇪 GERMANIA - ZDFneo
+    TeletextChannel(
+      id: 'zdfneo_text',
+      name: 'ZDFneo Text',
+      countryCode: 'DE',
+      countryName: 'Germania',
+      flagEmoji: '🇩🇪',
+      broadcasterName: 'ZDF',
+      type: TeletextChannelType.national,
+      baseUrl: 'https://teletext.zdf.de/teletext/zdfneo',
+      supportsRegions: false,
+    ),
+
+    // 🇩🇪 GERMANIA - 3sat
+    TeletextChannel(
+      id: '3sat_text',
+      name: '3sat Text',
+      countryCode: 'DE',
+      countryName: 'Germania',
+      flagEmoji: '🇩🇪',
+      broadcasterName: 'ZDF',
+      type: TeletextChannelType.national,
+      baseUrl: 'https://teletext.zdf.de/teletext/3sat',
+      supportsRegions: false,
+    ),
+
+    // 🇨🇭 SVIZZERA - RSI LA 1
+    TeletextChannel(
+      id: 'rsi_la1',
+      name: 'RSI LA 1',
+      countryCode: 'CH',
+      countryName: 'Svizzera',
+      flagEmoji: '🇨🇭',
+      broadcasterName: 'RSI',
+      type: TeletextChannelType.national,
+      baseUrl: 'https://www.teletext.ch/RSILA1',
+      supportsRegions: false,
+    ),
+
+    // 🇨🇭 SVIZZERA - RSI LA 2
+    TeletextChannel(
+      id: 'rsi_la2',
+      name: 'RSI LA 2',
+      countryCode: 'CH',
+      countryName: 'Svizzera',
+      flagEmoji: '🇨🇭',
+      broadcasterName: 'RSI',
+      type: TeletextChannelType.national,
+      baseUrl: 'https://www.teletext.ch/RSILA2',
+      supportsRegions: false,
+    ),
+
+    // 🇨🇭 SVIZZERA - RTS 1
+    TeletextChannel(
+      id: 'rts_1',
+      name: 'RTS 1',
+      countryCode: 'CH',
+      countryName: 'Svizzera',
+      flagEmoji: '🇨🇭',
+      broadcasterName: 'RTS',
+      type: TeletextChannelType.national,
+      baseUrl: 'https://www.teletext.ch/RTS1',
+      supportsRegions: false,
+    ),
+
+    // 🇨🇭 SVIZZERA - RTS 2
+    TeletextChannel(
+      id: 'rts_2',
+      name: 'RTS 2',
+      countryCode: 'CH',
+      countryName: 'Svizzera',
+      flagEmoji: '🇨🇭',
+      broadcasterName: 'RTS',
+      type: TeletextChannelType.national,
+      baseUrl: 'https://www.teletext.ch/RTS2',
+      supportsRegions: false,
+    ),
+
+    // 🇨🇭 SVIZZERA - SRF 1
+    TeletextChannel(
+      id: 'srf_1',
+      name: 'SRF 1',
+      countryCode: 'CH',
+      countryName: 'Svizzera',
+      flagEmoji: '🇨🇭',
+      broadcasterName: 'SRF',
+      type: TeletextChannelType.national,
+      baseUrl: 'https://www.teletext.ch/SRF1',
+      supportsRegions: false,
+    ),
+
+    // 🇨🇭 SVIZZERA - SRF zwei
+    TeletextChannel(
+      id: 'srf_zwei',
+      name: 'SRF zwei',
+      countryCode: 'CH',
+      countryName: 'Svizzera',
+      flagEmoji: '🇨🇭',
+      broadcasterName: 'SRF',
+      type: TeletextChannelType.national,
+      baseUrl: 'https://www.teletext.ch/SRF2',
+      supportsRegions: false,
+    ),
+
+    // 🇨🇭 SVIZZERA - SRF info
+    TeletextChannel(
+      id: 'srf_info',
+      name: 'SRF info',
+      countryCode: 'CH',
+      countryName: 'Svizzera',
+      flagEmoji: '🇨🇭',
+      broadcasterName: 'SRF',
+      type: TeletextChannelType.national,
+      baseUrl: 'https://www.teletext.ch/SRFinfo',
       supportsRegions: false,
     ),
 

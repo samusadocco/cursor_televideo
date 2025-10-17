@@ -91,10 +91,10 @@ class AppLocalizationsSv extends AppLocalizations {
   String get restore => 'ÅTERSTÄLL';
 
   @override
-  String get cancel => 'AVBRYT';
+  String get cancel => 'Avbryt';
 
   @override
-  String get save => 'SPARA';
+  String get save => 'Spara';
 
   @override
   String get searchHint => 'Sök sida...';
@@ -414,4 +414,51 @@ class AppLocalizationsSv extends AppLocalizations {
   String pageLoadErrorWithHint(int minPage) {
     return 'An error occurred while loading the page.\nBack to $minPage';
   }
+
+  @override
+  String get channelSelection => 'Kanalval';
+
+  @override
+  String get favoriteChannels => 'Favoritkanaler';
+
+  @override
+  String get reorder => 'Ordna om';
+
+  @override
+  String get searchChannelOrCountry => 'Sök kanal eller land...';
+
+  @override
+  String get showAllChannels => 'Visa alla kanaler';
+
+  @override
+  String channelsAvailableFromCountries(int count, int countries) {
+    return '$count kanaler tillgängliga från $countries länder';
+  }
+
+  @override
+  String get allChannels => 'Alla kanaler';
+
+  @override
+  String get noFavoriteChannelsFound => 'Inga favoritkanaler hittades';
+
+  @override
+  String get noChannelsFound => 'Inga kanaler hittades';
+
+  @override
+  String addedToFavorites(String emoji, String name) {
+    return '$emoji $name tillagd till favoriter';
+  }
+
+  @override
+  String removedFromFavorites(String emoji, String name) {
+    return '$emoji $name borttagen från favoriter';
+  }
+
+  @override
+  String regionsAvailable(int count) {
+    return '$count regioner tillgängliga';
+  }
+
+  @override
+  String get reorderFavorites => 'Ordna om favoriter';
 }

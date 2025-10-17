@@ -46,10 +46,25 @@ class _ShortcutsMenuState extends State<ShortcutsMenu> {
 
   void _updateShortcuts() {
     final service = ShortcutsService();
-    final isPage100Available = context.read<TelevideoBloc>().isPage100Available;
-    _shortcuts = widget.selectedRegion != null ? 
-      service.regionalShortcuts : 
-      service.getNationalShortcuts(isPage100Available: isPage100Available);
+    final bloc = context.read<TelevideoBloc>();
+    final isPage100Available = bloc.isPage100Available;
+    
+    // Ottieni il canale selezionato dallo stato del bloc
+    String? channelId;
+    bloc.state.maybeWhen(
+      loaded: (_, __, ___, selectedChannel) {
+        channelId = selectedChannel?.id;
+      },
+      orElse: () {
+        channelId = null;
+      },
+    );
+    
+    _shortcuts = service.getShortcutsForChannel(
+      channelId: channelId,
+      isRegional: widget.selectedRegion != null,
+      isPage100Available: isPage100Available,
+    );
   }
 
   void _handleShortcutSelected(dynamic shortcut) {

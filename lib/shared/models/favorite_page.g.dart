@@ -12,6 +12,7 @@ _$FavoritePageImpl _$$FavoritePageImplFromJson(Map<String, dynamic> json) =>
       title: json['title'] as String,
       description: json['description'] as String?,
       regionCode: json['regionCode'] as String?,
+      channelId: json['channelId'] as String?,
       order: (json['order'] as num?)?.toInt() ?? 0,
     );
 
@@ -21,5 +22,6 @@ Map<String, dynamic> _$$FavoritePageImplToJson(_$FavoritePageImpl instance) =>
       'title': instance.title,
       'description': instance.description,
       'regionCode': instance.regionCode,
+      'channelId': instance.channelId,
       'order': instance.order,
     };

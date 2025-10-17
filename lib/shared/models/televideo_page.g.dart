@@ -13,6 +13,7 @@ _$ClickableAreaImpl _$$ClickableAreaImplFromJson(Map<String, dynamic> json) =>
       y: (json['y'] as num).toInt(),
       width: (json['width'] as num).toInt(),
       height: (json['height'] as num).toInt(),
+      description: json['description'] as String?,
     );
 
 Map<String, dynamic> _$$ClickableAreaImplToJson(_$ClickableAreaImpl instance) =>
@@ -22,6 +23,7 @@ Map<String, dynamic> _$$ClickableAreaImplToJson(_$ClickableAreaImpl instance) =>
       'y': instance.y,
       'width': instance.width,
       'height': instance.height,
+      'description': instance.description,
     };
 
 _$TelevideoPageImpl _$$TelevideoPageImplFromJson(Map<String, dynamic> json) =>
@@ -34,6 +36,15 @@ _$TelevideoPageImpl _$$TelevideoPageImplFromJson(Map<String, dynamic> json) =>
               .toList() ??
           const [],
       maxSubPages: (json['maxSubPages'] as num?)?.toInt() ?? 1,
+      subPage: (json['subPage'] as num?)?.toInt() ?? 1,
+      totalSubPages: (json['totalSubPages'] as num?)?.toInt() ?? 1,
+      timestamp: json['timestamp'] == null
+          ? null
+          : DateTime.parse(json['timestamp'] as String),
+      isHtmlContent: json['isHtmlContent'] as bool? ?? false,
+      htmlContent: json['htmlContent'] as String?,
+      providerId: json['providerId'] as String?,
+      metadata: json['metadata'] as Map<String, dynamic>?,
     );
 
 Map<String, dynamic> _$$TelevideoPageImplToJson(_$TelevideoPageImpl instance) =>
@@ -43,4 +54,11 @@ Map<String, dynamic> _$$TelevideoPageImplToJson(_$TelevideoPageImpl instance) =>
       'region': instance.region,
       'clickableAreas': instance.clickableAreas,
       'maxSubPages': instance.maxSubPages,
+      'subPage': instance.subPage,
+      'totalSubPages': instance.totalSubPages,
+      'timestamp': instance.timestamp?.toIso8601String(),
+      'isHtmlContent': instance.isHtmlContent,
+      'htmlContent': instance.htmlContent,
+      'providerId': instance.providerId,
+      'metadata': instance.metadata,
     };

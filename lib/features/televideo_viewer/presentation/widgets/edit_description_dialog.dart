@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:cursor_televideo/core/descriptions/page_descriptions_service.dart';
 import 'package:cursor_televideo/core/storage/favorites_service.dart';
-import 'package:cursor_televideo/shared/models/region.dart';
 import 'package:cursor_televideo/core/l10n/app_localizations.dart';
 
 class EditDescriptionDialog extends StatefulWidget {
   final int pageNumber;
   final String? regionCode;
+  final String? channelId;
   final String? initialDescription;
   final String regionName;
 
@@ -14,6 +14,7 @@ class EditDescriptionDialog extends StatefulWidget {
     super.key,
     required this.pageNumber,
     required this.regionCode,
+    this.channelId,
     required this.initialDescription,
     required this.regionName,
   });
@@ -103,6 +104,7 @@ class _EditDescriptionDialogState extends State<EditDescriptionDialog> {
               FavoritesService().updateDescription(
                 widget.pageNumber,
                 widget.regionCode,
+                widget.channelId,
                 newDescription,
               );
               Navigator.of(context).pop(true);

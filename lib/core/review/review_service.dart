@@ -71,7 +71,7 @@ class ReviewService {
       //} else {
       //  await _inAppReview.requestReview();
       //}
-      await _inAppReview.requestReview();
+      await                                                                                                                           _inAppReview.requestReview();
       // Salva la data dell'ultima richiesta
       await _prefs.setInt(_lastReviewRequestKey, DateTime.now().millisecondsSinceEpoch);
       // Resetta il contatore degli avvii

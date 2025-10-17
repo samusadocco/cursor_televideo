@@ -24,6 +24,8 @@ mixin _$FavoritePage {
   String get title => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
   String? get regionCode => throw _privateConstructorUsedError;
+  String? get channelId =>
+      throw _privateConstructorUsedError; // ID del canale (es. 'rai_nazionale', 'ard_text', 'zdf_text')
   int get order => throw _privateConstructorUsedError;
 
   /// Serializes this FavoritePage to a JSON map.
@@ -47,6 +49,7 @@ abstract class $FavoritePageCopyWith<$Res> {
       String title,
       String? description,
       String? regionCode,
+      String? channelId,
       int order});
 }
 
@@ -69,6 +72,7 @@ class _$FavoritePageCopyWithImpl<$Res, $Val extends FavoritePage>
     Object? title = null,
     Object? description = freezed,
     Object? regionCode = freezed,
+    Object? channelId = freezed,
     Object? order = null,
   }) {
     return _then(_value.copyWith(
@@ -87,6 +91,10 @@ class _$FavoritePageCopyWithImpl<$Res, $Val extends FavoritePage>
       regionCode: freezed == regionCode
           ? _value.regionCode
           : regionCode // ignore: cast_nullable_to_non_nullable
+              as String?,
+      channelId: freezed == channelId
+          ? _value.channelId
+          : channelId // ignore: cast_nullable_to_non_nullable
               as String?,
       order: null == order
           ? _value.order
@@ -109,6 +117,7 @@ abstract class _$$FavoritePageImplCopyWith<$Res>
       String title,
       String? description,
       String? regionCode,
+      String? channelId,
       int order});
 }
 
@@ -129,6 +138,7 @@ class __$$FavoritePageImplCopyWithImpl<$Res>
     Object? title = null,
     Object? description = freezed,
     Object? regionCode = freezed,
+    Object? channelId = freezed,
     Object? order = null,
   }) {
     return _then(_$FavoritePageImpl(
@@ -148,6 +158,10 @@ class __$$FavoritePageImplCopyWithImpl<$Res>
           ? _value.regionCode
           : regionCode // ignore: cast_nullable_to_non_nullable
               as String?,
+      channelId: freezed == channelId
+          ? _value.channelId
+          : channelId // ignore: cast_nullable_to_non_nullable
+              as String?,
       order: null == order
           ? _value.order
           : order // ignore: cast_nullable_to_non_nullable
@@ -164,6 +178,7 @@ class _$FavoritePageImpl extends _FavoritePage {
       required this.title,
       this.description,
       this.regionCode,
+      this.channelId,
       this.order = 0})
       : super._();
 
@@ -179,12 +194,15 @@ class _$FavoritePageImpl extends _FavoritePage {
   @override
   final String? regionCode;
   @override
+  final String? channelId;
+// ID del canale (es. 'rai_nazionale', 'ard_text', 'zdf_text')
+  @override
   @JsonKey()
   final int order;
 
   @override
   String toString() {
-    return 'FavoritePage(pageNumber: $pageNumber, title: $title, description: $description, regionCode: $regionCode, order: $order)';
+    return 'FavoritePage(pageNumber: $pageNumber, title: $title, description: $description, regionCode: $regionCode, channelId: $channelId, order: $order)';
   }
 
   @override
@@ -199,13 +217,15 @@ class _$FavoritePageImpl extends _FavoritePage {
                 other.description == description) &&
             (identical(other.regionCode, regionCode) ||
                 other.regionCode == regionCode) &&
+            (identical(other.channelId, channelId) ||
+                other.channelId == channelId) &&
             (identical(other.order, order) || other.order == order));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, pageNumber, title, description, regionCode, order);
+  int get hashCode => Object.hash(runtimeType, pageNumber, title, description,
+      regionCode, channelId, order);
 
   /// Create a copy of FavoritePage
   /// with the given fields replaced by the non-null parameter values.
@@ -229,6 +249,7 @@ abstract class _FavoritePage extends FavoritePage {
       required final String title,
       final String? description,
       final String? regionCode,
+      final String? channelId,
       final int order}) = _$FavoritePageImpl;
   const _FavoritePage._() : super._();
 
@@ -243,6 +264,9 @@ abstract class _FavoritePage extends FavoritePage {
   String? get description;
   @override
   String? get regionCode;
+  @override
+  String?
+      get channelId; // ID del canale (es. 'rai_nazionale', 'ard_text', 'zdf_text')
   @override
   int get order;
 

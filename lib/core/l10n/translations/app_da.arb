@@ -222,5 +222,68 @@
         "example": "Lombardia"
       }
     }
-  }
+  },
+  "channelSelection": "Kanalvalg",
+  "favoriteChannels": "Favoritkanaler",
+  "reorder": "Omarranger",
+  "searchChannelOrCountry": "Søg kanal eller land...",
+  "showAllChannels": "Vis alle kanaler",
+  "channelsAvailableFromCountries": "{count} kanaler tilgængelige fra {countries} lande",
+  "@channelsAvailableFromCountries": {
+    "description": "Number of channels available from countries",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "45"
+      },
+      "countries": {
+        "type": "int",
+        "example": "15"
+      }
+    }
+  },
+  "allChannels": "Alle kanaler",
+  "noFavoriteChannelsFound": "Ingen favoritkanaler fundet",
+  "noChannelsFound": "Ingen kanaler fundet",
+  "addedToFavorites": "{emoji} {name} tilføjet til favoritter",
+  "@addedToFavorites": {
+    "description": "Message when a channel is added to favorites",
+    "placeholders": {
+      "emoji": {
+        "type": "String",
+        "example": "🇮🇹"
+      },
+      "name": {
+        "type": "String",
+        "example": "RAI Nazionale"
+      }
+    }
+  },
+  "removedFromFavorites": "{emoji} {name} fjernet fra favoritter",
+  "@removedFromFavorites": {
+    "description": "Message when a channel is removed from favorites",
+    "placeholders": {
+      "emoji": {
+        "type": "String",
+        "example": "🇮🇹"
+      },
+      "name": {
+        "type": "String",
+        "example": "RAI Nazionale"
+      }
+    }
+  },
+  "regionsAvailable": "{count} regioner tilgængelige",
+  "@regionsAvailable": {
+    "description": "Number of regions available for a channel",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "20"
+      }
+    }
+  },
+  "reorderFavorites": "Omarranger favoritter",
+  "cancel": "Annuller",
+  "save": "Gem"
 }

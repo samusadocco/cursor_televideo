@@ -250,5 +250,68 @@
         "example": "100"
       }
     }
-  }
+  },
+  "channelSelection": "Channel Selection",
+  "favoriteChannels": "Favorite Channels",
+  "reorder": "Reorder",
+  "searchChannelOrCountry": "Search channel or country...",
+  "showAllChannels": "Show all channels",
+  "channelsAvailableFromCountries": "{count} channels available from {countries} countries",
+  "@channelsAvailableFromCountries": {
+    "description": "Number of channels available from countries",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "45"
+      },
+      "countries": {
+        "type": "int",
+        "example": "15"
+      }
+    }
+  },
+  "allChannels": "All Channels",
+  "noFavoriteChannelsFound": "No favorite channels found",
+  "noChannelsFound": "No channels found",
+  "addedToFavorites": "{emoji} {name} added to favorites",
+  "@addedToFavorites": {
+    "description": "Message when a channel is added to favorites",
+    "placeholders": {
+      "emoji": {
+        "type": "String",
+        "example": "🇮🇹"
+      },
+      "name": {
+        "type": "String",
+        "example": "RAI Nazionale"
+      }
+    }
+  },
+  "removedFromFavorites": "{emoji} {name} removed from favorites",
+  "@removedFromFavorites": {
+    "description": "Message when a channel is removed from favorites",
+    "placeholders": {
+      "emoji": {
+        "type": "String",
+        "example": "🇮🇹"
+      },
+      "name": {
+        "type": "String",
+        "example": "RAI Nazionale"
+      }
+    }
+  },
+  "regionsAvailable": "{count} regions available",
+  "@regionsAvailable": {
+    "description": "Number of regions available for a channel",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "20"
+      }
+    }
+  },
+  "reorderFavorites": "Reorder Favorites",
+  "cancel": "Cancel",
+  "save": "Save"
 }

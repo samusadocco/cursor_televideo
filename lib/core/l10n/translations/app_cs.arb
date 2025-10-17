@@ -222,5 +222,68 @@
         "example": "Lombardia"
       }
     }
-  }
+  },
+  "channelSelection": "Výběr kanálu",
+  "favoriteChannels": "Oblíbené kanály",
+  "reorder": "Přeuspořádat",
+  "searchChannelOrCountry": "Hledat kanál nebo zemi...",
+  "showAllChannels": "Zobrazit všechny kanály",
+  "channelsAvailableFromCountries": "{count} kanálů dostupných z {countries} zemí",
+  "@channelsAvailableFromCountries": {
+    "description": "Number of channels available from countries",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "45"
+      },
+      "countries": {
+        "type": "int",
+        "example": "15"
+      }
+    }
+  },
+  "allChannels": "Všechny kanály",
+  "noFavoriteChannelsFound": "Žádné oblíbené kanály nenalezeny",
+  "noChannelsFound": "Žádné kanály nenalezeny",
+  "addedToFavorites": "{emoji} {name} přidán do oblíbených",
+  "@addedToFavorites": {
+    "description": "Message when a channel is added to favorites",
+    "placeholders": {
+      "emoji": {
+        "type": "String",
+        "example": "🇮🇹"
+      },
+      "name": {
+        "type": "String",
+        "example": "RAI Nazionale"
+      }
+    }
+  },
+  "removedFromFavorites": "{emoji} {name} odebrán z oblíbených",
+  "@removedFromFavorites": {
+    "description": "Message when a channel is removed from favorites",
+    "placeholders": {
+      "emoji": {
+        "type": "String",
+        "example": "🇮🇹"
+      },
+      "name": {
+        "type": "String",
+        "example": "RAI Nazionale"
+      }
+    }
+  },
+  "regionsAvailable": "{count} regionů dostupných",
+  "@regionsAvailable": {
+    "description": "Number of regions available for a channel",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "20"
+      }
+    }
+  },
+  "reorderFavorites": "Přeuspořádat oblíbené",
+  "cancel": "Zrušit",
+  "save": "Uložit"
 }

@@ -91,10 +91,10 @@ class AppLocalizationsDa extends AppLocalizations {
   String get restore => 'GENDAN';
 
   @override
-  String get cancel => 'ANNULLER';
+  String get cancel => 'Annuller';
 
   @override
-  String get save => 'GEM';
+  String get save => 'Gem';
 
   @override
   String get searchHint => 'Søg side...';
@@ -413,4 +413,51 @@ class AppLocalizationsDa extends AppLocalizations {
   String pageLoadErrorWithHint(int minPage) {
     return 'An error occurred while loading the page.\nBack to $minPage';
   }
+
+  @override
+  String get channelSelection => 'Kanalvalg';
+
+  @override
+  String get favoriteChannels => 'Favoritkanaler';
+
+  @override
+  String get reorder => 'Omarranger';
+
+  @override
+  String get searchChannelOrCountry => 'Søg kanal eller land...';
+
+  @override
+  String get showAllChannels => 'Vis alle kanaler';
+
+  @override
+  String channelsAvailableFromCountries(int count, int countries) {
+    return '$count kanaler tilgængelige fra $countries lande';
+  }
+
+  @override
+  String get allChannels => 'Alle kanaler';
+
+  @override
+  String get noFavoriteChannelsFound => 'Ingen favoritkanaler fundet';
+
+  @override
+  String get noChannelsFound => 'Ingen kanaler fundet';
+
+  @override
+  String addedToFavorites(String emoji, String name) {
+    return '$emoji $name tilføjet til favoritter';
+  }
+
+  @override
+  String removedFromFavorites(String emoji, String name) {
+    return '$emoji $name fjernet fra favoritter';
+  }
+
+  @override
+  String regionsAvailable(int count) {
+    return '$count regioner tilgængelige';
+  }
+
+  @override
+  String get reorderFavorites => 'Omarranger favoritter';
 }

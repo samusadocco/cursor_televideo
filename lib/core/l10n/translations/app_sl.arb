@@ -222,5 +222,68 @@
         "example": "Lombardia"
       }
     }
-  }
+  },
+  "channelSelection": "Izbira kanala",
+  "favoriteChannels": "Priljubljeni kanali",
+  "reorder": "Preurediti",
+  "searchChannelOrCountry": "Iskanje kanala ali države...",
+  "showAllChannels": "Prikaži vse kanale",
+  "channelsAvailableFromCountries": "{count} kanalov na voljo iz {countries} držav",
+  "@channelsAvailableFromCountries": {
+    "description": "Number of channels available from countries",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "45"
+      },
+      "countries": {
+        "type": "int",
+        "example": "15"
+      }
+    }
+  },
+  "allChannels": "Vsi kanali",
+  "noFavoriteChannelsFound": "Ni najdenih priljubljenih kanalov",
+  "noChannelsFound": "Ni najdenih kanalov",
+  "addedToFavorites": "{emoji} {name} dodano med priljubljene",
+  "@addedToFavorites": {
+    "description": "Message when a channel is added to favorites",
+    "placeholders": {
+      "emoji": {
+        "type": "String",
+        "example": "🇮🇹"
+      },
+      "name": {
+        "type": "String",
+        "example": "RAI Nazionale"
+      }
+    }
+  },
+  "removedFromFavorites": "{emoji} {name} odstranjeno iz priljubljenih",
+  "@removedFromFavorites": {
+    "description": "Message when a channel is removed from favorites",
+    "placeholders": {
+      "emoji": {
+        "type": "String",
+        "example": "🇮🇹"
+      },
+      "name": {
+        "type": "String",
+        "example": "RAI Nazionale"
+      }
+    }
+  },
+  "regionsAvailable": "{count} regij na voljo",
+  "@regionsAvailable": {
+    "description": "Number of regions available for a channel",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "20"
+      }
+    }
+  },
+  "reorderFavorites": "Preurediti priljubljene",
+  "cancel": "Prekliči",
+  "save": "Shrani"
 }

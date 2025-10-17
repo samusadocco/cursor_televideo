@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cursor_televideo/core/descriptions/page_descriptions_service.dart';
 import 'package:cursor_televideo/shared/models/region.dart';
 import 'package:cursor_televideo/core/l10n/app_localizations.dart';
+import 'package:cursor_televideo/features/televideo_viewer/bloc/televideo_bloc.dart';
 
 class PageSearchDialog extends StatefulWidget {
   final bool isNational;
@@ -40,9 +42,21 @@ class _PageSearchDialogState extends State<PageSearchDialog> {
   }
 
   void _updateFilteredPages(String query) {
-    final descriptions = widget.isNational
-        ? _descriptionsService.nationalDescriptions
-        : _descriptionsService.regionalDescriptions;
+    // Ottieni il canale selezionato dallo stato del bloc
+    String? channelId;
+    context.read<TelevideoBloc>().state.maybeWhen(
+      loaded: (_, __, ___, selectedChannel) {
+        channelId = selectedChannel?.id;
+      },
+      orElse: () {
+        channelId = null;
+      },
+    );
+    
+    final descriptions = _descriptionsService.getDescriptionsForChannel(
+      channelId: channelId,
+      isRegional: widget.selectedRegion != null,
+    );
 
     _filteredPages = descriptions.entries
         .where((entry) {

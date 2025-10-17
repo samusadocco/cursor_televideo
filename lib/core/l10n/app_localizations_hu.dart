@@ -91,10 +91,10 @@ class AppLocalizationsHu extends AppLocalizations {
   String get restore => 'VISSZAÁLLÍTÁS';
 
   @override
-  String get cancel => 'MÉGSE';
+  String get cancel => 'Mégse';
 
   @override
-  String get save => 'MENTÉS';
+  String get save => 'Mentés';
 
   @override
   String get searchHint => 'Oldal keresése...';
@@ -415,4 +415,51 @@ class AppLocalizationsHu extends AppLocalizations {
   String pageLoadErrorWithHint(int minPage) {
     return 'An error occurred while loading the page.\nBack to $minPage';
   }
+
+  @override
+  String get channelSelection => 'Csatorna választás';
+
+  @override
+  String get favoriteChannels => 'Kedvenc csatornák';
+
+  @override
+  String get reorder => 'Átrendezés';
+
+  @override
+  String get searchChannelOrCountry => 'Csatorna vagy ország keresése...';
+
+  @override
+  String get showAllChannels => 'Összes csatorna megjelenítése';
+
+  @override
+  String channelsAvailableFromCountries(int count, int countries) {
+    return '$count csatorna elérhető $countries országból';
+  }
+
+  @override
+  String get allChannels => 'Összes csatorna';
+
+  @override
+  String get noFavoriteChannelsFound => 'Nem találhatók kedvenc csatornák';
+
+  @override
+  String get noChannelsFound => 'Nem találhatók csatornák';
+
+  @override
+  String addedToFavorites(String emoji, String name) {
+    return '$emoji $name hozzáadva a kedvencekhez';
+  }
+
+  @override
+  String removedFromFavorites(String emoji, String name) {
+    return '$emoji $name eltávolítva a kedvencekből';
+  }
+
+  @override
+  String regionsAvailable(int count) {
+    return '$count régió elérhető';
+  }
+
+  @override
+  String get reorderFavorites => 'Kedvencek átrendezése';
 }

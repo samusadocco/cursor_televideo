@@ -267,13 +267,13 @@ abstract class AppLocalizations {
   /// No description provided for @cancel.
   ///
   /// In en, this message translates to:
-  /// **'CANCEL'**
+  /// **'Cancel'**
   String get cancel;
 
   /// No description provided for @save.
   ///
   /// In en, this message translates to:
-  /// **'SAVE'**
+  /// **'Save'**
   String get save;
 
   /// No description provided for @searchHint.
@@ -839,6 +839,84 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'An error occurred while loading the page.\nBack to {minPage}'**
   String pageLoadErrorWithHint(int minPage);
+
+  /// No description provided for @channelSelection.
+  ///
+  /// In en, this message translates to:
+  /// **'Channel Selection'**
+  String get channelSelection;
+
+  /// No description provided for @favoriteChannels.
+  ///
+  /// In en, this message translates to:
+  /// **'Favorite Channels'**
+  String get favoriteChannels;
+
+  /// No description provided for @reorder.
+  ///
+  /// In en, this message translates to:
+  /// **'Reorder'**
+  String get reorder;
+
+  /// No description provided for @searchChannelOrCountry.
+  ///
+  /// In en, this message translates to:
+  /// **'Search channel or country...'**
+  String get searchChannelOrCountry;
+
+  /// No description provided for @showAllChannels.
+  ///
+  /// In en, this message translates to:
+  /// **'Show all channels'**
+  String get showAllChannels;
+
+  /// Number of channels available from countries
+  ///
+  /// In en, this message translates to:
+  /// **'{count} channels available from {countries} countries'**
+  String channelsAvailableFromCountries(int count, int countries);
+
+  /// No description provided for @allChannels.
+  ///
+  /// In en, this message translates to:
+  /// **'All Channels'**
+  String get allChannels;
+
+  /// No description provided for @noFavoriteChannelsFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No favorite channels found'**
+  String get noFavoriteChannelsFound;
+
+  /// No description provided for @noChannelsFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No channels found'**
+  String get noChannelsFound;
+
+  /// Message when a channel is added to favorites
+  ///
+  /// In en, this message translates to:
+  /// **'{emoji} {name} added to favorites'**
+  String addedToFavorites(String emoji, String name);
+
+  /// Message when a channel is removed from favorites
+  ///
+  /// In en, this message translates to:
+  /// **'{emoji} {name} removed from favorites'**
+  String removedFromFavorites(String emoji, String name);
+
+  /// Number of regions available for a channel
+  ///
+  /// In en, this message translates to:
+  /// **'{count} regions available'**
+  String regionsAvailable(int count);
+
+  /// No description provided for @reorderFavorites.
+  ///
+  /// In en, this message translates to:
+  /// **'Reorder Favorites'**
+  String get reorderFavorites;
 }
 
 class _AppLocalizationsDelegate

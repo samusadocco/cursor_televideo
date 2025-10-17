@@ -222,5 +222,68 @@
         "example": "Lombardia"
       }
     }
-  }
+  },
+  "channelSelection": "Val á rás",
+  "favoriteChannels": "Uppáhalds rásir",
+  "reorder": "Endurraða",
+  "searchChannelOrCountry": "Leita að rás eða landi...",
+  "showAllChannels": "Sýna allar rásir",
+  "channelsAvailableFromCountries": "{count} rásir tiltækar frá {countries} löndum",
+  "@channelsAvailableFromCountries": {
+    "description": "Number of channels available from countries",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "45"
+      },
+      "countries": {
+        "type": "int",
+        "example": "15"
+      }
+    }
+  },
+  "allChannels": "Allar rásir",
+  "noFavoriteChannelsFound": "Engar uppáhalds rásir fundust",
+  "noChannelsFound": "Engar rásir fundust",
+  "addedToFavorites": "{emoji} {name} bætt við uppáhald",
+  "@addedToFavorites": {
+    "description": "Message when a channel is added to favorites",
+    "placeholders": {
+      "emoji": {
+        "type": "String",
+        "example": "🇮🇹"
+      },
+      "name": {
+        "type": "String",
+        "example": "RAI Nazionale"
+      }
+    }
+  },
+  "removedFromFavorites": "{emoji} {name} fjarlægt úr uppáhaldi",
+  "@removedFromFavorites": {
+    "description": "Message when a channel is removed from favorites",
+    "placeholders": {
+      "emoji": {
+        "type": "String",
+        "example": "🇮🇹"
+      },
+      "name": {
+        "type": "String",
+        "example": "RAI Nazionale"
+      }
+    }
+  },
+  "regionsAvailable": "{count} svæði tiltæk",
+  "@regionsAvailable": {
+    "description": "Number of regions available for a channel",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "20"
+      }
+    }
+  },
+  "reorderFavorites": "Endurraða uppáhaldi",
+  "cancel": "Hætta við",
+  "save": "Vista"
 }

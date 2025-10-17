@@ -91,10 +91,10 @@ class AppLocalizationsFr extends AppLocalizations {
   String get restore => 'RESTAURER';
 
   @override
-  String get cancel => 'ANNULER';
+  String get cancel => 'Annuler';
 
   @override
-  String get save => 'ENREGISTRER';
+  String get save => 'Enregistrer';
 
   @override
   String get searchHint => 'Rechercher une page...';
@@ -418,4 +418,51 @@ class AppLocalizationsFr extends AppLocalizations {
   String pageLoadErrorWithHint(int minPage) {
     return 'An error occurred while loading the page.\nBack to $minPage';
   }
+
+  @override
+  String get channelSelection => 'Sélection de chaîne';
+
+  @override
+  String get favoriteChannels => 'Chaînes favorites';
+
+  @override
+  String get reorder => 'Réorganiser';
+
+  @override
+  String get searchChannelOrCountry => 'Rechercher une chaîne ou un pays...';
+
+  @override
+  String get showAllChannels => 'Afficher toutes les chaînes';
+
+  @override
+  String channelsAvailableFromCountries(int count, int countries) {
+    return '$count chaînes disponibles dans $countries pays';
+  }
+
+  @override
+  String get allChannels => 'Toutes les chaînes';
+
+  @override
+  String get noFavoriteChannelsFound => 'Aucune chaîne favorite trouvée';
+
+  @override
+  String get noChannelsFound => 'Aucune chaîne trouvée';
+
+  @override
+  String addedToFavorites(String emoji, String name) {
+    return '$emoji $name ajouté aux favoris';
+  }
+
+  @override
+  String removedFromFavorites(String emoji, String name) {
+    return '$emoji $name retiré des favoris';
+  }
+
+  @override
+  String regionsAvailable(int count) {
+    return '$count régions disponibles';
+  }
+
+  @override
+  String get reorderFavorites => 'Réorganiser les favoris';
 }

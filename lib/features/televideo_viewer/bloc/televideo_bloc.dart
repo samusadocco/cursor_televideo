@@ -11,6 +11,9 @@ import 'package:cursor_televideo/shared/models/region.dart';
 import 'package:cursor_televideo/core/analytics/analytics_service.dart';
 import 'package:cursor_televideo/core/descriptions/page_descriptions_service.dart';
 import 'package:cursor_televideo/core/teletext/teletext_channels.dart';
+import 'package:cursor_televideo/core/teletext/providers/provider_factory.dart';
+import 'package:cursor_televideo/core/teletext/favorite_channels_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
   final TelevideoRepository _repository;
@@ -56,13 +59,27 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
 
   Future<TelevideoPage?> _tryLoadPage(int pageNumber, {bool isRegional = false, bool forceRefresh = false}) async {
     try {
-      return await _loadPageWithContext(
-        pageNumber,
-        isRegional: isRegional,
-        region: _currentRegion,
-        updateContext: true,
-        forceRefresh: forceRefresh
-      );
+      final currentChannel = state.selectedChannel;
+      
+      // Se il canale corrente è RAI o null, usa il repository normale
+      if (currentChannel == null || currentChannel.id == 'rai_nazionale' || currentChannel.id.startsWith('rai_')) {
+        return await _loadPageWithContext(
+          pageNumber,
+          isRegional: isRegional,
+          region: _currentRegion,
+          updateContext: true,
+          forceRefresh: forceRefresh
+        );
+      } else {
+        // Per altri canali, usa il provider specifico
+        final provider = TeletextProviderFactory.getProvider(currentChannel);
+        final page = await provider.fetchNationalPage(pageNumber);
+        
+        // Incrementa il conteggio per gli interstitial
+        _adService.incrementPageView(isSubPage: false, pageNumber: pageNumber.toString());
+        
+        return page;
+      }
     } catch (e) {
       return null;
     }
@@ -112,25 +129,65 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
   Future<void> _initializeBloc() async {
     await _checkPage100Availability();
     
-    // Se l'impostazione è abilitata e ci sono preferiti, carica il primo preferito
+    // Se l'impostazione è abilitata e ci sono preferiti, carica il primo
     if (AppSettings.loadFirstFavorite) {
       final favorites = FavoritesService().getFavorites();
       if (favorites.isNotEmpty) {
         final firstFavorite = favorites.first;
+        
+        // Se ha un channelId, cambia prima il canale
+        if (firstFavorite.channelId != null) {
+          final channel = TeletextChannels.getChannelById(firstFavorite.channelId!);
+          if (channel != null) {
+            // Cambia il canale e carica la pagina del preferito
+            add(TelevideoEvent.changeChannel(channel));
+            // Il cambio canale caricherà automaticamente la pagina 100 del canale
+            // Quindi dobbiamo aspettare e poi caricare la pagina desiderata
+            Future.delayed(const Duration(milliseconds: 300), () {
+              add(TelevideoEvent.loadNationalPage(firstFavorite.pageNumber));
+            });
+            return;
+          }
+        }
+        
+        // Se è una pagina RAI regionale
         if (firstFavorite.regionCode != null) {
-          // Se è una pagina regionale, carica la regione corrispondente
           final region = Region.fromCode(firstFavorite.regionCode!);
           add(TelevideoEvent.loadRegionalPage(region, firstFavorite.pageNumber));
-        } else {
-          // Se è una pagina nazionale, caricala direttamente
-          add(TelevideoEvent.loadNationalPage(firstFavorite.pageNumber));
+          return;
         }
-        return; // Esce dalla funzione per evitare il caricamento della pagina predefinita
+        
+        // Se è una pagina RAI nazionale
+        add(TelevideoEvent.loadNationalPage(firstFavorite.pageNumber));
+        return;
       }
     }
     
-    // Se non ci sono preferiti o l'impostazione è disabilitata, carica la pagina predefinita
-    add(TelevideoEvent.loadNationalPage(_minPage));
+    // Se l'impostazione è disabilitata o non ci sono preferiti, 
+    // carica il primo canale dalla lista dei canali selezionati
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final channelService = FavoriteChannelsService(prefs);
+      final favoriteChannels = await channelService.getFavoriteChannels();
+      
+      // Se ci sono canali selezionati, carica il primo
+      if (favoriteChannels.isNotEmpty) {
+        final firstChannel = favoriteChannels.first;
+        add(TelevideoEvent.changeChannel(firstChannel));
+        return;
+      }
+    } catch (e) {
+      print('[TelevideoBloc] Errore nel caricamento dei canali preferiti: $e');
+    }
+    
+    // Fallback: se non ci sono canali selezionati o errore, carica RAI Nazionale
+    final raiNazionale = TeletextChannels.getChannelById('rai_nazionale');
+    if (raiNazionale != null) {
+      add(TelevideoEvent.changeChannel(raiNazionale));
+    } else {
+      // Ultimo fallback: carica la pagina predefinita senza cambiare canale
+      add(TelevideoEvent.loadNationalPage(_minPage));
+    }
   }
 
   Future<void> _checkPage100Availability() async {
@@ -167,8 +224,23 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
 
     try {
       print('[TelevideoBloc] Fetching national page from repository'); // Debug print
-      final page = await _loadPageWithContext(pageNumber, forceRefresh: true);
+      
+      TelevideoPage page;
+      // Se il canale corrente è RAI o null, usa il repository normale
+      if (currentChannel == null || currentChannel.id == 'rai_nazionale' || currentChannel.id.startsWith('rai_')) {
+        page = await _loadPageWithContext(pageNumber, forceRefresh: true);
+      } else {
+        // Per altri canali, usa il provider specifico
+        final provider = TeletextProviderFactory.getProvider(currentChannel);
+        print('[TelevideoBloc] Using provider: ${provider.providerId} for page $pageNumber');
+        page = await provider.fetchNationalPage(pageNumber);
+        
+        // Incrementa il conteggio per gli interstitial
+        _adService.incrementPageView(isSubPage: false, pageNumber: pageNumber.toString());
+      }
+      
       print('[TelevideoBloc] National page loaded successfully'); // Debug print
+      print('[TelevideoBloc] Page info - number: ${page.pageNumber}, maxSubPages: ${page.maxSubPages}, isHtmlContent: ${page.isHtmlContent}');
       if (!emit.isDone) {
         emit(TelevideoState.loaded(page, currentSubPage: 1, isAutoRefreshPaused: false, selectedChannel: currentChannel));
       }
@@ -236,13 +308,93 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
 
   Future<void> _onNextPage(int currentPage, Emitter<TelevideoState> emit) async {
     if (currentPage < 899) {
-      await _findNextAvailablePage(currentPage + 1, emit);
+      // Per ZDF e Swiss, controlla se abbiamo il link di navigazione nei metadata
+      int? suggestedNextPage;
+      state.maybeWhen(
+        loaded: (page, _, __, ___) {
+          if (page.metadata != null) {
+            // ZDF usa 'next', Swiss usa 'nextPage'
+            final nextPage = (page.metadata!['next'] ?? page.metadata!['nextPage']) as int?;
+            // Verifica che nextPage sia valido (nel range 100-899)
+            if (nextPage != null && nextPage >= 100 && nextPage <= 899) {
+              print('[TelevideoBloc] Navigation metadata suggests next=$nextPage');
+              suggestedNextPage = nextPage;
+            } else if (nextPage != null) {
+              print('[TelevideoBloc] Invalid nextPage in metadata: $nextPage (out of range)');
+            }
+          }
+        },
+        orElse: () {},
+      );
+      
+      // Se abbiamo un suggerimento dai metadata, prova prima quello
+      if (suggestedNextPage != null) {
+        print('[TelevideoBloc] Attempting to load suggested page: $suggestedNextPage');
+        final currentChannel = state.selectedChannel;
+        
+        try {
+          // Prova a caricare la pagina suggerita
+          final provider = TeletextProviderFactory.getProvider(currentChannel!);
+          await provider.fetchNationalPage(suggestedNextPage!);
+          
+          // Se il caricamento ha successo, usa loadNationalPage
+          print('[TelevideoBloc] ✅ Suggested page exists, loading it');
+          add(TelevideoEvent.loadNationalPage(suggestedNextPage!));
+        } catch (e) {
+          // Se fallisce (404), usa la ricerca sequenziale
+          print('[TelevideoBloc] ⚠️ Suggested page $suggestedNextPage does not exist, falling back to sequential search');
+          await _findNextAvailablePage(currentPage + 1, emit);
+        }
+      } else {
+        // Nessun suggerimento, usa ricerca sequenziale
+        await _findNextAvailablePage(currentPage + 1, emit);
+      }
     }
   }
 
   Future<void> _onPreviousPage(int currentPage, Emitter<TelevideoState> emit) async {
     if (currentPage > _minPage) {
-      await _findPreviousAvailablePage(currentPage - 1, emit);
+      // Per ZDF e Swiss, controlla se abbiamo il link di navigazione nei metadata
+      int? suggestedPrevPage;
+      state.maybeWhen(
+        loaded: (page, _, __, ___) {
+          if (page.metadata != null) {
+            // ZDF usa 'prev', Swiss usa 'previousPage'
+            final prevPage = (page.metadata!['prev'] ?? page.metadata!['previousPage']) as int?;
+            // Verifica che prevPage sia valido (nel range 100-899)
+            if (prevPage != null && prevPage >= 100 && prevPage <= 899) {
+              print('[TelevideoBloc] Navigation metadata suggests prev=$prevPage');
+              suggestedPrevPage = prevPage;
+            } else if (prevPage != null) {
+              print('[TelevideoBloc] Invalid previousPage in metadata: $prevPage (out of range)');
+            }
+          }
+        },
+        orElse: () {},
+      );
+      
+      // Se abbiamo un suggerimento dai metadata, prova prima quello
+      if (suggestedPrevPage != null) {
+        print('[TelevideoBloc] Attempting to load suggested page: $suggestedPrevPage');
+        final currentChannel = state.selectedChannel;
+        
+        try {
+          // Prova a caricare la pagina suggerita
+          final provider = TeletextProviderFactory.getProvider(currentChannel!);
+          await provider.fetchNationalPage(suggestedPrevPage!);
+          
+          // Se il caricamento ha successo, usa loadNationalPage
+          print('[TelevideoBloc] ✅ Suggested page exists, loading it');
+          add(TelevideoEvent.loadNationalPage(suggestedPrevPage!));
+        } catch (e) {
+          // Se fallisce (404), usa la ricerca sequenziale
+          print('[TelevideoBloc] ⚠️ Suggested page $suggestedPrevPage does not exist, falling back to sequential search');
+          await _findPreviousAvailablePage(currentPage - 1, emit);
+        }
+      } else {
+        // Nessun suggerimento, usa ricerca sequenziale
+        await _findPreviousAvailablePage(currentPage - 1, emit);
+      }
     }
   }
 
@@ -313,26 +465,42 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
   Future<void> _onNextSubPage(Emitter<TelevideoState> emit) async {
     await state.maybeWhen(
       loaded: (page, currentSubPage, isAutoRefreshPaused, selectedChannel) async {
+        print('[TelevideoBloc] _onNextSubPage called - current: $currentSubPage/${page.maxSubPages}, channel: ${selectedChannel?.id}');
+        
         if (page.maxSubPages <= 1) return; // Non fare nulla se non ci sono sottopagine
         
         final nextSubPage = currentSubPage + 1;
         final maxSubPages = page.maxSubPages;
         final newSubPage = nextSubPage > maxSubPages ? 1 : nextSubPage;
         
+        print('[TelevideoBloc] Will load subpage $newSubPage for page ${page.pageNumber}');
+        
         final startTime = DateTime.now();
         bool isError = false;
         
         try {
-          final newPage = await _currentRegion != null
-              ? await _repository.getRegionalPage(
-                  _currentRegion!.code,
-                  pageNumber: page.pageNumber,
-                  subPage: newSubPage,
-                )
-              : await _repository.getNationalPage(
-                  page.pageNumber,
-                  subPage: newSubPage,
-                );
+          TelevideoPage newPage;
+          
+          // Verifica se stiamo usando RAI o un altro provider
+          if (selectedChannel == null || selectedChannel.id == 'rai_nazionale' || selectedChannel.id.startsWith('rai_')) {
+            print('[TelevideoBloc] Using RAI repository for subpage');
+            // Per RAI usa il repository
+            newPage = await _currentRegion != null
+                ? await _repository.getRegionalPage(
+                    _currentRegion!.code,
+                    pageNumber: page.pageNumber,
+                    subPage: newSubPage,
+                  )
+                : await _repository.getNationalPage(
+                    page.pageNumber,
+                    subPage: newSubPage,
+                  );
+          } else {
+            // Per altri canali (ARD, ZDF, ecc.) usa il provider specifico
+            final provider = TeletextProviderFactory.getProvider(selectedChannel);
+            print('[TelevideoBloc] Loading subpage $newSubPage using provider: ${provider.providerId}');
+            newPage = await provider.fetchNationalPage(page.pageNumber, subPage: newSubPage);
+          }
           
           // Usa il maxSubPages della nuova pagina per validare la sottopagina
           final validSubPage = newSubPage <= newPage.maxSubPages ? newSubPage : 1;
@@ -342,6 +510,7 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
           }
         } catch (e) {
           isError = true;
+          print('[TelevideoBloc] Error loading subpage: $e');
           // Se c'è un errore nel caricamento della sottopagina, mantieni la pagina corrente
           if (!emit.isDone) {
             emit(TelevideoState.loaded(page, currentSubPage: currentSubPage, isAutoRefreshPaused: isAutoRefreshPaused, selectedChannel: selectedChannel));
@@ -373,16 +542,27 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
         bool isError = false;
         
         try {
-          final newPage = await _currentRegion != null
-              ? await _repository.getRegionalPage(
-                  _currentRegion!.code,
-                  pageNumber: page.pageNumber,
-                  subPage: newSubPage,
-                )
-              : await _repository.getNationalPage(
-                  page.pageNumber,
-                  subPage: newSubPage,
-                );
+          TelevideoPage newPage;
+          
+          // Verifica se stiamo usando RAI o un altro provider
+          if (selectedChannel == null || selectedChannel.id == 'rai_nazionale' || selectedChannel.id.startsWith('rai_')) {
+            // Per RAI usa il repository
+            newPage = await _currentRegion != null
+                ? await _repository.getRegionalPage(
+                    _currentRegion!.code,
+                    pageNumber: page.pageNumber,
+                    subPage: newSubPage,
+                  )
+                : await _repository.getNationalPage(
+                    page.pageNumber,
+                    subPage: newSubPage,
+                  );
+          } else {
+            // Per altri canali (ARD, ZDF, ecc.) usa il provider specifico
+            final provider = TeletextProviderFactory.getProvider(selectedChannel);
+            print('[TelevideoBloc] Loading subpage $newSubPage using provider: ${provider.providerId}');
+            newPage = await provider.fetchNationalPage(page.pageNumber, subPage: newSubPage);
+          }
           
           // Usa il maxSubPages della nuova pagina per validare la sottopagina
           final validSubPage = newSubPage <= newPage.maxSubPages ? newSubPage : 1;
@@ -392,6 +572,7 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
           }
         } catch (e) {
           isError = true;
+          print('[TelevideoBloc] Error loading subpage: $e');
           // Se c'è un errore nel caricamento della sottopagina, mantieni la pagina corrente
           if (!emit.isDone) {
             emit(TelevideoState.loaded(page, currentSubPage: currentSubPage, isAutoRefreshPaused: isAutoRefreshPaused, selectedChannel: selectedChannel));
@@ -447,34 +628,11 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
     // Emetti stato di caricamento con il nuovo canale
     emit(TelevideoState.loading(pageNumber: 100, selectedChannel: channel));
 
-    // Determina quale pagina caricare in base al canale selezionato
-    if (channel.id == 'rai_nazionale') {
-      // RAI Nazionale - usa la logica esistente
-      _currentRegion = null;
-      add(TelevideoEvent.loadNationalPage(_minPage));
-    } else if (channel.id.startsWith('rai_') && channel.regions != null && channel.regions!.isNotEmpty) {
-      // RAI Regionale - usa Region.fromCode per ottenere la regione completa con imagePath
-      try {
-        final region = Region.fromCode(channel.regions!.first);
-        _currentRegion = region;
-        
-        // Sincronizza con RegionBloc se disponibile
-        if (_regionBloc != null) {
-          _regionBloc!.add(RegionEvent.selectRegion(region));
-        }
-
-        add(TelevideoEvent.loadRegionalPage(region, 300));
-      } catch (e) {
-        print('[TelevideoBloc] Errore nel trovare la regione per il codice ${channel.regions!.first}: $e');
-        emit(TelevideoState.error(
-          'Errore nel caricare la regione per il canale ${channel.name}.',
-          selectedChannel: channel,
-        ));
-      }
-    } else {
-      // Altri canali europei - per ora mostra messaggio di non supportato
+    // Verifica se il provider è disponibile
+    if (!TeletextProviderFactory.isProviderAvailable(channel)) {
       emit(TelevideoState.error(
-        'Il canale ${channel.name} non è ancora supportato.\nAl momento solo RAI Televideo è disponibile.',
+        'Il canale ${channel.name} non è ancora supportato.\n'
+        'Canali disponibili: ${TeletextProviderFactory.getAvailableProviders().join(", ")}',
         selectedChannel: channel,
       ));
       
@@ -484,6 +642,76 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
       if (raiChannel != null && !emit.isDone) {
         add(TelevideoEvent.changeChannel(raiChannel));
       }
+      return;
+    }
+
+    try {
+      // Ottieni il provider per il canale
+      final provider = TeletextProviderFactory.getProvider(channel);
+      print('[TelevideoBloc] Using provider: ${provider.providerId}');
+      
+      // Determina quale pagina caricare
+      if (channel.id == 'rai_nazionale') {
+        // RAI Nazionale
+        _currentRegion = null;
+        add(TelevideoEvent.loadNationalPage(_minPage));
+      } else if (channel.id.startsWith('rai_') && channel.regions != null && channel.regions!.isNotEmpty) {
+        // RAI Regionale
+        try {
+          final region = Region.fromCode(channel.regions!.first);
+          _currentRegion = region;
+          
+          // Sincronizza con RegionBloc se disponibile
+          if (_regionBloc != null) {
+            _regionBloc!.add(RegionEvent.selectRegion(region));
+          }
+
+          add(TelevideoEvent.loadRegionalPage(region, 300));
+        } catch (e) {
+          print('[TelevideoBloc] Errore nel trovare la regione per il codice ${channel.regions!.first}: $e');
+          emit(TelevideoState.error(
+            'Errore nel caricare la regione per il canale ${channel.name}.',
+            selectedChannel: channel,
+          ));
+        }
+      } else {
+        // Altri canali (ARD, ZDF, ecc.) - carica pagina 100
+        _currentRegion = null;
+        
+        final startTime = DateTime.now();
+        final page = await provider.fetchNationalPage(100);
+        final loadTime = DateTime.now().difference(startTime).inMilliseconds;
+        
+        print('[TelevideoBloc] Page loaded in ${loadTime}ms');
+        print('[TelevideoBloc] Page isHtmlContent: ${page.isHtmlContent}');
+        print('[TelevideoBloc] Page info - number: ${page.pageNumber}, maxSubPages: ${page.maxSubPages}, totalSubPages: ${page.totalSubPages}');
+        
+        // Log analytics
+        await AnalyticsService().logLoadTime(
+          page.pageNumber.toString(),
+          durationMillis: loadTime,
+        );
+        
+        _currentPage = page.pageNumber;
+        _updateAdContext(page.pageNumber);
+        
+        emit(TelevideoState.loaded(
+          page,
+          currentSubPage: page.subPage,
+          selectedChannel: channel,
+        ));
+      }
+    } catch (e, stackTrace) {
+      print('[TelevideoBloc] Error changing channel: $e');
+      print('[TelevideoBloc] Stack trace: $stackTrace');
+      
+      emit(TelevideoState.error(
+        'Errore nel caricare il canale ${channel.name}:\n$e',
+        selectedChannel: channel,
+      ));
+      
+      // Log error
+      await AnalyticsService().logError('channel_change_error', e.toString());
     }
   }
 }

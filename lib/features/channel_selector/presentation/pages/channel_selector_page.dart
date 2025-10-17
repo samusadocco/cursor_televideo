@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cursor_televideo/core/teletext/teletext_channels.dart';
 import 'package:cursor_televideo/core/teletext/favorite_channels_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:cursor_televideo/core/l10n/app_localizations.dart';
 
 class ChannelSelectorPage extends StatefulWidget {
   const ChannelSelectorPage({super.key});
@@ -65,8 +66,8 @@ class _ChannelSelectorPageState extends State<ChannelSelectorPage> {
         SnackBar(
           content: Text(
             isFavorite 
-                ? '${channel.flagEmoji} ${channel.name} aggiunto ai preferiti'
-                : '${channel.flagEmoji} ${channel.name} rimosso dai preferiti',
+                ? AppLocalizations.of(context)!.addedToFavorites(channel.flagEmoji, channel.name)
+                : AppLocalizations.of(context)!.removedFromFavorites(channel.flagEmoji, channel.name),
           ),
           duration: const Duration(seconds: 1),
         ),
@@ -92,7 +93,7 @@ class _ChannelSelectorPageState extends State<ChannelSelectorPage> {
     if (_isLoading) {
       return Scaffold(
         appBar: AppBar(
-          title: const Text('Selezione Canale'),
+          title: Text(AppLocalizations.of(context)!.channelSelection),
         ),
         body: const Center(
           child: CircularProgressIndicator(),
@@ -102,7 +103,7 @@ class _ChannelSelectorPageState extends State<ChannelSelectorPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Selezione Canale'),
+        title: Text(AppLocalizations.of(context)!.channelSelection),
         elevation: 0,
       ),
       body: Column(
@@ -117,12 +118,12 @@ class _ChannelSelectorPageState extends State<ChannelSelectorPage> {
                 // Sezione Preferiti
                 if (_favoriteChannels.isNotEmpty && !_showAll) ...[
                   _buildSectionHeader(
-                    'Canali Preferiti',
+                    AppLocalizations.of(context)!.favoriteChannels,
                     theme,
                     trailing: _favoriteChannels.length > 1
                         ? TextButton.icon(
                             icon: const Icon(Icons.edit, size: 18),
-                            label: const Text('Riordina'),
+                            label: Text(AppLocalizations.of(context)!.reorder),
                             onPressed: _showReorderDialog,
                           )
                         : null,
@@ -136,7 +137,7 @@ class _ChannelSelectorPageState extends State<ChannelSelectorPage> {
                 
                 // Lista completa dei canali (se attivata)
                 if (_showAll) ...[
-                  _buildSectionHeader('Tutti i Canali', theme),
+                  _buildSectionHeader(AppLocalizations.of(context)!.allChannels, theme),
                   _buildAllChannelsList(theme),
                 ],
               ],
@@ -163,7 +164,7 @@ class _ChannelSelectorPageState extends State<ChannelSelectorPage> {
       child: TextField(
         onChanged: _onSearchChanged,
         decoration: InputDecoration(
-          hintText: 'Cerca canale o paese...',
+          hintText: AppLocalizations.of(context)!.searchChannelOrCountry,
           prefixIcon: const Icon(Icons.search),
           suffixIcon: _searchQuery.isNotEmpty
               ? IconButton(
@@ -222,12 +223,12 @@ class _ChannelSelectorPageState extends State<ChannelSelectorPage> {
       }).toList();
       
       if (filtered.isEmpty) {
-        return const Padding(
-          padding: EdgeInsets.all(16),
+        return Padding(
+          padding: const EdgeInsets.all(16),
           child: Text(
-            'Nessun canale preferito trovato',
+            AppLocalizations.of(context)!.noFavoriteChannelsFound,
             textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.grey),
+            style: const TextStyle(color: Colors.grey),
           ),
         );
       }
@@ -257,9 +258,9 @@ class _ChannelSelectorPageState extends State<ChannelSelectorPage> {
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Card(
         child: SwitchListTile(
-          title: const Text('Mostra tutti i canali'),
+          title: Text(AppLocalizations.of(context)!.showAllChannels),
           subtitle: Text(
-            '${_allChannels.length} canali disponibili da ${TeletextChannels.getAvailableCountries().length} paesi',
+            AppLocalizations.of(context)!.channelsAvailableFromCountries(_allChannels.length, TeletextChannels.getAvailableCountries().length),
           ),
           value: _showAll,
           onChanged: (value) {
@@ -280,15 +281,15 @@ class _ChannelSelectorPageState extends State<ChannelSelectorPage> {
     final channelsToShow = _searchQuery.isEmpty ? _allChannels : _filteredChannels;
     
     if (channelsToShow.isEmpty) {
-      return const Padding(
-        padding: EdgeInsets.all(32),
+      return Padding(
+        padding: const EdgeInsets.all(32),
         child: Column(
           children: [
-            Icon(Icons.search_off, size: 64, color: Colors.grey),
-            SizedBox(height: 16),
+            const Icon(Icons.search_off, size: 64, color: Colors.grey),
+            const SizedBox(height: 16),
             Text(
-              'Nessun canale trovato',
-              style: TextStyle(
+              AppLocalizations.of(context)!.noChannelsFound,
+              style: const TextStyle(
                 fontSize: 18,
                 color: Colors.grey,
               ),
@@ -379,7 +380,7 @@ class _ChannelSelectorPageState extends State<ChannelSelectorPage> {
             Text(channel.broadcasterName),
             if (channel.supportsRegions == true)
               Text(
-                '${channel.regions?.length ?? 0} regioni disponibili',
+                AppLocalizations.of(context)!.regionsAvailable(channel.regions?.length ?? 0),
                 style: TextStyle(
                   fontSize: 12,
                   color: theme.primaryColor,
@@ -442,7 +443,7 @@ class _ReorderFavoritesDialogState extends State<_ReorderFavoritesDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Riordina Preferiti'),
+      title: Text(AppLocalizations.of(context)!.reorderFavorites),
       content: SizedBox(
         width: double.maxFinite,
         child: ReorderableListView.builder(
@@ -481,14 +482,14 @@ class _ReorderFavoritesDialogState extends State<_ReorderFavoritesDialog> {
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context),
-          child: const Text('Annulla'),
+          child: Text(AppLocalizations.of(context)!.cancel),
         ),
         TextButton(
           onPressed: () {
             widget.onReorder(_channels);
             Navigator.pop(context);
           },
-          child: const Text('Salva'),
+          child: Text(AppLocalizations.of(context)!.save),
         ),
       ],
     );
