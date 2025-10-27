@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'dart:convert';
+import 'package:cursor_televideo/core/teletext/providers/mtva_image_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cursor_televideo/core/settings/app_settings.dart';
@@ -15,8 +17,10 @@ import 'package:cursor_televideo/shared/widgets/error_page_view.dart';
 import 'package:cursor_televideo/core/analytics/analytics_service.dart';
 import 'package:cursor_televideo/features/televideo_viewer/presentation/widgets/auto_refresh_overlay.dart';
 import 'package:cursor_televideo/core/l10n/app_localizations.dart';
-import 'package:cursor_televideo/features/televideo_viewer/presentation/widgets/html_teletext_viewer.dart';
-import 'package:cursor_televideo/features/televideo_viewer/presentation/widgets/zdf_teletext_viewer.dart';
+import 'package:cursor_televideo/features/televideo_viewer/presentation/widgets/ard_html_teletext_viewer.dart';
+import 'package:cursor_televideo/features/televideo_viewer/presentation/widgets/zdf_html_teletext_viewer.dart';
+import 'package:cursor_televideo/features/televideo_viewer/presentation/widgets/nos_html_teletext_viewer.dart';
+import 'package:cursor_televideo/features/televideo_viewer/presentation/widgets/iceland_html_teletext_viewer.dart';
 
 class TelevideoViewer extends StatefulWidget {
   final TelevideoPage page;
@@ -131,16 +135,190 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
   }
 
   /// Costruisce il viewer HTML appropriato in base al provider
+  Widget _buildImageWidget(TelevideoPage page, BuildContext context) {
+    // Controlla se l'URL è un'immagine base64 (data URI)
+    if (page.imageUrl.startsWith('data:image/')) {
+      try {
+        // Estrai il base64 dalla data URI
+        // Formato: data:image/gif;base64,R0lGODlh...
+        final base64String = page.imageUrl.split(',')[1];
+        final bytes = base64Decode(base64String);
+        
+        return Image.memory(
+          bytes,
+          fit: BoxFit.fill,
+          errorBuilder: (context, error, stackTrace) {
+            print('[TeletextViewer] Error decoding base64 image: $error');
+            return ErrorPageView(
+              message: AppLocalizations.of(context)!.pageUnavailable,
+              onRetry: () {
+                final regionState = context.read<RegionBloc>().state;
+                if (regionState.selectedRegion != null) {
+                  context.read<TelevideoBloc>().add(
+                    TelevideoEvent.loadRegionalPage(
+                      regionState.selectedRegion!,
+                      page.pageNumber,
+                    ),
+                  );
+                } else {
+                  context.read<TelevideoBloc>().add(
+                    TelevideoEvent.loadNationalPage(page.pageNumber),
+                  );
+                }
+              },
+            );
+          },
+        );
+      } catch (e) {
+        print('[TeletextViewer] Error parsing base64 image: $e');
+        return ErrorPageView(
+          message: AppLocalizations.of(context)!.pageUnavailable,
+          onRetry: () {
+            final regionState = context.read<RegionBloc>().state;
+            if (regionState.selectedRegion != null) {
+              context.read<TelevideoBloc>().add(
+                TelevideoEvent.loadRegionalPage(
+                  regionState.selectedRegion!,
+                  page.pageNumber,
+                ),
+              );
+            } else {
+              context.read<TelevideoBloc>().add(
+                TelevideoEvent.loadNationalPage(page.pageNumber),
+              );
+            }
+          },
+        );
+      }
+    }
+    
+    // Per MTVA usa il provider personalizzato che gestisce certificati self-signed
+    if (page.providerId == 'mtva_teletext') {
+      return Image(
+        image: MTVAImageProvider(page.imageUrl),
+        fit: BoxFit.fill,
+        errorBuilder: (context, error, stackTrace) {
+          print('[TeletextViewer] Error loading MTVA image: $error');
+          return ErrorPageView(
+            message: AppLocalizations.of(context)!.pageUnavailable,
+            onRetry: () {
+              context.read<TelevideoBloc>().add(
+                TelevideoEvent.loadNationalPage(page.pageNumber),
+              );
+            },
+          );
+        },
+      );
+    }
+    
+    // URL normale - usa Image.network
+    return Image.network(
+      page.imageUrl,
+      headers: const {
+        'Cache-Control': 'no-cache',
+        'Pragma': 'no-cache',
+      },
+      fit: BoxFit.fill,
+      errorBuilder: (context, error, stackTrace) {
+        print('[TeletextViewer] Error loading network image: $error');
+        return ErrorPageView(
+          message: AppLocalizations.of(context)!.pageUnavailable,
+          onRetry: () {
+            final regionState = context.read<RegionBloc>().state;
+            if (regionState.selectedRegion != null) {
+              context.read<TelevideoBloc>().add(
+                TelevideoEvent.loadRegionalPage(
+                  regionState.selectedRegion!,
+                  page.pageNumber,
+                ),
+              );
+            } else {
+              context.read<TelevideoBloc>().add(
+                TelevideoEvent.loadNationalPage(page.pageNumber),
+              );
+            }
+          },
+        );
+      },
+    );
+  }
+
   Widget _buildHtmlViewer(TelevideoPage page, BuildContext context, int currentSubPage) {
     // Determina quale viewer usare in base al provider
+    print('[TelevideoViewer] _buildHtmlViewer called with providerId: ${page.providerId}');
+    
     final isZDF = page.providerId == 'zdf_text' || 
                   page.providerId == 'zdfinfo_text' || 
                   page.providerId == 'zdfneo_text' || 
                   page.providerId == '3sat_text';
     
-    if (isZDF) {
-      return ZDFTeletextViewer(
+    final isNOS = page.providerId == 'nos_teletekst';
+    final isIceland = page.providerId == 'ruv_textavarp';
+    
+    print('[TelevideoViewer] Viewer selection - isIceland: $isIceland, isZDF: $isZDF, isNOS: $isNOS');
+    
+    if (isIceland) {
+      print('[TelevideoViewer] Using IcelandHtmlTeletextViewer');
+      return IcelandHtmlTeletextViewer(
+        key: ValueKey('iceland_${page.pageNumber}_$currentSubPage'),
+        page: page,
+        onTap: () {
+          // Gestisce il tap per play/pause delle sottopagine
+          final hasSubPages = page.maxSubPages > 1;
+          if (hasSubPages && AppSettings.liveShowEnabled) {
+            context.read<TelevideoBloc>().add(const TelevideoEvent.toggleAutoRefreshPause());
+            
+            // Mostra l'overlay
+            setState(() {
+              _showPauseOverlay = true;
+            });
+            
+            _overlayTimer?.cancel();
+            _overlayTimer = Timer(const Duration(seconds: 2), () {
+              if (mounted) {
+                setState(() {
+                  _showPauseOverlay = false;
+                });
+              }
+            });
+          }
+        },
+      );
+    } else if (isZDF) {
+      return ZDFHtmlTeletextViewer(
         key: ValueKey('zdf_${page.pageNumber}_$currentSubPage'),
+        page: page,
+        onPageNavigation: (pageNumber) {
+          // Naviga alla pagina tramite il Bloc
+          if (widget.onPageNumberSubmitted != null) {
+            widget.onPageNumberSubmitted!(pageNumber);
+          }
+        },
+        onTap: () {
+          // Gestisce il tap per play/pause delle sottopagine
+          final hasSubPages = page.maxSubPages > 1;
+          if (hasSubPages && AppSettings.liveShowEnabled) {
+            context.read<TelevideoBloc>().add(const TelevideoEvent.toggleAutoRefreshPause());
+            
+            // Mostra l'overlay
+            setState(() {
+              _showPauseOverlay = true;
+            });
+            
+            _overlayTimer?.cancel();
+            _overlayTimer = Timer(const Duration(seconds: 2), () {
+              if (mounted) {
+                setState(() {
+                  _showPauseOverlay = false;
+                });
+              }
+            });
+          }
+        },
+      );
+    } else if (isNOS) {
+      return NOSHtmlTeletextViewer(
+        key: ValueKey('nos_${page.pageNumber}_$currentSubPage'),
         page: page,
         onPageNavigation: (pageNumber) {
           // Naviga alla pagina tramite il Bloc
@@ -172,8 +350,8 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
       );
     } else {
       // ARD o altri provider HTML
-      return HtmlTeletextViewer(
-        key: ValueKey('html_${page.pageNumber}_$currentSubPage'),
+      return ARDHtmlTeletextViewer(
+        key: ValueKey('ard_${page.pageNumber}_$currentSubPage'),
         page: page,
         onPageNavigation: (pageNumber) {
           // Naviga alla pagina tramite il Bloc
@@ -386,7 +564,6 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
     double originalWidth;
     double originalHeight;
     
-    // Swiss Teletext ha dimensioni diverse da RAI
     if (widget.page.providerId != null && 
         (widget.page.providerId!.startsWith('rsi_') || 
          widget.page.providerId!.startsWith('rts_') || 
@@ -394,6 +571,45 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
       // Swiss Teletext: 640x460
       originalWidth = 640.0;
       originalHeight = 460.0;
+    } else if (widget.page.providerId != null && 
+               (widget.page.providerId == 'orf1' || 
+                widget.page.providerId == 'orf2' || 
+                widget.page.providerId == 'orf3' || 
+                widget.page.providerId == 'orf_sport_plus')) {
+      // ORF Teletext: 823x494 (dimensioni reali dell'immagine PNG)
+      originalWidth = 823.0;
+      originalHeight = 494.0;
+    } else if (widget.page.providerId != null && 
+               (widget.page.providerId == 'tve' || 
+                widget.page.providerId == 'antena3' || 
+                widget.page.providerId == 'lasexta' ||
+                widget.page.providerId == 'rtp')) {
+      // Iberian Teletext (ES/PT): 480x336 (dimensioni reali dell'immagine PNG)
+      originalWidth = 480.0;
+      originalHeight = 336.0;
+    } else if (widget.page.providerId != null && 
+               (widget.page.providerId == 'svt_text' || 
+                widget.page.providerId == 'hrt_teletekst')) {
+      // SVT Text (SE) / HRT Teletekst (HR): 520x400 (dimensioni reali dell'immagine GIF)
+      originalWidth = 520.0;
+      originalHeight = 400.0;
+    } else if (widget.page.providerId == 'yle_teksti_tv') {
+      // YLE Teksti-TV (FI): 720x432 (dimensioni approssimate basate sulle coordinate della mappa)
+      // Le coordinate nelle aree cliccabili vanno fino a circa 701x414
+      originalWidth = 720.0;
+      originalHeight = 432.0;
+    } else if (widget.page.providerId == 'ct_teletext') {
+      // ČT Teletext (CZ): 320x276 (dimensioni reali dell'immagine PNG)
+      originalWidth = 320.0;
+      originalHeight = 276.0;
+    } else if (widget.page.providerId == 'rtvslo_teletext') {
+      // RTV SLO Teletext (SI): 480x336 (dimensioni reali dell'immagine PNG)
+      originalWidth = 480.0;
+      originalHeight = 336.0;
+    } else if (widget.page.providerId == 'mtva_teletext') {
+      // MTVA Teletext (HU): 520x400 (dimensioni reali dell'immagine GIF)
+      originalWidth = 520.0;
+      originalHeight = 400.0;
     } else {
       // RAI Televideo: 360x400
       originalWidth = 360.0;
@@ -598,34 +814,7 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
                               child: page.isHtmlContent
                                   ? _buildHtmlViewer(page, context, currentSubPage)
                                   
-                                  : Image.network(
-                                      page.imageUrl,
-                                      headers: const {
-                                        'Cache-Control': 'no-cache',
-                                        'Pragma': 'no-cache',
-                                      },
-                                      fit: BoxFit.fill,
-                                      errorBuilder: (context, error, stackTrace) {
-                                        return ErrorPageView(
-                                          message: AppLocalizations.of(context)!.pageUnavailable,
-                                          onRetry: () {
-                                            final regionState = context.read<RegionBloc>().state;
-                                            if (regionState.selectedRegion != null) {
-                                              context.read<TelevideoBloc>().add(
-                                                TelevideoEvent.loadRegionalPage(
-                                                  regionState.selectedRegion!,
-                                                  page.pageNumber,
-                                                ),
-                                              );
-                                            } else {
-                                              context.read<TelevideoBloc>().add(
-                                                TelevideoEvent.loadNationalPage(page.pageNumber),
-                                              );
-                                            }
-                                          },
-                                        );
-                                      },
-                                    ),
+                                  : _buildImageWidget(page, context),
                             );
                           },
                           error: (message, selectedChannel) => ErrorPageView(

@@ -4,16 +4,16 @@ import 'package:cursor_televideo/shared/models/televideo_page.dart';
 import 'package:http/http.dart' as http;
 import 'package:html/parser.dart' as html_parser;
 
-/// Widget per visualizzare pagine teletext in formato HTML (es. ARD)
+/// Widget per visualizzare pagine ARD Teletext in formato HTML
 /// 
-/// Questo widget renderizza il contenuto HTML delle pagine teletext
-/// che non usano immagini PNG (come ARD, ZDF, ecc.)
-class HtmlTeletextViewer extends StatefulWidget {
+/// Questo widget renderizza il contenuto HTML delle pagine ARD teletext
+/// che usano immagini GIF per i caratteri
+class ARDHtmlTeletextViewer extends StatefulWidget {
   final TelevideoPage page;
   final Function(int pageNumber)? onPageNavigation;
   final VoidCallback? onTap;
 
-  const HtmlTeletextViewer({
+  const ARDHtmlTeletextViewer({
     super.key,
     required this.page,
     this.onPageNavigation,
@@ -21,10 +21,10 @@ class HtmlTeletextViewer extends StatefulWidget {
   });
 
   @override
-  State<HtmlTeletextViewer> createState() => _HtmlTeletextViewerState();
+  State<ARDHtmlTeletextViewer> createState() => _ARDHtmlTeletextViewerState();
 }
 
-class _HtmlTeletextViewerState extends State<HtmlTeletextViewer> {
+class _ARDHtmlTeletextViewerState extends State<ARDHtmlTeletextViewer> {
   WebViewController? _controller;
   bool _isLoading = true;
   String? _rawHtmlContent;  // Contenuto HTML grezzo estratto

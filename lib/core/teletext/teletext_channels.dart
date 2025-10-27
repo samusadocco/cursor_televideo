@@ -311,31 +311,6 @@ class TeletextChannels {
       regions: ['Sardegna'],
     ),
 
-    // 🇬🇧 REGNO UNITO - BBC
-    TeletextChannel(
-      id: 'bbc_ceefax',
-      name: 'BBC Red Button',
-      countryCode: 'GB',
-      countryName: 'Regno Unito',
-      flagEmoji: '🇬🇧',
-      broadcasterName: 'BBC',
-      type: TeletextChannelType.national,
-      baseUrl: 'https://www.bbc.co.uk/ceefax',
-      supportsRegions: false,
-    ),
-
-    // 🇬🇧 REGNO UNITO - ITV
-    TeletextChannel(
-      id: 'itv_teletext',
-      name: 'ITV Teletext',
-      countryCode: 'GB',
-      countryName: 'Regno Unito',
-      flagEmoji: '🇬🇧',
-      broadcasterName: 'ITV',
-      type: TeletextChannelType.national,
-      supportsRegions: false,
-    ),
-
     // 🇩🇪 GERMANIA - ARD
     TeletextChannel(
       id: 'ard_text',
@@ -502,85 +477,108 @@ class TeletextChannels {
       supportsRegions: false,
     ),
 
-    // 🇦🇹 AUSTRIA - ORF
+    // 🇦🇹 AUSTRIA - ORF1
     TeletextChannel(
-      id: 'orf_teletext',
-      name: 'ORF Teletext',
+      id: 'orf1',
+      name: 'ORF1',
       countryCode: 'AT',
       countryName: 'Austria',
       flagEmoji: '🇦🇹',
       broadcasterName: 'ORF',
       type: TeletextChannelType.national,
-      baseUrl: 'https://teletext.orf.at',
-      supportsRegions: true,
-      regions: [
-        'Wien',
-        'Niederösterreich',
-        'Oberösterreich',
-        'Salzburg',
-        'Tirol',
-        'Vorarlberg',
-        'Kärnten',
-        'Steiermark',
-        'Burgenland',
-      ],
-    ),
-
-    // 🇨🇭 SVIZZERA - SRF (tedesco)
-    TeletextChannel(
-      id: 'srf_text',
-      name: 'SRF Text',
-      countryCode: 'CH',
-      countryName: 'Svizzera',
-      flagEmoji: '🇨🇭',
-      broadcasterName: 'SRF',
-      type: TeletextChannelType.national,
-      baseUrl: 'https://www.srf.ch/teletext',
+      baseUrl: 'https://teletext.orf.at/channel/orf1',
       supportsRegions: false,
     ),
 
-    // 🇨🇭 SVIZZERA - RTS (francese)
+    // 🇦🇹 AUSTRIA - ORF2
     TeletextChannel(
-      id: 'rts_videotex',
-      name: 'RTS Vidéotex',
-      countryCode: 'CH',
-      countryName: 'Svizzera',
-      flagEmoji: '🇨🇭',
-      broadcasterName: 'RTS',
+      id: 'orf2',
+      name: 'ORF2',
+      countryCode: 'AT',
+      countryName: 'Austria',
+      flagEmoji: '🇦🇹',
+      broadcasterName: 'ORF',
       type: TeletextChannelType.national,
-      baseUrl: 'https://www.rts.ch/videotex',
+      baseUrl: 'https://teletext.orf.at/channel/orf2',
       supportsRegions: false,
     ),
 
-    // 🇨🇭 SVIZZERA - RSI (italiano)
+    // 🇦🇹 AUSTRIA - ORF III
     TeletextChannel(
-      id: 'rsi_teletext',
-      name: 'RSI Teletext',
-      countryCode: 'CH',
-      countryName: 'Svizzera',
-      flagEmoji: '🇨🇭',
-      broadcasterName: 'RSI',
+      id: 'orf3',
+      name: 'ORF III',
+      countryCode: 'AT',
+      countryName: 'Austria',
+      flagEmoji: '🇦🇹',
+      broadcasterName: 'ORF',
       type: TeletextChannelType.national,
-      baseUrl: 'https://www.rsi.ch/teletext',
+      baseUrl: 'https://teletext.orf.at/channel/orfiii',
       supportsRegions: false,
     ),
 
-    // 🇫🇷 FRANCIA - France Télévisions
+    // 🇦🇹 AUSTRIA - ORF Sport+
     TeletextChannel(
-      id: 'france_teletexte',
-      name: 'France Télétexte',
-      countryCode: 'FR',
-      countryName: 'Francia',
-      flagEmoji: '🇫🇷',
-      broadcasterName: 'France Télévisions',
+      id: 'orf_sport_plus',
+      name: 'ORF Sport+',
+      countryCode: 'AT',
+      countryName: 'Austria',
+      flagEmoji: '🇦🇹',
+      broadcasterName: 'ORF',
       type: TeletextChannelType.national,
-      baseUrl: 'https://www.france.tv/teletexte',
-      supportsRegions: true,
-      regions: [
-        'France 2',
-        'France 3',
-        'France 5',
-      ],
+      baseUrl: 'https://teletext.orf.at/channel/sportplus',
+      supportsRegions: false,
+    ),
+
+    // 🇪🇸 SPAIN - TVE
+    TeletextChannel(
+      id: 'tve',
+      name: 'TVE',
+      countryCode: 'ES',
+      countryName: 'España',
+      flagEmoji: '🇪🇸',
+      broadcasterName: 'RTVE',
+      type: TeletextChannelType.national,
+      baseUrl: 'https://www.rtve.es/tve/teletexto',
+      supportsRegions: false,
+    ),
+
+    // 🇪🇸 SPAIN - Antena 3
+    TeletextChannel(
+      id: 'antena3',
+      name: 'Antena 3',
+      countryCode: 'ES',
+      countryName: 'España',
+      flagEmoji: '🇪🇸',
+      broadcasterName: 'Atresmedia',
+      type: TeletextChannelType.national,
+      baseUrl: 'https://www.antena3.com/teletexto',
+      supportsRegions: false,
+    ),
+
+    // 🇪🇸 SPAIN - La Sexta
+    TeletextChannel(
+      id: 'lasexta',
+      name: 'La Sexta',
+      countryCode: 'ES',
+      countryName: 'España',
+      flagEmoji: '🇪🇸',
+      broadcasterName: 'Atresmedia',
+      type: TeletextChannelType.national,
+      baseUrl: 'https://www.lasexta.com/teletexto/datos',
+      supportsRegions: false,
+    ),
+
+    // 🇵🇹 PORTUGAL - RTP
+    TeletextChannel(
+      id: 'rtp',
+      name: 'RTP',
+      countryCode: 'PT',
+      countryName: 'Portugal',
+      flagEmoji: '🇵🇹',
+      broadcasterName: 'RTP',
+      type: TeletextChannelType.national,
+      baseUrl: 'https://www.rtp.pt/wportal/teletexto',
+      supportsRegions: false,
     ),
 
     // 🇳🇱 OLANDA - NOS
@@ -596,29 +594,42 @@ class TeletextChannels {
       supportsRegions: false,
     ),
 
-    // 🇧🇪 BELGIO - VRT (fiammingo)
+    // 🇸🇪 SVEZIA - SVT Text
     TeletextChannel(
-      id: 'vrt_teletekst',
-      name: 'VRT Teletekst',
-      countryCode: 'BE',
-      countryName: 'Belgio',
-      flagEmoji: '🇧🇪',
-      broadcasterName: 'VRT',
+      id: 'svt_text',
+      name: 'SVT Text',
+      countryCode: 'SE',
+      countryName: 'Svezia',
+      flagEmoji: '🇸🇪',
+      broadcasterName: 'SVT',
       type: TeletextChannelType.national,
-      baseUrl: 'https://www.vrt.be/teletekst',
+      baseUrl: 'https://www.svt.se/text-tv',
       supportsRegions: false,
     ),
 
-    // 🇧🇪 BELGIO - RTBF (francofono)
+    // 🇫🇮 FINLANDIA - YLE Teksti-TV
     TeletextChannel(
-      id: 'rtbf_teletexte',
-      name: 'RTBF Télétexte',
-      countryCode: 'BE',
-      countryName: 'Belgio',
-      flagEmoji: '🇧🇪',
-      broadcasterName: 'RTBF',
+      id: 'yle_teksti_tv',
+      name: 'YLE Teksti-TV',
+      countryCode: 'FI',
+      countryName: 'Finlandia',
+      flagEmoji: '🇫🇮',
+      broadcasterName: 'YLE',
       type: TeletextChannelType.national,
-      baseUrl: 'https://www.rtbf.be/teletexte',
+      baseUrl: 'https://yle.fi/aihe/yle-ttv',
+      supportsRegions: false,
+    ),
+
+    // 🇭🇷 CROAZIA - HRT Teletekst
+    TeletextChannel(
+      id: 'hrt_teletekst',
+      name: 'HRT Teletekst',
+      countryCode: 'HR',
+      countryName: 'Croazia',
+      flagEmoji: '🇭🇷',
+      broadcasterName: 'HRT',
+      type: TeletextChannelType.national,
+      baseUrl: 'https://teletekst.hrt.hr',
       supportsRegions: false,
     ),
 
@@ -661,32 +672,6 @@ class TeletextChannels {
       supportsRegions: false,
     ),
 
-    // 🇸🇪 SVEZIA - SVT
-    TeletextChannel(
-      id: 'svt_text',
-      name: 'SVT Text',
-      countryCode: 'SE',
-      countryName: 'Svezia',
-      flagEmoji: '🇸🇪',
-      broadcasterName: 'SVT',
-      type: TeletextChannelType.national,
-      baseUrl: 'https://www.svt.se/text-tv',
-      supportsRegions: false,
-    ),
-
-    // 🇳🇴 NORVEGIA - NRK
-    TeletextChannel(
-      id: 'nrk_tekst_tv',
-      name: 'NRK Tekst-TV',
-      countryCode: 'NO',
-      countryName: 'Norvegia',
-      flagEmoji: '🇳🇴',
-      broadcasterName: 'NRK',
-      type: TeletextChannelType.national,
-      baseUrl: 'https://www.nrk.no/tekst-tv',
-      supportsRegions: false,
-    ),
-
     // 🇫🇮 FINLANDIA - YLE
     TeletextChannel(
       id: 'yle_teksti_tv',
@@ -709,7 +694,7 @@ class TeletextChannels {
       flagEmoji: '🇨🇿',
       broadcasterName: 'Česká televize',
       type: TeletextChannelType.national,
-      baseUrl: 'https://www.ceskatelevize.cz/teletext',
+      baseUrl: 'https://teletext.ceskatelevize.cz',
       supportsRegions: false,
     ),
 
@@ -726,70 +711,45 @@ class TeletextChannels {
       supportsRegions: false,
     ),
 
-    // 🇭🇺 UNGHERIA - MTV
+    // 🇸🇮 SLOVENIA - RTV SLO
     TeletextChannel(
-      id: 'mtv_teletext',
-      name: 'MTV Teletext',
-      countryCode: 'HU',
-      countryName: 'Ungheria',
-      flagEmoji: '🇭🇺',
-      broadcasterName: 'Magyar Televízió',
-      type: TeletextChannelType.national,
-      baseUrl: 'https://www.mtv.hu/teletext',
-      supportsRegions: false,
-    ),
-
-    // 🇭🇷 CROAZIA - HRT
-    TeletextChannel(
-      id: 'hrt_teletekst',
-      name: 'HRT Teletekst',
-      countryCode: 'HR',
-      countryName: 'Croazia',
-      flagEmoji: '🇭🇷',
-      broadcasterName: 'HRT',
-      type: TeletextChannelType.national,
-      baseUrl: 'https://www.hrt.hr/teletekst',
-      supportsRegions: false,
-    ),
-
-    // 🇸🇮 SLOVENIA - RTV
-    TeletextChannel(
-      id: 'rtv_teletekst',
-      name: 'RTV Teletekst',
+      id: 'rtvslo_teletext',
+      name: 'RTV SLO Teletext',
       countryCode: 'SI',
       countryName: 'Slovenia',
       flagEmoji: '🇸🇮',
       broadcasterName: 'RTV Slovenija',
       type: TeletextChannelType.national,
-      baseUrl: 'https://www.rtvslo.si/teletekst',
+      baseUrl: 'https://teletext.rtvslo.si',
       supportsRegions: false,
     ),
 
-    // 🇬🇷 GRECIA - ERT
+    // 🇭🇺 UNGHERIA - MTVA
     TeletextChannel(
-      id: 'ert_teletext',
-      name: 'ERT Teletext',
-      countryCode: 'GR',
-      countryName: 'Grecia',
-      flagEmoji: '🇬🇷',
-      broadcasterName: 'ERT',
+      id: 'mtva_teletext',
+      name: 'MTVA Teletext',
+      countryCode: 'HU',
+      countryName: 'Ungheria',
+      flagEmoji: '🇭🇺',
+      broadcasterName: 'MTVA',
       type: TeletextChannelType.national,
-      baseUrl: 'https://www.ert.gr/teletext',
+      baseUrl: 'https://www.teletext.hu/mtv1',
       supportsRegions: false,
     ),
 
-    // 🇮🇪 IRLANDA - RTÉ
+    // 🇮🇸 ISLANDA - RÚV
     TeletextChannel(
-      id: 'rte_aertel',
-      name: 'RTÉ Aertel',
-      countryCode: 'IE',
-      countryName: 'Irlanda',
-      flagEmoji: '🇮🇪',
-      broadcasterName: 'RTÉ',
+      id: 'ruv_textavarp',
+      name: 'RÚV Textavarp',
+      countryCode: 'IS',
+      countryName: 'Islanda',
+      flagEmoji: '🇮🇸',
+      broadcasterName: 'RÚV',
       type: TeletextChannelType.national,
-      baseUrl: 'https://www.rte.ie/aertel',
+      baseUrl: 'https://textavarp.is',
       supportsRegions: false,
     ),
+
   ];
 
   /// Ottiene tutti i canali attivi

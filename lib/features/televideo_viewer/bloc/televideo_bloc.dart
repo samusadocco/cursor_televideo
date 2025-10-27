@@ -51,8 +51,9 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
         : await _repository.getNationalPage(pageNumber, subPage: subPage, forceRefresh: forceRefresh);
     
     if (updateContext) {
-      _updateAdContext(pageNumber, isRegional: isRegional, region: region);
-      _adService.incrementPageView(isSubPage: subPage > 1, pageNumber: pageNumber.toString());
+      final currentChannel = state.selectedChannel;
+      _updateAdContext(pageNumber, isRegional: isRegional, region: region, channel: currentChannel);
+      _adService.incrementPageView(isSubPage: subPage > 1);
     }
     return page;
   }
@@ -76,7 +77,7 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
         final page = await provider.fetchNationalPage(pageNumber);
         
         // Incrementa il conteggio per gli interstitial
-        _adService.incrementPageView(isSubPage: false, pageNumber: pageNumber.toString());
+        _adService.incrementPageView(isSubPage: false);
         
         return page;
       }
@@ -85,18 +86,27 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
     }
   }
 
-  void _updateAdContext(int pageNumber, {bool isRegional = false, Region? region}) {
-    // Ottieni la descrizione della pagina
-    final description = PageDescriptionsService().getDescription(
-      pageNumber,
-      isRegional: isRegional,
-    );
+  void _updateAdContext(int pageNumber, {bool isRegional = false, Region? region, TeletextChannel? channel}) {
+    print('[TelevideoBloc] _updateAdContext called - page: $pageNumber, channel: ${channel?.id}, country: ${channel?.countryCode}');
+    
+    // Ottieni la descrizione della pagina (solo per RAI)
+    String? description;
+    if (channel?.id.startsWith('rai_') ?? false) {
+      description = PageDescriptionsService().getDescription(
+        pageNumber,
+        isRegional: isRegional,
+      );
+    }
 
+    print('[TelevideoBloc] Calling setContext with - channelId: ${channel?.id}, countryCode: ${channel?.countryCode}, language: ${channel?.countryCode.toLowerCase()}');
     _adService.setContext(
       pageNumber: pageNumber.toString(),
       section: description,
       isRegional: isRegional,
       region: region,
+      channelId: channel?.id,
+      countryCode: channel?.countryCode,
+      language: channel?.countryCode.toLowerCase(), // Usa il country code come lingua base
     );
   }
 
@@ -233,10 +243,15 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
         // Per altri canali, usa il provider specifico
         final provider = TeletextProviderFactory.getProvider(currentChannel);
         print('[TelevideoBloc] Using provider: ${provider.providerId} for page $pageNumber');
+        print('[TelevideoBloc] Current channel info - ID: ${currentChannel.id}, Country: ${currentChannel.countryCode}, Name: ${currentChannel.name}');
         page = await provider.fetchNationalPage(pageNumber);
         
+        // Aggiorna il contesto AdMob
+        print('[TelevideoBloc] Updating AdMob context with channel: ${currentChannel.id}');
+        _updateAdContext(pageNumber, channel: currentChannel);
+        
         // Incrementa il conteggio per gli interstitial
-        _adService.incrementPageView(isSubPage: false, pageNumber: pageNumber.toString());
+        _adService.incrementPageView(isSubPage: false);
       }
       
       print('[TelevideoBloc] National page loaded successfully'); // Debug print
@@ -257,6 +272,7 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
       final duration = DateTime.now().difference(startTime).inMilliseconds;
       await AnalyticsService().logLoadTime(
         pageNumber.toString(),
+        channelId: currentChannel?.id,
         durationMillis: duration,
         isError: isError,
       );
@@ -300,6 +316,7 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
       final duration = DateTime.now().difference(startTime).inMilliseconds;
       await AnalyticsService().logLoadTime(
         pageNumber.toString(),
+        channelId: currentChannel?.id,
         durationMillis: duration,
         isError: isError,
       );
@@ -313,8 +330,17 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
       state.maybeWhen(
         loaded: (page, _, __, ___) {
           if (page.metadata != null) {
-            // ZDF usa 'next', Swiss usa 'nextPage'
-            final nextPage = (page.metadata!['next'] ?? page.metadata!['nextPage']) as int?;
+            // ZDF usa 'next', Swiss usa 'nextPage', SVT usa 'nextPage' (String)
+            final nextPageValue = page.metadata!['next'] ?? page.metadata!['nextPage'];
+            int? nextPage;
+            
+            // Gestisci sia int che String
+            if (nextPageValue is int) {
+              nextPage = nextPageValue;
+            } else if (nextPageValue is String) {
+              nextPage = int.tryParse(nextPageValue);
+            }
+            
             // Verifica che nextPage sia valido (nel range 100-899)
             if (nextPage != null && nextPage >= 100 && nextPage <= 899) {
               print('[TelevideoBloc] Navigation metadata suggests next=$nextPage');
@@ -359,8 +385,17 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
       state.maybeWhen(
         loaded: (page, _, __, ___) {
           if (page.metadata != null) {
-            // ZDF usa 'prev', Swiss usa 'previousPage'
-            final prevPage = (page.metadata!['prev'] ?? page.metadata!['previousPage']) as int?;
+            // ZDF usa 'prev', Swiss usa 'previousPage', SVT usa 'prevPage' (String)
+            final prevPageValue = page.metadata!['prev'] ?? page.metadata!['previousPage'] ?? page.metadata!['prevPage'];
+            int? prevPage;
+            
+            // Gestisci sia int che String
+            if (prevPageValue is int) {
+              prevPage = prevPageValue;
+            } else if (prevPageValue is String) {
+              prevPage = int.tryParse(prevPageValue);
+            }
+            
             // Verifica che prevPage sia valido (nel range 100-899)
             if (prevPage != null && prevPage >= 100 && prevPage <= 899) {
               print('[TelevideoBloc] Navigation metadata suggests prev=$prevPage');
@@ -520,6 +555,7 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
           await AnalyticsService().logLoadTime(
             page.pageNumber.toString(),
             subPage: newSubPage.toString(),
+            channelId: selectedChannel?.id,
             durationMillis: duration,
             isError: isError,
           );
@@ -582,6 +618,7 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
           await AnalyticsService().logLoadTime(
             page.pageNumber.toString(),
             subPage: newSubPage.toString(),
+            channelId: selectedChannel?.id,
             durationMillis: duration,
             isError: isError,
           );
@@ -689,12 +726,13 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
         // Log analytics
         await AnalyticsService().logLoadTime(
           page.pageNumber.toString(),
+          channelId: channel.id,
           durationMillis: loadTime,
         );
         
         _currentPage = page.pageNumber;
-        _updateAdContext(page.pageNumber);
-        
+        _updateAdContext(page.pageNumber, channel: channel);
+
         emit(TelevideoState.loaded(
           page,
           currentSubPage: page.subPage,

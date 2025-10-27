@@ -3,6 +3,16 @@ import 'package:cursor_televideo/core/teletext/providers/rai_provider.dart';
 import 'package:cursor_televideo/core/teletext/providers/ard_provider.dart';
 import 'package:cursor_televideo/core/teletext/providers/zdf_provider.dart';
 import 'package:cursor_televideo/core/teletext/providers/swiss_provider.dart';
+import 'package:cursor_televideo/core/teletext/providers/orf_provider.dart';
+import 'package:cursor_televideo/core/teletext/providers/spanish_provider.dart';
+import 'package:cursor_televideo/core/teletext/providers/nos_provider.dart';
+import 'package:cursor_televideo/core/teletext/providers/svt_provider.dart';
+import 'package:cursor_televideo/core/teletext/providers/hrt_provider.dart';
+import 'package:cursor_televideo/core/teletext/providers/yle_provider.dart';
+import 'package:cursor_televideo/core/teletext/providers/ct_provider.dart';
+import 'package:cursor_televideo/core/teletext/providers/rtvslo_provider.dart';
+import 'package:cursor_televideo/core/teletext/providers/mtva_provider.dart';
+import 'package:cursor_televideo/core/teletext/providers/iceland_provider.dart';
 import 'package:cursor_televideo/core/teletext/teletext_channels.dart';
 
 /// Factory per creare il provider appropriato in base al canale
@@ -36,11 +46,41 @@ class TeletextProviderFactory {
     } else if (channel.countryCode == 'CH') {
       // Swiss Teletext (Svizzera) - RSI, RTS, SRF
       provider = SwissProvider(channelId: channel.id);
+    } else if (channel.countryCode == 'AT' && channel.broadcasterName == 'ORF') {
+      // ORF Teletext (Austria) - ORF1, ORF2, ORF III, ORF Sport+
+      provider = ORFProvider(channelId: channel.id);
+    } else if (channel.countryCode == 'ES' || channel.countryCode == 'PT') {
+      // Iberian Teletext (Spagna/Portogallo) - TVE, Antena 3, La Sexta, RTP
+      provider = SpanishProvider(channelId: channel.id);
+    } else if (channel.id == 'nos_teletekst') {
+      // NOS Teletekst (Olanda)
+      provider = NOSProvider();
+    } else if (channel.id == 'svt_text') {
+      // SVT Text (Svezia)
+      provider = SVTProvider();
+    } else if (channel.id == 'yle_teksti_tv') {
+      // YLE Teksti-TV (Finlandia)
+      provider = YLEProvider();
+    } else if (channel.id == 'ct_teletext') {
+      // ČT Teletext (Repubblica Ceca)
+      provider = CTProvider();
+    } else if (channel.id == 'hrt_teletekst') {
+      // HRT Teletekst (Croazia)
+      provider = HRTProvider();
+    } else if (channel.id == 'rtvslo_teletext') {
+      // RTV SLO Teletext (Slovenia)
+      provider = RTVSLOProvider();
+    } else if (channel.id == 'mtva_teletext') {
+      // MTVA Teletext (Ungheria)
+      provider = MTVAProvider();
+    } else if (channel.id == 'ruv_textavarp') {
+      // RÚV Textavarp (Islanda)
+      provider = IcelandProvider();
     } else {
       // Altri canali non ancora implementati
       throw UnimplementedError(
         'Provider for channel "${channel.name}" (${channel.id}) not yet implemented.\n'
-        'Currently supported: RAI Televideo (IT), ARD Text (DE), ZDF/ZDFinfo/ZDFneo/3sat (DE), Swiss Teletext (CH)',
+        'Currently supported: RAI Televideo (IT), ARD Text (DE), ZDF/ZDFinfo/ZDFneo/3sat (DE), Swiss Teletext (CH), ORF Teletext (AT), Iberian Teletext (ES/PT), NOS Teletekst (NL), SVT Text (SE), YLE Teksti-TV (FI), ČT Teletext (CZ), HRT Teletekst (HR), RTV SLO (SI), MTVA (HU), RÚV Textavarp (IS)',
       );
     }
 
@@ -66,7 +106,7 @@ class TeletextProviderFactory {
 
   /// Ottiene la lista dei provider disponibili
   static List<String> getAvailableProviders() {
-    return ['RAI', 'ARD', 'ZDF', 'Swiss'];
+    return ['RAI', 'ARD', 'ZDF', 'Swiss', 'ORF', 'Spanish', 'NOS', 'SVT', 'YLE', 'CT', 'HRT', 'RTVSLO', 'MTVA', 'Iceland'];
   }
 }
 

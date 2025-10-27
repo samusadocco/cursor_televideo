@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:cursor_televideo/core/settings/app_settings.dart';
-import 'package:cursor_televideo/core/descriptions/page_descriptions_service.dart';
 import 'package:cursor_televideo/shared/models/region.dart';
 
 class AdService {
@@ -31,42 +30,79 @@ class AdService {
   String? _currentSection;
   bool _isRegional = false;
   Region? _currentRegion;
+  String? _channelId;
+  String? _countryCode;
+  String? _language;
 
   void setContext({
     String? pageNumber,
     String? section,
     bool isRegional = false,
     Region? region,
+    String? channelId,
+    String? countryCode,
+    String? language,
   }) {
     _currentPageNumber = pageNumber;
     _currentSection = section;
     _isRegional = isRegional;
     _currentRegion = region;
+    _channelId = channelId;
+    _countryCode = countryCode;
+    _language = language;
   }
 
   AdRequest _createAdRequest() {
     var keywords = <String>[];
-    final contentUrl = 'https://www.televideo.rai.it';
+    
+    // Determina il content URL in base al canale
+    String contentUrl = 'https://www.televideo.rai.it'; // Default RAI
+    if (_channelId != null) {
+      if (_channelId!.startsWith('ard_') || _channelId!.startsWith('zdf_')) {
+        contentUrl = 'https://www.ard-text.de';
+      } else if (_channelId == 'swiss_teletext') {
+        contentUrl = 'https://www.teletext.ch';
+      } else if (_channelId == 'orf_teletext') {
+        contentUrl = 'https://teletext.orf.at';
+      } else if (_channelId == 'tve_teletexto' || _channelId == 'antena3_teletexto' || _channelId == 'lasexta_teletexto') {
+        contentUrl = 'https://www.rtve.es/tve/teletexto';
+      } else if (_channelId == 'rtp_teletexto') {
+        contentUrl = 'https://www.rtp.pt/wportal/teletexto';
+      } else if (_channelId == 'nos_teletekst') {
+        contentUrl = 'https://nos.nl/teletekst';
+      } else if (_channelId == 'svt_text') {
+        contentUrl = 'https://www.svt.se/text-tv';
+      } else if (_channelId == 'hrt_teletekst') {
+        contentUrl = 'https://teletekst.hrt.hr';
+      } else if (_channelId == 'yle_teksti_tv') {
+        contentUrl = 'https://yle.fi/aihe/yle-ttv';
+      } else if (_channelId == 'ct_teletext') {
+        contentUrl = 'https://teletext.ceskatelevize.cz';
+      } else if (_channelId == 'rtvslo_teletext') {
+        contentUrl = 'https://teletext.rtvslo.si';
+      } else if (_channelId == 'mtva_teletext') {
+        contentUrl = 'https://www.teletext.hu';
+      } else if (_channelId == 'ruv_textavarp') {
+        contentUrl = 'https://textavarp.is';
+      }
+    }
 
     // Aggiungi keywords basate sul contesto
     if (_currentPageNumber != null) {
       final pageNum = int.tryParse(_currentPageNumber!) ?? 0;
       
-      // Aggiungi la descrizione della pagina come keyword
-      final description = PageDescriptionsService().getDescription(
-        pageNum,
-        isRegional: _isRegional,
-      );
-      
-      // Estrai parole chiave dalla descrizione
-      final descriptionWords = description
-          .toLowerCase()
-          .replaceAll(RegExp(r'[^\w\s]'), '') // Rimuovi punteggiatura
-          .split(' ')
-          .where((word) => word.length > 3) // Solo parole significative
-          .toList();
-      
-      keywords.addAll(descriptionWords);
+      // Aggiungi la descrizione della pagina come keyword (se disponibile)
+      if (_currentSection != null && _currentSection!.isNotEmpty) {
+        // Estrai parole chiave dalla descrizione
+        final descriptionWords = _currentSection!
+            .toLowerCase()
+            .replaceAll(RegExp(r'[^\w\s]'), '') // Rimuovi punteggiatura
+            .split(' ')
+            .where((word) => word.length > 3) // Solo parole significative
+            .toList();
+        
+        keywords.addAll(descriptionWords);
+      }
       
       // Aggiungi categorie basate sul numero di pagina
       if (pageNum >= 100 && pageNum < 200) {
@@ -163,18 +199,78 @@ class AdService {
       }
     }
 
-    if (_currentSection != null) {
-      keywords.add(_currentSection!.toLowerCase());
+    // Aggiungi keywords basate sul paese del canale
+    if (_countryCode != null) {
+      keywords.add(_countryCode!.toLowerCase());
+      
+      // Aggiungi parole chiave specifiche per paese
+      switch (_countryCode!.toUpperCase()) {
+        case 'IT':
+          keywords.addAll(['italia', 'italian']);
+          break;
+        case 'CZ':
+          keywords.addAll(['cechia', 'czech', 'repubblica-ceca']);
+          break;
+        case 'FI':
+          keywords.addAll(['finlandia', 'finland', 'finnish']);
+          break;
+        case 'SE':
+          keywords.addAll(['svezia', 'sweden', 'swedish']);
+          break;
+        case 'NL':
+          keywords.addAll(['olanda', 'netherlands', 'dutch']);
+          break;
+        case 'DE':
+          keywords.addAll(['germania', 'germany', 'german']);
+          break;
+        case 'AT':
+          keywords.addAll(['austria', 'austrian']);
+          break;
+        case 'CH':
+          keywords.addAll(['svizzera', 'switzerland', 'swiss']);
+          break;
+        case 'ES':
+          keywords.addAll(['spagna', 'spain', 'spanish']);
+          break;
+        case 'PT':
+          keywords.addAll(['portogallo', 'portugal', 'portuguese']);
+          break;
+        case 'HR':
+          keywords.addAll(['croazia', 'croatia', 'croatian']);
+          break;
+        case 'SI':
+          keywords.addAll(['slovenia', 'slovenian', 'sloveno']);
+          break;
+        case 'HU':
+          keywords.addAll(['ungheria', 'hungary', 'hungarian', 'magyar']);
+          break;
+        case 'IS':
+          keywords.addAll(['islanda', 'iceland', 'icelandic', 'nordic']);
+          break;
+      }
+    }
+
+    // Aggiungi la lingua del canale
+    if (_language != null) {
+      keywords.add(_language!.toLowerCase());
+    }
+
+    // Aggiungi il channel ID come keyword
+    if (_channelId != null) {
+      keywords.add(_channelId!);
     }
 
     // Rimuovi duplicati e limita il numero di keywords
     keywords = keywords.toSet().toList();
-    if (keywords.length > 10) {
-      keywords = keywords.sublist(0, 10);
+    if (keywords.length > 15) {
+      keywords = keywords.sublist(0, 15);
     }
 
     // Log del contesto per AdMob
     print('\n=== CONTESTO ADMOB ===');
+    print('Channel ID: $_channelId');
+    print('Country Code: $_countryCode');
+    print('Language: $_language');
     print('Page Number: $_currentPageNumber');
     print('Section: $_currentSection');
     print('Is Regional: $_isRegional');
@@ -193,12 +289,10 @@ class AdService {
     );
   }
 
-  void incrementPageView({bool isSubPage = false, String? pageNumber}) {
+  void incrementPageView({bool isSubPage = false}) {
     if (kIsWeb) return;  // No ads on web
     
-    if (pageNumber != null) {
-      setContext(pageNumber: pageNumber);
-    }
+    // Non aggiornare il contesto qui - dovrebbe essere già stato impostato da _updateAdContext
     
     _pageViewCount++;
     print('Conteggio visualizzazioni: $_pageViewCount/${_pagesBeforeAd} (${isSubPage ? "Sottopagina" : "Pagina"})');

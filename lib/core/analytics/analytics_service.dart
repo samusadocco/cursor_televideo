@@ -91,7 +91,7 @@ class AnalyticsService {
   }
 
   // Eventi di interazione con le pagine del televideo
-  Future<void> logTelevideoPageView(String pageNumber, String navigationMethod, {String? sourcePageNumber}) async {
+  Future<void> logTelevideoPageView(String pageNumber, String navigationMethod, {String? sourcePageNumber, String? channelId}) async {
     final parameters = {
       'page_number': pageNumber,
       'navigation_method': navigationMethod, // 'swipe', 'button' o 'link_click'
@@ -102,6 +102,11 @@ class AnalyticsService {
       parameters['source_page'] = sourcePageNumber;
     }
     
+    // Aggiungi channel_id se disponibile
+    if (channelId != null) {
+      parameters['channel_id'] = channelId;
+    }
+    
     await _safeLogEvent('logTelevideoPageView', () => _analytics!.logEvent(
       name: 'televideo_page_view',
       parameters: parameters,
@@ -109,14 +114,21 @@ class AnalyticsService {
   }
 
   // Eventi di cambio sottopagina
-  Future<void> logSubpageChange(String pageNumber, String subpage, String changeType) async {
+  Future<void> logSubpageChange(String pageNumber, String subpage, String changeType, {String? channelId}) async {
+    final parameters = {
+      'page_number': pageNumber,
+      'subpage': subpage,
+      'change_type': changeType, // 'auto_refresh' o 'manual'
+    };
+    
+    // Aggiungi channel_id se disponibile
+    if (channelId != null) {
+      parameters['channel_id'] = channelId;
+    }
+    
     await _safeLogEvent('logSubpageChange', () => _analytics!.logEvent(
       name: 'subpage_change',
-      parameters: {
-        'page_number': pageNumber,
-        'subpage': subpage,
-        'change_type': changeType, // 'auto_refresh' o 'manual'
-      },
+      parameters: parameters,
     ));
   }
 
@@ -160,7 +172,7 @@ class AnalyticsService {
   }
 
   // Eventi di performance
-  Future<void> logLoadTime(String pageNumber, {String? subPage, required int durationMillis, bool isError = false}) async {
+  Future<void> logLoadTime(String pageNumber, {String? subPage, String? channelId, required int durationMillis, bool isError = false}) async {
     await _safeLogEvent('logLoadTime', () async {
       // Ottieni il tipo di connessione
       final connectivity = await Connectivity().checkConnectivity();
@@ -172,6 +184,11 @@ class AnalyticsService {
         'duration_ms': durationMillis,
         'status': isError ? 'error' : 'success',
       };
+      
+      // Aggiungi channel_id se disponibile
+      if (channelId != null) {
+        parameters['channel_id'] = channelId;
+      }
       
       switch (connectivity) {
         case ConnectivityResult.wifi:

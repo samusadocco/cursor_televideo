@@ -524,6 +524,341 @@ class PageDescriptionsService {
     899: 'Hilfe',
   };
 
+  // Descrizioni Swiss Teletext (Svizzera - RSI/RTS/SRF)
+  final Map<int, String> swissDescriptions = {
+    100: 'Indice / Sommaire / Übersicht',
+    101: 'Notizie / Nouvelles / Nachrichten',
+    102: 'Attualità / Actualité',
+    103: 'Cronaca / Faits divers',
+    120: 'Svizzera / Suisse / Schweiz',
+    130: 'Ticino / Tessin',
+    140: 'Romandia / Westschweiz',
+    150: 'Mondo / Monde / Welt',
+    200: 'Sport',
+    201: 'Calcio / Football',
+    202: 'Hockey',
+    230: 'Sport Invernali',
+    300: 'Programmi TV / Programmes TV',
+    400: 'Cultura / Culture / Kultur',
+    410: 'Cinema / Cinéma / Kino',
+    420: 'Musica / Musique / Musik',
+    500: 'Economia / Économie / Wirtschaft',
+    520: 'Borsa / Bourse',
+    600: 'Servizi / Services',
+    610: 'Meteo / Météo / Wetter',
+    700: 'Meteo / Météo / Wetter',
+    750: 'Traffico / Trafic / Verkehr',
+    800: 'Info Pratiche',
+  };
+
+  // Descrizioni ORF Teletext (Austria)
+  final Map<int, String> orfDescriptions = {
+    100: 'ORF Teletext Inhalt',
+    101: 'Nachrichten',
+    102: 'Weitere Meldungen',
+    103: 'Österreich',
+    104: 'International',
+    105: 'Sport',
+    106: 'Kultur',
+    107: 'Wirtschaft',
+    108: 'Chronik',
+    109: 'Wetter',
+    110: 'TV-Hinweise',
+    116: 'Europa',
+    120: 'Innenpolitik',
+    130: 'Wirtschaft',
+    140: 'Chronik Österreich',
+    150: 'Ausland',
+    200: 'Sport',
+    201: 'Fußball',
+    202: 'Bundesliga',
+    203: 'Bundesliga Tabelle',
+    230: 'Fußball International',
+    240: 'Wintersport',
+    250: 'Formel 1',
+    260: 'Tennis',
+    270: 'Sport Allgemein',
+    300: 'ORF 1',
+    310: 'ORF 2',
+    320: 'ORF III',
+    330: 'ORF Sport+',
+    400: 'Service',
+    450: 'Verkehr',
+    460: 'Apotheken',
+    500: 'Freizeit',
+    520: 'Weltgeschehen',
+    600: 'Wirtschaft',
+    650: 'Gesundheit',
+    680: 'ORF-Initiativen',
+    700: 'Verkehr',
+    750: 'Apotheken',
+    800: 'Service A-Z',
+    884: 'Offenlegung',
+    885: 'Impressum',
+  };
+
+  // Descrizioni Spanish Teletext (Spagna - TVE, Antena 3, La Sexta)
+  final Map<int, String> spanishDescriptions = {
+    100: 'Índice',
+    101: 'Noticias',
+    102: 'España',
+    103: 'Nacional',
+    110: 'Primera Página',
+    120: 'Internacional',
+    130: 'Sociedad',
+    135: 'Deportes',
+    140: 'Cultura',
+    150: 'Economía',
+    159: 'El Tiempo',
+    160: 'Sorteos',
+    170: 'Servicios',
+    180: 'La Bolsa',
+    200: 'Deportes',
+    201: 'Fútbol',
+    202: 'Liga',
+    203: 'Liga Clasificación',
+    204: 'Liga Resultados',
+    210: 'Quiniela',
+    220: 'Baloncesto',
+    230: 'Motor',
+    250: 'La Vuelta',
+    300: 'Servicios',
+    301: 'Accesibilidad',
+    330: 'Agenda Cultural',
+    350: 'Libros',
+    400: 'Programación TVE',
+    430: 'El Cine en TVE',
+    460: 'Loterías',
+    600: 'Tráfico',
+    700: 'El Tiempo',
+    800: 'Subtítulos',
+    879: 'Subtitulados',
+    888: 'Gaceta Sordo',
+  };
+
+  // Descrizioni Portuguese Teletext (Portogallo - RTP)
+  final Map<int, String> portugueseDescriptions = {
+    100: 'Índice',
+    102: 'Notícias',
+    120: 'Internacional',
+    121: 'Economia',
+    150: 'Cultura',
+    200: 'Desporto',
+    201: 'Futebol',
+    241: 'Bolsa',
+    300: 'Televisão',
+    301: 'Programação RTP',
+    400: 'Desporto',
+    420: 'Basquetebol',
+    473: 'Campeonato Mundial',
+    490: 'Totolotarias',
+    491: 'Euromilhões',
+    500: 'Utilidades',
+    550: 'Saúde',
+    575: 'Meteorologia',
+    600: 'Trânsito',
+    700: 'Tempo',
+    800: 'Farmácias',
+  };
+
+  // Descrizioni Dutch Teletext (Olanda - NOS)
+  final Map<int, String> dutchDescriptions = {
+    100: 'Voorpagina',
+    101: 'Nieuws',
+    102: 'Economie',
+    103: 'Binnenland',
+    104: 'Buitenland',
+    105: 'Politiek',
+    106: 'Cultuur',
+    110: 'Tech',
+    120: 'Koningshuis',
+    128: 'Europa',
+    129: 'Internationaal',
+    200: 'Televisie',
+    201: 'TV Gids NPO1',
+    202: 'TV Gids NPO2',
+    203: 'TV Gids NPO3',
+    250: 'Radio',
+    501: 'Financieel',
+    502: 'Beurs',
+    600: 'Sport',
+    601: 'Sport Nieuws',
+    633: 'Voetbal',
+    649: 'Tennis',
+    678: 'Schaatsen',
+    700: 'Weer',
+    701: 'Verkeer',
+    800: 'Voetbal',
+    801: 'Eredivisie',
+    803: 'Internationaal Voetbal',
+    888: 'Ondertiteling',
+  };
+
+  // Descrizioni Swedish Teletext (Svezia - SVT)
+  final Map<int, String> swedishDescriptions = {
+    100: 'Nyheter',
+    101: 'Inrikes',
+    104: 'Utrikes',
+    106: 'Ekonomi',
+    110: 'Sport',
+    130: 'Kultur',
+    150: 'Hem och konsument',
+    199: 'Senaste nytt',
+    300: 'Sport',
+    301: 'Sportnytt',
+    302: 'Fotboll',
+    330: 'Resultatbörsen',
+    340: 'Ishockey',
+    350: 'Vintersport',
+    360: 'Motorsport',
+    377: 'Målservice',
+    400: 'Väder',
+    401: 'Väder Sverige',
+    410: 'Väderprognoser',
+    500: 'Blandat',
+    501: 'Resor',
+    550: 'Djur och natur',
+    600: 'På TV',
+    601: 'SVT1',
+    602: 'SVT2',
+    610: 'TV-tips',
+    700: 'Innehåll',
+    701: 'Index',
+    800: 'UR',
+    801: 'Utbildning',
+  };
+
+  // Descrizioni Finnish Teletext (Finlandia - YLE)
+  final Map<int, String> finnishDescriptions = {
+    100: 'Uutiset',
+    101: 'Uutisaiheet',
+    160: 'Talous',
+    190: 'English',
+    199: 'Päähakemisto',
+    201: 'Urheilu',
+    202: 'Urheiluaiheet',
+    300: 'Ohjelmat',
+    301: 'TV-ohjelmat',
+    350: 'Radiot',
+    400: 'Sää',
+    401: 'Sääennusteet',
+    470: 'Veikkaus',
+    500: 'Alueet',
+    501: 'Uutiset alueelta',
+    575: 'Teksti-TV',
+    600: 'Yle Areena',
+    700: 'Sisältö',
+    799: 'Svenska',
+    800: 'På svenska',
+    890: 'Kalenteri',
+    891: 'Aurinko',
+    895: 'Ajatus päivälle',
+  };
+
+  // Descrizioni Slovenian Teletext (Slovenia - RTV SLO)
+  final Map<int, String> slovenianDescriptions = {
+    100: 'Indeks',
+    101: 'Zadnja novica',
+    102: 'Novice dneva',
+    106: 'Wydarzenia dnia',
+    110: 'Slovenija',
+    111: 'Slovenija - Politika',
+    113: 'Slovenija - Gospodarstvo',
+    117: 'Slovenija - Družba',
+    140: 'Svet',
+    141: 'Svet - Politika',
+    142: 'Svet - Gospodarstvo',
+    160: 'Vreme',
+    161: 'Vreme - Na kratko',
+    162: 'Vreme - Slovenija',
+    164: 'Vreme - Svet',
+    165: 'Vreme - Letalstvo',
+    166: 'Vreme - Agro',
+    167: 'Vreme - Zrak',
+    168: 'Vreme - Vode',
+    169: 'Vreme - Pomorstvo',
+    190: 'Črna kronika',
+    200: 'TV program',
+    300: 'Radio program',
+    380: 'Slovenska smučišča',
+    400: 'Kultura',
+    500: 'Šport',
+    505: 'Šport - Tabele',
+    510: 'Nogomet',
+    520: 'Hokej',
+    531: 'Košarka',
+    540: 'Rokomet',
+    600: 'Zabava',
+    610: 'Šale',
+    700: 'Ostalo',
+    710: 'Gospodarstvo',
+    720: 'Promet',
+    730: 'Loterija',
+    740: 'Rekreacija',
+    750: 'RKS',
+    760: 'MMC uredništvo',
+  };
+
+  // Descrizioni Hungarian Teletext (Ungheria - MTVA)
+  final Map<int, String> hungarianDescriptions = {
+    100: 'Főmenü',
+    101: 'Hírek',
+    102: 'Belföld',
+    103: 'Belföldi hírek',
+    130: 'Külföld',
+    131: 'Nemzetközi hírek',
+    150: 'Gazdaság',
+    151: 'Gazdasági hírek',
+    160: 'Kultúra',
+    161: 'Kulturális hírek',
+    175: 'Tudomány',
+    179: 'Vallás',
+    200: 'Sport',
+    201: 'Sport hírek',
+    202: 'Foci',
+    300: 'Időjárás',
+    301: 'Időjárás előrejelzés',
+    398: 'Légi közlekedés',
+    470: 'Tőzsde',
+    500: 'TV műsor',
+    501: 'MTV1',
+    502: 'MTV2',
+    503: 'Duna TV',
+    530: 'Rádió műsor',
+    580: 'Közlekedés',
+    700: 'Közérdekű információk',
+    850: 'Közlekedési információk',
+    861: 'Vízállás',
+    898: 'Teletext információk',
+  };
+
+  // Descrizioni Icelandic Teletext (Islanda - RÚV)
+  final Map<int, String> icelandicDescriptions = {
+    100: 'Forsíða',
+    101: 'Fréttir',
+    102: 'Innlendar fréttir',
+    103: 'Erlendar fréttir',
+    104: 'Innlendar fréttir',
+    105: 'Innlendar fréttir',
+    120: 'Erlendar fréttir',
+    121: 'Erlendar fréttir',
+    140: 'Landsbyggðin',
+    160: 'Veður',
+    163: 'Landið',
+    164: 'Næstu dagar',
+    169: 'Weather forecast',
+    181: 'Sjóveðurspá',
+    200: 'Dagskrá',
+    202: 'RÚV í kvöld',
+    281: 'Lottó',
+    300: 'Íþróttir',
+    302: 'Íþróttafréttir',
+    322: 'Laxveiðin',
+    390: 'Boltaúrslit',
+    400: 'Samgöngur',
+    555: 'Efnisyfirlit A-Ö',
+  };
+
   /// Ottiene le descrizioni in base al channelId
   Map<int, String> getDescriptionsForChannel({
     required String? channelId,
@@ -545,6 +880,63 @@ class PageDescriptionsService {
         channelId == 'zdfneo_text' || 
         channelId == '3sat_text') {
       return zdfDescriptions;
+    }
+    
+    // Swiss Teletext (RSI, RTS, SRF)
+    if (channelId.startsWith('rsi_') || 
+        channelId.startsWith('rts_') || 
+        channelId.startsWith('srf_')) {
+      return swissDescriptions;
+    }
+    
+    // ORF Teletext (Austria)
+    if (channelId == 'orf1' || 
+        channelId == 'orf2' || 
+        channelId == 'orf3' || 
+        channelId == 'orf_sport_plus') {
+      return orfDescriptions;
+    }
+    
+    // Spanish Teletext (Spagna)
+    if (channelId == 'tve' || 
+        channelId == 'antena3' || 
+        channelId == 'lasexta') {
+      return spanishDescriptions;
+    }
+    
+    // Portuguese Teletext (Portogallo)
+    if (channelId == 'rtp') {
+      return portugueseDescriptions;
+    }
+    
+    // Dutch Teletext (Olanda)
+    if (channelId == 'nos_teletekst') {
+      return dutchDescriptions;
+    }
+    
+    // Swedish Teletext (Svezia)
+    if (channelId == 'svt_text') {
+      return swedishDescriptions;
+    }
+    
+    // Finnish Teletext (Finlandia)
+    if (channelId == 'yle_teksti_tv') {
+      return finnishDescriptions;
+    }
+    
+    // Slovenian Teletext (Slovenia)
+    if (channelId == 'rtvslo_teletext') {
+      return slovenianDescriptions;
+    }
+    
+    // Hungarian Teletext (Ungheria)
+    if (channelId == 'mtva_teletext') {
+      return hungarianDescriptions;
+    }
+    
+    // Icelandic Teletext (Islanda)
+    if (channelId == 'ruv_textavarp') {
+      return icelandicDescriptions;
     }
     
     // Default: RAI nazionale

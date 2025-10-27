@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:cursor_televideo/shared/models/televideo_page.dart';
 
-/// Widget per visualizzare pagine ZDF Teletext
+/// Widget per visualizzare pagine NOS Teletekst
 /// 
-/// ZDF usa un formato HTML plain text, diverso da ARD che usa immagini.
+/// NOS usa un formato HTML simile a ZDF.
 /// Questo viewer estrae il contenuto testuale e lo visualizza con styling appropriato.
-class ZDFTeletextViewer extends StatefulWidget {
+class NOSHtmlTeletextViewer extends StatefulWidget {
   final TelevideoPage page;
   final Function(int pageNumber)? onPageNavigation;
   final VoidCallback? onTap;
 
-  const ZDFTeletextViewer({
+  const NOSHtmlTeletextViewer({
     super.key,
     required this.page,
     this.onPageNavigation,
@@ -19,15 +19,19 @@ class ZDFTeletextViewer extends StatefulWidget {
   });
 
   @override
-  State<ZDFTeletextViewer> createState() => _ZDFTeletextViewerState();
+  State<NOSHtmlTeletextViewer> createState() => _NOSHtmlTeletextViewerState();
 }
 
-class _ZDFTeletextViewerState extends State<ZDFTeletextViewer> {
+class _NOSHtmlTeletextViewerState extends State<NOSHtmlTeletextViewer> {
   WebViewController? _controller;
   String? _rawHtmlContent;
   bool _isLoading = true;
   double? _lastWidth;
   double? _lastHeight;
+  
+  // Dimensioni native (dipendono dal tipo di dispositivo)
+  double _nativeWidth = 480.0;
+  double _nativeHeight = 580.0;
 
   @override
   void initState() {
@@ -36,7 +40,7 @@ class _ZDFTeletextViewerState extends State<ZDFTeletextViewer> {
   }
 
   @override
-  void didUpdateWidget(ZDFTeletextViewer oldWidget) {
+  void didUpdateWidget(NOSHtmlTeletextViewer oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.page.imageUrl != widget.page.imageUrl ||
         oldWidget.page.subPage != widget.page.subPage) {
@@ -51,14 +55,14 @@ class _ZDFTeletextViewerState extends State<ZDFTeletextViewer> {
         _isLoading = true;
       });
 
-      print('[ZDFTeletextViewer] Using pre-fetched HTML content');
+      print('[NOSHtmlTeletextViewer] Using pre-fetched HTML content');
       
       // ZDF: l'HTML è già completo e pronto per la visualizzazione
       // Lo prendiamo direttamente dal TelevideoPage
       if (widget.page.htmlContent != null) {
         _rawHtmlContent = widget.page.htmlContent!;
         
-        print('[ZDFTeletextViewer] HTML content length: ${_rawHtmlContent?.length ?? 0}');
+        print('[NOSHtmlTeletextViewer] HTML content length: ${_rawHtmlContent?.length ?? 0}');
         
         // Il WebView sarà inizializzato nel build method tramite LayoutBuilder
         if (mounted) {
@@ -70,7 +74,7 @@ class _ZDFTeletextViewerState extends State<ZDFTeletextViewer> {
         throw Exception('No HTML content in page');
       }
     } catch (e) {
-      print('[ZDFTeletextViewer] Error loading content: $e');
+      print('[NOSHtmlTeletextViewer] Error loading content: $e');
       setState(() {
         _isLoading = false;
       });
@@ -79,17 +83,17 @@ class _ZDFTeletextViewerState extends State<ZDFTeletextViewer> {
 
   /// Inizializza o aggiorna il WebView con scaling dinamico
   void _initializeOrUpdateWebView(double width, double height) {
-    // Dimensioni native del contenuto ZDF Teletext
-    const nativeWidth = 492.0;
-    const nativeHeight = 489.0;
+    // NOS Teletekst (Olanda) - dimensioni native standard (come ZDF)
+    _nativeWidth = 480.0;
+    _nativeHeight = 580.0;
     
     // Calcola scale factors
-    final scaleX = width / nativeWidth;
-    final scaleY = height / nativeHeight;
+    final scaleX = width / _nativeWidth;
+    final scaleY = height / _nativeHeight;
     
-    print('[ZDFTeletextViewer] Widget size: ${width}x$height (real available space)');
-    print('[ZDFTeletextViewer] Native content: ${nativeWidth}x$nativeHeight');
-    print('[ZDFTeletextViewer] Calculated scales - X: $scaleX, Y: $scaleY');
+    print('[NOSHtmlTeletextViewer] Widget size: ${width}x$height (real available space)');
+    print('[NOSHtmlTeletextViewer] Native content: ${_nativeWidth}x$_nativeHeight');
+    print('[NOSHtmlTeletextViewer] Calculated scales - X: $scaleX, Y: $scaleY');
     
     // Salva le dimensioni correnti
     _lastWidth = width;
@@ -104,7 +108,7 @@ class _ZDFTeletextViewerState extends State<ZDFTeletextViewer> {
         'PageNavigation',
         onMessageReceived: (JavaScriptMessage message) {
           final pageNumber = int.tryParse(message.message);
-          print('[ZDFTeletextViewer] PageNavigation received: $pageNumber');
+          print('[NOSHtmlTeletextViewer] PageNavigation received: $pageNumber');
           if (pageNumber != null && widget.onPageNavigation != null) {
             widget.onPageNavigation!(pageNumber);
           }
@@ -118,10 +122,16 @@ class _ZDFTeletextViewerState extends State<ZDFTeletextViewer> {
           }
         },
       )
+      ..addJavaScriptChannel(
+        'DebugLog',
+        onMessageReceived: (JavaScriptMessage message) {
+          print('[WebView JS] ${message.message}');
+        },
+      )
       ..setNavigationDelegate(
         NavigationDelegate(
           onPageFinished: (url) {
-            print('[ZDFTeletextViewer] Page loaded');
+            print('[NOSHtmlTeletextViewer] Page loaded');
             if (mounted) {
               setState(() {
                 _isLoading = false;
@@ -132,7 +142,7 @@ class _ZDFTeletextViewerState extends State<ZDFTeletextViewer> {
       )
       ..loadHtmlString(_buildHtmlString(scaleX, scaleY));
 
-      print('[ZDFTeletextViewer] WebView initialized');
+      print('[NOSHtmlTeletextViewer] WebView initialized');
       
       if (mounted) {
         setState(() {
@@ -142,7 +152,7 @@ class _ZDFTeletextViewerState extends State<ZDFTeletextViewer> {
     } else {
       // Aggiorna solo l'HTML con i nuovi scale factors
       _controller!.loadHtmlString(_buildHtmlString(scaleX, scaleY));
-      print('[ZDFTeletextViewer] WebView updated with new scaling');
+      print('[NOSHtmlTeletextViewer] WebView updated with new scaling');
     }
   }
 
@@ -158,7 +168,7 @@ class _ZDFTeletextViewerState extends State<ZDFTeletextViewer> {
       (match) {
         final relativePath = match.group(1)!;
         final absolutePath = _makeAbsoluteUrl(relativePath);
-        print('[ZDFTeletextViewer] Converting CSS path: $relativePath -> $absolutePath');
+        print('[NOSHtmlTeletextViewer] Converting CSS path: $relativePath -> $absolutePath');
         return 'href="$absolutePath"';
       },
     );
@@ -169,7 +179,7 @@ class _ZDFTeletextViewerState extends State<ZDFTeletextViewer> {
       (match) {
         final relativePath = match.group(1)!.replaceAll(RegExp(r'["\x27]'), '');
         final absolutePath = _makeAbsoluteUrl(relativePath);
-        print('[ZDFTeletextViewer] Converting font path: $relativePath -> $absolutePath');
+        print('[NOSHtmlTeletextViewer] Converting font path: $relativePath -> $absolutePath');
         return 'url("$absolutePath")';
       },
     );
@@ -185,16 +195,21 @@ class _ZDFTeletextViewerState extends State<ZDFTeletextViewer> {
     );
     
     // Inserisci CSS per lo scaling prima di </head>
+    // Approccio semplice come ZDF
     final htmlWithScaling = html.replaceFirst(
       '</head>',
       '''
-  <style>
-    /* Scaling dinamico per adattare il contenuto */
+  <style id="nos-teletext-override">
+    /* Styling base per lo scaling (come ZDF) */
     body {
-      transform: scale($scaleX, $scaleY);
-      transform-origin: top left;
-      width: ${100 / scaleX}%;
-      height: ${100 / scaleY}%;
+      margin: 0 !important;
+      padding: 0 !important;
+      overflow: hidden !important;
+      background: black !important;
+      transform: scale($scaleX, $scaleY) !important;
+      transform-origin: top left !important;
+      width: ${_nativeWidth}px !important;
+      height: ${_nativeHeight}px !important;
     }
   </style>
 </head>
@@ -212,9 +227,16 @@ class _ZDFTeletextViewerState extends State<ZDFTeletextViewer> {
         e.preventDefault();
         const href = e.target.getAttribute('href');
         if (href) {
-          // Estrai numero pagina dal link
-          const match = href.match(/(?:klassisch\\/)?(\\d+)(?:_\\d+)?\\.html/);
+          // Pattern per ZDF: klassisch/123.html o 123.html
+          let match = href.match(/(?:klassisch\\/)?(\\d+)(?:_\\d+)?\\.html/);
+          
+          // Pattern per NOS: /teletekst/123
+          if (!match) {
+            match = href.match(/\\/teletekst\\/(\\d+)/);
+          }
+          
           if (match) {
+            console.log('[TeletextViewer] Click on link to page: ' + match[1]);
             PageNavigation.postMessage(match[1]);
           }
         }
