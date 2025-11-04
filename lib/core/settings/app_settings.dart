@@ -8,6 +8,13 @@ class AppSettings {
   static const String _themeModeKey = 'theme_mode';
   static const String _loadFirstFavoriteKey = 'load_first_favorite';
   static const String _adsPersonalizationEnabledKey = 'ads_personalization_enabled';
+  
+  // State Persistence keys
+  static const String _lastPageNumberKey = 'last_page_number';
+  static const String _lastSubPageKey = 'last_sub_page';
+  static const String _lastIsNationalModeKey = 'last_is_national_mode';
+  static const String _lastRegionCodeKey = 'last_region_code';
+  static const String _lastChannelIdKey = 'last_channel_id';
 
   // Valori di default
   static const int _defaultCacheDuration = 300; // 5 minuti
@@ -24,6 +31,13 @@ class AppSettings {
   static ThemeMode _themeMode = _defaultThemeMode;
   static bool _loadFirstFavorite = _defaultLoadFirstFavorite;
   static bool _adsPersonalizationEnabled = _defaultAdsPersonalizationEnabled;
+  
+  // State Persistence values
+  static int? _lastPageNumber;
+  static int? _lastSubPage;
+  static bool? _lastIsNationalMode;
+  static String? _lastRegionCode;
+  static String? _lastChannelId;
 
   // Getters
   static int get cacheDurationInSeconds => _cacheDurationInSeconds;
@@ -32,6 +46,13 @@ class AppSettings {
   static ThemeMode get themeMode => _themeMode;
   static bool get loadFirstFavorite => _loadFirstFavorite;
   static bool get adsPersonalizationEnabled => _adsPersonalizationEnabled;
+  
+  // State Persistence getters
+  static int? get lastPageNumber => _lastPageNumber;
+  static int? get lastSubPage => _lastSubPage;
+  static bool? get lastIsNationalMode => _lastIsNationalMode;
+  static String? get lastRegionCode => _lastRegionCode;
+  static String? get lastChannelId => _lastChannelId;
 
   // Inizializzazione
   static Future<void> initialize() async {
@@ -47,6 +68,13 @@ class AppSettings {
     _themeMode = themeModeIndex != null 
         ? ThemeMode.values[themeModeIndex]
         : _defaultThemeMode;
+    
+    // Carica State Persistence
+    _lastPageNumber = prefs.getInt(_lastPageNumberKey);
+    _lastSubPage = prefs.getInt(_lastSubPageKey);
+    _lastIsNationalMode = prefs.getBool(_lastIsNationalModeKey);
+    _lastRegionCode = prefs.getString(_lastRegionCodeKey);
+    _lastChannelId = prefs.getString(_lastChannelIdKey);
   }
 
   // Setters con persistenza
@@ -88,5 +116,71 @@ class AppSettings {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool(_adsPersonalizationEnabledKey, enabled);
     _adsPersonalizationEnabled = enabled;
+  }
+  
+  // State Persistence setters
+  static Future<void> saveLastState({
+    required int? pageNumber,
+    required int? subPage,
+    required bool? isNationalMode,
+    required String? regionCode,
+    required String? channelId,
+  }) async {
+    final prefs = await SharedPreferences.getInstance();
+    
+    if (pageNumber != null) {
+      await prefs.setInt(_lastPageNumberKey, pageNumber);
+      _lastPageNumber = pageNumber;
+    } else {
+      await prefs.remove(_lastPageNumberKey);
+      _lastPageNumber = null;
+    }
+    
+    if (subPage != null) {
+      await prefs.setInt(_lastSubPageKey, subPage);
+      _lastSubPage = subPage;
+    } else {
+      await prefs.remove(_lastSubPageKey);
+      _lastSubPage = null;
+    }
+    
+    if (isNationalMode != null) {
+      await prefs.setBool(_lastIsNationalModeKey, isNationalMode);
+      _lastIsNationalMode = isNationalMode;
+    } else {
+      await prefs.remove(_lastIsNationalModeKey);
+      _lastIsNationalMode = null;
+    }
+    
+    if (regionCode != null) {
+      await prefs.setString(_lastRegionCodeKey, regionCode);
+      _lastRegionCode = regionCode;
+    } else {
+      await prefs.remove(_lastRegionCodeKey);
+      _lastRegionCode = null;
+    }
+    
+    if (channelId != null) {
+      await prefs.setString(_lastChannelIdKey, channelId);
+      _lastChannelId = channelId;
+    } else {
+      await prefs.remove(_lastChannelIdKey);
+      _lastChannelId = null;
+    }
+  }
+  
+  static Future<void> clearLastState() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove(_lastPageNumberKey);
+    await prefs.remove(_lastSubPageKey);
+    await prefs.remove(_lastIsNationalModeKey);
+    await prefs.remove(_lastRegionCodeKey);
+    await prefs.remove(_lastChannelIdKey);
+    
+    _lastPageNumber = null;
+    _lastSubPage = null;
+    _lastIsNationalMode = null;
+    _lastRegionCode = null;
+    _lastChannelId = null;
   }
 } 

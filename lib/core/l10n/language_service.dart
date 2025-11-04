@@ -7,12 +7,29 @@ class LanguageService {
   static const String _languageKey = 'selected_language';
   static const String _isFirstLaunchKey = 'is_first_launch';
   
+  // Singleton pattern
+  static LanguageService? _instance;
+  static LanguageService get instance {
+    if (_instance == null) {
+      throw Exception('LanguageService not initialized. Call LanguageService.initialize() first.');
+    }
+    return _instance!;
+  }
+  
   final SharedPreferences _prefs;
   final _languageController = StreamController<Locale>.broadcast();
 
   Stream<Locale> get languageStream => _languageController.stream;
 
-  LanguageService(this._prefs);
+  LanguageService._(this._prefs);
+  
+  /// Inizializza il singleton
+  static Future<LanguageService> initialize(SharedPreferences prefs) async {
+    if (_instance == null) {
+      _instance = LanguageService._(prefs);
+    }
+    return _instance!;
+  }
 
   /// Ottiene la lingua attualmente selezionata
   Future<Locale> getSelectedLocale() async {

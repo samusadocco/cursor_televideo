@@ -7,11 +7,12 @@ import math
 import random
 
 # Configurazione esatta da generate_app_icons.py
-BACKGROUND_IMAGE = "assets/images/televideo_100.png"  # Immagine della pagina 100 del Televideo
+BACKGROUND_IMAGE = "../assets/images/televideo_100.png"  # Immagine della pagina 100 del Televideo
 OUTPUT_DIR = "app_icons"
 BLUR_RADIUS = 2  # Ridotto per mantenere più dettagli
 TEXT_BLUR_RADIUS = 0.8  # Ridotto al minimo per mantenere i pixel netti
 TEXT_COLOR = (0, 255, 80)  # Verde fosforescente tipico dei vecchi monitor
+TEXT_COLOR_YELLOW = (255, 255, 0)  # Giallo per la scritta TXT
 BACKGROUND_BRIGHTNESS = 0.3  # Ridotto ulteriormente per far risaltare di più il testo
 BACKGROUND_SATURATION = 1.4  # Aumentato per colori più vividi
 BACKGROUND_CONTRAST = 1.5  # Aumentato per far risaltare di più i dettagli
@@ -243,14 +244,15 @@ def create_glow_effect(image, glow_color=GLOW_COLOR, blur_radius=8):
     
     return glow
 
-def add_text(image, text="100"):
+def add_text(image, text="100", top_text="TXT"):
     """Aggiunge il testo sfocato all'immagine con effetto bagliore"""
     # Crea un'immagine temporanea per il testo
     txt = Image.new('RGBA', image.size, (255, 255, 255, 0))
     draw = ImageDraw.Draw(txt)
     
-    # Calcola la dimensione del font
-    font_size = int(image.width * 0.45)  # Ridotto leggermente per bilanciare la nuova posizione
+    # ===== TESTO PRINCIPALE "100" IN BASSO A DESTRA =====
+    # Calcola la dimensione del font per il testo principale
+    font_size = int(image.width * 0.45)
     try:
         font = ImageFont.truetype("/System/Library/Fonts/Supplemental/Arial Bold.ttf", font_size)
     except:
@@ -259,7 +261,7 @@ def add_text(image, text="100"):
         except:
             font = ImageFont.load_default()
     
-    # Calcola le dimensioni del testo
+    # Calcola le dimensioni del testo principale
     text_width = draw.textlength(text, font=font)
     text_height = font_size
     
@@ -268,10 +270,32 @@ def add_text(image, text="100"):
     x = image.width - text_width - margin
     y = image.height - text_height - margin
     
-    # Disegna il testo
+    # Disegna il testo principale in verde
     draw.text((x, y), text, font=font, fill=TEXT_COLOR)
     
-    # Applica effetto pixelato
+    # ===== TESTO "TXT" IN ALTO A SINISTRA =====
+    # Calcola la dimensione del font per "TXT" (più piccolo)
+    txt_font_size = int(image.width * 0.25)
+    try:
+        txt_font = ImageFont.truetype("/System/Library/Fonts/Supplemental/Arial Bold.ttf", txt_font_size)
+    except:
+        try:
+            txt_font = ImageFont.truetype("/System/Library/Fonts/Supplemental/Arial.ttf", txt_font_size)
+        except:
+            txt_font = ImageFont.load_default()
+    
+    # Calcola le dimensioni del testo "TXT"
+    top_text_width = draw.textlength(top_text, font=txt_font)
+    top_text_height = txt_font_size
+    
+    # Posiziona "TXT" in alto a sinistra con un margine del 10%
+    txt_x = margin
+    txt_y = margin
+    
+    # Disegna "TXT" in giallo
+    draw.text((txt_x, txt_y), top_text, font=txt_font, fill=TEXT_COLOR_YELLOW)
+    
+    # Applica effetto pixelato a entrambi i testi
     txt = pixelate(txt, PIXEL_SIZE)
     
     # Applica una leggera sfocatura per ammorbidire i pixel
@@ -280,7 +304,7 @@ def add_text(image, text="100"):
     # Aggiungi scanlines
     txt = create_scanlines(txt)
     
-    # Crea l'effetto bagliore
+    # Crea l'effetto bagliore (funziona per entrambi i testi)
     glow = create_glow_effect(txt)
     
     # Combina le immagini: sfondo + bagliore + testo
@@ -363,7 +387,7 @@ def generate_ios_icons(background):
         print(f"Generazione icona {filename}")
         icon = create_base_icon(size, background)
         icon_with_text = add_text(icon)
-        icon_with_text.save(f"ios/Runner/Assets.xcassets/AppIcon.appiconset/{filename}")
+        icon_with_text.save(f"../ios/Runner/Assets.xcassets/AppIcon.appiconset/{filename}")
 
 def generate_android_icons(background):
     """Genera le icone per Android"""
@@ -372,7 +396,7 @@ def generate_android_icons(background):
         print(f"Generazione icona {filename}")
         icon = create_base_icon(size, background)
         icon_with_text = add_text(icon)
-        icon_with_text.save(f"android/app/src/main/res/{filename}")
+        icon_with_text.save(f"../android/app/src/main/res/{filename}")
 
 def generate_macos_icons(background):
     """Genera le icone per macOS"""
@@ -381,7 +405,7 @@ def generate_macos_icons(background):
         print(f"Generazione icona {filename}")
         icon = create_base_icon(size, background)
         icon_with_text = add_text(icon)
-        icon_with_text.save(f"macos/Runner/Assets.xcassets/AppIcon.appiconset/{filename}")
+        icon_with_text.save(f"../macos/Runner/Assets.xcassets/AppIcon.appiconset/{filename}")
 
 def generate_android_launch_images(base_image):
     """Genera le immagini di avvio per Android"""
@@ -395,7 +419,7 @@ def generate_android_launch_images(base_image):
     
     for density, size in densities.items():
         resized = base_image.resize((size, size), Image.Resampling.LANCZOS)
-        folder_path = f'android/app/src/main/res/drawable-{density}'
+        folder_path = f'../android/app/src/main/res/drawable-{density}'
         os.makedirs(folder_path, exist_ok=True)
         resized.save(os.path.join(folder_path, 'launch_image.png'))
 
@@ -419,7 +443,7 @@ def generate_ios_launch_images(base_image):
         'LaunchImage-Portrait-1366h@2x.png': (2048, 2732),  # iPad Pro 12.9"
     }
     
-    launch_path = 'ios/Runner/Assets.xcassets/LaunchImage.imageset'
+    launch_path = '../ios/Runner/Assets.xcassets/LaunchImage.imageset'
     os.makedirs(launch_path, exist_ok=True)
     
     for filename, (width, height) in ios_launch_sizes.items():

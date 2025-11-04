@@ -12,18 +12,28 @@ class AdService {
 
   InterstitialAd? _interstitialAd;
   int _pageViewCount = 0;
-  final int _pagesBeforeAd = 10;
+  final int _pagesBeforeAd = 15;
+  final int _pagesBeforeBannerRefresh = 10;
   bool _isLoadingAd = false;
   bool _isShowingAd = false;
+  
+  // Contatore per il refresh del banner
+  int _bannerRefreshCount = 0;
+
 
   // Stream controller per gli eventi degli annunci
   final _adEventController = StreamController<AdEvent>.broadcast();
   Stream<AdEvent> get adEventStream => _adEventController.stream;
   bool get isShowingAd => _isShowingAd;
+  
+  // Stream controller per gli eventi di refresh del banner
+  final _bannerRefreshController = StreamController<bool>.broadcast();
+  Stream<bool> get bannerRefreshStream => _bannerRefreshController.stream;
 
   void dispose() {
     _interstitialAd?.dispose();
     _adEventController.close();
+    _bannerRefreshController.close();
   }
 
   String? _currentPageNumber;
@@ -295,11 +305,21 @@ class AdService {
     // Non aggiornare il contesto qui - dovrebbe essere già stato impostato da _updateAdContext
     
     _pageViewCount++;
-    print('Conteggio visualizzazioni: $_pageViewCount/${_pagesBeforeAd} (${isSubPage ? "Sottopagina" : "Pagina"})');
+    _bannerRefreshCount++;
     
+    print('Conteggio visualizzazioni: $_pageViewCount/$_pagesBeforeAd | Banner refresh: $_bannerRefreshCount/$_pagesBeforeBannerRefresh (${isSubPage ? "Sottopagina" : "Pagina"})');
+    
+    // Controlla se mostrare annuncio interstitial
     if (_pageViewCount >= _pagesBeforeAd) {
       _showInterstitialAd();
       _pageViewCount = 0;
+    }
+    
+    // Controlla se aggiornare il banner
+    if (_bannerRefreshCount >= _pagesBeforeBannerRefresh) {
+      print('🔄 Refresh banner richiesto dopo $_pagesBeforeBannerRefresh visualizzazioni');
+      _bannerRefreshController.add(true);
+      _bannerRefreshCount = 0;
     }
   }
 
@@ -322,6 +342,7 @@ class AdService {
 
     // Determina l'ID dell'annuncio in base alla piattaforma e alla modalità
     String adUnitId;
+    
     if (Platform.isIOS && !kDebugMode) {
       // iOS Release mode - ID di produzione
       adUnitId = 'ca-app-pub-5405772972501741/4067949899';

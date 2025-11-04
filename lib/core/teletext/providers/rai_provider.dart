@@ -27,11 +27,11 @@ class RAIProvider implements TeletextProvider {
   @override
   List<String> get supportedRegions => [
         'Piemonte',
-        'ValleAosta',
+        'Aosta',
         'Lombardia',
-        'TrentinoAltoAdige',
+        'Trentino',
         'Veneto',
-        'FriuliVeneziaGiulia',
+        'Friuli',
         'Liguria',
         'EmiliaRomagna',
         'Toscana',

@@ -22,8 +22,12 @@ TeletextChannel _$TeletextChannelFromJson(Map<String, dynamic> json) {
 mixin _$TeletextChannel {
   String get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
+  String? get shortName =>
+      throw _privateConstructorUsedError; // Nome abbreviato per visualizzazione compatta
   String get countryCode => throw _privateConstructorUsedError;
-  String get countryName => throw _privateConstructorUsedError;
+  @Deprecated('Use getLocalizedCountryName() instead')
+  String? get countryName =>
+      throw _privateConstructorUsedError; // Deprecated: ora usiamo countryCode + localizzazione
   String get flagEmoji => throw _privateConstructorUsedError;
   String get broadcasterName => throw _privateConstructorUsedError;
   TeletextChannelType get type => throw _privateConstructorUsedError;
@@ -52,8 +56,9 @@ abstract class $TeletextChannelCopyWith<$Res> {
   $Res call(
       {String id,
       String name,
+      String? shortName,
       String countryCode,
-      String countryName,
+      @Deprecated('Use getLocalizedCountryName() instead') String? countryName,
       String flagEmoji,
       String broadcasterName,
       TeletextChannelType type,
@@ -81,8 +86,9 @@ class _$TeletextChannelCopyWithImpl<$Res, $Val extends TeletextChannel>
   $Res call({
     Object? id = null,
     Object? name = null,
+    Object? shortName = freezed,
     Object? countryCode = null,
-    Object? countryName = null,
+    Object? countryName = freezed,
     Object? flagEmoji = null,
     Object? broadcasterName = null,
     Object? type = null,
@@ -101,14 +107,18 @@ class _$TeletextChannelCopyWithImpl<$Res, $Val extends TeletextChannel>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
+      shortName: freezed == shortName
+          ? _value.shortName
+          : shortName // ignore: cast_nullable_to_non_nullable
+              as String?,
       countryCode: null == countryCode
           ? _value.countryCode
           : countryCode // ignore: cast_nullable_to_non_nullable
               as String,
-      countryName: null == countryName
+      countryName: freezed == countryName
           ? _value.countryName
           : countryName // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       flagEmoji: null == flagEmoji
           ? _value.flagEmoji
           : flagEmoji // ignore: cast_nullable_to_non_nullable
@@ -156,8 +166,9 @@ abstract class _$$TeletextChannelImplCopyWith<$Res>
   $Res call(
       {String id,
       String name,
+      String? shortName,
       String countryCode,
-      String countryName,
+      @Deprecated('Use getLocalizedCountryName() instead') String? countryName,
       String flagEmoji,
       String broadcasterName,
       TeletextChannelType type,
@@ -183,8 +194,9 @@ class __$$TeletextChannelImplCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? name = null,
+    Object? shortName = freezed,
     Object? countryCode = null,
-    Object? countryName = null,
+    Object? countryName = freezed,
     Object? flagEmoji = null,
     Object? broadcasterName = null,
     Object? type = null,
@@ -203,14 +215,18 @@ class __$$TeletextChannelImplCopyWithImpl<$Res>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
+      shortName: freezed == shortName
+          ? _value.shortName
+          : shortName // ignore: cast_nullable_to_non_nullable
+              as String?,
       countryCode: null == countryCode
           ? _value.countryCode
           : countryCode // ignore: cast_nullable_to_non_nullable
               as String,
-      countryName: null == countryName
+      countryName: freezed == countryName
           ? _value.countryName
           : countryName // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       flagEmoji: null == flagEmoji
           ? _value.flagEmoji
           : flagEmoji // ignore: cast_nullable_to_non_nullable
@@ -249,12 +265,13 @@ class __$$TeletextChannelImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$TeletextChannelImpl implements _TeletextChannel {
+class _$TeletextChannelImpl extends _TeletextChannel {
   const _$TeletextChannelImpl(
       {required this.id,
       required this.name,
+      this.shortName,
       required this.countryCode,
-      required this.countryName,
+      @Deprecated('Use getLocalizedCountryName() instead') this.countryName,
       required this.flagEmoji,
       required this.broadcasterName,
       required this.type,
@@ -263,7 +280,8 @@ class _$TeletextChannelImpl implements _TeletextChannel {
       this.supportsRegions,
       final List<String>? regions,
       this.isActive = true})
-      : _regions = regions;
+      : _regions = regions,
+        super._();
 
   factory _$TeletextChannelImpl.fromJson(Map<String, dynamic> json) =>
       _$$TeletextChannelImplFromJson(json);
@@ -273,9 +291,14 @@ class _$TeletextChannelImpl implements _TeletextChannel {
   @override
   final String name;
   @override
+  final String? shortName;
+// Nome abbreviato per visualizzazione compatta
+  @override
   final String countryCode;
   @override
-  final String countryName;
+  @Deprecated('Use getLocalizedCountryName() instead')
+  final String? countryName;
+// Deprecated: ora usiamo countryCode + localizzazione
   @override
   final String flagEmoji;
   @override
@@ -304,7 +327,7 @@ class _$TeletextChannelImpl implements _TeletextChannel {
 
   @override
   String toString() {
-    return 'TeletextChannel(id: $id, name: $name, countryCode: $countryCode, countryName: $countryName, flagEmoji: $flagEmoji, broadcasterName: $broadcasterName, type: $type, baseUrl: $baseUrl, htmlBaseUrl: $htmlBaseUrl, supportsRegions: $supportsRegions, regions: $regions, isActive: $isActive)';
+    return 'TeletextChannel(id: $id, name: $name, shortName: $shortName, countryCode: $countryCode, countryName: $countryName, flagEmoji: $flagEmoji, broadcasterName: $broadcasterName, type: $type, baseUrl: $baseUrl, htmlBaseUrl: $htmlBaseUrl, supportsRegions: $supportsRegions, regions: $regions, isActive: $isActive)';
   }
 
   @override
@@ -314,6 +337,8 @@ class _$TeletextChannelImpl implements _TeletextChannel {
             other is _$TeletextChannelImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.name, name) || other.name == name) &&
+            (identical(other.shortName, shortName) ||
+                other.shortName == shortName) &&
             (identical(other.countryCode, countryCode) ||
                 other.countryCode == countryCode) &&
             (identical(other.countryName, countryName) ||
@@ -339,6 +364,7 @@ class _$TeletextChannelImpl implements _TeletextChannel {
       runtimeType,
       id,
       name,
+      shortName,
       countryCode,
       countryName,
       flagEmoji,
@@ -367,12 +393,14 @@ class _$TeletextChannelImpl implements _TeletextChannel {
   }
 }
 
-abstract class _TeletextChannel implements TeletextChannel {
+abstract class _TeletextChannel extends TeletextChannel {
   const factory _TeletextChannel(
       {required final String id,
       required final String name,
+      final String? shortName,
       required final String countryCode,
-      required final String countryName,
+      @Deprecated('Use getLocalizedCountryName() instead')
+      final String? countryName,
       required final String flagEmoji,
       required final String broadcasterName,
       required final TeletextChannelType type,
@@ -381,6 +409,7 @@ abstract class _TeletextChannel implements TeletextChannel {
       final bool? supportsRegions,
       final List<String>? regions,
       final bool isActive}) = _$TeletextChannelImpl;
+  const _TeletextChannel._() : super._();
 
   factory _TeletextChannel.fromJson(Map<String, dynamic> json) =
       _$TeletextChannelImpl.fromJson;
@@ -390,9 +419,13 @@ abstract class _TeletextChannel implements TeletextChannel {
   @override
   String get name;
   @override
+  String? get shortName; // Nome abbreviato per visualizzazione compatta
+  @override
   String get countryCode;
   @override
-  String get countryName;
+  @Deprecated('Use getLocalizedCountryName() instead')
+  String?
+      get countryName; // Deprecated: ora usiamo countryCode + localizzazione
   @override
   String get flagEmoji;
   @override

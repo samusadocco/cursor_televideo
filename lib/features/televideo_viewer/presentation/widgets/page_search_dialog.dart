@@ -136,14 +136,32 @@ class _PageSearchDialogState extends State<PageSearchDialog> {
                             ),
                             title: Text(page.value),
                             onTap: () {
+                              // Ottieni il canale corrente
+                              final bloc = context.read<TelevideoBloc>();
+                              String? channelId;
+                              bloc.state.maybeWhen(
+                                loaded: (_, __, ___, selectedChannel) {
+                                  channelId = selectedChannel?.id;
+                                },
+                                orElse: () {
+                                  channelId = null;
+                                },
+                              );
+                              
+                              // Se il canale è RAI E c'è una regione selezionata, carica regionale
+                              // Altrimenti carica sempre nazionale
+                              final isRaiChannel = channelId == null || 
+                                                   channelId!.startsWith('rai_');
+                              
                               Navigator.of(context).pop();
-                              if (widget.isNational) {
-                                widget.onNationalPageSelected(page.key);
-                              } else if (widget.selectedRegion != null) {
+                              
+                              if (isRaiChannel && !widget.isNational && widget.selectedRegion != null) {
                                 widget.onRegionalPageSelected(
                                   page.key,
                                   widget.selectedRegion!,
                                 );
+                              } else {
+                                widget.onNationalPageSelected(page.key);
                               }
                             },
                           );

@@ -57,6 +57,7 @@ dependencies:
   intl: ^0.20.2
   path_provider: ^2.1.2
   package_info_plus: ^8.3.0
+  device_info_plus: ^10.1.0
   in_app_review: ^2.0.8
   app_tracking_transparency: ^2.0.4
   # Firebase
@@ -106,6 +107,7 @@ flutter:
   assets:
     - assets/images/
     - assets/images/regions/
+    - assets/images/splash/
     - assets/icons/
     - scripts/limits_IT_regions.geojson
     - lib/core/version_history_it.json

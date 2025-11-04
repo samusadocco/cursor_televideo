@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cursor_televideo/core/teletext/teletext_channels.dart';
+import 'package:cursor_televideo/core/settings/first_launch_service.dart';
 
 /// Service per gestire i canali preferiti
 class FavoriteChannelsService {
@@ -15,15 +16,41 @@ class FavoriteChannelsService {
   Future<List<String>> getFavoriteChannelIds() async {
     final favoritesJson = _prefs.getString(_favoritesKey);
     if (favoritesJson == null) {
-      // Default: RAI Nazionale come preferito iniziale
+      // Prova a usare il canale iniziale, altrimenti RAI Nazionale
+      final firstLaunchService = FirstLaunchService(_prefs);
+      final initialChannelId = firstLaunchService.getInitialChannelId();
+      
+      if (initialChannelId != null && TeletextChannels.getChannelById(initialChannelId) != null) {
+        return [initialChannelId];
+      }
       return ['rai_nazionale'];
     }
     
     try {
       final List<dynamic> favoritesList = json.decode(favoritesJson);
-      return favoritesList.cast<String>();
+      final channelIds = favoritesList.cast<String>();
+      
+      // Se la lista è vuota, usa il canale iniziale
+      if (channelIds.isEmpty) {
+        final firstLaunchService = FirstLaunchService(_prefs);
+        final initialChannelId = firstLaunchService.getInitialChannelId();
+        
+        if (initialChannelId != null && TeletextChannels.getChannelById(initialChannelId) != null) {
+          return [initialChannelId];
+        }
+        return ['rai_nazionale'];
+      }
+      
+      return channelIds;
     } catch (e) {
       print('Errore nel caricamento dei preferiti: $e');
+      // Prova a usare il canale iniziale in caso di errore
+      final firstLaunchService = FirstLaunchService(_prefs);
+      final initialChannelId = firstLaunchService.getInitialChannelId();
+      
+      if (initialChannelId != null && TeletextChannels.getChannelById(initialChannelId) != null) {
+        return [initialChannelId];
+      }
       return ['rai_nazionale'];
     }
   }
@@ -63,9 +90,20 @@ class FavoriteChannelsService {
     final favorites = await getFavoriteChannelIds();
     favorites.remove(channelId);
     
-    // Assicurati che ci sia sempre almeno un preferito
+    // Se la lista diventa vuota, aggiungi il canale iniziale (se presente) invece di RAI
     if (favorites.isEmpty) {
-      favorites.add('rai_nazionale');
+      final firstLaunchService = FirstLaunchService(_prefs);
+      final initialChannelId = firstLaunchService.getInitialChannelId();
+      
+      if (initialChannelId != null && TeletextChannels.getChannelById(initialChannelId) != null) {
+        // Usa il canale iniziale selezionato dall'utente
+        favorites.add(initialChannelId);
+        print('[FavoriteChannelsService] Lista preferiti vuota, aggiungo canale iniziale: $initialChannelId');
+      } else {
+        // Fallback: RAI Nazionale (solo se non c'è canale iniziale)
+        favorites.add('rai_nazionale');
+        print('[FavoriteChannelsService] Lista preferiti vuota, nessun canale iniziale, fallback a RAI');
+      }
     }
     
     await saveFavoriteChannels(favorites);

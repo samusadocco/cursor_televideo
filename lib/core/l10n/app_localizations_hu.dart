@@ -12,6 +12,17 @@ class AppLocalizationsHu extends AppLocalizations {
   String get appTitle => 'TeleRetrò Italia';
 
   @override
+  String get welcome => 'Üdvözöljük!';
+
+  @override
+  String get welcomeSelectChannel => 'Alapértelmezett csatorna kiválasztása';
+
+  @override
+  String page(int pageNumber) {
+    return 'Oldal $pageNumber';
+  }
+
+  @override
   String get pageUnavailable =>
       'Az oldal képét nem lehet betölteni.\nKérjük, próbálja újra később.';
 
@@ -240,7 +251,7 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String get cacheDuration =>
-      'Televideo oldalképek gyorsítótár időtartama (0 másodperc a kikapcsoláshoz)';
+      'Teletext oldalképek gyorsítótár időtartama (0 másodperc a kikapcsoláshoz)';
 
   @override
   String get seconds => 'másodperc';
@@ -305,11 +316,19 @@ class AppLocalizationsHu extends AppLocalizations {
   String get build => 'build';
 
   @override
-  String get onboardingWelcome => 'Üdvözöljük a TeleRetrò Italia-ban';
+  String get onboardingWelcome => 'Üdvözöljük a Teletext Europe-ban';
 
   @override
   String get onboardingWelcomeDescription =>
-      'Az alkalmazás a RAI Televideo gyors és egyszerű használatához';
+      'Az alkalmazás a RAI Teletext gyors és egyszerű használatához';
+
+  @override
+  String get onboardingDefaultChannel =>
+      'Alapértelmezett Csatorna Kiválasztása';
+
+  @override
+  String get onboardingDefaultChannelDescription =>
+      'Az alkalmazás indításakor a rendszer felkéri, hogy válassza ki kedvenc csatornáját az összes elérhető csatorna közül.\n\nAz alapértelmezett csatornát bármikor megváltoztathatja a Beállítások menüben.';
 
   @override
   String get onboardingNavigation => 'Navigáció';
@@ -323,28 +342,28 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String get onboardingFavoritesDescription =>
-      'Adjon oldalakat a kedvencekhez a gyors hozzáféréshez';
+      'Mentse el a leggyakrabban látogatott oldalakat:\n\n• Érintse meg a jelzett ikont az aktuális oldal hozzáadásához\n• Érintse meg újra a kedvencekből való eltávolításához\n• Az ikon vörös lesz, amikor az oldal a kedvencek között van\n\nNemzeti és regionális oldalakat is menthet.';
 
   @override
-  String get onboardingRegions => 'Regionális Televideo';
+  String get onboardingRegions => 'Csatornák Egész Európából';
 
   @override
   String get onboardingRegionsDescription =>
-      'Hozzáférés a régiója Televideo-jához';
+      'Válassza ki és rendezze kedvenc csatornáit egész Európából.\n\nKeressen csatornanév vagy országnév szerint.\n\nHozzáférhet a teletexthez Olaszországból, Németországból, Ausztriából, Svájcból és sok más európai országból!';
 
   @override
   String get onboardingAutoRefresh => 'Automatikus Frissítés';
 
   @override
   String get onboardingAutoRefreshDescription =>
-      'Az aloldalak automatikusan frissülnek';
+      'Amikor az automatikus frissítés aktív, a kör az oldalszám körül fokozatosan töltődik:\n\nA frissítési időt a beállításokban módosíthatja\n\nA jelző csak akkor látható, ha aloldalak állnak rendelkezésre és az automatikus frissítés aktív.';
 
   @override
   String get onboardingPause => 'Frissítés Szüneteltetése';
 
   @override
   String get onboardingPauseDescription =>
-      'Érintsen meg egy üres területet az automatikus frissítés szüneteltetéséhez';
+      'Szüneteltetheti az aloldalak automatikus frissítését:\n\n• Érintse meg bárhol az oldalon, ahol nincsenek kattintható számok\n• Megjelenik a ⏸️ ikon, jelezve, hogy a frissítés szünetel\n• Érintse meg újra a frissítés folytatásához (▶️ ikon)\n\nEz a funkció hasznos, ha egy aloldalt nyugodtan szeretne elolvasni anélkül, hogy automatikusan változna.';
 
   @override
   String get onboardingPageSelector => 'Oldalválasztó';
@@ -372,14 +391,14 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String get onboardingClickableNumbersDescription =>
-      'Érintse meg a kiemelt oldalszámokat az adott oldalra való közvetlen navigációhoz\n\nA Nemzeti Televideo 100/1 és a Regionális Televideo 300/1 oldalai nem kattinthatók';
+      'Érintse meg a kiemelt oldalszámokat az adott oldalra való közvetlen navigációhoz\n\n';
 
   @override
   String get onboardingShortcuts => 'Menü Parancsikonok';
 
   @override
   String get onboardingShortcutsDescription =>
-      'Gyors hozzáférés a legfontosabb Televideo oldalakhoz.\n\nHasználja ezt a menüt a közvetlen ugráshoz:\n• 100. oldal: Nemzeti index\n• 200. oldal: Hírek\n.....\nKereshet oldalakat cím szerint is az Oldal keresése opció kiválasztásával';
+      'Gyors hozzáférés a legfontosabb Teletext oldalakhoz.\n\nHasználja ezt a menüt a közvetlen ugráshoz:\n• 100. oldal: Nemzeti index\n• 200. oldal: Hírek\n.....\nKereshet oldalakat cím szerint is az Oldal keresése opció kiválasztásával';
 
   @override
   String get onboardingFavoritesList => 'Kedvencek Lista';
@@ -390,7 +409,7 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String get onboardingSettingsDescription =>
-      'Testreszabhatja az alkalmazást preferenciái szerint:\n\n• Első kedvenc betöltése indításkor: döntse el, melyik Televideo oldallal kezdjen\n• Téma: válasszon világos, sötét vagy automatikus között\n• Automatikus frissítés: engedélyezze az aloldalak automatikus betöltését\n• Gyorsítótár: kezelje az oldalak gyorsítótár időtartamát\n• Útmutató: tekintse meg ezt az oktatóanyagot bármikor\n• Kedvencek biztonsági mentése: mentse és állítsa vissza kedvenceit\n• Adatvédelmi beállítások és visszaállítás: kezelje vagy állítsa vissza adatvédelmi választásait';
+      'Testreszabhatja az alkalmazást preferenciái szerint:\n\n• Első kedvenc betöltése indításkor: döntse el, melyik Teletext oldallal kezdjen\n• Téma: válasszon világos, sötét vagy automatikus között\n• Automatikus frissítés: engedélyezze az aloldalak automatikus betöltését\n• Gyorsítótár: kezelje az oldalak gyorsítótár időtartamát\n• Útmutató: tekintse meg ezt az oktatóanyagot bármikor\n• Kedvencek biztonsági mentése: mentse és állítsa vissza kedvenceit\n• Adatvédelmi beállítások és visszaállítás: kezelje vagy állítsa vissza adatvédelmi választásait';
 
   @override
   String get dontShowAgain => 'Ne mutassa újra';
@@ -400,6 +419,24 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String get reset => 'Visszaállítás';
+
+  @override
+  String get resetInitialChannel => 'Kezdeti csatorna visszaállítása';
+
+  @override
+  String get resetInitialChannelDescription =>
+      'Csatorna kiválasztási párbeszéd megjelenítése újra a következő indításkor';
+
+  @override
+  String get resetCompleted => 'Visszaállítás befejezve';
+
+  @override
+  String get resetInitialChannelMessage =>
+      'A kezdeti csatorna visszaállításra került.\n\nA következő alkalmazás indításnál kérni fogjuk, hogy válassza ki újra az alapértelmezett csatornáját.\n\nAz alkalmazás újraindítása most...';
+
+  @override
+  String get selectYourChannel =>
+      'Válassza ki az alapértelmezett Teletext csatornáját.\nBármikor módosíthatja.';
 
   @override
   String backToPage(int pageNumber) {
@@ -462,4 +499,55 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String get reorderFavorites => 'Kedvencek átrendezése';
+
+  @override
+  String get countryIT => 'Olaszország';
+
+  @override
+  String get countryDE => 'Németország';
+
+  @override
+  String get countryAT => 'Ausztria';
+
+  @override
+  String get countryCH => 'Svájc';
+
+  @override
+  String get countryES => 'Spanyolország';
+
+  @override
+  String get countryPT => 'Portugália';
+
+  @override
+  String get countryNL => 'Hollandia';
+
+  @override
+  String get countrySE => 'Svédország';
+
+  @override
+  String get countryFI => 'Finnország';
+
+  @override
+  String get countryDK => 'Dánia';
+
+  @override
+  String get countryCZ => 'Csehország';
+
+  @override
+  String get countryHR => 'Horvátország';
+
+  @override
+  String get countryBA => 'Bosznia-Hercegovina';
+
+  @override
+  String get countryHU => 'Magyarország';
+
+  @override
+  String get countryIS => 'Izland';
+
+  @override
+  String get countrySI => 'Szlovénia';
+
+  @override
+  String get countryUA => 'Ukrajna';
 }

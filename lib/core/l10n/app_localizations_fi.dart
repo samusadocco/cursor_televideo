@@ -12,6 +12,17 @@ class AppLocalizationsFi extends AppLocalizations {
   String get appTitle => 'TeleRetrò Italia';
 
   @override
+  String get welcome => 'Tervetuloa!';
+
+  @override
+  String get welcomeSelectChannel => 'Valitse oletuskanava';
+
+  @override
+  String page(int pageNumber) {
+    return 'Sivu $pageNumber';
+  }
+
+  @override
   String get pageUnavailable =>
       'Sivun kuvaa ei voida ladata.\nYritä uudelleen hetken kuluttua.';
 
@@ -240,7 +251,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get cacheDuration =>
-      'Televideo-sivukuvien välimuistin kesto (0 sekuntia poistaaksesi käytöstä)';
+      'Teksti-TV-sivukuvien välimuistin kesto (0 sekuntia poistaaksesi käytöstä)';
 
   @override
   String get seconds => 'sekuntia';
@@ -303,11 +314,18 @@ class AppLocalizationsFi extends AppLocalizations {
   String get build => 'build';
 
   @override
-  String get onboardingWelcome => 'Tervetuloa TeleRetrò Italiaan';
+  String get onboardingWelcome => 'Tervetuloa Teletext Europe';
 
   @override
   String get onboardingWelcomeDescription =>
-      'Sovellus RAI Televideon nopeaan ja helppoon selaamiseen';
+      'Sovellus RAI Teksti-TVn nopeaan ja helppoon selaamiseen';
+
+  @override
+  String get onboardingDefaultChannel => 'Valitse Oletuskanava';
+
+  @override
+  String get onboardingDefaultChannelDescription =>
+      'Sovelluksen käynnistyessä sinua pyydetään valitsemaan suosikkikanavasi kaikista saatavilla olevista kanavista.\n\nVoit vaihtaa oletuskanavan milloin tahansa Asetukset-valikosta.';
 
   @override
   String get onboardingNavigation => 'Navigointi';
@@ -321,27 +339,28 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get onboardingFavoritesDescription =>
-      'Lisää sivuja suosikkeihin nopeaa pääsyä varten';
+      'Tallenna useimmin vierailemasi sivut:\n\n• Napauta osoitettua kuvaketta lisätäksesi nykyisen sivun\n• Napauta uudelleen poistaaksesi sen suosikeista\n• Kuvake muuttuu punaiseksi, kun sivu on suosikeissa\n\nVoit tallentaa sekä kansallisia että alueellisia sivuja.';
 
   @override
-  String get onboardingRegions => 'Alueellinen Televideo';
+  String get onboardingRegions => 'Kanavat Kaikkialta Euroopasta';
 
   @override
-  String get onboardingRegionsDescription => 'Pääsy alueesi Televideoon';
+  String get onboardingRegionsDescription =>
+      'Valitse ja järjestä suosikkikanavasi kaikkialta Euroopasta.\n\nEtsi kanavan nimen tai maan nimen mukaan.\n\nVoit käyttää teksti-tv:tä Italiasta, Saksasta, Itävallasta, Sveitsistä ja monista muista Euroopan maista!';
 
   @override
   String get onboardingAutoRefresh => 'Automaattinen Päivitys';
 
   @override
   String get onboardingAutoRefreshDescription =>
-      'Alasivut päivittyvät automaattisesti';
+      'Kun automaattinen päivitys on aktiivinen, sivunumeron ympärillä oleva ympyrä täyttyy asteittain:\n\nVoit muuttaa päivitysaikaa asetuksissa\n\nIlmaisin näkyy vain, kun alasivuja on saatavilla ja automaattinen päivitys on aktiivinen.';
 
   @override
   String get onboardingPause => 'Keskeytä Päivitys';
 
   @override
   String get onboardingPauseDescription =>
-      'Napauta tyhjää aluetta keskeyttääksesi automaattisen päivityksen';
+      'Voit keskeyttää alasivujen automaattisen päivityksen:\n\n• Napauta missä tahansa sivulla, jossa ei ole napsautettavia numeroita\n• Näet ⏸️ kuvakkeen ilmestyvän osoittamaan, että päivitys on keskeytetty\n• Napauta uudelleen jatkaaksesi päivitystä (▶️ kuvake)\n\nTämä toiminto on hyödyllinen, kun haluat lukea alasivua rauhassa ilman, että se vaihtuu automaattisesti.';
 
   @override
   String get onboardingPageSelector => 'Sivunvalitsin';
@@ -369,14 +388,14 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get onboardingClickableNumbersDescription =>
-      'Napauta korostettuja sivunumeroita siirtyäksesi suoraan kyseiselle sivulle\n\nSivut 100/1 Kansallisesta Televideosta ja 300/1 Alueellisesta Televideosta eivät ole napsautettavia';
+      'Napauta korostettuja sivunumeroita siirtyäksesi suoraan kyseiselle sivulle\n\n';
 
   @override
   String get onboardingShortcuts => 'Valikko Pikakuvakkeet';
 
   @override
   String get onboardingShortcutsDescription =>
-      'Pääse nopeasti tärkeimmille Televideo-sivuille.\n\nKäytä tätä valikkoa siirtyäksesi suoraan:\n• Sivu 100: Kansallinen hakemisto\n• Sivu 200: Uutiset\n.....\nVoit myös hakea sivuja otsikon perusteella valitsemalla Hae sivu -vaihtoehdon';
+      'Pääse nopeasti tärkeimmille Teksti-TV-sivuille.\n\nKäytä tätä valikkoa siirtyäksesi suoraan:\n• Sivu 100: Kansallinen hakemisto\n• Sivu 200: Uutiset\n.....\nVoit myös hakea sivuja otsikon perusteella valitsemalla Hae sivu -vaihtoehdon';
 
   @override
   String get onboardingFavoritesList => 'Suosikkilista';
@@ -387,7 +406,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get onboardingSettingsDescription =>
-      'Mukauta sovellus mieltymystesi mukaan:\n\n• Lataa ensimmäinen suosikki käynnistettäessä: päätä millä Televideo-sivulla aloitat\n• Teema: valitse vaalean, tumman tai automaattisen väliltä\n• Automaattinen päivitys: ota käyttöön alasivujen automaattinen lataus\n• Välimuisti: hallitse sivujen välimuistin kestoa\n• Ohjeet: katso tämä opastus milloin haluat\n• Varmuuskopioi suosikit: tallenna ja palauta suosikkisi\n• Yksityisyysasetukset ja nollaus: hallitse tai nollaa yksityisyysvalintasi';
+      'Mukauta sovellus mieltymystesi mukaan:\n\n• Lataa ensimmäinen suosikki käynnistettäessä: päätä millä Teksti-TV-sivulla aloitat\n• Teema: valitse vaalean, tumman tai automaattisen väliltä\n• Automaattinen päivitys: ota käyttöön alasivujen automaattinen lataus\n• Välimuisti: hallitse sivujen välimuistin kestoa\n• Ohjeet: katso tämä opastus milloin haluat\n• Varmuuskopioi suosikit: tallenna ja palauta suosikkisi\n• Yksityisyysasetukset ja nollaus: hallitse tai nollaa yksityisyysvalintasi';
 
   @override
   String get dontShowAgain => 'Älä näytä uudelleen';
@@ -397,6 +416,24 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get reset => 'Nollaa';
+
+  @override
+  String get resetInitialChannel => 'Nollaa alkukanava';
+
+  @override
+  String get resetInitialChannelDescription =>
+      'Näytä kanavan valintaikkuna uudelleen seuraavalla käynnistyskerralla';
+
+  @override
+  String get resetCompleted => 'Nollaus valmis';
+
+  @override
+  String get resetInitialChannelMessage =>
+      'Alkukanava on nollattu.\n\nSeuraavalla sovelluksen käynnistyskerralla sinua pyydetään valitsemaan oletuskanavasi uudelleen.\n\nKäynnistetään sovellus uudelleen nyt...';
+
+  @override
+  String get selectYourChannel =>
+      'Valitse oletus tekstitelevisiokanavasi.\nVoit vaihtaa sen milloin tahansa.';
 
   @override
   String backToPage(int pageNumber) {
@@ -459,4 +496,55 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get reorderFavorites => 'Järjestä suosikit uudelleen';
+
+  @override
+  String get countryIT => 'Italia';
+
+  @override
+  String get countryDE => 'Saksa';
+
+  @override
+  String get countryAT => 'Itävalta';
+
+  @override
+  String get countryCH => 'Sveitsi';
+
+  @override
+  String get countryES => 'Espanja';
+
+  @override
+  String get countryPT => 'Portugali';
+
+  @override
+  String get countryNL => 'Alankomaat';
+
+  @override
+  String get countrySE => 'Ruotsi';
+
+  @override
+  String get countryFI => 'Suomi';
+
+  @override
+  String get countryDK => 'Tanska';
+
+  @override
+  String get countryCZ => 'Tšekki';
+
+  @override
+  String get countryHR => 'Kroatia';
+
+  @override
+  String get countryBA => 'Bosnia ja Hertsegovina';
+
+  @override
+  String get countryHU => 'Unkari';
+
+  @override
+  String get countryIS => 'Islanti';
+
+  @override
+  String get countrySI => 'Slovenia';
+
+  @override
+  String get countryUA => 'Ukraina';
 }

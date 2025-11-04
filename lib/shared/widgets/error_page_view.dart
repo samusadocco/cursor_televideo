@@ -20,6 +20,17 @@ class ErrorPageView extends StatelessWidget {
     final regionState = context.watch<RegionBloc>().state;
     final isRegionalMode = regionState.selectedRegion != null;
     final l10n = AppLocalizations.of(context)!;
+    final bloc = context.read<TelevideoBloc>();
+    
+    // Ottieni l'ultima pagina visitata con successo
+    final lastSuccessfulPage = bloc.lastSuccessfulPage;
+    final lastSuccessfulSubPage = bloc.lastSuccessfulSubPage ?? 1;
+    final lastSuccessfulRegion = bloc.lastSuccessfulRegion;
+    
+    // Determina se mostrare il pulsante "Torna a ultima pagina"
+    // Lo mostriamo solo se esiste una pagina precedente diversa da quella di default
+    final defaultPage = isRegionalMode ? 300 : bloc.minPage;
+    final showLastPageButton = lastSuccessfulPage != null && lastSuccessfulPage != defaultPage;
 
     return Container(
       color: Colors.black,
@@ -57,30 +68,52 @@ class ErrorPageView extends StatelessWidget {
               const SizedBox(height: 8),
 
               const SizedBox(height: 24),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+              Wrap(
+                alignment: WrapAlignment.center,
+                spacing: 12,
+                runSpacing: 12,
                 children: [
-                  if (onRetry != null) ...[
+                  if (onRetry != null)
                     FilledButton.icon(
                       onPressed: onRetry,
                       icon: const Icon(Icons.refresh),
                       label: Text(l10n.retry),
                     ),
-                    const SizedBox(width: 16),
-                  ],
+                  if (showLastPageButton)
+                    FilledButton.icon(
+                      onPressed: () {
+                        // Torna all'ultima pagina visitata con successo
+                        if (lastSuccessfulRegion != null) {
+                          bloc.add(
+                            TelevideoEvent.loadRegionalPage(
+                              lastSuccessfulRegion,
+                              lastSuccessfulPage,
+                            ),
+                          );
+                        } else {
+                          bloc.add(
+                            TelevideoEvent.loadNationalPage(lastSuccessfulPage),
+                          );
+                        }
+                      },
+                      style: FilledButton.styleFrom(
+                        backgroundColor: Theme.of(context).colorScheme.tertiary,
+                      ),
+                      icon: const Icon(Icons.history),
+                      label: Text(l10n.backToPage(lastSuccessfulPage)),
+                    ),
                   FilledButton.icon(
                     onPressed: () {
                       if (isRegionalMode) {
-                        context.read<TelevideoBloc>().add(
+                        bloc.add(
                           TelevideoEvent.loadRegionalPage(
                             regionState.selectedRegion!,
                             300,
                           ),
                         );
                       } else {
-                        final minPage = context.read<TelevideoBloc>().minPage;
-                        context.read<TelevideoBloc>().add(
-                          TelevideoEvent.loadNationalPage(minPage),
+                        bloc.add(
+                          TelevideoEvent.loadNationalPage(defaultPage),
                         );
                       }
                     },
@@ -88,7 +121,7 @@ class ErrorPageView extends StatelessWidget {
                       backgroundColor: Theme.of(context).colorScheme.secondary,
                     ),
                     icon: const Icon(Icons.home),
-                    label: Text(isRegionalMode ? l10n.backToPage(300) : l10n.backToPage(context.read<TelevideoBloc>().minPage)),
+                    label: Text(l10n.backToPage(defaultPage)),
                   ),
                 ],
               ),

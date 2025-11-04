@@ -68,7 +68,24 @@ class _ShortcutsMenuState extends State<ShortcutsMenu> {
   }
 
   void _handleShortcutSelected(dynamic shortcut) {
-    if (widget.selectedRegion != null) {
+    // Ottieni il canale corrente
+    final bloc = context.read<TelevideoBloc>();
+    String? channelId;
+    bloc.state.maybeWhen(
+      loaded: (_, __, ___, selectedChannel) {
+        channelId = selectedChannel?.id;
+      },
+      orElse: () {
+        channelId = null;
+      },
+    );
+    
+    // Se il canale è RAI E c'è una regione selezionata, carica regionale
+    // Altrimenti carica sempre nazionale
+    final isRaiChannel = channelId == null || 
+                         channelId!.startsWith('rai_');
+    
+    if (isRaiChannel && widget.selectedRegion != null) {
       widget.onRegionalPageSelected(shortcut.pageNumber, widget.selectedRegion!);
     } else {
       widget.onNationalPageSelected(shortcut.pageNumber);

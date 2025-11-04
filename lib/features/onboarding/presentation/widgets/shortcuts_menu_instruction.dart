@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:cursor_televideo/features/onboarding/presentation/widgets/channel_badge_widget.dart';
 
 class ShortcutsMenuInstruction extends StatelessWidget {
-  const ShortcutsMenuInstruction({super.key});
+  final String channelFlag;
+  final String channelName;
+  
+  const ShortcutsMenuInstruction({
+    super.key,
+    this.channelFlag = '🇮🇹',
+    this.channelName = 'RAI',
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -36,17 +44,17 @@ class ShortcutsMenuInstruction extends StatelessWidget {
                   color: Colors.white,
                 ),
               ),
-              // Selettore Regioni (opaco)
+              // Selettore Canali (opaco)
               Opacity(
                 opacity: 0.3,
-                child: SizedBox(
-                  width: 40,
-                  height: 40,
-                  child: ClipOval(
-                    child: Image.asset(
-                      'assets/images/italy.png',
-                      fit: BoxFit.cover,
-                    ),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: ChannelBadgeWidget(
+                    channelFlag: channelFlag,
+                    channelName: channelName,
                   ),
                 ),
               ),

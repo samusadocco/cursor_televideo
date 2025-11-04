@@ -341,7 +341,7 @@ class PageDescriptionsService {
 
   // Descrizioni ARD Text (Germania)
   final Map<int, String> ardDescriptions = {
-    100: 'Inhalt (Indice)',
+    100: 'Inhalt',
     101: 'tagesschau: Nachrichten',
     102: 'Weitere Schlagzeilen',
     103: 'Nachrichten',
@@ -859,6 +859,137 @@ class PageDescriptionsService {
     555: 'Efnisyfirlit A-Ö',
   };
 
+  // Descrizioni RTL Text (Germania)
+  final Map<int, String> rtlDescriptions = {
+    100: 'Startseite',
+    102: 'Nachrichten',
+    110: 'Wetter',
+    144: 'RTL aktuell',
+    150: 'Guten Morgen Deutschland',
+    180: 'Punkt 12',
+    200: 'Sport',
+    201: 'Fußball',
+    202: 'Bundesliga',
+    300: 'TV-Programm',
+    301: 'RTL heute',
+    302: 'RTL morgen',
+    400: 'Ratgeber',
+    500: 'Service',
+    600: 'Unterhaltung',
+    700: 'Börse',
+  };
+  
+  // Descrizioni Croatian Teletext (Croazia - HRT)
+  final Map<int, String> croatianDescriptions = {
+    100: 'Sadržaj',
+    101: 'Vijesti',
+    102: 'Hrvatska',
+    103: 'Svijet',
+    150: 'Gospodarstvo',
+    160: 'Kultura',
+    200: 'Sport',
+    201: 'Nogomet',
+    300: 'Vrijeme',
+    400: 'Kultura',
+    500: 'TV program',
+    600: 'Zabava',
+  };
+  
+  // Descrizioni Czech Teletext (Repubblica Ceca - ČT)
+  final Map<int, String> czechDescriptions = {
+    100: 'Obsah',
+    101: 'Zprávy',
+    102: 'Česko',
+    103: 'Zahraničí',
+    150: 'Ekonomika',
+    160: 'Kultura',
+    200: 'Sport',
+    201: 'Fotbal',
+    300: 'Počasí',
+    400: 'Kultura',
+    500: 'TV program',
+    600: 'Zábava',
+  };
+  
+  // Descrizioni Danish Teletext (Danimarca - DR)
+  final Map<int, String> danishDescriptions = {
+    100: 'Forside',
+    101: 'Nyheder',
+    102: 'Indland',
+    103: 'Udland',
+    150: 'Økonomi',
+    160: 'Vejr',
+    200: 'Sport',
+    201: 'Fodbold',
+    300: 'Kultur',
+    400: 'Underholdning',
+    500: 'TV-guide',
+  };
+  
+  // Descrizioni Bosnian Teletext (Bosnia ed Erzegovina - BHRT/RTVFBiH)
+  final Map<int, String> bosnianDescriptions = {
+    100: 'Sadržaj',
+    101: 'Vijesti',
+    102: 'BiH',
+    103: 'Svijet',
+    150: 'Ekonomija',
+    160: 'Kultura',
+    200: 'Sport',
+    201: 'Fudbal',
+    300: 'Vrijeme',
+    400: 'Kultura',
+    500: 'TV program',
+  };
+  
+  // Descrizioni Ukrainian Teletext (Ucraina - Intertext)
+  final Map<int, String> ukrainianDescriptions = {
+    100: 'Головна',
+    101: 'Новини',
+    102: 'Україна',
+    103: 'Світ',
+    150: 'Економіка',
+    160: 'Культура',
+    200: 'Спорт',
+    201: 'Футбол',
+    300: 'Погода',
+    400: 'Культура',
+    500: 'ТВ-програма',
+  };
+
+  // Descrizioni SOM Teletextviewer (Germania/Austria/Svizzera - SAT.1, ProSieben, etc.)
+  final Map<int, String> somDescriptions = {
+    100: 'Inhalt',
+    101: 'Schlagzeilen',
+    111: 'News',
+    120: 'Politik',
+    130: 'Wirtschaft',
+    140: 'Panorama',
+    150: 'Ausland',
+    170: 'Wetter',
+    180: 'Verkehr',
+    200: 'Sport',
+    201: 'Fußball',
+    202: 'Bundesliga',
+    210: 'Weitere Sportarten',
+    300: 'TV-Programm',
+    301: 'SAT.1 heute',
+    302: 'SAT.1 morgen',
+    310: 'Spielfilm-Übersicht',
+    320: 'TV-Tipps',
+    350: 'Mediathek',
+    395: 'JOYN',
+    400: 'Service',
+    450: 'Verbraucher',
+    470: 'Ratgeber',
+    500: 'Wetter',
+    501: 'Wettervorhersage',
+    510: 'Reisewetter',
+    600: 'Lotto',
+    650: 'Horoskop',
+    700: 'Börse',
+    800: 'Kontakt',
+  };
+
   /// Ottiene le descrizioni in base al channelId
   Map<int, String> getDescriptionsForChannel({
     required String? channelId,
@@ -937,6 +1068,41 @@ class PageDescriptionsService {
     // Icelandic Teletext (Islanda)
     if (channelId == 'ruv_textavarp') {
       return icelandicDescriptions;
+    }
+    
+    // RTL Text
+    if (channelId == 'rtl_text') {
+      return rtlDescriptions;
+    }
+    
+    // Croatian Teletext (HRT)
+    if (channelId == 'hrt_teletekst') {
+      return croatianDescriptions;
+    }
+    
+    // Czech Teletext (ČT)
+    if (channelId == 'ct_teletext') {
+      return czechDescriptions;
+    }
+    
+    // Danish Teletext (DR1 e DR2)
+    if (channelId == 'dr1' || channelId == 'dr2') {
+      return danishDescriptions;
+    }
+    
+    // Bosnian Teletext (BHRT e RTVFBiH)
+    if (channelId == 'bhrt' || channelId == 'rtvfbih') {
+      return bosnianDescriptions;
+    }
+    
+    // Ukrainian Teletext (Intertext)
+    if (channelId == 'intertext') {
+      return ukrainianDescriptions;
+    }
+    
+    // SOM Teletextviewer (Germania/Austria/Svizzera)
+    if (channelId.startsWith('som_')) {
+      return somDescriptions;
     }
     
     // Default: RAI nazionale

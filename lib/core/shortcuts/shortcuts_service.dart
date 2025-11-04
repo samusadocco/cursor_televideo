@@ -41,17 +41,14 @@ class ShortcutsService {
 
   // ARD Text (Germania)
   final List<ShortcutPage> _ardShortcuts = [
-    const ShortcutPage(pageNumber: 100, title: 'Inhalt (Indice)'),
-    const ShortcutPage(pageNumber: 101, title: 'Nachrichten (Notizie)'),
-    const ShortcutPage(pageNumber: 102, title: 'Weitere Schlagzeilen'),
-    const ShortcutPage(pageNumber: 104, title: 'Wetter'),
-    const ShortcutPage(pageNumber: 109, title: 'Ukraine'),
+    const ShortcutPage(pageNumber: 100, title: 'Seite 100'),
+    const ShortcutPage(pageNumber: 101, title: 'Nachrichten '),
     const ShortcutPage(pageNumber: 200, title: 'Sport'),
-    const ShortcutPage(pageNumber: 300, title: 'Programm (TV)'),
+    const ShortcutPage(pageNumber: 300, title: 'Programm'),
     const ShortcutPage(pageNumber: 400, title: 'Kultur'),
-    const ShortcutPage(pageNumber: 500, title: 'Ratgeber'),
+    const ShortcutPage(pageNumber: 171, title: 'Wetter'),
     const ShortcutPage(pageNumber: 700, title: 'Börse'),
-    const ShortcutPage(pageNumber: 790, title: 'Service A-Z'),
+    const ShortcutPage(pageNumber: 790, title: 'Inhalt A-Z'),
   ];
 
   // ZDF Text (Germania)
@@ -209,6 +206,95 @@ class ShortcutsService {
     const ShortcutPage(pageNumber: 555, title: 'Efnisyfirlit'),
   ];
 
+  // RTL Text (Germania)
+  final List<ShortcutPage> _rtlShortcuts = [
+    const ShortcutPage(pageNumber: 100, title: 'Startseite'),
+    const ShortcutPage(pageNumber: 102, title: 'Nachrichten'),
+    const ShortcutPage(pageNumber: 110, title: 'Wetter'),
+    const ShortcutPage(pageNumber: 144, title: 'RTL aktuell'),
+    const ShortcutPage(pageNumber: 150, title: 'Guten Morgen Deutschland'),
+    const ShortcutPage(pageNumber: 180, title: 'Punkt 12'),
+    const ShortcutPage(pageNumber: 200, title: 'Sport'),
+    const ShortcutPage(pageNumber: 300, title: 'TV-Programm'),
+    const ShortcutPage(pageNumber: 500, title: 'Service'),
+  ];
+  
+  // Croatian Teletext (Croazia - HRT)
+  final List<ShortcutPage> _croatianShortcuts = [
+    const ShortcutPage(pageNumber: 100, title: 'Sadržaj'),
+    const ShortcutPage(pageNumber: 101, title: 'Vijesti'),
+    const ShortcutPage(pageNumber: 102, title: 'Hrvatska'),
+    const ShortcutPage(pageNumber: 103, title: 'Svijet'),
+    const ShortcutPage(pageNumber: 150, title: 'Gospodarstvo'),
+    const ShortcutPage(pageNumber: 200, title: 'Sport'),
+    const ShortcutPage(pageNumber: 300, title: 'Vrijeme'),
+    const ShortcutPage(pageNumber: 400, title: 'Kultura'),
+    const ShortcutPage(pageNumber: 500, title: 'TV program'),
+  ];
+  
+  // Czech Teletext (Repubblica Ceca - ČT)
+  final List<ShortcutPage> _czechShortcuts = [
+    const ShortcutPage(pageNumber: 100, title: 'Obsah'),
+    const ShortcutPage(pageNumber: 101, title: 'Zprávy'),
+    const ShortcutPage(pageNumber: 102, title: 'Česko'),
+    const ShortcutPage(pageNumber: 103, title: 'Zahraničí'),
+    const ShortcutPage(pageNumber: 150, title: 'Ekonomika'),
+    const ShortcutPage(pageNumber: 160, title: 'Kultura'),
+    const ShortcutPage(pageNumber: 200, title: 'Sport'),
+    const ShortcutPage(pageNumber: 300, title: 'Počasí'),
+    const ShortcutPage(pageNumber: 500, title: 'TV program'),
+  ];
+  
+  // Danish Teletext (Danimarca - DR)
+  final List<ShortcutPage> _danishShortcuts = [
+    const ShortcutPage(pageNumber: 100, title: 'Forside'),
+    const ShortcutPage(pageNumber: 101, title: 'Nyheder'),
+    const ShortcutPage(pageNumber: 102, title: 'Indland'),
+    const ShortcutPage(pageNumber: 103, title: 'Udland'),
+    const ShortcutPage(pageNumber: 150, title: 'Økonomi'),
+    const ShortcutPage(pageNumber: 160, title: 'Vejr'),
+    const ShortcutPage(pageNumber: 200, title: 'Sport'),
+    const ShortcutPage(pageNumber: 300, title: 'Kultur'),
+    const ShortcutPage(pageNumber: 500, title: 'TV-guide'),
+  ];
+  
+  // Bosnian Teletext (Bosnia ed Erzegovina - BHRT/RTVFBiH)
+  final List<ShortcutPage> _bosnianShortcuts = [
+    const ShortcutPage(pageNumber: 100, title: 'Sadržaj'),
+    const ShortcutPage(pageNumber: 101, title: 'Vijesti'),
+    const ShortcutPage(pageNumber: 102, title: 'BiH'),
+    const ShortcutPage(pageNumber: 103, title: 'Svijet'),
+    const ShortcutPage(pageNumber: 150, title: 'Ekonomija'),
+    const ShortcutPage(pageNumber: 200, title: 'Sport'),
+    const ShortcutPage(pageNumber: 300, title: 'Vrijeme'),
+    const ShortcutPage(pageNumber: 400, title: 'Kultura'),
+    const ShortcutPage(pageNumber: 500, title: 'TV program'),
+  ];
+  
+  // Ukrainian Teletext (Ucraina - Intertext)
+  final List<ShortcutPage> _ukrainianShortcuts = [
+    const ShortcutPage(pageNumber: 100, title: 'Головна'),
+    const ShortcutPage(pageNumber: 101, title: 'Новини'),
+    const ShortcutPage(pageNumber: 102, title: 'Україна'),
+    const ShortcutPage(pageNumber: 103, title: 'Світ'),
+    const ShortcutPage(pageNumber: 150, title: 'Економіка'),
+    const ShortcutPage(pageNumber: 200, title: 'Спорт'),
+    const ShortcutPage(pageNumber: 300, title: 'Погода'),
+    const ShortcutPage(pageNumber: 400, title: 'Культура'),
+    const ShortcutPage(pageNumber: 500, title: 'ТВ-програма'),
+  ];
+
+  // SOM Teletextviewer (Germania/Austria/Svizzera - SAT.1, ProSieben, etc.)
+  final List<ShortcutPage> _somShortcuts = [
+    const ShortcutPage(pageNumber: 100, title: 'Inhalt'),
+    const ShortcutPage(pageNumber: 111, title: 'News'),
+    const ShortcutPage(pageNumber: 200, title: 'Sport'),
+    const ShortcutPage(pageNumber: 300, title: 'TV-Programm'),
+    const ShortcutPage(pageNumber: 310, title: 'Spielfilm-Übersicht'),
+    const ShortcutPage(pageNumber: 400, title: 'Service'),
+    const ShortcutPage(pageNumber: 500, title: 'Wetter'),
+  ];
+
   /// Restituisce gli shortcuts in base al channelId
   List<ShortcutPage> getShortcutsForChannel({
     required String? channelId,
@@ -293,6 +379,41 @@ class ShortcutsService {
     
     if (channelId == 'ruv_textavarp') {
       return _icelandicShortcuts;
+    }
+    
+    // RTL Text
+    if (channelId == 'rtl_text') {
+      return _rtlShortcuts;
+    }
+    
+    // Croatian Teletext (HRT)
+    if (channelId == 'hrt_teletekst') {
+      return _croatianShortcuts;
+    }
+    
+    // Czech Teletext (ČT)
+    if (channelId == 'ct_teletext') {
+      return _czechShortcuts;
+    }
+    
+    // Danish Teletext (DR1 e DR2)
+    if (channelId == 'dr1' || channelId == 'dr2') {
+      return _danishShortcuts;
+    }
+    
+    // Bosnian Teletext (BHRT e RTVFBiH)
+    if (channelId == 'bhrt' || channelId == 'rtvfbih') {
+      return _bosnianShortcuts;
+    }
+    
+    // Ukrainian Teletext (Intertext)
+    if (channelId == 'intertext') {
+      return _ukrainianShortcuts;
+    }
+    
+    // SOM Teletextviewer (Germania/Austria/Svizzera)
+    if (channelId.startsWith('som_')) {
+      return _somShortcuts;
     }
     
     // Default: RAI nazionale

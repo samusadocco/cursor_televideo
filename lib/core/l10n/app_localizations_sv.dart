@@ -12,6 +12,17 @@ class AppLocalizationsSv extends AppLocalizations {
   String get appTitle => 'TeleRetrò Italia';
 
   @override
+  String get welcome => 'Välkommen!';
+
+  @override
+  String get welcomeSelectChannel => 'Välj standardkanal';
+
+  @override
+  String page(int pageNumber) {
+    return 'Sida $pageNumber';
+  }
+
+  @override
   String get pageUnavailable =>
       'Det går inte att ladda sidbilden.\nFörsök igen om en stund.';
 
@@ -240,7 +251,7 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String get cacheDuration =>
-      'Cache-varaktighet för Televideo-sidbilder (0 sekunder för att inaktivera)';
+      'Cache-varaktighet för Text-TV-sidbilder (0 sekunder för att inaktivera)';
 
   @override
   String get seconds => 'sekunder';
@@ -304,11 +315,18 @@ class AppLocalizationsSv extends AppLocalizations {
   String get build => 'build';
 
   @override
-  String get onboardingWelcome => 'Välkommen till TeleRetrò Italia';
+  String get onboardingWelcome => 'Välkommen till Teletext Europe';
 
   @override
   String get onboardingWelcomeDescription =>
-      'Appen för att snabbt och enkelt konsultera RAI Televideo';
+      'Appen för att snabbt och enkelt konsultera RAI Text-TV';
+
+  @override
+  String get onboardingDefaultChannel => 'Välj Standardkanal';
+
+  @override
+  String get onboardingDefaultChannelDescription =>
+      'När du startar appen kommer du att bli ombedd att välja din föredragna kanal bland alla tillgängliga kanaler.\n\nDu kan ändra standardkanalen när som helst från menyn Inställningar.';
 
   @override
   String get onboardingNavigation => 'Navigation';
@@ -322,28 +340,28 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String get onboardingFavoritesDescription =>
-      'Lägg till sidor i favoriter för snabb åtkomst';
+      'Spara de sidor du besöker oftast:\n\n• Tryck på den angivna ikonen för att lägga till den aktuella sidan\n• Tryck igen för att ta bort den från favoriter\n• Ikonen blir röd när sidan finns bland favoriter\n\nDu kan spara både nationella och regionala sidor.';
 
   @override
-  String get onboardingRegions => 'Regional Televideo';
+  String get onboardingRegions => 'Kanaler från Hela Europa';
 
   @override
   String get onboardingRegionsDescription =>
-      'Få tillgång till din regions Televideo';
+      'Välj och organisera dina favoritkanaler från hela Europa.\n\nSök efter kanalnamn eller landsnamn.\n\nDu kan komma åt text-tv från Italien, Tyskland, Österrike, Schweiz och många andra europeiska länder!';
 
   @override
   String get onboardingAutoRefresh => 'Automatisk Uppdatering';
 
   @override
   String get onboardingAutoRefreshDescription =>
-      'Undersidor uppdateras automatiskt';
+      'När automatisk uppdatering är aktiv fylls cirkeln runt sidnumret gradvis:\n\nDu kan ändra uppdateringstiden i inställningarna\n\nIndikatorn är endast synlig när undersidor är tillgängliga och automatisk uppdatering är aktiv.';
 
   @override
   String get onboardingPause => 'Pausa Uppdatering';
 
   @override
   String get onboardingPauseDescription =>
-      'Tryck på ett tomt område för att pausa automatisk uppdatering';
+      'Du kan pausa automatisk uppdatering av undersidor:\n\n• Tryck var som helst på sidan där det inte finns klickbara nummer\n• Du kommer att se ⏸️ ikonen visas för att indikera att uppdateringen är pausad\n• Tryck igen för att återuppta uppdateringen (▶️ ikon)\n\nDenna funktion är användbar när du vill läsa en undersida lugnt utan att den ändras automatiskt.';
 
   @override
   String get onboardingPageSelector => 'Sidväljare';
@@ -371,14 +389,14 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String get onboardingClickableNumbersDescription =>
-      'Tryck på de markerade sidnumren för att navigera direkt till den sidan\n\nSidorna 100/1 av National Televideo och 300/1 av Regional Televideo är inte klickbara';
+      'Tryck på de markerade sidnumren för att navigera direkt till den sidan\n\n';
 
   @override
   String get onboardingShortcuts => 'Meny Genvägar';
 
   @override
   String get onboardingShortcutsDescription =>
-      'Snabb åtkomst till de viktigaste Televideo-sidorna.\n\nAnvänd denna meny för att hoppa direkt till:\n• Sida 100: Nationellt index\n• Sida 200: Nyheter\n.....\nDu kan också söka sidor efter titel genom att välja alternativet Sök sida';
+      'Snabb åtkomst till de viktigaste Text-TV-sidorna.\n\nAnvänd denna meny för att hoppa direkt till:\n• Sida 100: Nationellt index\n• Sida 200: Nyheter\n.....\nDu kan också söka sidor efter titel genom att välja alternativet Sök sida';
 
   @override
   String get onboardingFavoritesList => 'Favoritlista';
@@ -389,7 +407,7 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String get onboardingSettingsDescription =>
-      'Anpassa appen efter dina preferenser:\n\n• Ladda första favoriten vid start: bestäm vilken Televideo-sida att börja med\n• Tema: välj mellan ljust, mörkt eller automatiskt\n• Automatisk uppdatering: aktivera automatisk laddning av undersidor\n• Cache: hantera sidcachens varaktighet\n• Instruktioner: granska denna handledning när du vill\n• Säkerhetskopiera favoriter: spara och återställ dina favoriter\n• Sekretessinställningar och återställning: hantera eller återställ dina sekretessval';
+      'Anpassa appen efter dina preferenser:\n\n• Ladda första favoriten vid start: bestäm vilken Text-TV-sida att börja med\n• Tema: välj mellan ljust, mörkt eller automatiskt\n• Automatisk uppdatering: aktivera automatisk laddning av undersidor\n• Cache: hantera sidcachens varaktighet\n• Instruktioner: granska denna handledning när du vill\n• Säkerhetskopiera favoriter: spara och återställ dina favoriter\n• Sekretessinställningar och återställning: hantera eller återställ dina sekretessval';
 
   @override
   String get dontShowAgain => 'Visa inte igen';
@@ -399,6 +417,24 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String get reset => 'Återställ';
+
+  @override
+  String get resetInitialChannel => 'Återställ startkanal';
+
+  @override
+  String get resetInitialChannelDescription =>
+      'Visa kanalvalsdialogrutan igen vid nästa start';
+
+  @override
+  String get resetCompleted => 'Återställning slutförd';
+
+  @override
+  String get resetInitialChannelMessage =>
+      'Startkanalen har återställts.\n\nVid nästa appstart kommer du att bli ombedd att välja din standardkanal igen.\n\nStartar om appen nu...';
+
+  @override
+  String get selectYourChannel =>
+      'Välj din standard Text-TV-kanal.\nDu kan ändra den när som helst.';
 
   @override
   String backToPage(int pageNumber) {
@@ -461,4 +497,55 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String get reorderFavorites => 'Ordna om favoriter';
+
+  @override
+  String get countryIT => 'Italien';
+
+  @override
+  String get countryDE => 'Tyskland';
+
+  @override
+  String get countryAT => 'Österrike';
+
+  @override
+  String get countryCH => 'Schweiz';
+
+  @override
+  String get countryES => 'Spanien';
+
+  @override
+  String get countryPT => 'Portugal';
+
+  @override
+  String get countryNL => 'Nederländerna';
+
+  @override
+  String get countrySE => 'Sverige';
+
+  @override
+  String get countryFI => 'Finland';
+
+  @override
+  String get countryDK => 'Danmark';
+
+  @override
+  String get countryCZ => 'Tjeckien';
+
+  @override
+  String get countryHR => 'Kroatien';
+
+  @override
+  String get countryBA => 'Bosnien och Hercegovina';
+
+  @override
+  String get countryHU => 'Ungern';
+
+  @override
+  String get countryIS => 'Island';
+
+  @override
+  String get countrySI => 'Slovenien';
+
+  @override
+  String get countryUA => 'Ukraina';
 }

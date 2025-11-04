@@ -24,6 +24,11 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
   Region? _currentRegion;
   int _currentPage = 100;
   TelevideoEvent? _lastEvent;
+  
+  // Tracciamento ultima pagina caricata con successo
+  int? _lastSuccessfulPage;
+  int? _lastSuccessfulSubPage;
+  Region? _lastSuccessfulRegion;
 
   /// L'ultimo evento ricevuto dal bloc
   TelevideoEvent? get lastEvent => _lastEvent;
@@ -33,10 +38,43 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
 
   /// Indica se la pagina 100 è disponibile
   bool get isPage100Available => _isPage100Available;
+  
+  /// L'ultima pagina caricata con successo
+  int? get lastSuccessfulPage => _lastSuccessfulPage;
+  
+  /// L'ultima sottopagina caricata con successo
+  int? get lastSuccessfulSubPage => _lastSuccessfulSubPage;
+  
+  /// L'ultima regione caricata con successo (null se modalità nazionale)
+  Region? get lastSuccessfulRegion => _lastSuccessfulRegion;
 
   /// Imposta il RegionBloc da utilizzare per la sincronizzazione dello stato
   void setRegionBloc(RegionBloc regionBloc) {
     _regionBloc = regionBloc;
+  }
+
+  /// Salva l'ultima pagina caricata con successo
+  void _updateLastSuccessfulPage(int pageNumber, int subPage, {Region? region}) {
+    _lastSuccessfulPage = pageNumber;
+    _lastSuccessfulSubPage = subPage;
+    _lastSuccessfulRegion = region;
+    print('[TelevideoBloc] Updated last successful page: $pageNumber/$subPage, region: ${region?.code ?? "national"}');
+  }
+
+  /// Salva lo stato corrente nelle preferenze
+  Future<void> _saveCurrentState(TelevideoPage page, int currentSubPage, TeletextChannel? channel) async {
+    try {
+      await AppSettings.saveLastState(
+        pageNumber: page.pageNumber,
+        subPage: currentSubPage,
+        isNationalMode: _currentRegion == null,
+        regionCode: _currentRegion?.code,
+        channelId: channel?.id,
+      );
+      print('[TelevideoBloc] State saved - page: ${page.pageNumber}, subPage: $currentSubPage, channel: ${channel?.id}, region: ${_currentRegion?.code}');
+    } catch (e) {
+      print('[TelevideoBloc] Error saving state: $e');
+    }
   }
 
   Future<TelevideoPage> _loadPageWithContext(int pageNumber, {
@@ -139,7 +177,27 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
   Future<void> _initializeBloc() async {
     await _checkPage100Availability();
     
-    // Se l'impostazione è abilitata e ci sono preferiti, carica il primo
+    // Prima controlla se c'è uno stato salvato da ripristinare
+    if (AppSettings.lastPageNumber != null) {
+      print('[TelevideoBloc] Ripristino stato salvato - pagina: ${AppSettings.lastPageNumber}, sottopagina: ${AppSettings.lastSubPage}');
+      
+      // Carica la pagina salvata direttamente senza chiamare changeChannel
+      // (per evitare il caricamento della pagina 100 del canale)
+      final lastPage = AppSettings.lastPageNumber!;
+      final isNationalMode = AppSettings.lastIsNationalMode ?? true;
+      
+      if (!isNationalMode && AppSettings.lastRegionCode != null) {
+        // Carica pagina regionale
+        final region = Region.fromCode(AppSettings.lastRegionCode!);
+        add(TelevideoEvent.loadRegionalPage(region, lastPage));
+      } else {
+        // Carica pagina nazionale
+        add(TelevideoEvent.loadNationalPage(lastPage));
+      }
+      return;
+    }
+    
+    // Se non c'è stato salvato e l'impostazione è abilitata, carica il primo preferito
     if (AppSettings.loadFirstFavorite) {
       final favorites = FavoritesService().getFavorites();
       if (favorites.isNotEmpty) {
@@ -219,9 +277,30 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
   }
 
   Future<void> _onLoadNationalPage(int pageNumber, Emitter<TelevideoState> emit) async {
+    // Verifica se il bloc è già stato chiuso
+    if (isClosed) {
+      print('[TelevideoBloc] Bloc already closed, skipping loadNationalPage');
+      return;
+    }
+    
     print('[TelevideoBloc] Loading national page: $pageNumber'); // Debug print
     
-    final currentChannel = state.selectedChannel;
+    // Ricarica il canale dalle preferenze per assicurarci di avere il canale più aggiornato
+    TeletextChannel? currentChannel = state.selectedChannel;
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final channelService = FavoriteChannelsService(prefs);
+      final savedChannelId = await channelService.getSelectedChannelId();
+      if (savedChannelId.isNotEmpty) {
+        final savedChannel = TeletextChannels.getChannelById(savedChannelId);
+        if (savedChannel != null) {
+          print('[TelevideoBloc] Using saved channel from preferences: ${savedChannel.id}');
+          currentChannel = savedChannel;
+        }
+      }
+    } catch (e) {
+      print('[TelevideoBloc] Error loading channel from preferences: $e');
+    }
     _currentPage = pageNumber;
     emit(TelevideoState.loading(pageNumber: pageNumber, selectedChannel: currentChannel));
     _currentRegion = null; // Reset della regione quando si carica una pagina nazionale
@@ -235,10 +314,18 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
     try {
       print('[TelevideoBloc] Fetching national page from repository'); // Debug print
       
+      // Workaround: pagina 100 sottopagina 1 ha link non cliccabili per canali RAI
+      // Quindi carichiamo direttamente la sottopagina 2
+      int targetSubPage = 1;
+      if (pageNumber == 100 && (currentChannel == null || currentChannel.id == 'rai_nazionale' || currentChannel.id.startsWith('rai_'))) {
+        targetSubPage = 2;
+        print('[TelevideoBloc] Page 100 detected for RAI channel, loading subpage 2 instead of 1 (workaround for non-clickable links)');
+      }
+      
       TelevideoPage page;
       // Se il canale corrente è RAI o null, usa il repository normale
       if (currentChannel == null || currentChannel.id == 'rai_nazionale' || currentChannel.id.startsWith('rai_')) {
-        page = await _loadPageWithContext(pageNumber, forceRefresh: true);
+        page = await _loadPageWithContext(pageNumber, subPage: targetSubPage, forceRefresh: true);
       } else {
         // Per altri canali, usa il provider specifico
         final provider = TeletextProviderFactory.getProvider(currentChannel);
@@ -257,7 +344,12 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
       print('[TelevideoBloc] National page loaded successfully'); // Debug print
       print('[TelevideoBloc] Page info - number: ${page.pageNumber}, maxSubPages: ${page.maxSubPages}, isHtmlContent: ${page.isHtmlContent}');
       if (!emit.isDone) {
-        emit(TelevideoState.loaded(page, currentSubPage: 1, isAutoRefreshPaused: false, selectedChannel: currentChannel));
+        // Aggiorna ultima pagina caricata con successo
+        _updateLastSuccessfulPage(pageNumber, targetSubPage);
+        
+        emit(TelevideoState.loaded(page, currentSubPage: targetSubPage, isAutoRefreshPaused: false, selectedChannel: currentChannel));
+        // Salva lo stato
+        await _saveCurrentState(page, targetSubPage, currentChannel);
       }
     } catch (e) {
       isError = true;
@@ -280,16 +372,45 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
   }
 
   Future<void> _onLoadRegionalPage(Region region, int pageNumber, Emitter<TelevideoState> emit) async {
+    // Verifica se il bloc è già stato chiuso
+    if (isClosed) {
+      print('[TelevideoBloc] Bloc already closed, skipping loadRegionalPage');
+      return;
+    }
+    
     print('[TelevideoBloc] Loading regional page: $pageNumber for region ${region.code}'); // Debug print
     
-    final currentChannel = state.selectedChannel;
+    // Ricarica il canale dalle preferenze per assicurarci di avere il canale più aggiornato
+    TeletextChannel? currentChannel = state.selectedChannel;
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final channelService = FavoriteChannelsService(prefs);
+      final savedChannelId = await channelService.getSelectedChannelId();
+      if (savedChannelId.isNotEmpty) {
+        final savedChannel = TeletextChannels.getChannelById(savedChannelId);
+        if (savedChannel != null && savedChannel.id.startsWith('rai_') && savedChannel.regions != null) {
+          print('[TelevideoBloc] Using saved regional channel from preferences: ${savedChannel.id}');
+          currentChannel = savedChannel;
+        }
+      }
+    } catch (e) {
+      print('[TelevideoBloc] Error loading channel from preferences: $e');
+    }
     final startTime = DateTime.now();
     bool isError = false;
     
     try {
+      // Workaround: pagina 300 sottopagina 1 ha link non cliccabili per canali regionali RAI
+      // Quindi carichiamo direttamente la sottopagina 2
+      int targetSubPage = 1;
+      if (pageNumber == 300) {
+        targetSubPage = 2;
+        print('[TelevideoBloc] Page 300 detected for regional channel, loading subpage 2 instead of 1 (workaround for non-clickable links)');
+      }
+      
       // Prima carichiamo la pagina regionale
       print('[TelevideoBloc] Fetching regional page from repository'); // Debug print
-      final page = await _loadPageWithContext(pageNumber, isRegional: true, region: region, forceRefresh: true);
+      final page = await _loadPageWithContext(pageNumber, isRegional: true, region: region, subPage: targetSubPage, forceRefresh: true);
       
       // Solo dopo un caricamento riuscito, aggiorniamo lo stato e le variabili
       _currentRegion = region;
@@ -301,7 +422,12 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
       
       print('[TelevideoBloc] Regional page loaded successfully'); // Debug print
       if (!emit.isDone) {
-        emit(TelevideoState.loaded(page, currentSubPage: 1, isAutoRefreshPaused: false, selectedChannel: currentChannel));
+        // Aggiorna ultima pagina caricata con successo (modalità regionale)
+        _updateLastSuccessfulPage(pageNumber, targetSubPage, region: region);
+        
+        emit(TelevideoState.loaded(page, currentSubPage: targetSubPage, isAutoRefreshPaused: false, selectedChannel: currentChannel));
+        // Salva lo stato
+        await _saveCurrentState(page, targetSubPage, currentChannel);
       }
     } catch (e) {
       isError = true;
@@ -445,7 +571,13 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
       final page = await _tryLoadPage(currentPage, isRegional: _currentRegion != null);
       if (page != null) {
         _currentPage = currentPage;
+        
+        // Aggiorna ultima pagina caricata con successo
+        _updateLastSuccessfulPage(currentPage, 1, region: _currentRegion);
+        
         emit(TelevideoState.loaded(page, currentSubPage: 1, isAutoRefreshPaused: false, selectedChannel: currentChannel));
+        // Salva lo stato
+        await _saveCurrentState(page, 1, currentChannel);
         return;
       }
       
@@ -477,7 +609,13 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
       final page = await _tryLoadPage(currentPage, isRegional: _currentRegion != null);
       if (page != null) {
         _currentPage = currentPage;
+        
+        // Aggiorna ultima pagina caricata con successo
+        _updateLastSuccessfulPage(currentPage, 1, region: _currentRegion);
+        
         emit(TelevideoState.loaded(page, currentSubPage: 1, isAutoRefreshPaused: false, selectedChannel: currentChannel));
+        // Salva lo stato
+        await _saveCurrentState(page, 1, currentChannel);
         return;
       }
       
@@ -498,6 +636,12 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
   }
 
   Future<void> _onNextSubPage(Emitter<TelevideoState> emit) async {
+    // Verifica se il bloc è già stato chiuso
+    if (isClosed) {
+      print('[TelevideoBloc] Bloc already closed, skipping nextSubPage');
+      return;
+    }
+    
     await state.maybeWhen(
       loaded: (page, currentSubPage, isAutoRefreshPaused, selectedChannel) async {
         print('[TelevideoBloc] _onNextSubPage called - current: $currentSubPage/${page.maxSubPages}, channel: ${selectedChannel?.id}');
@@ -541,7 +685,12 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
           final validSubPage = newSubPage <= newPage.maxSubPages ? newSubPage : 1;
           if (!emit.isDone) {
             _adService.incrementPageView(isSubPage: true);
+            // Aggiorna ultima pagina caricata con successo
+            _updateLastSuccessfulPage(newPage.pageNumber, validSubPage, region: _currentRegion);
+            
             emit(TelevideoState.loaded(newPage, currentSubPage: validSubPage, isAutoRefreshPaused: isAutoRefreshPaused, selectedChannel: selectedChannel));
+            // Salva lo stato
+            await _saveCurrentState(newPage, validSubPage, selectedChannel);
           }
         } catch (e) {
           isError = true;
@@ -566,6 +715,12 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
   }
 
   Future<void> _onPreviousSubPage(Emitter<TelevideoState> emit) async {
+    // Verifica se il bloc è già stato chiuso
+    if (isClosed) {
+      print('[TelevideoBloc] Bloc already closed, skipping previousSubPage');
+      return;
+    }
+    
     await state.maybeWhen(
       loaded: (page, currentSubPage, isAutoRefreshPaused, selectedChannel) async {
         if (page.maxSubPages <= 1) return; // Non fare nulla se non ci sono sottopagine
@@ -604,7 +759,12 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
           final validSubPage = newSubPage <= newPage.maxSubPages ? newSubPage : 1;
           if (!emit.isDone) {
             _adService.incrementPageView(isSubPage: true);
+            // Aggiorna ultima pagina caricata con successo
+            _updateLastSuccessfulPage(newPage.pageNumber, validSubPage, region: _currentRegion);
+            
             emit(TelevideoState.loaded(newPage, currentSubPage: validSubPage, isAutoRefreshPaused: isAutoRefreshPaused, selectedChannel: selectedChannel));
+            // Salva lo stato
+            await _saveCurrentState(newPage, validSubPage, selectedChannel);
           }
         } catch (e) {
           isError = true;
@@ -657,6 +817,12 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
   }
 
   Future<void> _onChangeChannel(TeletextChannel channel, Emitter<TelevideoState> emit) async {
+    // Verifica se il bloc è già stato chiuso
+    if (isClosed) {
+      print('[TelevideoBloc] Bloc already closed, skipping changeChannel');
+      return;
+    }
+    
     print('[TelevideoBloc] Cambiamento canale: ${channel.name}');
     
     // TODO: Aggiungere analytics per cambio canale quando il metodo sarà disponibile

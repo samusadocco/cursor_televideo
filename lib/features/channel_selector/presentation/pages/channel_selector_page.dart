@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cursor_televideo/core/teletext/teletext_channels.dart';
 import 'package:cursor_televideo/core/teletext/favorite_channels_service.dart';
+import 'package:cursor_televideo/core/utils/country_detector.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cursor_televideo/core/l10n/app_localizations.dart';
 
@@ -20,6 +21,7 @@ class _ChannelSelectorPageState extends State<ChannelSelectorPage> {
   bool _showAll = false;
   bool _isLoading = true;
   String? _selectedChannelId;
+  String? _userCountryCode;
 
   @override
   void initState() {
@@ -31,7 +33,19 @@ class _ChannelSelectorPageState extends State<ChannelSelectorPage> {
     final prefs = await SharedPreferences.getInstance();
     _favoritesService = FavoriteChannelsService(prefs);
     
-    _allChannels = TeletextChannels.getActiveChannels();
+    // Rileva il paese dell'utente
+    _userCountryCode = CountryDetector.instance.getUserCountryCode();
+    print('[ChannelSelectorPage] User country code: $_userCountryCode');
+    
+    // Ottieni i canali ordinati in modo intelligente
+    _allChannels = TeletextChannels.getSortedChannels(
+      userCountryCode: _userCountryCode,
+      getLocalizedCountryName: (countryCode) {
+        // Usa un placeholder per ora, verrà sostituito nel build
+        return countryCode;
+      },
+    );
+    
     _favoriteChannels = await _favoritesService.getFavoriteChannels();
     _selectedChannelId = await _favoritesService.getSelectedChannelId();
     _filteredChannels = _allChannels;
@@ -40,6 +54,31 @@ class _ChannelSelectorPageState extends State<ChannelSelectorPage> {
       _isLoading = false;
     });
   }
+  
+  /// Helper per ottenere il nome localizzato del paese
+  String _getLocalizedCountryName(String countryCode) {
+    final l10n = AppLocalizations.of(context)!;
+    switch (countryCode) {
+      case 'IT': return l10n.countryIT;
+      case 'DE': return l10n.countryDE;
+      case 'AT': return l10n.countryAT;
+      case 'CH': return l10n.countryCH;
+      case 'ES': return l10n.countryES;
+      case 'PT': return l10n.countryPT;
+      case 'NL': return l10n.countryNL;
+      case 'SE': return l10n.countrySE;
+      case 'FI': return l10n.countryFI;
+      case 'DK': return l10n.countryDK;
+      case 'CZ': return l10n.countryCZ;
+      case 'HR': return l10n.countryHR;
+      case 'BA': return l10n.countryBA;
+      case 'HU': return l10n.countryHU;
+      case 'IS': return l10n.countryIS;
+      case 'SI': return l10n.countrySI;
+      case 'UA': return l10n.countryUA;
+      default: return countryCode;
+    }
+  }
 
   void _onSearchChanged(String query) {
     setState(() {
@@ -47,7 +86,11 @@ class _ChannelSelectorPageState extends State<ChannelSelectorPage> {
       if (query.isEmpty) {
         _filteredChannels = _allChannels;
       } else {
-        _filteredChannels = TeletextChannels.searchChannels(query);
+        // Usa la ricerca con localizzazione del nome del paese
+        _filteredChannels = TeletextChannels.searchChannels(
+          query,
+          getLocalizedCountryName: _getLocalizedCountryName,
+        );
       }
     });
   }
@@ -217,9 +260,10 @@ class _ChannelSelectorPageState extends State<ChannelSelectorPage> {
   Widget _buildFavoritesList(ThemeData theme) {
     if (_searchQuery.isNotEmpty) {
       final filtered = _favoriteChannels.where((channel) {
+        final localizedCountryName = _getLocalizedCountryName(channel.countryCode);
         return channel.name.toLowerCase().contains(_searchQuery.toLowerCase()) ||
             channel.broadcasterName.toLowerCase().contains(_searchQuery.toLowerCase()) ||
-            channel.countryName.toLowerCase().contains(_searchQuery.toLowerCase());
+            localizedCountryName.toLowerCase().contains(_searchQuery.toLowerCase());
       }).toList();
       
       if (filtered.isEmpty) {
@@ -305,11 +349,19 @@ class _ChannelSelectorPageState extends State<ChannelSelectorPage> {
       channelsByCountry.putIfAbsent(channel.countryCode, () => []).add(channel);
     }
 
+    // Ordina i paesi per nome localizzato
     final sortedCountries = channelsByCountry.keys.toList()
       ..sort((a, b) {
-        final channelA = channelsByCountry[a]!.first;
-        final channelB = channelsByCountry[b]!.first;
-        return channelA.countryName.compareTo(channelB.countryName);
+        final nameA = _getLocalizedCountryName(a);
+        final nameB = _getLocalizedCountryName(b);
+        
+        // Se uno dei due è il paese dell'utente, mettilo per primo
+        if (_userCountryCode != null) {
+          if (a == _userCountryCode) return -1;
+          if (b == _userCountryCode) return 1;
+        }
+        
+        return nameA.compareTo(nameB);
       });
 
     return ListView.builder(
@@ -332,7 +384,7 @@ class _ChannelSelectorPageState extends State<ChannelSelectorPage> {
                   ? Colors.grey[850]
                   : Colors.grey[200],
               child: Text(
-                '${firstChannel.flagEmoji}  ${firstChannel.countryName}',
+                '${firstChannel.flagEmoji}  ${_getLocalizedCountryName(countryCode)}',
                 style: theme.textTheme.titleSmall?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),

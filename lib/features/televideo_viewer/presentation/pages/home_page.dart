@@ -21,6 +21,11 @@ import 'package:cursor_televideo/core/settings/app_settings.dart';
 import 'package:cursor_televideo/features/televideo_viewer/presentation/widgets/page_number_indicator.dart';
 import 'package:cursor_televideo/core/analytics/analytics_service.dart';
 import 'package:cursor_televideo/core/teletext/teletext_channels.dart';
+import 'package:cursor_televideo/core/teletext/favorite_channels_service.dart';
+import 'package:cursor_televideo/core/teletext/channel_notifier.dart';
+import 'package:cursor_televideo/core/settings/first_launch_service.dart';
+import 'package:cursor_televideo/features/first_launch/initial_channel_selection_dialog.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 // Funzione per determinare se il dispositivo è un tablet
 bool isTablet(BuildContext context) {
@@ -71,6 +76,32 @@ class _HomePageState extends State<HomePage> {
     // Log dell'apertura dell'app
     AnalyticsService().logAppOpen();
     AnalyticsService().logPageView('HomePage');
+    
+    // Controlla se mostrare il dialog di selezione canale iniziale
+    _checkInitialChannelSelection();
+  }
+  
+  Future<void> _checkInitialChannelSelection() async {
+    final prefs = await SharedPreferences.getInstance();
+    final firstLaunchService = FirstLaunchService(prefs);
+    
+    // Mostra il dialog solo se l'utente non ha ancora selezionato un canale iniziale
+    if (!firstLaunchService.hasSelectedInitialChannel()) {
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        if (mounted) {
+          final selectedChannel = await showDialog<TeletextChannel>(
+            context: context,
+            barrierDismissible: false,
+            builder: (context) => const InitialChannelSelectionDialog(),
+          );
+          
+          if (selectedChannel != null && mounted) {
+            // Cambia al canale selezionato
+            _televideoBloc.add(TelevideoEvent.changeChannel(selectedChannel));
+          }
+        }
+      });
+    }
   }
 
   @override
@@ -303,7 +334,7 @@ class _HomePageState extends State<HomePage> {
                 builder: (confirmContext) => AlertDialog(
                   title: Text(AppLocalizations.of(context)?.confirmRemoval ?? 'Confirm removal'),
                   content: Text(
-                    AppLocalizations.of(context)?.confirmRemoveFromFavorites(favorite.displayDescription) ?? 'Do you really want to remove ${favorite.displayDescription} from favorites?'
+                    AppLocalizations.of(context)?.confirmRemoveFromFavorites(favorite.getDisplayDescription(AppLocalizations.of(context)!)) ?? 'Do you really want to remove ${favorite.getDisplayDescription(AppLocalizations.of(context)!)} from favorites?'
                   ),
                   actions: [
                     TextButton(
@@ -363,7 +394,7 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
               title: Text(
-                favorite.displayDescription,
+                favorite.getDisplayDescription(AppLocalizations.of(context)!),
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
                 ),
@@ -400,25 +431,82 @@ class _HomePageState extends State<HomePage> {
                   });
                 },
               ),
-              onTap: () {
+              onTap: () async {
                 Navigator.of(dialogContext).pop();
                 
-                // Se ha un channelId, cambia prima il canale
-                if (channel != null) {
-                  _televideoBloc.add(TelevideoEvent.changeChannel(channel));
-                  // Aspetta che il canale cambi, poi carica la pagina
-                  Future.delayed(const Duration(milliseconds: 300), () {
+                // LOGICA UNIFICATA: Trova sempre il canale corretto dal channelId o dalla regione
+                TeletextChannel? targetChannel;
+                
+                // 1. Se il preferito ha un channelId, usalo
+                if (favorite.channelId != null) {
+                  targetChannel = TeletextChannels.getChannelById(favorite.channelId!);
+                  print('[HomePage] Preferito con channelId: ${favorite.channelId}, canale: ${targetChannel?.name}');
+                }
+                
+                // 2. Se non ha channelId ma ha una regione, trova il canale regionale
+                if (targetChannel == null && region != null) {
+                  for (final ch in TeletextChannels.allChannels) {
+                    if (ch.type == TeletextChannelType.regional && 
+                        ch.regions != null && 
+                        ch.regions!.contains(region.code)) {
+                      targetChannel = ch;
+                      print('[HomePage] Preferito regionale senza channelId, trovato: ${targetChannel.name}');
+                      break;
+                    }
+                  }
+                }
+                
+                // 3. Se non ha né channelId né regione, usa RAI Nazionale come default
+                if (targetChannel == null && region == null) {
+                  targetChannel = TeletextChannels.getChannelById('rai_nazionale');
+                  print('[HomePage] Preferito nazionale senza channelId, uso RAI Nazionale');
+                }
+                
+                // SOLUZIONE ANTI-SFARFALLIO: Salva il canale SENZA chiamare changeChannel
+                // Poi carica direttamente la pagina desiderata
+                if (targetChannel != null) {
+                  // Salva il canale selezionato nelle preferenze
+                  final prefs = await SharedPreferences.getInstance();
+                  final channelService = FavoriteChannelsService(prefs);
+                  await channelService.setSelectedChannelId(targetChannel.id);
+                  print('[HomePage] Canale salvato: ${targetChannel.id}, ora carico pagina ${favorite.pageNumber}');
+                  
+                  // Aggiorna il ChannelNotifier per la top bar
+                  ChannelNotifier().updateChannel(targetChannel);
+                  
+                  // Verifica che il widget sia ancora montato prima di aggiungere eventi ai bloc
+                  if (!mounted) {
+                    print('[HomePage] Widget non più montato, skip caricamento pagina');
+                    return;
+                  }
+                  
+                  // Carica direttamente la pagina desiderata (il bloc userà il canale dalle preferenze)
+                  if (region != null) {
+                    // Preferito regionale
+                    _regionBloc.add(RegionEvent.selectRegion(region));
+                    _televideoBloc.add(TelevideoEvent.loadRegionalPage(region, favorite.pageNumber));
+                  } else {
+                    // Preferito nazionale
+                    _regionBloc.add(const RegionEvent.selectRegion(null));
                     _televideoBloc.add(TelevideoEvent.loadNationalPage(favorite.pageNumber));
-                  });
-                } else if (region != null) {
-                  // Se è una pagina regionale RAI
-                  _regionBloc.add(RegionEvent.selectRegion(region));
-                  // Carica direttamente la pagina regionale
-                  _televideoBloc.add(TelevideoEvent.loadRegionalPage(region, favorite.pageNumber));
+                  }
                 } else {
-                  // Se è una pagina nazionale RAI
-                  _regionBloc.add(const RegionEvent.selectRegion(null));
-                  _televideoBloc.add(TelevideoEvent.loadNationalPage(favorite.pageNumber));
+                  // Fallback: se non troviamo il canale, carica direttamente la pagina
+                  print('[HomePage] ATTENZIONE: Canale non trovato per preferito ${favorite.pageNumber}');
+                  
+                  // Verifica che il widget sia ancora montato prima di aggiungere eventi ai bloc
+                  if (!mounted) {
+                    print('[HomePage] Widget non più montato, skip caricamento pagina (fallback)');
+                    return;
+                  }
+                  
+                  if (region != null) {
+                    _regionBloc.add(RegionEvent.selectRegion(region));
+                    _televideoBloc.add(TelevideoEvent.loadRegionalPage(region, favorite.pageNumber));
+                  } else {
+                    _regionBloc.add(const RegionEvent.selectRegion(null));
+                    _televideoBloc.add(TelevideoEvent.loadNationalPage(favorite.pageNumber));
+                  }
                 }
               },
             ),

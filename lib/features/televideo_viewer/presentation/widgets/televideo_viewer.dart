@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:cursor_televideo/core/teletext/providers/mtva_image_provider.dart';
+import 'package:cursor_televideo/core/teletext/providers/intertext_image_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cursor_televideo/core/settings/app_settings.dart';
@@ -17,10 +18,13 @@ import 'package:cursor_televideo/shared/widgets/error_page_view.dart';
 import 'package:cursor_televideo/core/analytics/analytics_service.dart';
 import 'package:cursor_televideo/features/televideo_viewer/presentation/widgets/auto_refresh_overlay.dart';
 import 'package:cursor_televideo/core/l10n/app_localizations.dart';
+import 'package:cursor_televideo/features/televideo_viewer/presentation/widgets/rtl_html_teletext_viewer.dart';
 import 'package:cursor_televideo/features/televideo_viewer/presentation/widgets/ard_html_teletext_viewer.dart';
 import 'package:cursor_televideo/features/televideo_viewer/presentation/widgets/zdf_html_teletext_viewer.dart';
 import 'package:cursor_televideo/features/televideo_viewer/presentation/widgets/nos_html_teletext_viewer.dart';
 import 'package:cursor_televideo/features/televideo_viewer/presentation/widgets/iceland_html_teletext_viewer.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 
 class TelevideoViewer extends StatefulWidget {
   final TelevideoPage page;
@@ -118,6 +122,36 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
     }
   }
 
+  /// Gestisce il tap sulla pagina per play/pause
+  /// IMPORTANTE: Controlla sempre se mounted prima di accedere al context
+  void _handlePageTap(TelevideoPage page) {
+    // Verifica se il widget è ancora montato
+    if (!mounted) {
+      print('[TelevideoViewer] onTap chiamato ma widget non più mounted, ignoro');
+      return;
+    }
+    
+    // Gestisce il tap per play/pause delle sottopagine
+    final hasSubPages = page.maxSubPages > 1;
+    if (hasSubPages && AppSettings.liveShowEnabled) {
+      context.read<TelevideoBloc>().add(const TelevideoEvent.toggleAutoRefreshPause());
+      
+      // Mostra l'overlay
+      setState(() {
+        _showPauseOverlay = true;
+      });
+      
+      _overlayTimer?.cancel();
+      _overlayTimer = Timer(const Duration(seconds: 2), () {
+        if (mounted) {
+          setState(() {
+            _showPauseOverlay = false;
+          });
+        }
+      });
+    }
+  }
+
   void _startPeriodicTimer() {
     _timerStartTime = DateTime.now();
     _refreshTimer = Timer.periodic(
@@ -211,16 +245,47 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
       );
     }
     
-    // URL normale - usa Image.network
-    return Image.network(
-      page.imageUrl,
-      headers: const {
-        'Cache-Control': 'no-cache',
-        'Pragma': 'no-cache',
+    // Per Intertext usa il provider personalizzato con headers per bypassare 403
+    if (page.providerId == 'intertext') {
+      return Image(
+        image: IntertextImageProvider(page.imageUrl),
+        fit: BoxFit.fill,
+        errorBuilder: (context, error, stackTrace) {
+          print('[TeletextViewer] Error loading Intertext image: $error');
+          return ErrorPageView(
+            message: AppLocalizations.of(context)!.pageUnavailable,
+            onRetry: () {
+              context.read<TelevideoBloc>().add(
+                TelevideoEvent.loadNationalPage(page.pageNumber),
+              );
+            },
+          );
+        },
+      );
+    }
+    
+    // URL normale - usa CachedNetworkImage con durata cache personalizzata
+    return CachedNetworkImage(
+      imageUrl: page.imageUrl,
+      cacheManager: CacheManager(
+        Config(
+          'teletext_cache',
+          stalePeriod: Duration(seconds: AppSettings.cacheDurationInSeconds),
+          maxNrOfCacheObjects: 100,
+        ),
+      ),
+      httpHeaders: {
+        'Cache-Control': 'max-age=${AppSettings.cacheDurationInSeconds}',
       },
       fit: BoxFit.fill,
-      errorBuilder: (context, error, stackTrace) {
-        print('[TeletextViewer] Error loading network image: $error');
+      placeholder: (context, url) => Container(
+        color: Colors.black,
+        child: const Center(
+          child: CircularProgressIndicator(color: Colors.white),
+        ),
+      ),
+      errorWidget: (context, url, error) {
+        print('[TeletextViewer] Error loading cached network image: $error');
         return ErrorPageView(
           message: AppLocalizations.of(context)!.pageUnavailable,
           onRetry: () {
@@ -247,6 +312,7 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
     // Determina quale viewer usare in base al provider
     print('[TelevideoViewer] _buildHtmlViewer called with providerId: ${page.providerId}');
     
+    final isRTL = page.providerId == 'rtl_text';
     final isZDF = page.providerId == 'zdf_text' || 
                   page.providerId == 'zdfinfo_text' || 
                   page.providerId == 'zdfneo_text' || 
@@ -255,34 +321,26 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
     final isNOS = page.providerId == 'nos_teletekst';
     final isIceland = page.providerId == 'ruv_textavarp';
     
-    print('[TelevideoViewer] Viewer selection - isIceland: $isIceland, isZDF: $isZDF, isNOS: $isNOS');
+    print('[TelevideoViewer] Viewer selection - isRTL: $isRTL, isIceland: $isIceland, isZDF: $isZDF, isNOS: $isNOS');
     
-    if (isIceland) {
+    if (isRTL) {
+      print('[TelevideoViewer] Using RTLHtmlTeletextViewer');
+      return RTLHtmlTeletextViewer(
+        key: ValueKey('rtl_${page.pageNumber}_$currentSubPage'),
+        page: page,
+        onPageNavigation: (pageNumber) {
+          if (widget.onPageNumberSubmitted != null) {
+            widget.onPageNumberSubmitted!(pageNumber);
+          }
+        },
+        onTap: () => _handlePageTap(page),
+      );
+    } else if (isIceland) {
       print('[TelevideoViewer] Using IcelandHtmlTeletextViewer');
       return IcelandHtmlTeletextViewer(
         key: ValueKey('iceland_${page.pageNumber}_$currentSubPage'),
         page: page,
-        onTap: () {
-          // Gestisce il tap per play/pause delle sottopagine
-          final hasSubPages = page.maxSubPages > 1;
-          if (hasSubPages && AppSettings.liveShowEnabled) {
-            context.read<TelevideoBloc>().add(const TelevideoEvent.toggleAutoRefreshPause());
-            
-            // Mostra l'overlay
-            setState(() {
-              _showPauseOverlay = true;
-            });
-            
-            _overlayTimer?.cancel();
-            _overlayTimer = Timer(const Duration(seconds: 2), () {
-              if (mounted) {
-                setState(() {
-                  _showPauseOverlay = false;
-                });
-              }
-            });
-          }
-        },
+        onTap: () => _handlePageTap(page),
       );
     } else if (isZDF) {
       return ZDFHtmlTeletextViewer(
@@ -294,27 +352,7 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
             widget.onPageNumberSubmitted!(pageNumber);
           }
         },
-        onTap: () {
-          // Gestisce il tap per play/pause delle sottopagine
-          final hasSubPages = page.maxSubPages > 1;
-          if (hasSubPages && AppSettings.liveShowEnabled) {
-            context.read<TelevideoBloc>().add(const TelevideoEvent.toggleAutoRefreshPause());
-            
-            // Mostra l'overlay
-            setState(() {
-              _showPauseOverlay = true;
-            });
-            
-            _overlayTimer?.cancel();
-            _overlayTimer = Timer(const Duration(seconds: 2), () {
-              if (mounted) {
-                setState(() {
-                  _showPauseOverlay = false;
-                });
-              }
-            });
-          }
-        },
+        onTap: () => _handlePageTap(page),
       );
     } else if (isNOS) {
       return NOSHtmlTeletextViewer(
@@ -326,27 +364,7 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
             widget.onPageNumberSubmitted!(pageNumber);
           }
         },
-        onTap: () {
-          // Gestisce il tap per play/pause delle sottopagine
-          final hasSubPages = page.maxSubPages > 1;
-          if (hasSubPages && AppSettings.liveShowEnabled) {
-            context.read<TelevideoBloc>().add(const TelevideoEvent.toggleAutoRefreshPause());
-            
-            // Mostra l'overlay
-            setState(() {
-              _showPauseOverlay = true;
-            });
-            
-            _overlayTimer?.cancel();
-            _overlayTimer = Timer(const Duration(seconds: 2), () {
-              if (mounted) {
-                setState(() {
-                  _showPauseOverlay = false;
-                });
-              }
-            });
-          }
-        },
+        onTap: () => _handlePageTap(page),
       );
     } else {
       // ARD o altri provider HTML
@@ -359,27 +377,7 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
             widget.onPageNumberSubmitted!(pageNumber);
           }
         },
-        onTap: () {
-          // Gestisce il tap per play/pause delle sottopagine
-          final hasSubPages = page.maxSubPages > 1;
-          if (hasSubPages && AppSettings.liveShowEnabled) {
-            context.read<TelevideoBloc>().add(const TelevideoEvent.toggleAutoRefreshPause());
-            
-            // Mostra l'overlay
-            setState(() {
-              _showPauseOverlay = true;
-            });
-            
-            _overlayTimer?.cancel();
-            _overlayTimer = Timer(const Duration(seconds: 2), () {
-              if (mounted) {
-                setState(() {
-                  _showPauseOverlay = false;
-                });
-              }
-            });
-          }
-        },
+        onTap: () => _handlePageTap(page),
       );
     }
   }
@@ -610,6 +608,22 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
       // MTVA Teletext (HU): 520x400 (dimensioni reali dell'immagine GIF)
       originalWidth = 520.0;
       originalHeight = 400.0;
+    } else if (widget.page.providerId != null && widget.page.providerId!.startsWith('som_')) {
+      // SOM Teletextviewer (DE/AT/CH): 400x288 (dimensioni standard)
+      originalWidth = 400.0;
+      originalHeight = 288.0;
+    } else if (widget.page.providerId == 'dr1' || widget.page.providerId == 'dr2') {
+      // DR Text TV (DK): 320x375 (dimensioni reali dell'immagine GIF)
+      originalWidth = 320.0;
+      originalHeight = 375.0;
+    } else if (widget.page.providerId == 'bhrt' || widget.page.providerId == 'rtvfbih') {
+      // BHRT/RTVFBiH Teletext (BA): 480x336 (dimensioni reali dell'immagine PNG)
+      originalWidth = 480.0;
+      originalHeight = 336.0;
+    } else if (widget.page.providerId == 'intertext') {
+      // Intertext (UA): 492x432 (dimensioni reali dell'immagine GIF)
+      originalWidth = 492.0;
+      originalHeight = 432.0;
     } else {
       // RAI Televideo: 360x400
       originalWidth = 360.0;
@@ -652,10 +666,24 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
         );
         
         if (widget.onPageNumberSubmitted != null) {
-          if (widget.isNationalMode) {
-            widget.onPageNumberSubmitted!(area.targetPage);
-          } else {
-            // In modalità regionale, manteniamo la regione corrente
+          // Ottieni il canale corrente per verificare se è RAI
+          final bloc = context.read<TelevideoBloc>();
+          String? channelId;
+          bloc.state.maybeWhen(
+            loaded: (_, __, ___, selectedChannel) {
+              channelId = selectedChannel?.id;
+            },
+            orElse: () {
+              channelId = null;
+            },
+          );
+          
+          // Verifica se il canale è RAI
+          final isRaiChannel = channelId == null || channelId!.startsWith('rai_');
+          
+          // Carica regionale SOLO se canale RAI E modalità regionale
+          if (isRaiChannel && !widget.isNationalMode) {
+            // In modalità regionale RAI, manteniamo la regione corrente
             final regionCode = widget.page.region;
             if (regionCode != null) {
               final region = Region.values.firstWhere(
@@ -665,7 +693,13 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
               context.read<TelevideoBloc>().add(
                 TelevideoEvent.loadRegionalPage(region, area.targetPage),
               );
+            } else {
+              // Se non c'è regione, carica nazionale
+              widget.onPageNumberSubmitted!(area.targetPage);
             }
+          } else {
+            // Per canali non-RAI o modalità nazionale, carica sempre nazionale
+            widget.onPageNumberSubmitted!(area.targetPage);
           }
         }
         return; // Esce dalla funzione se è stata trovata un'area cliccabile

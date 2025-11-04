@@ -1,5 +1,6 @@
 import 'package:cursor_televideo/core/teletext/providers/teletext_provider.dart';
 import 'package:cursor_televideo/core/teletext/providers/rai_provider.dart';
+import 'package:cursor_televideo/core/teletext/providers/rtl_provider.dart';
 import 'package:cursor_televideo/core/teletext/providers/ard_provider.dart';
 import 'package:cursor_televideo/core/teletext/providers/zdf_provider.dart';
 import 'package:cursor_televideo/core/teletext/providers/swiss_provider.dart';
@@ -13,6 +14,11 @@ import 'package:cursor_televideo/core/teletext/providers/ct_provider.dart';
 import 'package:cursor_televideo/core/teletext/providers/rtvslo_provider.dart';
 import 'package:cursor_televideo/core/teletext/providers/mtva_provider.dart';
 import 'package:cursor_televideo/core/teletext/providers/iceland_provider.dart';
+import 'package:cursor_televideo/core/teletext/providers/som_provider.dart';
+import 'package:cursor_televideo/core/teletext/providers/dr_provider.dart';
+import 'package:cursor_televideo/core/teletext/providers/bhrt_provider.dart';
+import 'package:cursor_televideo/core/teletext/providers/rtvfbih_provider.dart';
+import 'package:cursor_televideo/core/teletext/providers/intertext_provider.dart';
 import 'package:cursor_televideo/core/teletext/teletext_channels.dart';
 
 /// Factory per creare il provider appropriato in base al canale
@@ -34,6 +40,9 @@ class TeletextProviderFactory {
     if (channel.countryCode == 'IT' && channel.broadcasterName == 'RAI') {
       // RAI Televideo (Italia)
       provider = RAIProvider();
+    } else if (channel.id == 'rtl_text') {
+      // RTL Text (Germania)
+      provider = RtlProvider();
     } else if (channel.id == 'ard_text') {
       // ARD Text (Germania)
       provider = ARDProvider();
@@ -43,6 +52,12 @@ class TeletextProviderFactory {
                channel.id == '3sat_text') {
       // ZDF/ZDFinfo/ZDFneo/3sat Text (Germania)
       provider = ZDFProvider(channelId: channel.id);
+    } else if (channel.id.startsWith('som_')) {
+      // SOM Teletextviewer (Germania, Austria, Svizzera) - SAT.1, ProSieben, etc.
+      // IMPORTANTE: deve essere prima dei check generici per countryCode
+      // Estrai il selettore del canale dall'ID (es. 'som_s1de' -> 's1de')
+      final selector = channel.id.substring(4);
+      provider = SOMProvider(channelSelector: selector);
     } else if (channel.countryCode == 'CH') {
       // Swiss Teletext (Svizzera) - RSI, RTS, SRF
       provider = SwissProvider(channelId: channel.id);
@@ -76,6 +91,18 @@ class TeletextProviderFactory {
     } else if (channel.id == 'ruv_textavarp') {
       // RÚV Textavarp (Islanda)
       provider = IcelandProvider();
+    } else if (channel.id == 'dr1' || channel.id == 'dr2') {
+      // DR Text TV (Danimarca)
+      provider = DRProvider(channelId: channel.id);
+    } else if (channel.id == 'bhrt') {
+      // BHRT Teletext (Bosnia ed Erzegovina)
+      provider = BHRTProvider();
+    } else if (channel.id == 'rtvfbih') {
+      // RTVFBiH Teletext - Federalna TV (Bosnia ed Erzegovina)
+      provider = RTVFBiHProvider();
+    } else if (channel.id == 'intertext') {
+      // Intertext (Ucraina)
+      provider = IntertextProvider();
     } else {
       // Altri canali non ancora implementati
       throw UnimplementedError(

@@ -132,6 +132,24 @@ abstract class AppLocalizations {
   /// **'TeleRetrò Italia'**
   String get appTitle;
 
+  /// No description provided for @welcome.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome!'**
+  String get welcome;
+
+  /// No description provided for @welcomeSelectChannel.
+  ///
+  /// In en, this message translates to:
+  /// **'Select default channel'**
+  String get welcomeSelectChannel;
+
+  /// Generic page label with number
+  ///
+  /// In en, this message translates to:
+  /// **'Page {pageNumber}'**
+  String page(int pageNumber);
+
   /// No description provided for @pageUnavailable.
   ///
   /// In en, this message translates to:
@@ -543,7 +561,7 @@ abstract class AppLocalizations {
   /// No description provided for @cacheDuration.
   ///
   /// In en, this message translates to:
-  /// **'Televideo page images cache duration (0 seconds to disable)'**
+  /// **'Teletext page images cache duration (0 seconds to disable)'**
   String get cacheDuration;
 
   /// No description provided for @seconds.
@@ -657,14 +675,26 @@ abstract class AppLocalizations {
   /// No description provided for @onboardingWelcome.
   ///
   /// In en, this message translates to:
-  /// **'Welcome to TeleRetrò Italia'**
+  /// **'Welcome to Teletext Europe'**
   String get onboardingWelcome;
 
   /// No description provided for @onboardingWelcomeDescription.
   ///
   /// In en, this message translates to:
-  /// **'The app to consult RAI Televideo quickly and easily'**
+  /// **'The app to access all teletext channels in Europe'**
   String get onboardingWelcomeDescription;
+
+  /// No description provided for @onboardingDefaultChannel.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Default Channel'**
+  String get onboardingDefaultChannel;
+
+  /// No description provided for @onboardingDefaultChannelDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'When you start the app, you\'ll be asked to select your preferred channel from all available channels.\n\nYou can change the default channel at any time from the Settings menu.'**
+  String get onboardingDefaultChannelDescription;
 
   /// No description provided for @onboardingNavigation.
   ///
@@ -687,19 +717,19 @@ abstract class AppLocalizations {
   /// No description provided for @onboardingFavoritesDescription.
   ///
   /// In en, this message translates to:
-  /// **'Add pages to favorites for quick access'**
+  /// **'Save the pages you visit most often:\n\n• Tap the indicated icon to add the current page\n• Tap again to remove it from favorites\n• The icon turns red when the page is in favorites\n\nYou can save both national and regional pages.'**
   String get onboardingFavoritesDescription;
 
   /// No description provided for @onboardingRegions.
   ///
   /// In en, this message translates to:
-  /// **'Regional Televideo'**
+  /// **'Channels from All Over Europe'**
   String get onboardingRegions;
 
   /// No description provided for @onboardingRegionsDescription.
   ///
   /// In en, this message translates to:
-  /// **'Access your region\'s Televideo'**
+  /// **'Select and organize your favorite channels from all over Europe.\n\nSearch by channel name or country name.\n\nYou can access teletext from Italy, Germany, Austria, Switzerland and many other European countries!'**
   String get onboardingRegionsDescription;
 
   /// No description provided for @onboardingAutoRefresh.
@@ -711,7 +741,7 @@ abstract class AppLocalizations {
   /// No description provided for @onboardingAutoRefreshDescription.
   ///
   /// In en, this message translates to:
-  /// **'Subpages update automatically'**
+  /// **'When automatic refresh is active, the circle around the page number fills progressively:\n\nYou can change the refresh time in settings\n\nThe indicator is only visible when subpages are available and automatic refresh is active.'**
   String get onboardingAutoRefreshDescription;
 
   /// No description provided for @onboardingPause.
@@ -723,7 +753,7 @@ abstract class AppLocalizations {
   /// No description provided for @onboardingPauseDescription.
   ///
   /// In en, this message translates to:
-  /// **'Tap an empty area to pause automatic refresh'**
+  /// **'You can pause the automatic refresh of subpages:\n\n• Tap anywhere on the page where there are no clickable numbers\n• You will see the ⏸️ icon appear to indicate that the refresh is paused\n• Tap again to resume the refresh (▶️ icon)\n\nThis feature is useful when you want to read a subpage calmly without it changing automatically.'**
   String get onboardingPauseDescription;
 
   /// No description provided for @onboardingPageSelector.
@@ -771,7 +801,7 @@ abstract class AppLocalizations {
   /// No description provided for @onboardingClickableNumbersDescription.
   ///
   /// In en, this message translates to:
-  /// **'Tap the highlighted page numbers to navigate directly to that page\n\nPages 100/1 of National Televideo and 300/1 of Regional Televideo are not clickable'**
+  /// **'Tap the highlighted page numbers to navigate directly to that page\n\n'**
   String get onboardingClickableNumbersDescription;
 
   /// No description provided for @onboardingShortcuts.
@@ -783,7 +813,7 @@ abstract class AppLocalizations {
   /// No description provided for @onboardingShortcutsDescription.
   ///
   /// In en, this message translates to:
-  /// **'Quickly access the most important Televideo pages.\n\nUse this menu to jump directly to:\n• Page 100: National index\n• Page 200: News\n.....\nYou can also search pages by title by selecting the Search page option'**
+  /// **'Quickly access the most important Teletext pages.\n\nUse this menu to jump directly to:\n• Page 100: National index\n• Page 200: News\n.....\nYou can also search pages by title by selecting the Search page option'**
   String get onboardingShortcutsDescription;
 
   /// No description provided for @onboardingFavoritesList.
@@ -801,7 +831,7 @@ abstract class AppLocalizations {
   /// No description provided for @onboardingSettingsDescription.
   ///
   /// In en, this message translates to:
-  /// **'Customize the app according to your preferences:\n\n• Load first favorite at startup: decide which Televideo page to start with\n• Theme: choose between light, dark or automatic\n• Auto refresh: enable automatic loading of subpages\n• Cache: manage page cache duration\n• Instructions: review this tutorial whenever you want\n• Backup Favorites: save and restore your favorites\n• Privacy Settings and reset: manage or reset your privacy choices'**
+  /// **'Customize the app according to your preferences:\n\n• Load first favorite at startup: decide which Teletext page to start with\n• Theme: choose between light, dark or automatic\n• Auto refresh: enable automatic loading of subpages\n• Cache: manage page cache duration\n• Instructions: review this tutorial whenever you want\n• Backup Favorites: save and restore your favorites\n• Privacy Settings and reset: manage or reset your privacy choices'**
   String get onboardingSettingsDescription;
 
   /// No description provided for @dontShowAgain.
@@ -821,6 +851,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Reset'**
   String get reset;
+
+  /// No description provided for @resetInitialChannel.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset initial channel'**
+  String get resetInitialChannel;
+
+  /// No description provided for @resetInitialChannelDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Show the channel selection dialog again at next startup'**
+  String get resetInitialChannelDescription;
+
+  /// No description provided for @resetCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset completed'**
+  String get resetCompleted;
+
+  /// No description provided for @resetInitialChannelMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'The initial channel has been reset.\n\nAt the next app startup you will be asked to select your default channel again.\n\nRestarting the app now...'**
+  String get resetInitialChannelMessage;
+
+  /// No description provided for @selectYourChannel.
+  ///
+  /// In en, this message translates to:
+  /// **'Select your default Teletext channel.\nYou can change it at any time.'**
+  String get selectYourChannel;
 
   /// Button text to go back to a specific page
   ///
@@ -917,6 +977,108 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Reorder Favorites'**
   String get reorderFavorites;
+
+  /// No description provided for @countryIT.
+  ///
+  /// In en, this message translates to:
+  /// **'Italy'**
+  String get countryIT;
+
+  /// No description provided for @countryDE.
+  ///
+  /// In en, this message translates to:
+  /// **'Germany'**
+  String get countryDE;
+
+  /// No description provided for @countryAT.
+  ///
+  /// In en, this message translates to:
+  /// **'Austria'**
+  String get countryAT;
+
+  /// No description provided for @countryCH.
+  ///
+  /// In en, this message translates to:
+  /// **'Switzerland'**
+  String get countryCH;
+
+  /// No description provided for @countryES.
+  ///
+  /// In en, this message translates to:
+  /// **'Spain'**
+  String get countryES;
+
+  /// No description provided for @countryPT.
+  ///
+  /// In en, this message translates to:
+  /// **'Portugal'**
+  String get countryPT;
+
+  /// No description provided for @countryNL.
+  ///
+  /// In en, this message translates to:
+  /// **'Netherlands'**
+  String get countryNL;
+
+  /// No description provided for @countrySE.
+  ///
+  /// In en, this message translates to:
+  /// **'Sweden'**
+  String get countrySE;
+
+  /// No description provided for @countryFI.
+  ///
+  /// In en, this message translates to:
+  /// **'Finland'**
+  String get countryFI;
+
+  /// No description provided for @countryDK.
+  ///
+  /// In en, this message translates to:
+  /// **'Denmark'**
+  String get countryDK;
+
+  /// No description provided for @countryCZ.
+  ///
+  /// In en, this message translates to:
+  /// **'Czech Republic'**
+  String get countryCZ;
+
+  /// No description provided for @countryHR.
+  ///
+  /// In en, this message translates to:
+  /// **'Croatia'**
+  String get countryHR;
+
+  /// No description provided for @countryBA.
+  ///
+  /// In en, this message translates to:
+  /// **'Bosnia and Herzegovina'**
+  String get countryBA;
+
+  /// No description provided for @countryHU.
+  ///
+  /// In en, this message translates to:
+  /// **'Hungary'**
+  String get countryHU;
+
+  /// No description provided for @countryIS.
+  ///
+  /// In en, this message translates to:
+  /// **'Iceland'**
+  String get countryIS;
+
+  /// No description provided for @countrySI.
+  ///
+  /// In en, this message translates to:
+  /// **'Slovenia'**
+  String get countrySI;
+
+  /// No description provided for @countryUA.
+  ///
+  /// In en, this message translates to:
+  /// **'Ukraine'**
+  String get countryUA;
 }
 
 class _AppLocalizationsDelegate

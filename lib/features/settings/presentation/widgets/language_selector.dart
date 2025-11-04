@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:cursor_televideo/core/l10n/language_service.dart';
-import 'package:flutter_phoenix/flutter_phoenix.dart';
+import 'package:cursor_televideo/core/settings/app_settings.dart';
+import 'package:cursor_televideo/core/teletext/favorite_channels_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LanguageSelector extends StatelessWidget {
   final LanguageService languageService;
@@ -97,11 +99,37 @@ class LanguageSelector extends StatelessWidget {
           groupValue: currentLocale.languageCode,
           onChanged: (value) async {
             if (value != null) {
+              print('[LanguageSelector] Cambio lingua a: $value');
+              
+              // Salva la nuova lingua
               await languageService.setLocale(Locale(value));
+              
+              // IMPORTANTE: Pulisci lo stato salvato prima del riavvio
+              // per evitare errori nel caricamento delle pagine
+              // MA mantieni il canale corrente selezionato
+              print('[LanguageSelector] Pulizia stato salvato prima del riavvio...');
+              
+              // Salva il canale corrente prima di pulire lo stato
+              final prefs = await SharedPreferences.getInstance();
+              final channelService = FavoriteChannelsService(prefs);
+              final currentChannelId = await channelService.getSelectedChannelId();
+              print('[LanguageSelector] Canale corrente prima della pulizia: $currentChannelId');
+              
+              // Pulisci lo stato della pagina ma mantieni il canale
+              await AppSettings.clearLastState();
+              
+              // Ripristina il canale corrente se non è vuoto
+              if (currentChannelId.isNotEmpty) {
+                await channelService.setSelectedChannelId(currentChannelId);
+                print('[LanguageSelector] Canale corrente ripristinato: $currentChannelId');
+              } else {
+                print('[LanguageSelector] Nessun canale corrente da ripristinare, verrà usato il default');
+              }
+              
               if (context.mounted) {
                 Navigator.of(context).pop();
-                // Riavvia l'app per applicare la nuova lingua
-                Phoenix.rebirth(context);
+                print('[LanguageSelector] Lingua cambiata, l\'app si aggiornerà automaticamente');
+                // Non serve più Phoenix.rebirth(), l'app si aggiornerà automaticamente tramite lo stream
               }
             }
           },

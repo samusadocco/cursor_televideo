@@ -12,6 +12,17 @@ class AppLocalizationsIt extends AppLocalizations {
   String get appTitle => 'TeleRetrò Italia';
 
   @override
+  String get welcome => 'Benvenuto!';
+
+  @override
+  String get welcomeSelectChannel => 'Seleziona il canale predefinito';
+
+  @override
+  String page(int pageNumber) {
+    return 'Pagina $pageNumber';
+  }
+
+  @override
   String get pageUnavailable =>
       'Impossibile caricare l\'immagine della pagina.\nRiprova tra qualche istante.';
 
@@ -308,11 +319,18 @@ class AppLocalizationsIt extends AppLocalizations {
   String get build => 'build';
 
   @override
-  String get onboardingWelcome => 'Benvenuto in TeleRetrò Italia';
+  String get onboardingWelcome => 'Benvenuto in TeleRetrò Europa';
 
   @override
   String get onboardingWelcomeDescription =>
-      'Scopri tutte le funzionalità dell\'app\'';
+      'La app per consultare tutti i canali teletext in Europa';
+
+  @override
+  String get onboardingDefaultChannel => 'Seleziona il Canale Predefinito';
+
+  @override
+  String get onboardingDefaultChannelDescription =>
+      'All\'avvio dell\'app ti verrà chiesto di selezionare il tuo canale preferito tra tutti i canali disponibili.\n\nPotrai cambiare il canale predefinito in qualsiasi momento dal menu Impostazioni.';
 
   @override
   String get onboardingNavigation => 'Navigazione Pagine';
@@ -329,11 +347,11 @@ class AppLocalizationsIt extends AppLocalizations {
       'Salva le pagine che visiti più spesso:\n\n• Tocca l\'icona indicata per aggiungere la pagina corrente\n• Tocca di nuovo per rimuoverla dai preferiti\n• L\'icona diventa rossa quando la pagina è tra i preferiti\n\nPuoi salvare sia pagine nazionali che regionali.';
 
   @override
-  String get onboardingRegions => 'Televideo Regionale';
+  String get onboardingRegions => 'Canali da Tutta Europa';
 
   @override
   String get onboardingRegionsDescription =>
-      'Accedi al Televideo della tua regione\n\nLa tua posizione verrà rilevata automaticamente per suggerirti la regione corretta.';
+      'Seleziona e organizza i tuoi canali preferiti da tutta Europa.\n\nCerca per nome canale o per nome paese.\n\nPuoi accedere a teletext di Italia, Germania, Austria, Svizzera e molti altri paesi europei!';
 
   @override
   String get onboardingAutoRefresh => 'Autocaricamento Sottopagine';
@@ -375,7 +393,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get onboardingClickableNumbersDescription =>
-      'Tocca i numeri di pagina evidenziati per navigare direttamente a quella pagina\n\nLe pagine 100/1 del Televideo Nazionale e 300/1 del Televideo Regionale non sono cliccabili';
+      'Tocca i numeri di pagina evidenziati per navigare direttamente a quella pagina\n\n';
 
   @override
   String get onboardingShortcuts => 'Menu Shortcuts';
@@ -403,6 +421,24 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get reset => 'Reset';
+
+  @override
+  String get resetInitialChannel => 'Reset canale iniziale';
+
+  @override
+  String get resetInitialChannelDescription =>
+      'Mostra di nuovo il dialog di selezione canale al prossimo avvio';
+
+  @override
+  String get resetCompleted => 'Reset completato';
+
+  @override
+  String get resetInitialChannelMessage =>
+      'Il canale iniziale è stato resettato.\n\nAl prossimo avvio dell\'app ti verrà chiesto di selezionare nuovamente il canale predefinito.\n\nRiavvio l\'app ora...';
+
+  @override
+  String get selectYourChannel =>
+      'Seleziona il tuo canale Teletext predefinito.\nPotrai cambiarlo in qualsiasi momento.';
 
   @override
   String backToPage(int pageNumber) {
@@ -465,4 +501,55 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get reorderFavorites => 'Riordina Preferiti';
+
+  @override
+  String get countryIT => 'Italia';
+
+  @override
+  String get countryDE => 'Germania';
+
+  @override
+  String get countryAT => 'Austria';
+
+  @override
+  String get countryCH => 'Svizzera';
+
+  @override
+  String get countryES => 'Spagna';
+
+  @override
+  String get countryPT => 'Portogallo';
+
+  @override
+  String get countryNL => 'Paesi Bassi';
+
+  @override
+  String get countrySE => 'Svezia';
+
+  @override
+  String get countryFI => 'Finlandia';
+
+  @override
+  String get countryDK => 'Danimarca';
+
+  @override
+  String get countryCZ => 'Repubblica Ceca';
+
+  @override
+  String get countryHR => 'Croazia';
+
+  @override
+  String get countryBA => 'Bosnia ed Erzegovina';
+
+  @override
+  String get countryHU => 'Ungheria';
+
+  @override
+  String get countryIS => 'Islanda';
+
+  @override
+  String get countrySI => 'Slovenia';
+
+  @override
+  String get countryUA => 'Ucraina';
 }

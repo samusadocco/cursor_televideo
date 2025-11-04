@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:cursor_televideo/core/l10n/app_localizations.dart';
 
 part 'favorite_page.freezed.dart';
 part 'favorite_page.g.dart';
@@ -16,8 +17,14 @@ class FavoritePage with _$FavoritePage {
     @Default(0) int order,
   }) = _FavoritePage;
 
-  // Getter per ottenere una descrizione sicura
+  // Getter per ottenere una descrizione sicura (deprecato - usare getDisplayDescription)
+  @Deprecated('Use getDisplayDescription(l10n) instead for localized descriptions')
   String get displayDescription => description ?? 'Pagina $pageNumber';
+  
+  // Metodo per ottenere una descrizione localizzata
+  String getDisplayDescription(AppLocalizations l10n) {
+    return description ?? l10n.page(pageNumber);
+  }
 
   factory FavoritePage.fromJson(Map<String, dynamic> json) =>
       _$FavoritePageFromJson(json);

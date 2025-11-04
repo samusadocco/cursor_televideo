@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
 
 class RegionSelectorInstruction extends StatelessWidget {
-  const RegionSelectorInstruction({super.key});
+  final String channelFlag;
+  final String channelName;
+  
+  const RegionSelectorInstruction({
+    super.key,
+    this.channelFlag = '🇮🇹',
+    this.channelName = 'RAI',
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -18,12 +25,11 @@ class RegionSelectorInstruction extends StatelessWidget {
                 opacity: 0.3,
                 child: Icon(Icons.menu_book),
               ),
-              // Selettore Regioni (evidenziato)
+              // Selettore Canali (evidenziato con bandiera e nome)
               Container(
-                width: 40,
-                height: 40,
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
-                  shape: BoxShape.circle,
+                  borderRadius: BorderRadius.circular(20),
                   border: Border.all(
                     color: Colors.white,
                     width: 2,
@@ -36,11 +42,22 @@ class RegionSelectorInstruction extends StatelessWidget {
                     ),
                   ],
                 ),
-                child: ClipOval(
-                  child: Image.asset(
-                    'assets/images/italy.png',
-                    fit: BoxFit.cover,
-                  ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      channelFlag,
+                      style: const TextStyle(fontSize: 20),
+                    ),
+                    const SizedBox(width: 6),
+                    Text(
+                      channelName,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
                 ),
               ),
               // Preferiti (opaco)

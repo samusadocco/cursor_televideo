@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:cursor_televideo/features/onboarding/presentation/widgets/channel_badge_widget.dart';
 
 class SettingsInstruction extends StatelessWidget {
-  const SettingsInstruction({super.key});
+  final String channelFlag;
+  final String channelName;
+  
+  const SettingsInstruction({
+    super.key,
+    this.channelFlag = '🇮🇹',
+    this.channelName = 'RAI',
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -24,11 +32,9 @@ class SettingsInstruction extends StatelessWidget {
               decoration: const BoxDecoration(
                 shape: BoxShape.circle,
               ),
-              child: ClipOval(
-                child: Image.asset(
-                  'assets/images/italy.png',
-                  fit: BoxFit.cover,
-                ),
+              child: ChannelBadgeWidget(
+                channelFlag: channelFlag,
+                channelName: channelName,
               ),
             ),
           ),

@@ -12,6 +12,17 @@ class AppLocalizationsEs extends AppLocalizations {
   String get appTitle => 'TeleRetrò Italia';
 
   @override
+  String get welcome => '¡Bienvenido!';
+
+  @override
+  String get welcomeSelectChannel => 'Seleccionar canal predeterminado';
+
+  @override
+  String page(int pageNumber) {
+    return 'Página $pageNumber';
+  }
+
+  @override
   String get pageUnavailable =>
       'No se puede cargar la imagen de la página.\nPor favor, inténtelo de nuevo en un momento.';
 
@@ -241,7 +252,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get cacheDuration =>
-      'Duración de caché de imágenes de páginas Televideo (0 segundos para deshabilitar)';
+      'Duración de caché de imágenes de páginas Teletexto (0 segundos para deshabilitar)';
 
   @override
   String get seconds => 'segundos';
@@ -306,11 +317,18 @@ class AppLocalizationsEs extends AppLocalizations {
   String get build => 'build';
 
   @override
-  String get onboardingWelcome => 'Bienvenido a TeleRetrò Italia';
+  String get onboardingWelcome => 'Bienvenido a Teletext Europe';
 
   @override
   String get onboardingWelcomeDescription =>
-      'La aplicación para consultar RAI Televideo de forma rápida y sencilla';
+      'La aplicación para acceder a todos los canales de teletexto en Europa';
+
+  @override
+  String get onboardingDefaultChannel => 'Seleccionar Canal Predeterminado';
+
+  @override
+  String get onboardingDefaultChannelDescription =>
+      'Al iniciar la aplicación, se te pedirá que selecciones tu canal preferido entre todos los canales disponibles.\n\nPuedes cambiar el canal predeterminado en cualquier momento desde el menú Ajustes.';
 
   @override
   String get onboardingNavigation => 'Navegación';
@@ -324,27 +342,28 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get onboardingFavoritesDescription =>
-      'Añade páginas a favoritos para acceso rápido';
+      'Guarda las páginas que visitas más a menudo:\n\n• Toca el icono indicado para añadir la página actual\n• Toca de nuevo para quitarla de favoritos\n• El icono se vuelve rojo cuando la página está en favoritos\n\nPuedes guardar tanto páginas nacionales como regionales.';
 
   @override
-  String get onboardingRegions => 'Televideo Regional';
+  String get onboardingRegions => 'Canales de Toda Europa';
 
   @override
-  String get onboardingRegionsDescription => 'Accede al Televideo de tu región';
+  String get onboardingRegionsDescription =>
+      'Selecciona y organiza tus canales favoritos de toda Europa.\n\nBusca por nombre de canal o nombre de país.\n\n¡Puedes acceder al teletexto de Italia, Alemania, Austria, Suiza y muchos otros países europeos!';
 
   @override
   String get onboardingAutoRefresh => 'Actualización Automática';
 
   @override
   String get onboardingAutoRefreshDescription =>
-      'Las subpáginas se actualizan automáticamente';
+      'Cuando la actualización automática está activa, el círculo alrededor del número de página se llena progresivamente:\n\nPuedes cambiar el tiempo de actualización en la configuración\n\nEl indicador solo es visible cuando hay subpáginas disponibles y la actualización automática está activa.';
 
   @override
   String get onboardingPause => 'Pausar Actualización';
 
   @override
   String get onboardingPauseDescription =>
-      'Toca un área vacía para pausar la actualización automática';
+      'Puedes pausar la actualización automática de las subpáginas:\n\n• Toca en cualquier lugar de la página donde no haya números clicables\n• Verás aparecer el icono ⏸️ para indicar que la actualización está en pausa\n• Toca de nuevo para reanudar la actualización (icono ▶️)\n\nEsta función es útil cuando quieres leer una subpágina con calma sin que cambie automáticamente.';
 
   @override
   String get onboardingPageSelector => 'Selector de Página';
@@ -372,14 +391,14 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get onboardingClickableNumbersDescription =>
-      'Toca los números de página resaltados para navegar directamente a esa página\n\nLas páginas 100/1 del Televideo Nacional y 300/1 del Televideo Regional no son clicables';
+      'Toca los números de página resaltados para navegar directamente a esa página\n\n';
 
   @override
   String get onboardingShortcuts => 'Menú de Accesos Directos';
 
   @override
   String get onboardingShortcutsDescription =>
-      'Acceso rápido a las páginas más importantes de Televideo.\n\nUsa este menú para saltar directamente a:\n• Página 100: Índice nacional\n• Página 200: Noticias\n.....\nTambién puedes buscar páginas por título seleccionando la opción Buscar página';
+      'Acceso rápido a las páginas más importantes de Teletexto.\n\nUsa este menú para saltar directamente a:\n• Página 100: Índice nacional\n• Página 200: Noticias\n.....\nTambién puedes buscar páginas por título seleccionando la opción Buscar página';
 
   @override
   String get onboardingFavoritesList => 'Lista de Favoritos';
@@ -390,7 +409,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get onboardingSettingsDescription =>
-      'Personaliza la aplicación según tus preferencias:\n\n• Cargar primer favorito al inicio: decide con qué página de Televideo empezar\n• Tema: elige entre claro, oscuro o automático\n• Actualización automática: habilita la carga automática de subpáginas\n• Caché: gestiona la duración de la caché de páginas\n• Instrucciones: revisa este tutorial cuando quieras\n• Copia de seguridad de favoritos: guarda y restaura tus favoritos\n• Ajustes de privacidad y restablecimiento: gestiona o restablece tus elecciones de privacidad';
+      'Personaliza la aplicación según tus preferencias:\n\n• Cargar primer favorito al inicio: decide con qué página de Teletexto empezar\n• Tema: elige entre claro, oscuro o automático\n• Actualización automática: habilita la carga automática de subpáginas\n• Caché: gestiona la duración de la caché de páginas\n• Instrucciones: revisa este tutorial cuando quieras\n• Copia de seguridad de favoritos: guarda y restaura tus favoritos\n• Ajustes de privacidad y restablecimiento: gestiona o restablece tus elecciones de privacidad';
 
   @override
   String get dontShowAgain => 'No mostrar de nuevo';
@@ -400,6 +419,24 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get reset => 'Restablecer';
+
+  @override
+  String get resetInitialChannel => 'Restablecer canal inicial';
+
+  @override
+  String get resetInitialChannelDescription =>
+      'Mostrar el diálogo de selección de canal nuevamente en el próximo inicio';
+
+  @override
+  String get resetCompleted => 'Restablecimiento completado';
+
+  @override
+  String get resetInitialChannelMessage =>
+      'El canal inicial se ha restablecido.\n\nEn el próximo inicio de la aplicación se le pedirá que seleccione su canal predeterminado nuevamente.\n\nReiniciando la aplicación ahora...';
+
+  @override
+  String get selectYourChannel =>
+      'Seleccione su canal de Teletexto predeterminado.\nPuede cambiarlo en cualquier momento.';
 
   @override
   String backToPage(int pageNumber) {
@@ -462,4 +499,55 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get reorderFavorites => 'Reordenar favoritos';
+
+  @override
+  String get countryIT => 'Italia';
+
+  @override
+  String get countryDE => 'Alemania';
+
+  @override
+  String get countryAT => 'Austria';
+
+  @override
+  String get countryCH => 'Suiza';
+
+  @override
+  String get countryES => 'España';
+
+  @override
+  String get countryPT => 'Portugal';
+
+  @override
+  String get countryNL => 'Países Bajos';
+
+  @override
+  String get countrySE => 'Suecia';
+
+  @override
+  String get countryFI => 'Finlandia';
+
+  @override
+  String get countryDK => 'Dinamarca';
+
+  @override
+  String get countryCZ => 'República Checa';
+
+  @override
+  String get countryHR => 'Croacia';
+
+  @override
+  String get countryBA => 'Bosnia y Herzegovina';
+
+  @override
+  String get countryHU => 'Hungría';
+
+  @override
+  String get countryIS => 'Islandia';
+
+  @override
+  String get countrySI => 'Eslovenia';
+
+  @override
+  String get countryUA => 'Ucrania';
 }

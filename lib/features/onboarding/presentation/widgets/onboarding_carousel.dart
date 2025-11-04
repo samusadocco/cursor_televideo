@@ -9,8 +9,13 @@ import 'package:cursor_televideo/features/onboarding/presentation/widgets/favori
 import 'package:cursor_televideo/features/onboarding/presentation/widgets/settings_instruction.dart';
 import 'package:cursor_televideo/features/onboarding/presentation/widgets/page_links_instruction.dart';
 import 'package:cursor_televideo/features/onboarding/presentation/widgets/navigation_arrows_instruction.dart';
+import 'package:cursor_televideo/features/onboarding/presentation/widgets/default_channel_instruction.dart';
 import 'package:cursor_televideo/core/onboarding/onboarding_service.dart';
 import 'package:cursor_televideo/core/l10n/app_localizations.dart';
+import 'package:cursor_televideo/core/teletext/teletext_channels.dart';
+import 'package:cursor_televideo/core/teletext/favorite_channels_service.dart';
+import 'package:cursor_televideo/core/teletext/channel_notifier.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class OnboardingCarousel extends StatefulWidget {
   final VoidCallback onDismiss;
@@ -30,10 +35,19 @@ class _OnboardingCarouselState extends State<OnboardingCarousel> with SingleTick
   late final Animation<double> _fadeAnimation;
   late final Animation<double> _scaleAnimation;
   int _currentPage = 0;
+  
+  // Canale predefinito dell'utente
+  String _defaultChannelFlag = '🇮🇹';
+  String _defaultChannelName = 'RAI';
+  final _channelNotifier = ChannelNotifier();
 
   @override
   void initState() {
     super.initState();
+    _loadDefaultChannel();
+    // Ascolta i cambiamenti del canale
+    _channelNotifier.addListener(_onChannelChanged);
+    
     _animationController = AnimationController(
       duration: const Duration(milliseconds: 400),
       vsync: this,
@@ -54,9 +68,45 @@ class _OnboardingCarouselState extends State<OnboardingCarousel> with SingleTick
 
     _animationController.forward();
   }
+  
+  void _onChannelChanged() {
+    // Quando il canale cambia, aggiorna i dati
+    if (mounted && _channelNotifier.currentChannel != null) {
+      final channel = _channelNotifier.currentChannel!;
+      setState(() {
+        _defaultChannelFlag = channel.flagEmoji;
+        _defaultChannelName = channel.shortName ?? channel.name;
+      });
+      print('[OnboardingCarousel] Canale aggiornato da notifier: $_defaultChannelFlag $_defaultChannelName');
+    }
+  }
+  
+  /// Carica il canale predefinito dell'utente
+  Future<void> _loadDefaultChannel() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final channelService = FavoriteChannelsService(prefs);
+      final channelId = await channelService.getSelectedChannelId();
+      
+      if (channelId != null) {
+        final channel = TeletextChannels.getChannelById(channelId);
+        if (channel != null) {
+          setState(() {
+            _defaultChannelFlag = channel.flagEmoji;
+            _defaultChannelName = channel.shortName ?? channel.name;
+          });
+          print('[OnboardingCarousel] Canale predefinito: $_defaultChannelFlag $_defaultChannelName');
+        }
+      }
+    } catch (e) {
+      print('[OnboardingCarousel] Errore nel caricare canale predefinito: $e');
+      // Mantieni i valori di default (RAI Italia)
+    }
+  }
 
   @override
   void dispose() {
+    _channelNotifier.removeListener(_onChannelChanged);
     _pageController.dispose();
     _animationController.dispose();
     super.dispose();
@@ -100,6 +150,14 @@ class _OnboardingCarouselState extends State<OnboardingCarousel> with SingleTick
             const SizedBox(height: 24),
           ],
         ),
+        contentAfterTitle: true,
+      ),
+      // Selezione canale di default
+      _buildPage(
+        l10n.onboardingDefaultChannel,
+        l10n.onboardingDefaultChannelDescription,
+        Icons.settings_input_antenna,
+        customContent: const DefaultChannelInstruction(),
         contentAfterTitle: true,
       ),
       // Navigazione orizzontale
@@ -172,21 +230,30 @@ class _OnboardingCarouselState extends State<OnboardingCarousel> with SingleTick
         l10n.onboardingShortcuts,
         l10n.onboardingShortcutsDescription,
         Icons.menu_book,
-        customContent: const ShortcutsMenuInstruction(),
+        customContent: ShortcutsMenuInstruction(
+          channelFlag: _defaultChannelFlag,
+          channelName: _defaultChannelName,
+        ),
       ),
       // Spiegazione selettore regioni
       _buildPage(
         l10n.onboardingRegions,
         l10n.onboardingRegionsDescription,
         Icons.location_on,
-        customContent: const RegionSelectorInstruction(),
+        customContent: RegionSelectorInstruction(
+          channelFlag: _defaultChannelFlag,
+          channelName: _defaultChannelName,
+        ),
       ),
       // Spiegazione preferiti
       _buildPage(
         l10n.onboardingFavorites,
         l10n.onboardingFavoritesDescription,
         Icons.favorite,
-        customContent: const FavoritesInstruction(),
+        customContent: FavoritesInstruction(
+          channelFlag: _defaultChannelFlag,
+          channelName: _defaultChannelName,
+        ),
         contentAfterTitle: true,
       ),
       // Spiegazione lista preferiti
@@ -194,7 +261,10 @@ class _OnboardingCarouselState extends State<OnboardingCarousel> with SingleTick
         l10n.onboardingFavoritesList,
         l10n.onboardingFavoritesListDescription,
         Icons.list,
-        customContent: const FavoritesListInstruction(),
+        customContent: FavoritesListInstruction(
+          channelFlag: _defaultChannelFlag,
+          channelName: _defaultChannelName,
+        ),
         contentAfterTitle: true,
       ),
       // Spiegazione impostazioni
@@ -202,7 +272,10 @@ class _OnboardingCarouselState extends State<OnboardingCarousel> with SingleTick
         l10n.settings,
         l10n.onboardingSettingsDescription,
         Icons.settings,
-        customContent: const SettingsInstruction(),
+        customContent: SettingsInstruction(
+          channelFlag: _defaultChannelFlag,
+          channelName: _defaultChannelName,
+        ),
         contentAfterTitle: true,
       ),
     ];

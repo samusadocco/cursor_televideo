@@ -11,8 +11,6 @@ import 'package:cursor_televideo/features/televideo_viewer/bloc/televideo_bloc.d
 import 'package:cursor_televideo/features/televideo_viewer/bloc/region_bloc.dart';
 import 'package:cursor_televideo/core/network/televideo_repository.dart';
 import 'package:cursor_televideo/core/theme/theme_bloc.dart';
-import 'package:cursor_televideo/core/ads/ad_service.dart';
-import 'package:cursor_televideo/features/splash/presentation/widgets/splash_screen.dart';
 import 'package:cursor_televideo/core/ads/initialize_screen.dart';
 import 'package:cursor_televideo/core/version_manager.dart';
 import 'package:cursor_televideo/features/version/widgets/version_changes_dialog.dart';
@@ -74,8 +72,8 @@ void main() async {
     await FavoritesService().initialize();
     print('FavoritesService initialized successfully');
     
-    // Inizializza il servizio della lingua
-    final languageService = LanguageService(prefs);
+    // Inizializza il servizio della lingua (singleton)
+    await LanguageService.initialize(prefs);
     print('LanguageService initialized successfully');
   } catch (e) {
     print('Error initializing services: $e');
@@ -105,9 +103,10 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
-  late final LanguageService _languageService;
-  late final SharedPreferences _prefs;
+  LanguageService? _languageService;
+  SharedPreferences? _prefs;
   Locale? _currentLocale;
+  StreamSubscription<Locale>? _languageSubscription;
 
   @override
   void initState() {
@@ -118,6 +117,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
   @override
   void dispose() {
+    _languageSubscription?.cancel();
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();      
   }
@@ -126,11 +126,54 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   void didChangeLocales(List<Locale>? locales) {
     _initializeLanguage();
   }
+  
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    print('[MyApp] App lifecycle state changed: $state');
+    
+    if (state == AppLifecycleState.paused || state == AppLifecycleState.inactive) {
+      // App va in background - salva lo stato corrente
+      print('[MyApp] App going to background, saving state...');
+      _saveAppState();
+    } else if (state == AppLifecycleState.resumed) {
+      // App torna in foreground
+      print('[MyApp] App resumed to foreground');
+    }
+  }
+  
+  void _saveAppState() {
+    // Salva lo stato del TelevideoBloc
+    try {
+      // Nota: il context potrebbe non essere disponibile qui
+      // Il salvataggio verrà gestito dal HomePage
+      print('[MyApp] State save triggered');
+    } catch (e) {
+      print('[MyApp] Error saving state: $e');
+    }
+  }
 
   Future<void> _initializeLanguage() async {
-    _prefs = await SharedPreferences.getInstance();
-    _languageService = LanguageService(_prefs);
-    final locale = await _languageService.getSelectedLocale();
+    // Inizializza il LanguageService singleton solo una volta
+    if (_languageService == null) {
+      _prefs = await SharedPreferences.getInstance();
+      _languageService = await LanguageService.initialize(_prefs!);
+      
+      // Ascolta i cambi di lingua (solo una volta)
+      _languageSubscription = LanguageService.instance.languageStream.listen((newLocale) {
+        print('[MyApp] Cambio lingua rilevato dallo stream: ${newLocale.languageCode}');
+        if (mounted) {
+          setState(() {
+            _currentLocale = newLocale;
+            print('[MyApp] Locale aggiornato a: ${_currentLocale?.languageCode}');
+          });
+        }
+      });
+    }
+    
+    final locale = await LanguageService.instance.getSelectedLocale();
+    print('[MyApp] Lingua iniziale: ${locale.languageCode}');
+    
     if (mounted) {
       setState(() {
         _currentLocale = locale;
@@ -207,10 +250,8 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
               GlobalCupertinoLocalizations.delegate,
             ],
             home: InitializeScreen(
-              targetWidget: SplashScreen(
-                child: OnboardingWrapper(
-                  child: HomePage(),
-                ),
+              targetWidget: OnboardingWrapper(
+                child: HomePage(),
               ),
             ),
             debugShowCheckedModeBanner: false,

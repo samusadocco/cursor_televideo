@@ -12,6 +12,17 @@ class AppLocalizationsNl extends AppLocalizations {
   String get appTitle => 'TeleRetrò Italia';
 
   @override
+  String get welcome => 'Welkom!';
+
+  @override
+  String get welcomeSelectChannel => 'Standaardkanaal selecteren';
+
+  @override
+  String page(int pageNumber) {
+    return 'Pagina $pageNumber';
+  }
+
+  @override
   String get pageUnavailable =>
       'Kan de paginafoto niet laden.\nProbeer het over een moment opnieuw.';
 
@@ -241,7 +252,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get cacheDuration =>
-      'Cache-duur voor Televideo-paginafoto\'s (0 seconden om uit te schakelen)';
+      'Cache-duur voor Teletekst-paginafoto\'s (0 seconden om uit te schakelen)';
 
   @override
   String get seconds => 'seconden';
@@ -305,11 +316,18 @@ class AppLocalizationsNl extends AppLocalizations {
   String get build => 'build';
 
   @override
-  String get onboardingWelcome => 'Welkom bij TeleRetrò Italia';
+  String get onboardingWelcome => 'Welkom bij Teletext Europe';
 
   @override
   String get onboardingWelcomeDescription =>
-      'De app om RAI Televideo snel en eenvoudig te raadplegen';
+      'De app voor toegang tot alle teletekstkanalen in Europa';
+
+  @override
+  String get onboardingDefaultChannel => 'Standaardkanaal Selecteren';
+
+  @override
+  String get onboardingDefaultChannelDescription =>
+      'Bij het starten van de app wordt u gevraagd uw voorkeurskanaal te selecteren uit alle beschikbare kanalen.\n\nU kunt het standaardkanaal op elk moment wijzigen via het menu Instellingen.';
 
   @override
   String get onboardingNavigation => 'Navigatie';
@@ -323,28 +341,28 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get onboardingFavoritesDescription =>
-      'Voeg pagina\'s toe aan favorieten voor snelle toegang';
+      'Bewaar de pagina\'s die u het vaakst bezoekt:\n\n• Tik op het aangegeven pictogram om de huidige pagina toe te voegen\n• Tik opnieuw om deze uit de favorieten te verwijderen\n• Het pictogram wordt rood wanneer de pagina bij de favorieten staat\n\nU kunt zowel nationale als regionale pagina\'s opslaan.';
 
   @override
-  String get onboardingRegions => 'Regionaal Televideo';
+  String get onboardingRegions => 'Kanalen uit Heel Europa';
 
   @override
   String get onboardingRegionsDescription =>
-      'Toegang tot de Televideo van uw regio';
+      'Selecteer en organiseer uw favoriete kanalen uit heel Europa.\n\nZoek op kanaalnaam of landnaam.\n\nU heeft toegang tot teletekst uit Italië, Duitsland, Oostenrijk, Zwitserland en vele andere Europese landen!';
 
   @override
   String get onboardingAutoRefresh => 'Automatisch Vernieuwen';
 
   @override
   String get onboardingAutoRefreshDescription =>
-      'Subpagina\'s worden automatisch bijgewerkt';
+      'Wanneer automatisch vernieuwen actief is, vult de cirkel rond het paginanummer zich geleidelijk:\n\nU kunt de vernieuwingstijd wijzigen in de instellingen\n\nDe indicator is alleen zichtbaar wanneer subpagina\'s beschikbaar zijn en automatisch vernieuwen actief is.';
 
   @override
   String get onboardingPause => 'Vernieuwen Pauzeren';
 
   @override
   String get onboardingPauseDescription =>
-      'Tik op een leeg gebied om automatisch vernieuwen te pauzeren';
+      'U kunt het automatisch vernieuwen van subpagina\'s pauzeren:\n\n• Tik ergens op de pagina waar geen klikbare nummers zijn\n• U ziet het ⏸️ pictogram verschijnen om aan te geven dat het vernieuwen gepauzeerd is\n• Tik opnieuw om het vernieuwen te hervatten (▶️ pictogram)\n\nDeze functie is handig wanneer u een subpagina rustig wilt lezen zonder dat deze automatisch verandert.';
 
   @override
   String get onboardingPageSelector => 'Paginakiezer';
@@ -372,14 +390,14 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get onboardingClickableNumbersDescription =>
-      'Tik op de gemarkeerde paginanummers om direct naar die pagina te navigeren\n\nPagina\'s 100/1 van Nationaal Televideo en 300/1 van Regionaal Televideo zijn niet klikbaar';
+      'Tik op de gemarkeerde paginanummers om direct naar die pagina te navigeren\n\n';
 
   @override
   String get onboardingShortcuts => 'Menu Snelkoppelingen';
 
   @override
   String get onboardingShortcutsDescription =>
-      'Krijg snel toegang tot de belangrijkste Televideo-pagina\'s.\n\nGebruik dit menu om direct naar:\n• Pagina 100: Nationale index\n• Pagina 200: Nieuws\n.....\nU kunt ook pagina\'s op titel zoeken door de optie Pagina zoeken te selecteren';
+      'Krijg snel toegang tot de belangrijkste Teletekst-pagina\'s.\n\nGebruik dit menu om direct naar:\n• Pagina 100: Nationale index\n• Pagina 200: Nieuws\n.....\nU kunt ook pagina\'s op titel zoeken door de optie Pagina zoeken te selecteren';
 
   @override
   String get onboardingFavoritesList => 'Favorietenlijst';
@@ -390,7 +408,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get onboardingSettingsDescription =>
-      'Pas de app aan volgens uw voorkeuren:\n\n• Laad eerste favoriet bij opstarten: bepaal met welke Televideo-pagina te beginnen\n• Thema: kies tussen licht, donker of automatisch\n• Automatisch vernieuwen: schakel automatisch laden van subpagina\'s in\n• Cache: beheer de cache-duur van pagina\'s\n• Instructies: bekijk deze tutorial wanneer u maar wilt\n• Back-up Favorieten: sla uw favorieten op en herstel ze\n• Privacy-instellingen en reset: beheer of reset uw privacykeuzes';
+      'Pas de app aan volgens uw voorkeuren:\n\n• Laad eerste favoriet bij opstarten: bepaal met welke Teletekst-pagina te beginnen\n• Thema: kies tussen licht, donker of automatisch\n• Automatisch vernieuwen: schakel automatisch laden van subpagina\'s in\n• Cache: beheer de cache-duur van pagina\'s\n• Instructies: bekijk deze tutorial wanneer u maar wilt\n• Back-up Favorieten: sla uw favorieten op en herstel ze\n• Privacy-instellingen en reset: beheer of reset uw privacykeuzes';
 
   @override
   String get dontShowAgain => 'Niet meer tonen';
@@ -400,6 +418,24 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get reset => 'Reset';
+
+  @override
+  String get resetInitialChannel => 'Reset startkanaal';
+
+  @override
+  String get resetInitialChannelDescription =>
+      'Toon het kanaalselectie-dialoog opnieuw bij de volgende start';
+
+  @override
+  String get resetCompleted => 'Reset voltooid';
+
+  @override
+  String get resetInitialChannelMessage =>
+      'Het startkanaal is gereset.\n\nBij de volgende app-start wordt u gevraagd om opnieuw uw standaardkanaal te selecteren.\n\nApp wordt nu opnieuw gestart...';
+
+  @override
+  String get selectYourChannel =>
+      'Selecteer uw standaard Teletekst-kanaal.\nU kunt het op elk moment wijzigen.';
 
   @override
   String backToPage(int pageNumber) {
@@ -462,4 +498,55 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get reorderFavorites => 'Favorieten herschikken';
+
+  @override
+  String get countryIT => 'Italië';
+
+  @override
+  String get countryDE => 'Duitsland';
+
+  @override
+  String get countryAT => 'Oostenrijk';
+
+  @override
+  String get countryCH => 'Zwitserland';
+
+  @override
+  String get countryES => 'Spanje';
+
+  @override
+  String get countryPT => 'Portugal';
+
+  @override
+  String get countryNL => 'Nederland';
+
+  @override
+  String get countrySE => 'Zweden';
+
+  @override
+  String get countryFI => 'Finland';
+
+  @override
+  String get countryDK => 'Denemarken';
+
+  @override
+  String get countryCZ => 'Tsjechië';
+
+  @override
+  String get countryHR => 'Kroatië';
+
+  @override
+  String get countryBA => 'Bosnië en Herzegovina';
+
+  @override
+  String get countryHU => 'Hongarije';
+
+  @override
+  String get countryIS => 'IJsland';
+
+  @override
+  String get countrySI => 'Slovenië';
+
+  @override
+  String get countryUA => 'Oekraïne';
 }

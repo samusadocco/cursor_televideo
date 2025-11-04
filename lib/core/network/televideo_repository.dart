@@ -260,6 +260,8 @@ class TelevideoRepository {
         throw ArgumentError('Il numero di sottopagina deve essere maggiore di 0');
       }
 
+      print('[TelevideoRepository] Loading regional page for region: "$region"');
+      
       final rawImageUrl = _buildImageUrl(_baseUrl, region, pageNumber, subPage: subPage);
       final imageUrl = kIsWeb ? '$_corsProxy$rawImageUrl' : rawImageUrl;
       final baseHtmlUrl = '$_htmlRegionalBaseUrl?r=$region&p=$pageNumber';

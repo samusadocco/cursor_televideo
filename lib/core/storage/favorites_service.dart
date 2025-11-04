@@ -18,20 +18,25 @@ class FavoritesService {
     _favorites = favoritesJson
         .map((json) {
           final favorite = FavoritePage.fromJson(jsonDecode(json));
-          // Se non c'è descrizione, la aggiungiamo
+          // Se non c'è descrizione, proviamo a trovarne una predefinita
           if (favorite.description == null) {
             final descriptions = _descriptionsService.getDescriptionsForChannel(
               channelId: favorite.channelId,
               isRegional: favorite.regionCode != null,
             );
-            return FavoritePage(
-              pageNumber: favorite.pageNumber,
-              title: favorite.title,
-              description: descriptions[favorite.pageNumber] ?? 'Pagina ${favorite.pageNumber}',
-              regionCode: favorite.regionCode,
-              channelId: favorite.channelId,
-              order: favorite.order,
-            );
+            // Aggiungi la descrizione SOLO se esiste nella lista predefinita
+            // Altrimenti lascia null per localizzazione dinamica
+            final predefinedDescription = descriptions[favorite.pageNumber];
+            if (predefinedDescription != null) {
+              return FavoritePage(
+                pageNumber: favorite.pageNumber,
+                title: favorite.title,
+                description: predefinedDescription,
+                regionCode: favorite.regionCode,
+                channelId: favorite.channelId,
+                order: favorite.order,
+              );
+            }
           }
           return favorite;
         })
@@ -40,7 +45,7 @@ class FavoritesService {
     // Ordina i preferiti in base all'ordine
     _favorites.sort((a, b) => a.order.compareTo(b.order));
     
-    // Salviamo subito per aggiornare i preferiti con le descrizioni
+    // Salviamo subito per aggiornare i preferiti con le descrizioni (solo quelle predefinite)
     await _saveFavorites();
   }
 
@@ -50,12 +55,14 @@ class FavoritesService {
         channelId: channelId,
         isRegional: regionCode != null,
       );
-      final description = descriptions[pageNumber] ?? 'Pagina $pageNumber';
+      // Salva la descrizione solo se esiste nella lista predefinita
+      // Se non esiste, salva null così verrà localizzata dinamicamente
+      final description = descriptions[pageNumber];
       
       final favorite = FavoritePage(
         pageNumber: pageNumber,
-        title: 'Pagina $pageNumber',
-        description: description,
+        title: 'Page $pageNumber', // Questo non viene usato, può rimanere in inglese
+        description: description, // null se non c'è descrizione predefinita
         regionCode: regionCode,
         channelId: channelId,
         order: _favorites.length, // Aggiungi alla fine della lista

@@ -13,6 +13,11 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:cursor_televideo/core/l10n/app_localizations.dart';
 import 'package:cursor_televideo/core/l10n/language_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:cursor_televideo/core/settings/first_launch_service.dart';
+import 'package:cursor_televideo/features/first_launch/initial_channel_selection_dialog.dart';
+import 'package:cursor_televideo/core/teletext/teletext_channels.dart';
+import 'package:cursor_televideo/features/televideo_viewer/bloc/televideo_bloc.dart';
+import 'package:cursor_televideo/features/televideo_viewer/bloc/televideo_event.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -44,8 +49,8 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   Future<void> _initializeLanguageService() async {
-    final prefs = await SharedPreferences.getInstance();
-    _languageService = LanguageService(prefs);
+    // Usa il singleton invece di creare una nuova istanza
+    _languageService = LanguageService.instance;
     
     // Ascolta i cambiamenti di lingua dopo l'inizializzazione
     _languageSubscription = _languageService?.languageStream.listen((_) {
@@ -261,6 +266,41 @@ class _SettingsPageState extends State<SettingsPage> {
                   builder: (context) => const BackupPage(),
                 ),
               );
+            },
+          ),
+          
+          // Reset canale iniziale (DEBUG)
+          ListTile(
+            title: Text(l10n.resetInitialChannel),
+            subtitle: Text(l10n.resetInitialChannelDescription),
+            trailing: const Icon(Icons.restart_alt),
+            onTap: () async {
+              final prefs = await SharedPreferences.getInstance();
+              final firstLaunchService = FirstLaunchService(prefs);
+              
+              // Reset
+              await firstLaunchService.resetFirstLaunch();
+              
+              if (!mounted) return;
+              
+              // Mostra il dialog di selezione canale direttamente
+              // Chiudi prima la pagina delle impostazioni
+              Navigator.of(context).pop();
+              
+              // Poi mostra il dialog di selezione canale
+              final selectedChannel = await showDialog<TeletextChannel>(
+                context: context,
+                barrierDismissible: false,
+                builder: (context) => const InitialChannelSelectionDialog(),
+              );
+              
+              if (selectedChannel != null && mounted) {
+                // Cambia al canale selezionato usando il bloc
+                // Il context qui è quello della HomePage, quindi il bloc è disponibile
+                context.read<TelevideoBloc>().add(
+                  TelevideoEvent.changeChannel(selectedChannel),
+                );
+              }
             },
           ),
           const Divider(),

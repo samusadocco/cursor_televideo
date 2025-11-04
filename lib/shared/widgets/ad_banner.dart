@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'dart:async';
 import 'dart:io';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:cursor_televideo/core/ads/ad_service.dart';
@@ -16,15 +17,30 @@ class _AdBannerState extends State<AdBanner> {
   bool _isLoaded = false;
   bool _isInitialized = false;
   final AdService _adService = AdService();
+  StreamSubscription<bool>? _bannerRefreshSubscription;
+  int _bannerVersion = 0; // Track banner refreshes
 
   @override
   void initState() {
     super.initState();
-    // Non facciamo nulla qui
+    
+    print('🎬 AdBanner: initState called');
+    
+    // Ascolta gli eventi di refresh del banner
+    _bannerRefreshSubscription = _adService.bannerRefreshStream.listen((shouldRefresh) {
+      print('📱 AdBanner: evento ricevuto da stream, shouldRefresh=$shouldRefresh, mounted=$mounted');
+      if (shouldRefresh && mounted) {
+        print('📱 AdBanner: ricevuto evento di refresh, eseguo _refreshBanner()');
+        _refreshBanner();
+      }
+    });
+    
+    print('📱 AdBanner: sottoscrizione stream configurata');
   }
 
   @override
   void dispose() {
+    _bannerRefreshSubscription?.cancel();
     _bannerAd?.dispose();
     super.dispose();
   }
@@ -39,6 +55,48 @@ class _AdBannerState extends State<AdBanner> {
       setState(() {
         _isLoaded = true;
       });
+    }
+  }
+  
+  Future<void> _refreshBanner() async {
+    if (!mounted) {
+      print('⚠️ AdBanner: widget not mounted, skip refresh');
+      return;
+    }
+    
+    print('🔄 Refresh banner in corso... (versione corrente: $_bannerVersion)');
+    final isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
+    
+    // Incrementa la versione del banner
+    _bannerVersion++;
+    print('🔄 Nuova versione banner: $_bannerVersion');
+    
+    // Prima imposta come non caricato per mostrare un placeholder
+    if (mounted) {
+      setState(() {
+        _isLoaded = false;
+      });
+    }
+    
+    // Dispone del banner corrente
+    _bannerAd?.dispose();
+    _bannerAd = null;
+    
+    print('🔄 Banner vecchio dispose, caricamento nuovo banner...');
+    
+    // Aspetta un attimo per permettere il dispose completo
+    await Future.delayed(Duration(milliseconds: 100));
+    
+    // Carica un nuovo banner
+    _bannerAd = await _adService.createBannerAd(isPortrait: isPortrait);
+    
+    if (_bannerAd != null && mounted) {
+      setState(() {
+        _isLoaded = true;
+      });
+      print('✅ Banner aggiornato con successo (versione $_bannerVersion)');
+    } else {
+      print('❌ Errore nell\'aggiornamento del banner (versione $_bannerVersion)');
     }
   }
 

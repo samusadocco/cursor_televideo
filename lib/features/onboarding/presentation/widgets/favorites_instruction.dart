@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:cursor_televideo/features/onboarding/presentation/widgets/channel_badge_widget.dart';
 
 class FavoritesInstruction extends StatelessWidget {
-  const FavoritesInstruction({super.key});
+  final String channelFlag;
+  final String channelName;
+  
+  const FavoritesInstruction({
+    super.key,
+    this.channelFlag = '🇮🇹',
+    this.channelName = 'RAI',
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -19,16 +27,13 @@ class FavoritesInstruction extends StatelessWidget {
           Opacity(
             opacity: 0.3,
             child: Container(
-              width: 40,
-              height: 40,
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
               ),
-              child: ClipOval(
-                child: Image.asset(
-                  'assets/images/italy.png',
-                  fit: BoxFit.cover,
-                ),
+              child: ChannelBadgeWidget(
+                channelFlag: channelFlag,
+                channelName: channelName,
               ),
             ),
           ),

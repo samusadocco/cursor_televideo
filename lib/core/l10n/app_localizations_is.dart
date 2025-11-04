@@ -12,6 +12,17 @@ class AppLocalizationsIs extends AppLocalizations {
   String get appTitle => 'TeleRetrò Italia';
 
   @override
+  String get welcome => 'Velkomin!';
+
+  @override
+  String get welcomeSelectChannel => 'Velja sjálfgefna rás';
+
+  @override
+  String page(int pageNumber) {
+    return 'Síða $pageNumber';
+  }
+
+  @override
   String get pageUnavailable =>
       'Ekki er hægt að hlaða síðumynd.\nVinsamlegast reyndu aftur eftir smástund.';
 
@@ -240,7 +251,7 @@ class AppLocalizationsIs extends AppLocalizations {
 
   @override
   String get cacheDuration =>
-      'Skyndiminni Televideo síðumynda (0 sekúndur til að slökkva)';
+      'Skyndiminni Textavarp síðumynda (0 sekúndur til að slökkva)';
 
   @override
   String get seconds => 'sekúndur';
@@ -305,11 +316,18 @@ class AppLocalizationsIs extends AppLocalizations {
   String get build => 'build';
 
   @override
-  String get onboardingWelcome => 'Velkomin í TeleRetrò Italia';
+  String get onboardingWelcome => 'Velkomin í Teletext Europe';
 
   @override
   String get onboardingWelcomeDescription =>
-      'Forritið til að skoða RAI Televideo á fljótlegan og auðveldan hátt';
+      'Forritið til að skoða RAI Textavarp á fljótlegan og auðveldan hátt';
+
+  @override
+  String get onboardingDefaultChannel => 'Velja Sjálfgefna Rás';
+
+  @override
+  String get onboardingDefaultChannelDescription =>
+      'Þegar þú ræsir appið verður þú beðinn um að velja uppáhaldsrásina þína úr öllum tiltækum rásum.\n\nÞú getur breytt sjálfgefnu rásinni hvenær sem er úr valmyndinni Stillingar.';
 
   @override
   String get onboardingNavigation => 'Leiðsögn';
@@ -323,28 +341,28 @@ class AppLocalizationsIs extends AppLocalizations {
 
   @override
   String get onboardingFavoritesDescription =>
-      'Bættu síðum við eftirlæti fyrir fljótan aðgang';
+      'Vistaðu síðurnar sem þú heimsækir oftast:\n\n• Pikkaðu á tilgreinda táknið til að bæta við núverandi síðu\n• Pikkaðu aftur til að fjarlægja úr uppáhaldi\n• Táknið verður rautt þegar síðan er í uppáhaldi\n\nÞú getur vistað bæði lands- og svæðissíður.';
 
   @override
-  String get onboardingRegions => 'Svæðisbundið Televideo';
+  String get onboardingRegions => 'Rásir frá Allri Evrópu';
 
   @override
   String get onboardingRegionsDescription =>
-      'Fáðu aðgang að Televideo svæðisins þíns';
+      'Veldu og skipulagðu uppáhaldsrásirnar þínar frá allri Evrópu.\n\nLeitaðu eftir nafni rásar eða nafni lands.\n\nÞú getur nálgast textavarpa frá Ítalíu, Þýskalandi, Austurríki, Sviss og mörgum öðrum Evrópulöndum!';
 
   @override
   String get onboardingAutoRefresh => 'Sjálfvirk Endurnýjun';
 
   @override
   String get onboardingAutoRefreshDescription =>
-      'Undirsíður uppfærast sjálfkrafa';
+      'Þegar sjálfvirk uppfærsla er virk, fyllist hringurinn í kringum síðunúmerið smám saman:\n\nÞú getur breytt uppfærslutíma í stillingum\n\nVísirinn er aðeins sýnilegur þegar undirsíður eru tiltækar og sjálfvirk uppfærsla er virk.';
 
   @override
   String get onboardingPause => 'Gera hlé á Endurnýjun';
 
   @override
   String get onboardingPauseDescription =>
-      'Ýttu á autt svæði til að gera hlé á sjálfvirkri endurnýjun';
+      'Þú getur gert hlé á sjálfvirkri uppfærslu undirsíðna:\n\n• Pikkaðu hvar sem er á síðunni þar sem engar smellanlegar tölur eru\n• Þú munt sjá ⏸️ táknið birtast til að gefa til kynna að uppfærsla sé í bið\n• Pikkaðu aftur til að halda áfram uppfærslu (▶️ tákn)\n\nÞessi aðgerð er gagnleg þegar þú vilt lesa undirsíðu í ró án þess að henni breytist sjálfkrafa.';
 
   @override
   String get onboardingPageSelector => 'Síðuval';
@@ -372,14 +390,14 @@ class AppLocalizationsIs extends AppLocalizations {
 
   @override
   String get onboardingClickableNumbersDescription =>
-      'Ýttu á auðkennd síðunúmer til að fara beint á þá síðu\n\nSíður 100/1 af Þjóðar Televideo og 300/1 af Svæðisbundnu Televideo eru ekki smellanlegar';
+      'Ýttu á auðkennd síðunúmer til að fara beint á þá síðu\n\n';
 
   @override
   String get onboardingShortcuts => 'Valmynd Flýtileiða';
 
   @override
   String get onboardingShortcutsDescription =>
-      'Fljótur aðgangur að mikilvægustu Televideo síðunum.\n\nNotaðu þessa valmynd til að hoppa beint á:\n• Síða 100: Þjóðaryfirlit\n• Síða 200: Fréttir\n.....\nÞú getur líka leitað að síðum eftir titli með því að velja Leita að síðu valkostinn';
+      'Fljótur aðgangur að mikilvægustu Textavarp síðunum.\n\nNotaðu þessa valmynd til að hoppa beint á:\n• Síða 100: Þjóðaryfirlit\n• Síða 200: Fréttir\n.....\nÞú getur líka leitað að síðum eftir titli með því að velja Leita að síðu valkostinn';
 
   @override
   String get onboardingFavoritesList => 'Eftirlætislisti';
@@ -390,7 +408,7 @@ class AppLocalizationsIs extends AppLocalizations {
 
   @override
   String get onboardingSettingsDescription =>
-      'Sérsníðdu forritið að þínum þörfum:\n\n• Hlaða fyrsta eftirlæti við ræsingu: ákveddu hvaða Televideo síðu á að byrja á\n• Þema: veldu á milli ljóss, dökks eða sjálfvirks\n• Sjálfvirk endurnýjun: virkjaðu sjálfvirka hleðslu undirsíða\n• Skyndiminni: stjórnaðu tímalengd síðuskyndiminnis\n• Leiðbeiningar: skoðaðu þessa kennslu hvenær sem er\n• Afrita eftirlæti: vistaðu og endurheimtu eftirlætin þín\n• Persónuverndstillingar og endurstilling: stjórnaðu eða endurstilltu persónuverndarval þitt';
+      'Sérsníðdu forritið að þínum þörfum:\n\n• Hlaða fyrsta eftirlæti við ræsingu: ákveddu hvaða Textavarp síðu á að byrja á\n• Þema: veldu á milli ljóss, dökks eða sjálfvirks\n• Sjálfvirk endurnýjun: virkjaðu sjálfvirka hleðslu undirsíða\n• Skyndiminni: stjórnaðu tímalengd síðuskyndiminnis\n• Leiðbeiningar: skoðaðu þessa kennslu hvenær sem er\n• Afrita eftirlæti: vistaðu og endurheimtu eftirlætin þín\n• Persónuverndstillingar og endurstilling: stjórnaðu eða endurstilltu persónuverndarval þitt';
 
   @override
   String get dontShowAgain => 'Ekki sýna aftur';
@@ -400,6 +418,24 @@ class AppLocalizationsIs extends AppLocalizations {
 
   @override
   String get reset => 'Endurstilla';
+
+  @override
+  String get resetInitialChannel => 'Endurstilla upphafsrás';
+
+  @override
+  String get resetInitialChannelDescription =>
+      'Sýna rásarvalsgluggann aftur við næstu ræsingu';
+
+  @override
+  String get resetCompleted => 'Endurstilling lokið';
+
+  @override
+  String get resetInitialChannelMessage =>
+      'Upphafsrásin hefur verið endurstillt.\n\nVið næstu ræsingu forritsins verður þú beðinn um að velja sjálfgefnu rásina þína aftur.\n\nEndurræsi forritið núna...';
+
+  @override
+  String get selectYourChannel =>
+      'Veldu sjálfgefnu Textavarp rásina þína.\nÞú getur breytt henni hvenær sem er.';
 
   @override
   String backToPage(int pageNumber) {
@@ -462,4 +498,55 @@ class AppLocalizationsIs extends AppLocalizations {
 
   @override
   String get reorderFavorites => 'Endurraða uppáhaldi';
+
+  @override
+  String get countryIT => 'Ítalía';
+
+  @override
+  String get countryDE => 'Þýskaland';
+
+  @override
+  String get countryAT => 'Austurríki';
+
+  @override
+  String get countryCH => 'Sviss';
+
+  @override
+  String get countryES => 'Spánn';
+
+  @override
+  String get countryPT => 'Portúgal';
+
+  @override
+  String get countryNL => 'Holland';
+
+  @override
+  String get countrySE => 'Svíþjóð';
+
+  @override
+  String get countryFI => 'Finnland';
+
+  @override
+  String get countryDK => 'Danmörk';
+
+  @override
+  String get countryCZ => 'Tékkland';
+
+  @override
+  String get countryHR => 'Króatía';
+
+  @override
+  String get countryBA => 'Bosnía og Hersegóvína';
+
+  @override
+  String get countryHU => 'Ungverjaland';
+
+  @override
+  String get countryIS => 'Ísland';
+
+  @override
+  String get countrySI => 'Slóvenía';
+
+  @override
+  String get countryUA => 'Úkraína';
 }

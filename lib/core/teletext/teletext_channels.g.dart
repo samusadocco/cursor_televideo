@@ -11,8 +11,9 @@ _$TeletextChannelImpl _$$TeletextChannelImplFromJson(
     _$TeletextChannelImpl(
       id: json['id'] as String,
       name: json['name'] as String,
+      shortName: json['shortName'] as String?,
       countryCode: json['countryCode'] as String,
-      countryName: json['countryName'] as String,
+      countryName: json['countryName'] as String?,
       flagEmoji: json['flagEmoji'] as String,
       broadcasterName: json['broadcasterName'] as String,
       type: $enumDecode(_$TeletextChannelTypeEnumMap, json['type']),
@@ -29,6 +30,7 @@ Map<String, dynamic> _$$TeletextChannelImplToJson(
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
+      'shortName': instance.shortName,
       'countryCode': instance.countryCode,
       'countryName': instance.countryName,
       'flagEmoji': instance.flagEmoji,

@@ -12,6 +12,17 @@ class AppLocalizationsCs extends AppLocalizations {
   String get appTitle => 'TeleRetrò Italia';
 
   @override
+  String get welcome => 'Vítejte!';
+
+  @override
+  String get welcomeSelectChannel => 'Vybrat výchozí kanál';
+
+  @override
+  String page(int pageNumber) {
+    return 'Stránka $pageNumber';
+  }
+
+  @override
   String get pageUnavailable =>
       'Nelze načíst obrázek stránky.\nZkuste to prosím za chvíli znovu.';
 
@@ -240,7 +251,7 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String get cacheDuration =>
-      'Doba trvání mezipaměti obrázků stránek Televideo (0 sekund pro vypnutí)';
+      'Doba trvání mezipaměti obrázků stránek Teletext (0 sekund pro vypnutí)';
 
   @override
   String get seconds => 'sekund';
@@ -304,11 +315,18 @@ class AppLocalizationsCs extends AppLocalizations {
   String get build => 'build';
 
   @override
-  String get onboardingWelcome => 'Vítejte v TeleRetrò Italia';
+  String get onboardingWelcome => 'Vítejte v Teletext Europe';
 
   @override
   String get onboardingWelcomeDescription =>
-      'Aplikace pro rychlou a snadnou konzultaci RAI Televideo';
+      'Aplikace pro rychlou a snadnou konzultaci RAI Teletext';
+
+  @override
+  String get onboardingDefaultChannel => 'Vybrat Výchozí Kanál';
+
+  @override
+  String get onboardingDefaultChannelDescription =>
+      'Při spuštění aplikace budete požádáni o výběr preferovaného kanálu ze všech dostupných kanálů.\n\nVýchozí kanál můžete kdykoli změnit v nabídce Nastavení.';
 
   @override
   String get onboardingNavigation => 'Navigace';
@@ -322,28 +340,28 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String get onboardingFavoritesDescription =>
-      'Přidejte stránky do oblíbených pro rychlý přístup';
+      'Uložte stránky, které navštěvujete nejčastěji:\n\n• Klepněte na uvedenou ikonu pro přidání aktuální stránky\n• Klepněte znovu pro odebrání z oblíbených\n• Ikona zčervená, když je stránka v oblíbených\n\nMůžete uložit národní i regionální stránky.';
 
   @override
-  String get onboardingRegions => 'Regionální Televideo';
+  String get onboardingRegions => 'Kanály z Celé Evropy';
 
   @override
   String get onboardingRegionsDescription =>
-      'Přístup k Televideo vašeho regionu';
+      'Vyberte a uspořádejte své oblíbené kanály z celé Evropy.\n\nHledejte podle názvu kanálu nebo názvu země.\n\nMůžete přistupovat k teletextu z Itálie, Německa, Rakouska, Švýcarska a mnoha dalších evropských zemí!';
 
   @override
   String get onboardingAutoRefresh => 'Automatické Obnovení';
 
   @override
   String get onboardingAutoRefreshDescription =>
-      'Podstránky se automaticky aktualizují';
+      'Když je aktivní automatické obnovení, kruh kolem čísla stránky se postupně plní:\n\nČas obnovení můžete změnit v nastavení\n\nIndikátor je viditelný pouze tehdy, když jsou k dispozici podstránky a automatické obnovení je aktivní.';
 
   @override
   String get onboardingPause => 'Pozastavit Obnovení';
 
   @override
   String get onboardingPauseDescription =>
-      'Klepněte na prázdnou oblast pro pozastavení automatického obnovení';
+      'Můžete pozastavit automatické obnovení podstránek:\n\n• Klepněte kdekoli na stránce, kde nejsou klikatelná čísla\n• Uvidíte se zobrazit ikonu ⏸️, která označuje, že obnovení je pozastaveno\n• Klepněte znovu pro pokračování obnovení (ikona ▶️)\n\nTato funkce je užitečná, když chcete číst podstránku v klidu, aniž by se automaticky měnila.';
 
   @override
   String get onboardingPageSelector => 'Výběr Stránky';
@@ -371,14 +389,14 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String get onboardingClickableNumbersDescription =>
-      'Klepněte na zvýrazněná čísla stránek pro přímou navigaci na danou stránku\n\nStránky 100/1 Národního Televideo a 300/1 Regionálního Televideo nejsou klikatelné';
+      'Klepněte na zvýrazněná čísla stránek pro přímou navigaci na danou stránku\n\n';
 
   @override
   String get onboardingShortcuts => 'Menu Zkratek';
 
   @override
   String get onboardingShortcutsDescription =>
-      'Rychlý přístup k nejdůležitějším stránkám Televideo.\n\nPoužijte toto menu pro přímý přechod na:\n• Stránka 100: Národní index\n• Stránka 200: Zprávy\n.....\nMůžete také vyhledávat stránky podle názvu výběrem možnosti Hledat stránku';
+      'Rychlý přístup k nejdůležitějším stránkám Teletext.\n\nPoužijte toto menu pro přímý přechod na:\n• Stránka 100: Národní index\n• Stránka 200: Zprávy\n.....\nMůžete také vyhledávat stránky podle názvu výběrem možnosti Hledat stránku';
 
   @override
   String get onboardingFavoritesList => 'Seznam Oblíbených';
@@ -389,7 +407,7 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String get onboardingSettingsDescription =>
-      'Přizpůsobte si aplikaci podle svých preferencí:\n\n• Načíst první oblíbenou při spuštění: rozhodněte, kterou stránkou Televideo začít\n• Téma: vyberte si mezi světlým, tmavým nebo automatickým\n• Automatické obnovení: povolte automatické načítání podstránek\n• Mezipaměť: spravujte dobu trvání mezipaměti stránek\n• Pokyny: prohlédněte si tento tutoriál kdykoli chcete\n• Zálohovat oblíbené: uložte a obnovte své oblíbené\n• Nastavení soukromí a reset: spravujte nebo resetujte své volby soukromí';
+      'Přizpůsobte si aplikaci podle svých preferencí:\n\n• Načíst první oblíbenou při spuštění: rozhodněte, kterou stránkou Teletext začít\n• Téma: vyberte si mezi světlým, tmavým nebo automatickým\n• Automatické obnovení: povolte automatické načítání podstránek\n• Mezipaměť: spravujte dobu trvání mezipaměti stránek\n• Pokyny: prohlédněte si tento tutoriál kdykoli chcete\n• Zálohovat oblíbené: uložte a obnovte své oblíbené\n• Nastavení soukromí a reset: spravujte nebo resetujte své volby soukromí';
 
   @override
   String get dontShowAgain => 'Již nezobrazovat';
@@ -399,6 +417,24 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String get reset => 'Reset';
+
+  @override
+  String get resetInitialChannel => 'Obnovit počáteční kanál';
+
+  @override
+  String get resetInitialChannelDescription =>
+      'Zobrazit dialog výběru kanálu znovu při příštím spuštění';
+
+  @override
+  String get resetCompleted => 'Obnovení dokončeno';
+
+  @override
+  String get resetInitialChannelMessage =>
+      'Počáteční kanál byl obnoven.\n\nPři příštím spuštění aplikace budete požádáni o opětovný výběr výchozího kanálu.\n\nRestartování aplikace nyní...';
+
+  @override
+  String get selectYourChannel =>
+      'Vyberte svůj výchozí kanál Teletextu.\nMůžete ho kdykoli změnit.';
 
   @override
   String backToPage(int pageNumber) {
@@ -461,4 +497,55 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String get reorderFavorites => 'Přeuspořádat oblíbené';
+
+  @override
+  String get countryIT => 'Itálie';
+
+  @override
+  String get countryDE => 'Německo';
+
+  @override
+  String get countryAT => 'Rakousko';
+
+  @override
+  String get countryCH => 'Švýcarsko';
+
+  @override
+  String get countryES => 'Španělsko';
+
+  @override
+  String get countryPT => 'Portugalsko';
+
+  @override
+  String get countryNL => 'Nizozemsko';
+
+  @override
+  String get countrySE => 'Švédsko';
+
+  @override
+  String get countryFI => 'Finsko';
+
+  @override
+  String get countryDK => 'Dánsko';
+
+  @override
+  String get countryCZ => 'Česko';
+
+  @override
+  String get countryHR => 'Chorvatsko';
+
+  @override
+  String get countryBA => 'Bosna a Hercegovina';
+
+  @override
+  String get countryHU => 'Maďarsko';
+
+  @override
+  String get countryIS => 'Island';
+
+  @override
+  String get countrySI => 'Slovinsko';
+
+  @override
+  String get countryUA => 'Ukrajina';
 }
