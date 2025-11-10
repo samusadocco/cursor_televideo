@@ -1,4 +1,4 @@
-import 'package:cursor_televideo/shared/models/shortcut_page.dart';
+  import 'package:cursor_televideo/shared/models/shortcut_page.dart';
 
 class ShortcutsService {
   static final ShortcutsService _instance = ShortcutsService._internal();
@@ -51,75 +51,220 @@ class ShortcutsService {
     const ShortcutPage(pageNumber: 790, title: 'Inhalt A-Z'),
   ];
 
-  // ZDF Text (Germania)
+  // ZDF Text (Germania - Hauptprogramm)
   final List<ShortcutPage> _zdfShortcuts = [
-    const ShortcutPage(pageNumber: 100, title: 'Übersicht (Indice)'),
+    const ShortcutPage(pageNumber: 100, title: 'Übersicht'),
+    const ShortcutPage(pageNumber: 111, title: 'Schlagzeilen'),
     const ShortcutPage(pageNumber: 112, title: 'Nachrichten'),
     const ShortcutPage(pageNumber: 170, title: 'Wetter'),
     const ShortcutPage(pageNumber: 200, title: 'Sport'),
-    const ShortcutPage(pageNumber: 300, title: 'Programm (TV)'),
-    const ShortcutPage(pageNumber: 400, title: 'Sport II'),
+    const ShortcutPage(pageNumber: 300, title: 'Programm'),
+    const ShortcutPage(pageNumber: 555, title: 'Gewinnzahlen'),
+    const ShortcutPage(pageNumber: 710, title: 'ZDFinfo'),
+    const ShortcutPage(pageNumber: 715, title: 'ZDFneo'),
+    const ShortcutPage(pageNumber: 890, title: 'Index A-Z'),
+  ];
+
+  // ZDFinfo Text (Germania - Documentari)
+  final List<ShortcutPage> _zdfinfoShortcuts = [
+    const ShortcutPage(pageNumber: 100, title: 'Übersicht'),
+    const ShortcutPage(pageNumber: 102, title: 'Inhalt (A-Z)'),
+    const ShortcutPage(pageNumber: 111, title: 'Schlagzeilen'),
+    const ShortcutPage(pageNumber: 112, title: 'Nachrichten'),
+    const ShortcutPage(pageNumber: 170, title: 'Wetter'),
+    const ShortcutPage(pageNumber: 300, title: 'ZDFinfo Programm'),
+    const ShortcutPage(pageNumber: 710, title: 'ZDF-Programm'),
+    const ShortcutPage(pageNumber: 715, title: 'ZDFneo'),
+  ];
+
+  // ZDFneo Text (Germania - Entertainment)
+  final List<ShortcutPage> _zdfneoShortcuts = [
+    const ShortcutPage(pageNumber: 100, title: 'Übersicht'),
+    const ShortcutPage(pageNumber: 102, title: 'Inhalt (A-Z)'),
+    const ShortcutPage(pageNumber: 111, title: 'Letzte Meldung'),
+    const ShortcutPage(pageNumber: 112, title: 'Nachrichten'),
+    const ShortcutPage(pageNumber: 170, title: 'Wetter'),
+    const ShortcutPage(pageNumber: 300, title: 'Programm'),
+    const ShortcutPage(pageNumber: 555, title: 'Gewinnzahlen'),
+    const ShortcutPage(pageNumber: 710, title: 'ZDFinfo'),
+    const ShortcutPage(pageNumber: 715, title: 'ZDF-Programm'),
+  ];
+
+  // 3sat Text (Germania/Austria/Svizzera - Cultura)
+  final List<ShortcutPage> _dreisatShortcuts = [
+    const ShortcutPage(pageNumber: 100, title: 'Übersicht'),
+    const ShortcutPage(pageNumber: 112, title: 'Nachrichten Deutschland'),
+    const ShortcutPage(pageNumber: 150, title: 'Nachrichten Österreich'),
+    const ShortcutPage(pageNumber: 151, title: 'Nachrichten Schweiz'),
+    const ShortcutPage(pageNumber: 200, title: 'Sport'),
+    const ShortcutPage(pageNumber: 300, title: 'Programm 3sat'),
+    const ShortcutPage(pageNumber: 400, title: 'Wetter'),
     const ShortcutPage(pageNumber: 500, title: 'Kultur'),
-    const ShortcutPage(pageNumber: 600, title: 'Ratgeber'),
-    const ShortcutPage(pageNumber: 700, title: 'Service'),
   ];
 
-  // Swiss Teletext (Svizzera - RSI/RTS/SRF)
-  final List<ShortcutPage> _swissShortcuts = [
-    const ShortcutPage(pageNumber: 100, title: 'Indice / Sommaire'),
-    const ShortcutPage(pageNumber: 101, title: 'Notizie / Nouvelles'),
-    const ShortcutPage(pageNumber: 120, title: 'Svizzera / Suisse'),
-    const ShortcutPage(pageNumber: 150, title: 'Mondo / Monde'),
+  // RSI Teletext (Svizzera italiana - RSI LA1 e LA2)
+  final List<ShortcutPage> _rsiShortcuts = [
+    const ShortcutPage(pageNumber: 100, title: 'News'),
+    const ShortcutPage(pageNumber: 180, title: 'Sport'),
+    const ShortcutPage(pageNumber: 500, title: 'Meteo'),
+    const ShortcutPage(pageNumber: 700, title: 'TV&Radio'),
+      const ShortcutPage(pageNumber: 800, title: 'Impressum'),
+      ];
+
+  // RTS Teletext (Svizzera francese - RTS 1 e 2)
+  final List<ShortcutPage> _rtsShortcuts = [
+    const ShortcutPage(pageNumber: 100, title: 'News'),
+    const ShortcutPage(pageNumber: 180, title: 'Sport'),
+    const ShortcutPage(pageNumber: 500, title: 'Météo'),
+    const ShortcutPage(pageNumber: 700, title: 'TV&Radio'),
+      const ShortcutPage(pageNumber: 800, title: 'Impressum'),
+  ];
+
+  // SRF Teletext (Svizzera tedesca - SRF 1, zwei, info)
+  final List<ShortcutPage> _srfShortcuts = [
+    const ShortcutPage(pageNumber: 100, title: 'News'),
+    const ShortcutPage(pageNumber: 180, title: 'Sport'),
+    const ShortcutPage(pageNumber: 500, title: 'Meteo'),
+    const ShortcutPage(pageNumber: 700, title: 'TV&Radio'),
+      const ShortcutPage(pageNumber: 800, title: 'Impressum'),
+  ];
+
+  // ORF1 Teletext (Austria - ORF1)
+  final List<ShortcutPage> _orf1Shortcuts = [
+    const ShortcutPage(pageNumber: 100, title: 'Seite 100'),
+    const ShortcutPage(pageNumber: 111, title: 'Schlagzeilen'),
+    const ShortcutPage(pageNumber: 112, title: 'Politik Österreich + EU'),
+    const ShortcutPage(pageNumber: 126, title: 'Politik International'),
+    const ShortcutPage(pageNumber: 135, title: 'Chronik'),
+    const ShortcutPage(pageNumber: 145, title: 'Leute'),
+    const ShortcutPage(pageNumber: 150, title: 'Wirtschaft'),
+    const ShortcutPage(pageNumber: 190, title: 'Kultur + Show'),
     const ShortcutPage(pageNumber: 200, title: 'Sport'),
-    const ShortcutPage(pageNumber: 300, title: 'Programmi TV'),
-    const ShortcutPage(pageNumber: 400, title: 'Cultura'),
-    const ShortcutPage(pageNumber: 500, title: 'Economia'),
-    const ShortcutPage(pageNumber: 700, title: 'Meteo / Météo'),
+    const ShortcutPage(pageNumber: 300, title: 'Fernsehen'),
+    const ShortcutPage(pageNumber: 380, title: 'Radios'),
+    const ShortcutPage(pageNumber: 400, title: 'Kultur + Show Termine'),
+    const ShortcutPage(pageNumber: 420, title: 'Help'),
+    const ShortcutPage(pageNumber: 430, title: 'Motor'),
+    const ShortcutPage(pageNumber: 460, title: 'Multimedia'),
+    const ShortcutPage(pageNumber: 470, title: 'Nachrichten leicht (B1)'),
+    const ShortcutPage(pageNumber: 480, title: 'Nachrichten leichter (A2)'),
+    const ShortcutPage(pageNumber: 600, title: 'Wetter'),
+    const ShortcutPage(pageNumber: 640, title: 'Gesundheit'),
+    const ShortcutPage(pageNumber: 700, title: 'Bundesländer'),
+    const ShortcutPage(pageNumber: 720, title: 'Spiel + Sterne'),
+    const ShortcutPage(pageNumber: 750, title: 'Fußball 2'),
+    const ShortcutPage(pageNumber: 770, title: 'Lesen statt hören'),
+    const ShortcutPage(pageNumber: 800, title: 'Reisen'),
+    const ShortcutPage(pageNumber: 825, title: 'Reiseinfo'),
+    const ShortcutPage(pageNumber: 870, title: 'Ihr ORF'),
+    const ShortcutPage(pageNumber: 890, title: 'Index A-Z'),
   ];
 
-  // ORF Teletext (Austria)
-  final List<ShortcutPage> _orfShortcuts = [
-    const ShortcutPage(pageNumber: 100, title: 'ORF Teletext Inhalt'),
-    const ShortcutPage(pageNumber: 101, title: 'Nachrichten'),
-    const ShortcutPage(pageNumber: 104, title: 'International'),
-    const ShortcutPage(pageNumber: 105, title: 'Sport'),
-    const ShortcutPage(pageNumber: 106, title: 'Kultur'),
-    const ShortcutPage(pageNumber: 109, title: 'Wetter'),
+  // ORF2 Teletext (Austria - ORF2)
+  final List<ShortcutPage> _orf2Shortcuts = [
+    const ShortcutPage(pageNumber: 100, title: 'Seite 100'),
+    const ShortcutPage(pageNumber: 111, title: 'Schlagzeilen'),
+    const ShortcutPage(pageNumber: 112, title: 'Politik Österreich + EU'),
+    const ShortcutPage(pageNumber: 135, title: 'Chronik'),
+    const ShortcutPage(pageNumber: 150, title: 'Wirtschaft'),
     const ShortcutPage(pageNumber: 200, title: 'Sport'),
-    const ShortcutPage(pageNumber: 230, title: 'Fußball'),
-    const ShortcutPage(pageNumber: 300, title: 'TV-Programm'),
-    const ShortcutPage(pageNumber: 400, title: 'Service'),
-    const ShortcutPage(pageNumber: 520, title: 'Weltgeschehen'),
-    const ShortcutPage(pageNumber: 700, title: 'Verkehr'),
+    const ShortcutPage(pageNumber: 300, title: 'Fernsehen'),
+    const ShortcutPage(pageNumber: 400, title: 'Kultur + Show Termine'),
+    const ShortcutPage(pageNumber: 600, title: 'Wetter'),
+    const ShortcutPage(pageNumber: 700, title: 'Bundesländer'),
+    const ShortcutPage(pageNumber: 890, title: 'Index A-Z'),
   ];
 
-  // Spanish Teletext (Spagna - TVE, Antena 3, La Sexta)
-  final List<ShortcutPage> _spanishShortcuts = [
+  // ORF III Teletext (Austria - ORF III)
+  final List<ShortcutPage> _orf3Shortcuts = [
+    const ShortcutPage(pageNumber: 100, title: 'Seite 100'),
+    const ShortcutPage(pageNumber: 311, title: 'ORF III heute'),
+    const ShortcutPage(pageNumber: 327, title: 'ORF III morgen'),
+    const ShortcutPage(pageNumber: 350, title: 'ORF III Vorschau'),
+    const ShortcutPage(pageNumber: 380, title: 'Kultur + Show'),
+    const ShortcutPage(pageNumber: 400, title: 'Kultur + Show Termine'),
+    const ShortcutPage(pageNumber: 470, title: 'Nachrichten leicht (B1)'),
+    const ShortcutPage(pageNumber: 600, title: 'Wetter'),
+    const ShortcutPage(pageNumber: 870, title: 'Ihr ORF'),
+    const ShortcutPage(pageNumber: 890, title: 'Index A-Z'),
+  ];
+
+  // ORF Sport+ Teletext (Austria - ORF Sport+)
+  final List<ShortcutPage> _orfSportPlusShortcuts = [
+    const ShortcutPage(pageNumber: 100, title: 'Seite 100'),
+    const ShortcutPage(pageNumber: 311, title: 'ORF III heute'),
+    const ShortcutPage(pageNumber: 327, title: 'ORF III morgen'),
+    const ShortcutPage(pageNumber: 350, title: 'ORF III Vorschau'),
+    const ShortcutPage(pageNumber: 380, title: 'Kultur + Show'),
+    const ShortcutPage(pageNumber: 400, title: 'Kultur + Show Termine'),
+    const ShortcutPage(pageNumber: 470, title: 'Nachrichten leicht (B1)'),
+    const ShortcutPage(pageNumber: 600, title: 'Wetter'),
+    const ShortcutPage(pageNumber: 870, title: 'Ihr ORF'),
+    const ShortcutPage(pageNumber: 890, title: 'Index A-Z'),
+  ];
+
+  // TVE Teletext (Spagna - RTVE - Televisión pública)
+  final List<ShortcutPage> _tveShortcuts = [
+    const ShortcutPage(pageNumber: 100, title: 'Índice'),
+    const ShortcutPage(pageNumber: 101, title: 'Primera Página'),
+    const ShortcutPage(pageNumber: 102, title: 'Nacional'),
+    const ShortcutPage(pageNumber: 120, title: 'Internacional'),
+    const ShortcutPage(pageNumber: 135, title: 'Noticias Deportes'),
+    const ShortcutPage(pageNumber: 200, title: 'Deportes Indice'),
+    const ShortcutPage(pageNumber: 201, title: 'Fútbol'),
+    const ShortcutPage(pageNumber: 210, title: 'Quiniela'),
+    const ShortcutPage(pageNumber: 220, title: 'Baloncesto'),
+    const ShortcutPage(pageNumber: 230, title: 'Motor'),
+    const ShortcutPage(pageNumber: 300, title: 'Servicios Indice'),
+    const ShortcutPage(pageNumber: 301, title: 'Servicios El Tiempo'),
+    const ShortcutPage(pageNumber: 400, title: 'Programas TVE'),
+    const ShortcutPage(pageNumber: 460, title: 'Sorteos'),
+    const ShortcutPage(pageNumber: 600, title: 'Tráfico'),
+    const ShortcutPage(pageNumber: 800, title: 'Gaceta Sordo'),
+  ];
+
+  // Antena 3 Teletext (Spagna - Atresmedia)
+  final List<ShortcutPage> _antena3Shortcuts = [
     const ShortcutPage(pageNumber: 100, title: 'Índice'),
     const ShortcutPage(pageNumber: 101, title: 'Noticias'),
     const ShortcutPage(pageNumber: 102, title: 'España'),
-    const ShortcutPage(pageNumber: 120, title: 'Internacional'),
-    const ShortcutPage(pageNumber: 130, title: 'Sociedad'),
-    const ShortcutPage(pageNumber: 140, title: 'Cultura'),
-    const ShortcutPage(pageNumber: 150, title: 'Economía'),
-    const ShortcutPage(pageNumber: 180, title: 'El Tiempo'),
-    const ShortcutPage(pageNumber: 200, title: 'Deportes'),
-    const ShortcutPage(pageNumber: 201, title: 'Fútbol'),
-    const ShortcutPage(pageNumber: 300, title: 'Servicios'),
-    const ShortcutPage(pageNumber: 400, title: 'Programación TV'),
-    const ShortcutPage(pageNumber: 600, title: 'Tráfico'),
+    const ShortcutPage(pageNumber: 120, title: 'Economía'),
+    const ShortcutPage(pageNumber: 130, title: 'Deportes'),
+    const ShortcutPage(pageNumber: 140, title: 'Otros Deportes'),
+    const ShortcutPage(pageNumber: 150, title: 'Sociedad'),
+    const ShortcutPage(pageNumber: 160, title: 'Cultura'),
+    const ShortcutPage(pageNumber: 200, title: 'Marcador Fútbol'),
+    const ShortcutPage(pageNumber: 301, title: 'Loterías'),
+    const ShortcutPage(pageNumber: 330, title: 'El Tiempo'),
+    const ShortcutPage(pageNumber: 350, title: 'La Bolsa'),
+    const ShortcutPage(pageNumber: 800, title: 'Programación'),
+  ];
+
+  // La Sexta Teletext (Spagna - Atresmedia)
+  final List<ShortcutPage> _lasextaShortcuts = [
+     const ShortcutPage(pageNumber: 100, title: 'Índice'),
+    const ShortcutPage(pageNumber: 101, title: 'Noticias'),
+    const ShortcutPage(pageNumber: 102, title: 'España'),
+    const ShortcutPage(pageNumber: 120, title: 'Economía'),
+    const ShortcutPage(pageNumber: 130, title: 'Deportes'),
+    const ShortcutPage(pageNumber: 140, title: 'Otros Deportes'),
+    const ShortcutPage(pageNumber: 150, title: 'Sociedad'),
+    const ShortcutPage(pageNumber: 160, title: 'Cultura'),
+    const ShortcutPage(pageNumber: 200, title: 'Marcador Fútbol'),
+    const ShortcutPage(pageNumber: 301, title: 'Loterías'),
+    const ShortcutPage(pageNumber: 330, title: 'El Tiempo'),
+    const ShortcutPage(pageNumber: 350, title: 'La Bolsa'),
+    const ShortcutPage(pageNumber: 800, title: 'Programación'),
   ];
 
   // Portuguese Teletext (Portogallo - RTP)
   final List<ShortcutPage> _portugueseShortcuts = [
     const ShortcutPage(pageNumber: 100, title: 'Índice'),
-    const ShortcutPage(pageNumber: 102, title: 'Notícias'),
-    const ShortcutPage(pageNumber: 120, title: 'Internacional'),
+    const ShortcutPage(pageNumber: 120, title: 'Notícias'),
     const ShortcutPage(pageNumber: 121, title: 'Economia'),
-    const ShortcutPage(pageNumber: 241, title: 'Bolsa'),
+    const ShortcutPage(pageNumber: 240, title: 'Bolsa'),
     const ShortcutPage(pageNumber: 300, title: 'Televisão'),
     const ShortcutPage(pageNumber: 400, title: 'Desporto'),
-    const ShortcutPage(pageNumber: 473, title: 'Campeonato Mundo'),
     const ShortcutPage(pageNumber: 490, title: 'Totolotarias'),
     const ShortcutPage(pageNumber: 500, title: 'Utilidades'),
     const ShortcutPage(pageNumber: 575, title: 'Meteorologia'),
@@ -156,16 +301,20 @@ class ShortcutsService {
 
   // Finnish Teletext (Finlandia - YLE)
   final List<ShortcutPage> _finnishShortcuts = [
-    const ShortcutPage(pageNumber: 100, title: 'Uutiset'),
+    const ShortcutPage(pageNumber: 100, title: 'Etusivu'),
+    const ShortcutPage(pageNumber: 101, title: 'Uutiset'),
     const ShortcutPage(pageNumber: 160, title: 'Talous'),
     const ShortcutPage(pageNumber: 190, title: 'English'),
     const ShortcutPage(pageNumber: 201, title: 'Urheilu'),
-    const ShortcutPage(pageNumber: 300, title: 'Ohjelmat'),
+    const ShortcutPage(pageNumber: 300, title: 'TV-Ohjelmat'),
     const ShortcutPage(pageNumber: 400, title: 'Sää'),
     const ShortcutPage(pageNumber: 500, title: 'Alueet'),
     const ShortcutPage(pageNumber: 575, title: 'Teksti-TV'),
-    const ShortcutPage(pageNumber: 799, title: 'Svenska'),
-  ];
+    const ShortcutPage(pageNumber: 600, title: 'Urheilun suurtapahtumat'),
+    const ShortcutPage(pageNumber: 670, title: 'Eurojalkapallo'),
+    const ShortcutPage(pageNumber: 700, title: 'På svenska'),
+    const ShortcutPage(pageNumber: 800, title: 'Viikkomakasiini')
+    ];
 
   // Slovenian Teletext (Slovenia - RTV SLO)
   final List<ShortcutPage> _slovenianShortcuts = [
@@ -175,6 +324,7 @@ class ShortcutsService {
     const ShortcutPage(pageNumber: 140, title: 'Svet'),
     const ShortcutPage(pageNumber: 160, title: 'Vreme'),
     const ShortcutPage(pageNumber: 190, title: 'Črna kronika'),
+     const ShortcutPage(pageNumber: 200, title: 'Spored'),
     const ShortcutPage(pageNumber: 400, title: 'Kultura'),
     const ShortcutPage(pageNumber: 500, title: 'Šport'),
     const ShortcutPage(pageNumber: 600, title: 'Zabava'),
@@ -184,13 +334,19 @@ class ShortcutsService {
   final List<ShortcutPage> _hungarianShortcuts = [
     const ShortcutPage(pageNumber: 100, title: 'Főmenü'),
     const ShortcutPage(pageNumber: 101, title: 'Hírek'),
-    const ShortcutPage(pageNumber: 102, title: 'Belföld'),
+    const ShortcutPage(pageNumber: 102, title: 'Belfűld'),
     const ShortcutPage(pageNumber: 130, title: 'Külföld'),
     const ShortcutPage(pageNumber: 150, title: 'Gazdaság'),
     const ShortcutPage(pageNumber: 160, title: 'Kultúra'),
+    const ShortcutPage(pageNumber: 175, title: 'Időjárás'),
     const ShortcutPage(pageNumber: 200, title: 'Sport'),
-    const ShortcutPage(pageNumber: 300, title: 'Időjárás'),
-    const ShortcutPage(pageNumber: 500, title: 'TV műsor'),
+    const ShortcutPage(pageNumber: 300, title: 'MTVA műsorok'),
+    const ShortcutPage(pageNumber: 470, title: 'Műsorinfök'),
+    const ShortcutPage(pageNumber: 500, title: 'Gazdaság'),
+    const ShortcutPage(pageNumber: 530, title: 'Tozsde'),
+    const ShortcutPage(pageNumber: 700, title: 'Naptar'),
+    const ShortcutPage(pageNumber: 850, title: 'Segitö Oldalak'),
+    const ShortcutPage(pageNumber: 890, title: 'MTVA műsorok'),
   ];
 
   // Icelandic Teletext (Islanda - RÚV)
@@ -222,54 +378,66 @@ class ShortcutsService {
   // Croatian Teletext (Croazia - HRT)
   final List<ShortcutPage> _croatianShortcuts = [
     const ShortcutPage(pageNumber: 100, title: 'Sadržaj'),
-    const ShortcutPage(pageNumber: 101, title: 'Vijesti'),
-    const ShortcutPage(pageNumber: 102, title: 'Hrvatska'),
-    const ShortcutPage(pageNumber: 103, title: 'Svijet'),
-    const ShortcutPage(pageNumber: 150, title: 'Gospodarstvo'),
-    const ShortcutPage(pageNumber: 200, title: 'Sport'),
-    const ShortcutPage(pageNumber: 300, title: 'Vrijeme'),
-    const ShortcutPage(pageNumber: 400, title: 'Kultura'),
-    const ShortcutPage(pageNumber: 500, title: 'TV program'),
+
+    const ShortcutPage(pageNumber: 110, title: 'Hrvatska'),
+    const ShortcutPage(pageNumber: 150, title: 'Svijet'),
+    const ShortcutPage(pageNumber: 180, title: 'Europska Unija'),
+    const ShortcutPage(pageNumber: 200, title: 'Gospodarstvo'),
+     const ShortcutPage(pageNumber: 250, title: 'Kultura'),   
+    const ShortcutPage(pageNumber: 300, title: 'Program HTV-a'),
+    const ShortcutPage(pageNumber: 450, title: 'Vrijeme'),
+    const ShortcutPage(pageNumber: 500, title: 'Sport'),
   ];
   
   // Czech Teletext (Repubblica Ceca - ČT)
   final List<ShortcutPage> _czechShortcuts = [
     const ShortcutPage(pageNumber: 100, title: 'Obsah'),
-    const ShortcutPage(pageNumber: 101, title: 'Zprávy'),
-    const ShortcutPage(pageNumber: 102, title: 'Česko'),
-    const ShortcutPage(pageNumber: 103, title: 'Zahraničí'),
-    const ShortcutPage(pageNumber: 150, title: 'Ekonomika'),
-    const ShortcutPage(pageNumber: 160, title: 'Kultura'),
+    const ShortcutPage(pageNumber: 101, title: 'Zprávy DNE'),
+    const ShortcutPage(pageNumber: 110, title: 'Zprávy domova'),
+    const ShortcutPage(pageNumber: 130, title: 'Zprávy světa'),
+    const ShortcutPage(pageNumber: 170, title: 'Počasí'),
     const ShortcutPage(pageNumber: 200, title: 'Sport'),
-    const ShortcutPage(pageNumber: 300, title: 'Počasí'),
-    const ShortcutPage(pageNumber: 500, title: 'TV program'),
+    const ShortcutPage(pageNumber: 300, title: 'Programy ČT'),
+    const ShortcutPage(pageNumber: 500, title: 'Finance'),
+    const ShortcutPage(pageNumber: 600, title: 'Zájmy'),
+    const ShortcutPage(pageNumber: 850, title: 'Stránky ČT'),
+    const ShortcutPage(pageNumber: 890, title: 'Obsah'),
+
   ];
   
   // Danish Teletext (Danimarca - DR)
   final List<ShortcutPage> _danishShortcuts = [
     const ShortcutPage(pageNumber: 100, title: 'Forside'),
-    const ShortcutPage(pageNumber: 101, title: 'Nyheder'),
-    const ShortcutPage(pageNumber: 102, title: 'Indland'),
-    const ShortcutPage(pageNumber: 103, title: 'Udland'),
-    const ShortcutPage(pageNumber: 150, title: 'Økonomi'),
-    const ShortcutPage(pageNumber: 160, title: 'Vejr'),
+    const ShortcutPage(pageNumber: 106, title: 'Indhold'),
+    const ShortcutPage(pageNumber: 110, title: 'Nyheder'),
     const ShortcutPage(pageNumber: 200, title: 'Sport'),
-    const ShortcutPage(pageNumber: 300, title: 'Kultur'),
-    const ShortcutPage(pageNumber: 500, title: 'TV-guide'),
+    const ShortcutPage(pageNumber: 300, title: 'TV'),
+    const ShortcutPage(pageNumber: 600, title: 'Radio'),
   ];
   
-  // Bosnian Teletext (Bosnia ed Erzegovina - BHRT/RTVFBiH)
-  final List<ShortcutPage> _bosnianShortcuts = [
-    const ShortcutPage(pageNumber: 100, title: 'Sadržaj'),
-    const ShortcutPage(pageNumber: 101, title: 'Vijesti'),
-    const ShortcutPage(pageNumber: 102, title: 'BiH'),
-    const ShortcutPage(pageNumber: 103, title: 'Svijet'),
-    const ShortcutPage(pageNumber: 150, title: 'Ekonomija'),
+  // BHRT Teletext (Bosnia ed Erzegovina - BHRT)
+  final List<ShortcutPage> _bhrtShortcuts = [
+    const ShortcutPage(pageNumber: 102, title: 'Sadržaj'),
+    const ShortcutPage(pageNumber: 109, title: 'Vijesti'),
+    const ShortcutPage(pageNumber: 160, title: 'Kultura'),
     const ShortcutPage(pageNumber: 200, title: 'Sport'),
-    const ShortcutPage(pageNumber: 300, title: 'Vrijeme'),
-    const ShortcutPage(pageNumber: 400, title: 'Kultura'),
-    const ShortcutPage(pageNumber: 500, title: 'TV program'),
+    const ShortcutPage(pageNumber: 300, title: 'TV program'),
+    const ShortcutPage(pageNumber: 400, title: 'Vremenska Prognoza'),
   ];
+
+  // RTVFBiH Teletext (Bosnia ed Erzegovina - Federalna TV)
+  final List<ShortcutPage> _rtvfbihShortcuts = [
+    const ShortcutPage(pageNumber: 102, title: 'Sadržaj'),
+    const ShortcutPage(pageNumber: 109, title: 'Vijesti'),
+     const ShortcutPage(pageNumber: 160, title: 'Kultura'),
+     const ShortcutPage(pageNumber: 190, title: 'Religija'),
+         const ShortcutPage(pageNumber: 200, title: 'Sport'),
+    const ShortcutPage(pageNumber: 300, title: 'TV program'),
+    const ShortcutPage(pageNumber: 400, title: 'Vrijeme'), 
+    const ShortcutPage(pageNumber: 406, title: 'Putevi'), 
+    const ShortcutPage(pageNumber: 493, title: 'Vadostaj'), 
+    const ShortcutPage(pageNumber: 499, title: 'Kursna Lista'), 
+                 ];
   
   // Ukrainian Teletext (Ucraina - Intertext)
   final List<ShortcutPage> _ukrainianShortcuts = [
@@ -319,34 +487,74 @@ class ShortcutsService {
       return _ardShortcuts;
     }
     
-    // ZDF Text (tutti i canali ZDF usano gli stessi shortcuts)
-    if (channelId == 'zdf_text' || 
-        channelId == 'zdfinfo_text' || 
-        channelId == 'zdfneo_text' || 
-        channelId == '3sat_text') {
+    // ZDF Text (Germania - Hauptprogramm)
+    if (channelId == 'zdf_text') {
       return _zdfShortcuts;
     }
     
-    // Swiss Teletext (RSI, RTS, SRF)
-    if (channelId.startsWith('rsi_') || 
-        channelId.startsWith('rts_') || 
-        channelId.startsWith('srf_')) {
-      return _swissShortcuts;
+    // ZDFinfo Text (Germania - Documentari)
+    if (channelId == 'zdfinfo_text') {
+      return _zdfinfoShortcuts;
     }
     
-    // ORF Teletext (Austria)
-    if (channelId == 'orf1' || 
-        channelId == 'orf2' || 
-        channelId == 'orf3' || 
-        channelId == 'orf_sport_plus') {
-      return _orfShortcuts;
+    // ZDFneo Text (Germania - Entertainment)
+    if (channelId == 'zdfneo_text') {
+      return _zdfneoShortcuts;
     }
     
-    // Spanish Teletext (Spagna)
-    if (channelId == 'tve' || 
-        channelId == 'antena3' || 
-        channelId == 'lasexta') {
-      return _spanishShortcuts;
+    // 3sat Text (Germania/Austria/Svizzera - Cultura)
+    if (channelId == '3sat_text') {
+      return _dreisatShortcuts;
+    }
+    
+    // RSI Teletext (Svizzera italiana)
+    if (channelId.startsWith('rsi_')) {
+      return _rsiShortcuts;
+    }
+    
+    // RTS Teletext (Svizzera francese)
+    if (channelId.startsWith('rts_')) {
+      return _rtsShortcuts;
+    }
+    
+    // SRF Teletext (Svizzera tedesca)
+    if (channelId.startsWith('srf_')) {
+      return _srfShortcuts;
+    }
+    
+    // ORF1 Teletext (Austria)
+    if (channelId == 'orf1') {
+      return _orf1Shortcuts;
+    }
+    
+    // ORF2 Teletext (Austria)
+    if (channelId == 'orf2') {
+      return _orf2Shortcuts;
+    }
+    
+    // ORF III Teletext (Austria)
+    if (channelId == 'orf3') {
+      return _orf3Shortcuts;
+    }
+    
+    // ORF Sport+ Teletext (Austria)
+    if (channelId == 'orf_sport_plus') {
+      return _orfSportPlusShortcuts;
+    }
+    
+    // TVE Teletext (Spagna - RTVE)
+    if (channelId == 'tve') {
+      return _tveShortcuts;
+    }
+    
+    // Antena 3 Teletext (Spagna - Atresmedia)
+    if (channelId == 'antena3') {
+      return _antena3Shortcuts;
+    }
+    
+    // La Sexta Teletext (Spagna - Atresmedia)
+    if (channelId == 'lasexta') {
+      return _lasextaShortcuts;
     }
     
     // Portuguese Teletext (Portogallo)
@@ -401,9 +609,14 @@ class ShortcutsService {
       return _danishShortcuts;
     }
     
-    // Bosnian Teletext (BHRT e RTVFBiH)
-    if (channelId == 'bhrt' || channelId == 'rtvfbih') {
-      return _bosnianShortcuts;
+    // BHRT Teletext (Bosnia ed Erzegovina)
+    if (channelId == 'bhrt') {
+      return _bhrtShortcuts;
+    }
+    
+    // RTVFBiH Teletext (Bosnia ed Erzegovina - Federalna TV)
+    if (channelId == 'rtvfbih') {
+      return _rtvfbihShortcuts;
     }
     
     // Ukrainian Teletext (Intertext)

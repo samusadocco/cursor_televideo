@@ -736,20 +736,6 @@ class TeletextChannels {
       supportsRegions: false,
     ),
 
-    // 🇪🇸 SPAGNA - TVE
-    TeletextChannel(
-      id: 'tve_teletexto',
-      name: 'TVE Teletexto',
-      shortName: 'TVE',
-      countryCode: 'ES',
-      countryName: 'Spagna',
-      flagEmoji: '🇪🇸',
-      broadcasterName: 'TVE',
-      type: TeletextChannelType.national,
-      baseUrl: 'https://www.rtve.es/teletexto',
-      supportsRegions: false,
-    ),
-
     // // 🇵🇹 PORTOGALLO - RTP
     // TeletextChannel(
     //   id: 'rtp_teletexto',

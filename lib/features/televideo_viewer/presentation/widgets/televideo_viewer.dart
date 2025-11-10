@@ -278,6 +278,9 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
         'Cache-Control': 'max-age=${AppSettings.cacheDurationInSeconds}',
       },
       fit: BoxFit.fill,
+      // Animazioni più veloci per un effetto meno "dissolto"
+      fadeInDuration: const Duration(milliseconds: 100),
+      fadeOutDuration: const Duration(milliseconds: 100),
       placeholder: (context, url) => Container(
         color: Colors.black,
         child: const Center(
@@ -821,19 +824,35 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
                                 loadNationalPage: (_) => transitionType = PageTransitionType.fade,
                                 loadRegionalPage: (_, __) => transitionType = PageTransitionType.fade,
                                 nextPage: (_) {
-                                  transitionType = PageTransitionType.slideHorizontal;
+                                  // Usa slideHorizontal per canali con IMMAGINI (RAI, MTVA, CT, RTVSLO, YLE, SVT, HRT, Spanish, ORF, Swiss)
+                                  // Per canali con HTML/WebView (RTL, Iceland, NOS, ZDF, ARD) usa fade per evitare problemi di rendering
+                                  transitionType = page.isHtmlContent 
+                                      ? PageTransitionType.fade 
+                                      : PageTransitionType.slideHorizontal;
                                   forward = true;
                                 },
                                 previousPage: (_) {
-                                  transitionType = PageTransitionType.slideHorizontal;
+                                  // Usa slideHorizontal per canali con IMMAGINI (RAI, MTVA, CT, RTVSLO, YLE, SVT, HRT, Spanish, ORF, Swiss)
+                                  // Per canali con HTML/WebView (RTL, Iceland, NOS, ZDF, ARD) usa fade per evitare problemi di rendering
+                                  transitionType = page.isHtmlContent 
+                                      ? PageTransitionType.fade 
+                                      : PageTransitionType.slideHorizontal;
                                   forward = false;
                                 },
                                 nextSubPage: () {
-                                  transitionType = PageTransitionType.slideVertical;
+                                  // Usa slideVertical per canali con IMMAGINI
+                                  // Per canali con HTML/WebView usa fade
+                                  transitionType = page.isHtmlContent 
+                                      ? PageTransitionType.fade 
+                                      : PageTransitionType.slideVertical;
                                   forward = true;
                                 },
                                 previousSubPage: () {
-                                  transitionType = PageTransitionType.slideVertical;
+                                  // Usa slideVertical per canali con IMMAGINI
+                                  // Per canali con HTML/WebView usa fade
+                                  transitionType = page.isHtmlContent 
+                                      ? PageTransitionType.fade 
+                                      : PageTransitionType.slideVertical;
                                   forward = false;
                                 },
                                 startLoading: () => transitionType = PageTransitionType.fade,
