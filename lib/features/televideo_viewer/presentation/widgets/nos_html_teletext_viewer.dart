@@ -29,9 +29,9 @@ class _NOSHtmlTeletextViewerState extends State<NOSHtmlTeletextViewer> {
   double? _lastWidth;
   double? _lastHeight;
   
-  // Dimensioni native (dipendono dal tipo di dispositivo)
-  double _nativeWidth = 480.0;
-  double _nativeHeight = 580.0;
+  // Dimensioni native per NOS (ridotte ulteriormente per maggiore ingrandimento)
+  double _nativeWidth = 390.0;
+  double _nativeHeight = 500.0;
 
   @override
   void initState() {
@@ -83,15 +83,33 @@ class _NOSHtmlTeletextViewerState extends State<NOSHtmlTeletextViewer> {
 
   /// Inizializza o aggiorna il WebView con scaling dinamico
   void _initializeOrUpdateWebView(double width, double height) {
-    // NOS Teletekst (Olanda) - dimensioni native standard (come ZDF)
-    _nativeWidth = 480.0;
-    _nativeHeight = 580.0;
+    // NOS Teletekst - dimensioni native adattive in base al dispositivo
+    // Calcoliamo le dimensioni native in base all'aspect ratio disponibile
+    final aspectRatio = width / height;
+    
+    if (aspectRatio > 1.5) {
+      // iPad orizzontale o dispositivo molto largo
+      // Usa dimensioni native più grandi per evitare ingrandimento eccessivo
+      _nativeWidth = 480.0;
+      _nativeHeight = 600.0;
+      print('[NOSHtmlTeletextViewer] Mode: iPad landscape (wide)');
+    } else if (aspectRatio > 0.7) {
+      // iPad verticale o tablet
+      _nativeWidth = 480.0;
+      _nativeHeight = 600.0;
+      print('[NOSHtmlTeletextViewer] Mode: iPad portrait (medium)');
+    } else {
+      // iPhone o dispositivo stretto
+      _nativeWidth = 360.0;
+      _nativeHeight = 460.0;
+      print('[NOSHtmlTeletextViewer] Mode: iPhone (narrow)');
+    }
     
     // Calcola scale factors
     final scaleX = width / _nativeWidth;
     final scaleY = height / _nativeHeight;
     
-    print('[NOSHtmlTeletextViewer] Widget size: ${width}x$height (real available space)');
+    print('[NOSHtmlTeletextViewer] Widget size: ${width}x$height (aspect: ${aspectRatio.toStringAsFixed(2)})');
     print('[NOSHtmlTeletextViewer] Native content: ${_nativeWidth}x$_nativeHeight');
     print('[NOSHtmlTeletextViewer] Calculated scales - X: $scaleX, Y: $scaleY');
     

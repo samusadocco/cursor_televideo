@@ -89,7 +89,7 @@ void main() async {
   }
   
   runApp(
-    Phoenix(
+    Phoenix(  
       child: const MyApp(),
     ),
   );

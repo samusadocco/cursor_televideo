@@ -27,8 +27,8 @@ class _IcelandHtmlTeletextViewerState extends State<IcelandHtmlTeletextViewer> {
   double _lastHeight = 0;
   
   // Dimensioni native del contenuto RÚV Textavarp
-  // Basate sulle proporzioni visibili: più largo, meno alto
-  static const double _nativeWidth = 480.0;
+  // Dimensioni reali del contenuto come viene fornito dal server
+  static const double _nativeWidth = 400.0;
   static const double _nativeHeight = 380.0;
 
   @override
@@ -113,7 +113,7 @@ class _IcelandHtmlTeletextViewerState extends State<IcelandHtmlTeletextViewer> {
       );
     }
     
-    // CSS per forzare il scaling
+    // CSS per forzare il scaling e riempire tutto lo schermo
     final injectedCss = '''
       <style id="iceland-scaling-override">
         * { box-sizing: border-box !important; }
@@ -122,8 +122,8 @@ class _IcelandHtmlTeletextViewerState extends State<IcelandHtmlTeletextViewer> {
           padding: 0 !important;
           overflow: hidden !important;
           background-color: black !important;
-          width: ${100 / scaleX}% !important;
-          height: ${100 / scaleY}% !important;
+          width: 100% !important;
+          height: 100% !important;
         }
         #layerData {
           width: ${_nativeWidth}px !important;
@@ -139,6 +139,8 @@ class _IcelandHtmlTeletextViewerState extends State<IcelandHtmlTeletextViewer> {
           position: absolute !important;
           left: 0 !important;
           top: 0 !important;
+          transform: scale($scaleX, $scaleY) !important;
+          transform-origin: top left !important;
         }
         #layerData div, #layerData pre {
           margin: 0 !important;
@@ -163,20 +165,20 @@ class _IcelandHtmlTeletextViewerState extends State<IcelandHtmlTeletextViewer> {
           document.body.removeAttribute('style');
           
           // Applica dimensioni sul body
-          document.body.style.setProperty('width', '${100 / scaleX}%', 'important');
-          document.body.style.setProperty('height', '${100 / scaleY}%', 'important');
+          document.body.style.setProperty('width', '100%', 'important');
+          document.body.style.setProperty('height', '100%', 'important');
           document.body.style.setProperty('margin', '0', 'important');
           document.body.style.setProperty('padding', '0', 'important');
           document.body.style.setProperty('overflow', 'hidden', 'important');
           document.body.style.setProperty('background-color', 'black', 'important');
           
-          // FORZA dimensioni su layerData rimuovendo inline styles
+          // FORZA dimensioni e transform su layerData rimuovendo inline styles
           var layerData = document.getElementById('layerData');
           if (layerData) {
             // Rimuovi TUTTI gli inline styles dal layerData
             layerData.removeAttribute('style');
             
-            // Applica le dimensioni fisse via JavaScript
+            // Applica le dimensioni fisse e il transform via JavaScript
             layerData.style.setProperty('width', '${_nativeWidth}px', 'important');
             layerData.style.setProperty('height', '${_nativeHeight}px', 'important');
             layerData.style.setProperty('min-width', '${_nativeWidth}px', 'important');
@@ -190,13 +192,16 @@ class _IcelandHtmlTeletextViewerState extends State<IcelandHtmlTeletextViewer> {
             layerData.style.setProperty('padding', '0', 'important');
             layerData.style.setProperty('overflow', 'hidden', 'important');
             layerData.style.setProperty('font-family', 'externalFont, monospace', 'important');
+            layerData.style.setProperty('transform', 'scale($scaleX, $scaleY)', 'important');
+            layerData.style.setProperty('transform-origin', 'top left', 'important');
             
-            DebugLog.postMessage('Inline styles removed and dimensions forced');
+            DebugLog.postMessage('Inline styles removed, dimensions and transform applied');
+            DebugLog.postMessage('Scale factors: scaleX=$scaleX, scaleY=$scaleY');
             var computedStyle = window.getComputedStyle(layerData);
             DebugLog.postMessage('LayerData font-family: ' + computedStyle.fontFamily);
             DebugLog.postMessage('LayerData width: ' + computedStyle.width);
             DebugLog.postMessage('LayerData height: ' + computedStyle.height);
-            DebugLog.postMessage('LayerData left: ' + computedStyle.left);
+            DebugLog.postMessage('LayerData transform: ' + computedStyle.transform);
             DebugLog.postMessage('Body width: ' + window.getComputedStyle(document.body).width);
             DebugLog.postMessage('Body height: ' + window.getComputedStyle(document.body).height);
             

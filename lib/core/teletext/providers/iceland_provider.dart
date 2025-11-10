@@ -35,9 +35,9 @@ class IcelandProvider extends TeletextProvider {
   // Cache per il numero totale di sottopagine con timestamp e verifica
   final Map<int, _SubPageCacheEntry> _subPageCache = {};
   
-  // Intervalli di tempo per la gestione della cache
-  static const Duration _cacheTTL = Duration(minutes: 30); // TTL completo
-  static const Duration _consistencyCheckInterval = Duration(minutes: 2); // Verifica consistenza
+  // Intervalli di tempo per la gestione della cache (aumentati per ridurre richieste)
+  static const Duration _cacheTTL = Duration(hours: 2); // TTL completo - le pagine non cambiano spesso
+  static const Duration _consistencyCheckInterval = Duration(minutes: 10); // Verifica consistenza meno frequente
   
   @override
   String get providerId => 'ruv_textavarp';
@@ -113,33 +113,21 @@ class IcelandProvider extends TeletextProvider {
         print('[IcelandProvider] ⏰ Cache expired (>${_cacheTTL.inMinutes}m), full reload');
         totalSubPages = await _reloadSubPageCount(pageNumber, currentSubPage);
       } else if (entry.needsConsistencyCheck(_consistencyCheckInterval)) {
-        // Cache ancora valida ma necessita controllo di consistenza (oltre 2 minuti)
+        // Cache ancora valida ma necessita controllo di consistenza
         print('[IcelandProvider] 🔍 Performing consistency check (last verified ${timeSinceVerification.inMinutes}m ago)...');
         
-        // Verifica se la sottopagina cachata esiste ancora
-        final cachedSubPageExists = await _checkSubPageExists(pageNumber, entry.count);
+        // Verifica solo se ce ne sono di nuove ricontando da dove ci eravamo fermati
+        totalSubPages = await _countTotalSubPages(pageNumber, entry.count);
         
-        if (!cachedSubPageExists) {
-          // La sottopagina cachata non esiste più! Invalida e ricarica
-          print('[IcelandProvider] ⚠️ Cached subpage ${entry.count} no longer exists! Invalidating cache and reloading...');
-          _subPageCache.remove(pageNumber);
-          totalSubPages = await _reloadSubPageCount(pageNumber, currentSubPage);
+        if (totalSubPages > entry.count) {
+          // Trovate nuove sottopagine!
+          print('[IcelandProvider] ✨ Found new subpages: ${entry.count} -> $totalSubPages');
+          _subPageCache[pageNumber] = _SubPageCacheEntry(totalSubPages, DateTime.now());
+          print('[IcelandProvider] ✅ Updated cache: $totalSubPages subpages');
         } else {
-          // La sottopagina cachata esiste, verifica se ce ne sono di nuove
-          final hasMore = await _checkSubPageExists(pageNumber, entry.count + 1);
-          
-          if (hasMore) {
-            // Trovate nuove sottopagine! Ricarica il conteggio
-            print('[IcelandProvider] ✨ Found new subpages beyond ${entry.count}, recounting...');
-            totalSubPages = await _countTotalSubPages(pageNumber, entry.count);
-            _subPageCache[pageNumber] = _SubPageCacheEntry(totalSubPages, DateTime.now());
-            print('[IcelandProvider] ✅ Updated cache: $totalSubPages subpages');
-          } else {
-            // Il conteggio è ancora corretto, aggiorna solo il timestamp di verifica
-            totalSubPages = entry.count;
-            _subPageCache[pageNumber] = entry.withVerification();
-            print('[IcelandProvider] ✅ Consistency verified: $totalSubPages subpages (unchanged)');
-          }
+          // Il conteggio è ancora corretto, aggiorna solo il timestamp di verifica
+          _subPageCache[pageNumber] = entry.withVerification();
+          print('[IcelandProvider] ✅ Consistency verified: $totalSubPages subpages (unchanged)');
         }
       } else {
         // Cache valida e verificata di recente
@@ -202,43 +190,22 @@ class IcelandProvider extends TeletextProvider {
     return totalSubPages;
   }
 
-  /// Verifica se una specifica sottopagina esiste
-  Future<bool> _checkSubPageExists(int pageNumber, int subPage) async {
-    try {
-      final url = '$baseUrl/sida/$pageNumber/$subPage';
-      print('[IcelandProvider] 🔍 Checking if subpage $subPage exists: $url');
-      
-      final response = await http.get(Uri.parse(url));
-      
-      if (response.statusCode == 200) {
-        final document = html_parser.parse(response.body);
-        final layerData = document.querySelector('div#layerData');
-        
-        // La sottopagina esiste se c'è layerData con contenuto
-        final exists = layerData != null && _hasActualContent(layerData);
-        print('[IcelandProvider] Subpage $subPage ${exists ? "✅ exists" : "❌ is empty/does not exist"}');
-        return exists;
-      } else {
-        print('[IcelandProvider] Subpage $subPage ❌ returned ${response.statusCode}');
-        return false;
-      }
-    } catch (e) {
-      print('[IcelandProvider] ❌ Error checking subpage $subPage: $e');
-      return false;
-    }
-  }
 
-  /// Conta il numero totale di sottopagine
+  /// Conta il numero totale di sottopagine in modo sequenziale
   Future<int> _countTotalSubPages(int pageNumber, int startFrom) async {
     print('[IcelandProvider] Counting total subpages for page $pageNumber starting from $startFrom');
     
     int count = startFrom;
-    int maxAttempts = 10; // Limite di sicurezza
+    int maxAttempts = 20; // Limite di sicurezza
     
+    // Controlla le sottopagine in sequenza
     for (int i = startFrom; i < startFrom + maxAttempts; i++) {
       try {
         final url = '$baseUrl/sida/$pageNumber/${i + 1}';
-        final response = await http.get(Uri.parse(url));
+        final response = await http.get(Uri.parse(url)).timeout(
+          const Duration(seconds: 5),
+          onTimeout: () => http.Response('Timeout', 408),
+        );
         
         if (response.statusCode == 200) {
           final document = html_parser.parse(response.body);
@@ -246,12 +213,16 @@ class IcelandProvider extends TeletextProvider {
           
           if (layerData != null && _hasActualContent(layerData)) {
             count = i + 1;
+            print('[IcelandProvider] Subpage ${i + 1}: ✅ exists');
           } else {
             // Sottopagina vuota, ci fermiamo
+            print('[IcelandProvider] Subpage ${i + 1}: ❌ empty, stopping');
             break;
           }
         } else {
-          break; // La pagina non esiste, ci fermiamo
+          // La pagina non esiste, ci fermiamo
+          print('[IcelandProvider] Subpage ${i + 1}: ❌ not found (${response.statusCode}), stopping');
+          break;
         }
       } catch (e) {
         print('[IcelandProvider] Error checking subpage ${i + 1}: $e');
@@ -259,6 +230,7 @@ class IcelandProvider extends TeletextProvider {
       }
     }
     
+    print('[IcelandProvider] Total subpages found: $count');
     return count;
   }
 
