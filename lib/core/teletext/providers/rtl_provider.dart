@@ -165,7 +165,7 @@ class RtlProvider implements TeletextProvider {
           font-family: 'Courier New', 'Lucida Console', monospace;
           font-size: 18px;
           font-weight: bold;
-          line-height: 1.3;
+          line-height: 1.0;
           overflow: visible;
           width: auto;
           min-width: 100%;
@@ -184,8 +184,9 @@ class RtlProvider implements TeletextProvider {
           font-family: 'Courier New', monospace;
           font-weight: bold;
           white-space: pre !important;
-          min-height: 1.3em;
+          min-height: 1.0em;
           display: block;
+          line-height: 1.0;
         }
       ''');
       buffer.writeln('</style>');

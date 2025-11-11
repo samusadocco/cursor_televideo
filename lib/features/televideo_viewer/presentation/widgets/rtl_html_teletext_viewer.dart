@@ -29,7 +29,8 @@ class _RTLHtmlTeletextViewerState extends State<RTLHtmlTeletextViewer> {
   double? _lastWidth;
   double? _lastHeight;
   int _controllerVersion = 0; // Per forzare rebuild
-  double _currentScale = 1.0; // Tiene traccia dello scale CSS applicato
+  double _currentScaleX = 1.0; // Tiene traccia dello scale X CSS applicato
+  double _currentScaleY = 1.0; // Tiene traccia dello scale Y CSS applicato
 
   @override
   void initState() {
@@ -85,22 +86,36 @@ class _RTLHtmlTeletextViewerState extends State<RTLHtmlTeletextViewer> {
 
   /// Inizializza o aggiorna il WebView con scaling dinamico
   void _initializeOrUpdateWebView(double width, double height) {
-    // RTL Teletext - dimensioni native standard
-    const double nativeWidth = 492.0;
-    const double nativeHeight = 489.0;
+    // RTL Teletext - dimensioni native adattive basate sull'aspect ratio
+    final aspectRatio = width / height;
     
-    // Calcola scale factors
+    double nativeWidth;
+    double nativeHeight;
+    
+    if (aspectRatio > 1.5) {
+      // iPad orizzontale o dispositivo molto largo
+      nativeWidth = 520.0;
+      nativeHeight = 390.0;
+      print('[RTLHtmlTeletextViewer] Mode: iPad landscape (wide)');
+    } else if (aspectRatio > 0.7) {
+      // iPad verticale o tablet
+      nativeWidth = 460.0;
+      nativeHeight = 580.0;
+      print('[RTLHtmlTeletextViewer] Mode: iPad portrait (medium)');
+    } else {
+      // iPhone o dispositivo stretto
+      nativeWidth = 440.0;
+      nativeHeight = 450.0;
+      print('[RTLHtmlTeletextViewer] Mode: iPhone (narrow)');
+    }
+    
+    // Calcola scale factors (usa scaling NON uniforme come NOS)
     final scaleX = width / nativeWidth;
     final scaleY = height / nativeHeight;
     
-    // USA SCALING UNIFORME per evitare deformazione
-    // Prendi il fattore MINORE per mantenere aspect ratio
-    final uniformScale = scaleX < scaleY ? scaleX : scaleY;
-    
-    print('[RTLHtmlTeletextViewer] Widget size: ${width}x$height (real available space)');
+    print('[RTLHtmlTeletextViewer] Widget size: ${width}x$height (aspect: ${aspectRatio.toStringAsFixed(2)})');
     print('[RTLHtmlTeletextViewer] Native size: ${nativeWidth}x$nativeHeight');
     print('[RTLHtmlTeletextViewer] Scale factors: X=$scaleX, Y=$scaleY');
-    print('[RTLHtmlTeletextViewer] Using uniform scale: $uniformScale');
 
     // Salva le dimensioni correnti
     _lastWidth = width;
@@ -108,25 +123,25 @@ class _RTLHtmlTeletextViewerState extends State<RTLHtmlTeletextViewer> {
 
     // Se il controller non è stato creato, creane uno nuovo
     if (_controller == null) {
-      _createWebViewController(uniformScale);
+      _createWebViewController(scaleX, scaleY, nativeWidth, nativeHeight);
     } else {
       // Altrimenti, aggiorna solo lo scaling JavaScript
-      _updateScaling(uniformScale);
+      _updateScaling(scaleX, scaleY);
     }
   }
 
   /// Crea un nuovo WebViewController
-  void _createWebViewController(double scale) {
+  void _createWebViewController(double scaleX, double scaleY, double nativeWidth, double nativeHeight) {
     print('[RTLHtmlTeletextViewer] Creating new WebViewController (version: $_controllerVersion)');
     
-    // Usa scaling UNIFORME per mantenere aspect ratio
-    print('[RTLHtmlTeletextViewer] Using uniform scale: $scale');
+    print('[RTLHtmlTeletextViewer] Using scaleX: $scaleX, scaleY: $scaleY');
     
-    // Salva lo scale per usarlo nella de-scalatura delle coordinate
-    _currentScale = scale;
+    // Salva entrambi gli scale per i click (X e Y separati per scaling non uniforme)
+    _currentScaleX = scaleX;
+    _currentScaleY = scaleY;
     
     // Inietta lo scale DIRETTAMENTE nell'HTML prima del caricamento
-    final scaledHtml = _injectScaleInHtml(_rawHtmlContent ?? '', scale);
+    final scaledHtml = _injectScaleInHtml(_rawHtmlContent ?? '', scaleX, scaleY, nativeWidth, nativeHeight);
     
     _controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
@@ -165,11 +180,23 @@ class _RTLHtmlTeletextViewerState extends State<RTLHtmlTeletextViewer> {
         // Previeni il comportamento di default
         event.preventDefault();
         
-        // Ottieni le coordinate del click relative al document
-        var x = event.pageX;
-        var y = event.pageY;
+        // Ottieni le coordinate del click relative al viewport
+        var x = event.clientX;
+        var y = event.clientY;
         
-        console.log('RTL click at: ' + x + ', ' + y);
+        // Ottieni il bounding rect del #content (che ha padding di 8px)
+        var contentDiv = document.getElementById('content');
+        if (contentDiv) {
+          var rect = contentDiv.getBoundingClientRect();
+          // Sottrai l'offset del content div per ottenere coordinate relative al contenuto
+          x = x - rect.left;
+          y = y - rect.top;
+          
+          console.log('RTL click at (relative to content): ' + x + ', ' + y);
+          console.log('Content rect:', rect.left, rect.top, rect.width, rect.height);
+        } else {
+          console.log('RTL click at (viewport): ' + x + ', ' + y);
+        }
         
         // Invia le coordinate a Flutter tramite il channel
         TapHandler.postMessage(x + ',' + y);
@@ -192,10 +219,11 @@ class _RTLHtmlTeletextViewerState extends State<RTLHtmlTeletextViewer> {
     
     // De-scala le coordinate per confrontarle con le clickable areas
     // Le clickable areas sono in coordinate native (pre-scaling)
-    final nativeTapX = scaledTapX / _currentScale;
-    final nativeTapY = scaledTapY / _currentScale;
+    // IMPORTANTE: Usa scaleX per X e scaleY per Y separatamente!
+    final nativeTapX = scaledTapX / _currentScaleX;
+    final nativeTapY = scaledTapY / _currentScaleY;
     
-    print('[RTLHtmlTeletextViewer] Native tap at ($nativeTapX, $nativeTapY) [scale=$_currentScale]');
+    print('[RTLHtmlTeletextViewer] Native tap at ($nativeTapX, $nativeTapY) [scaleX=$_currentScaleX, scaleY=$_currentScaleY]');
     
     // Controlla se il tap è su una clickable area
     final clickableAreas = widget.page.clickableAreas;
@@ -228,29 +256,58 @@ class _RTLHtmlTeletextViewerState extends State<RTLHtmlTeletextViewer> {
     }
   }
   
-  /// Inietta lo scale CSS direttamente nell'HTML
-  String _injectScaleInHtml(String html, double scale) {
-    print('[RTLHtmlTeletextViewer] Injecting scale=$scale into HTML');
+  /// Inietta lo scale CSS (NON uniforme per X e Y) nell'HTML
+  String _injectScaleInHtml(String html, double scaleX, double scaleY, double nativeWidth, double nativeHeight) {
+    print('[RTLHtmlTeletextViewer] Injecting scaleX=$scaleX, scaleY=$scaleY into HTML');
     print('[RTLHtmlTeletextViewer] HTML length before: ${html.length}');
     
-    // Cerca il tag <body> e aggiungi lo style inline per lo scaling
-    if (html.contains('<body')) {
-      // Usa transform: scale(uniform) per mantenere aspect ratio
-      // NOTA: Devo usare r'...' (raw string) per evitare che $1 venga interpretato come variabile Dart
-      final scaledHtml = html.replaceFirstMapped(
+    // Prima inietta CSS per rimuovere spacing tra righe (già fatto nel provider ma forziamo)
+    String modifiedHtml = html;
+    if (html.contains('</head>')) {
+      const cssOverride = '''
+<style>
+  /* Rimuove bande nere tra le righe */
+  * {
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 1 !important;
+  }
+  pre, div {
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 1 !important;
+    display: block !important;
+  }
+  span, a {
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 1 !important;
+    display: inline !important;
+    vertical-align: baseline !important;
+  }
+</style>
+''';
+      modifiedHtml = html.replaceFirst('</head>', '$cssOverride</head>');
+      print('[RTLHtmlTeletextViewer] CSS override injected');
+    }
+    
+    // Cerca il tag <body> e aggiungi lo style inline per lo scaling NON uniforme
+    if (modifiedHtml.contains('<body')) {
+      // Usa transform: scale(X, Y) per scaling indipendente su assi
+      final scaledHtml = modifiedHtml.replaceFirstMapped(
         RegExp(r'<body([^>]*)>'),
         (match) {
           final existingAttrs = match.group(1) ?? '';
-          return '<body$existingAttrs style="transform: scale($scale); transform-origin: top left; width: ${100 / scale}%; height: ${100 / scale}%;">';
+          return '<body$existingAttrs style="transform: scale($scaleX, $scaleY); transform-origin: top left; width: ${nativeWidth}px; height: ${nativeHeight}px;">';
         },
       );
       
       print('[RTLHtmlTeletextViewer] HTML length after: ${scaledHtml.length}');
       print('[RTLHtmlTeletextViewer] Scale injected successfully');
       
-      // Debug: mostra le prime 500 caratteri del body modificato
+      // Debug: mostra le prime 200 caratteri del body modificato
       final bodyIndex = scaledHtml.indexOf('<body');
-      if (bodyIndex >= 0) {
+      if (bodyIndex >= 0 && bodyIndex + 200 <= scaledHtml.length) {
         final bodyPreview = scaledHtml.substring(bodyIndex, bodyIndex + 200);
         print('[RTLHtmlTeletextViewer] Body tag: $bodyPreview');
       }
@@ -259,27 +316,25 @@ class _RTLHtmlTeletextViewerState extends State<RTLHtmlTeletextViewer> {
     }
     
     print('[RTLHtmlTeletextViewer] WARNING: <body> tag not found in HTML!');
-    return html;
+    return modifiedHtml;
   }
 
   /// Aggiorna lo scaling del contenuto tramite JavaScript
-  Future<void> _updateScaling(double scale) async {
+  Future<void> _updateScaling(double scaleX, double scaleY) async {
     if (_controller == null) return;
 
-    print('[RTLHtmlTeletextViewer] Applying uniform scale: $scale');
+    print('[RTLHtmlTeletextViewer] Applying non-uniform scale: X=$scaleX, Y=$scaleY');
 
     try {
       await _controller!.runJavaScript('''
         (function() {
-          console.log('Applying RTL Teletext uniform scaling: $scale');
+          console.log('Applying RTL Teletext non-uniform scaling: X=$scaleX, Y=$scaleY');
           
-          // Applica scaling uniforme al body
-          document.body.style.transform = 'scale($scale)';
+          // Applica scaling NON uniforme al body
+          document.body.style.transform = 'scale($scaleX, $scaleY)';
           document.body.style.transformOrigin = 'top left';
-          document.body.style.width = '${100 / scale}%';
-          document.body.style.height = '${100 / scale}%';
           
-          console.log('RTL Teletext uniform scaling applied successfully');
+          console.log('RTL Teletext non-uniform scaling applied successfully');
         })();
       ''');
     } catch (e) {
