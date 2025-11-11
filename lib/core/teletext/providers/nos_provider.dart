@@ -4,10 +4,45 @@ import 'package:html/dom.dart' as dom;
 import 'package:cursor_televideo/core/teletext/providers/teletext_provider.dart';
 import 'package:cursor_televideo/shared/models/televideo_page.dart';
 
+/// Entry della cache per le sottopagine
+class _SubPageCacheEntry {
+  final int count;
+  final DateTime timestamp;
+  final DateTime lastVerified;
+
+  _SubPageCacheEntry(this.count, this.timestamp, [DateTime? lastVerified])
+      : lastVerified = lastVerified ?? timestamp;
+
+  /// Verifica se la cache è scaduta
+  bool isExpired(Duration ttl) {
+    return DateTime.now().difference(timestamp) > ttl;
+  }
+
+  /// Verifica se è necessario un controllo di consistenza
+  bool needsConsistencyCheck(Duration interval) {
+    return DateTime.now().difference(lastVerified) > interval;
+  }
+
+  /// Crea una nuova entry con timestamp di verifica aggiornato
+  _SubPageCacheEntry withVerification() {
+    return _SubPageCacheEntry(count, timestamp, DateTime.now());
+  }
+}
+
 /// Provider per NOS Teletekst (Olanda)
 /// Usa HTML puro senza immagini
 class NOSProvider implements TeletextProvider {
   final Dio _dio;
+  
+  // Cache per il numero totale di sottopagine
+  // Key: pageNumber, Value: entry con count e timestamp
+  final Map<int, _SubPageCacheEntry> _subPageCache = {};
+  
+  // TTL della cache: 2 ore
+  final Duration _cacheTTL = const Duration(hours: 2);
+  
+  // Intervallo per controllo di consistenza: 10 minuti
+  final Duration _consistencyCheckInterval = const Duration(minutes: 10);
 
   NOSProvider({Dio? dio}) : _dio = dio ?? Dio();
 
@@ -83,8 +118,52 @@ class NOSProvider implements TeletextProvider {
 
     print('[NOSProvider] ✅ Found teletext content div');
 
-    // Cerca il numero totale di sottopagine (caricamento iterativo)
-    int totalSubPages = await _extractTotalSubPages(document, pageNumber, subPage);
+    // Determina il numero totale di sottopagine usando la cache con verifica di consistenza
+    int totalSubPages;
+    
+    if (_subPageCache.containsKey(pageNumber)) {
+      final entry = _subPageCache[pageNumber]!;
+      final cacheAge = DateTime.now().difference(entry.timestamp);
+      final timeSinceVerification = DateTime.now().difference(entry.lastVerified);
+      
+      print('[NOSProvider] ✅ Cache found - count: ${entry.count}, age: ${cacheAge.inMinutes}m, last verified: ${timeSinceVerification.inMinutes}m ago');
+      
+      if (entry.isExpired(_cacheTTL)) {
+        // Cache scaduta (oltre 2 ore), ricarica completamente
+        print('[NOSProvider] ⏰ Cache expired (>${_cacheTTL.inMinutes}m), full reload');
+        totalSubPages = await _extractTotalSubPages(document, pageNumber, subPage);
+        _subPageCache[pageNumber] = _SubPageCacheEntry(totalSubPages, DateTime.now());
+        print('[NOSProvider] 💾 Cached subpage count: $totalSubPages');
+      } else if (entry.needsConsistencyCheck(_consistencyCheckInterval)) {
+        // Cache ancora valida ma necessita controllo di consistenza
+        print('[NOSProvider] 🔍 Performing consistency check (last verified ${timeSinceVerification.inMinutes}m ago)...');
+        
+        // Verifica solo se ce ne sono di nuove, partendo dal conteggio cached
+        final updatedCount = await _quickCheckForMoreSubPages(pageNumber, entry.count);
+        
+        if (updatedCount > entry.count) {
+          // Trovate nuove sottopagine!
+          print('[NOSProvider] ✨ Found new subpages: ${entry.count} -> $updatedCount');
+          _subPageCache[pageNumber] = _SubPageCacheEntry(updatedCount, DateTime.now());
+          totalSubPages = updatedCount;
+        } else {
+          // Il conteggio è ancora corretto, aggiorna solo il timestamp di verifica
+          _subPageCache[pageNumber] = entry.withVerification();
+          totalSubPages = entry.count;
+          print('[NOSProvider] ✅ Consistency verified: $totalSubPages subpages (unchanged)');
+        }
+      } else {
+        // Cache valida e verificata di recente - USA SUBITO!
+        totalSubPages = entry.count;
+        print('[NOSProvider] ⚡ Using cached subpage count: $totalSubPages (verified ${timeSinceVerification.inSeconds}s ago) - INSTANT!');
+      }
+    } else {
+      // Prima visita, conta le sottopagine
+      print('[NOSProvider] 🆕 First visit to page $pageNumber, counting subpages...');
+      totalSubPages = await _extractTotalSubPages(document, pageNumber, subPage);
+      _subPageCache[pageNumber] = _SubPageCacheEntry(totalSubPages, DateTime.now());
+      print('[NOSProvider] 💾 Cached subpage count: $totalSubPages');
+    }
 
     // Estrai link di navigazione
     final navigationLinks = _extractNavigationLinks(document, pageNumber);
@@ -389,6 +468,57 @@ ${contentDiv.outerHtml}
   }) async {
     print('[NOSProvider] Regional pages not supported');
     throw UnimplementedError('NOS Teletekst does not support regional pages');
+  }
+
+  /// Verifica velocemente se ci sono più sottopagine rispetto al conteggio cached
+  /// Controlla solo le sottopagine successive a quelle già note
+  Future<int> _quickCheckForMoreSubPages(int pageNumber, int knownCount) async {
+    print('[NOSProvider] Quick check: looking for subpages beyond $knownCount...');
+    
+    // Controlla fino a 5 sottopagine oltre il conteggio conosciuto
+    for (int i = knownCount + 1; i <= knownCount + 5; i++) {
+      try {
+        final url = 'https://nos.nl/teletekst/$pageNumber/$i';
+        final response = await _dio.get(
+          url,
+          options: Options(
+            headers: {
+              'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+              'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+            },
+          ),
+        );
+        
+        if (response.statusCode == 200) {
+          // Verifica che la pagina contenga effettivamente contenuto teletext
+          final htmlContent = response.data as String;
+          final document = html_parser.parse(htmlContent);
+          final contentDiv = document.querySelector('div.sc-5fbcdf78-1.bsxcGC');
+          
+          if (contentDiv != null) {
+            print('[NOSProvider] ✅ Found subpage $i');
+            // Continua a cercare
+            continue;
+          } else {
+            // Non è una sottopagina valida
+            print('[NOSProvider] Subpage $i has no content, stopping at ${i - 1}');
+            return i - 1;
+          }
+        } else {
+          // La sottopagina non esiste
+          print('[NOSProvider] Subpage $i does not exist (status ${response.statusCode}), stopping at ${i - 1}');
+          return i - 1;
+        }
+      } catch (e) {
+        // Errore nel caricamento, assumiamo che non ci siano più sottopagine
+        print('[NOSProvider] Error checking subpage $i: $e');
+        return i - 1;
+      }
+    }
+    
+    // Se arriviamo qui, ci sono almeno 5 sottopagine in più
+    print('[NOSProvider] Found at least ${knownCount + 5} subpages');
+    return knownCount + 5;
   }
 
   @override

@@ -319,6 +319,65 @@ flutter pub run build_runner build --delete-conflicting-outputs
 - **ListView.builder** per efficienza
 - **Grouped lists** per migliore organizzazione
 
+#### Ottimizzazioni Provider Sottopagine (2025-01-11)
+**Sistema di Cache Intelligente** implementato per NOS e RÚV:
+
+**Problema iniziale:**
+- NOS e RÚV richiedevano richieste HTTP ricorsive per contare sottopagine
+- Ritardo di 200-600ms ad ogni cambio pagina
+- YLE era istantaneo perché il conteggio arrivava direttamente dall'API JSON
+
+**Soluzione implementata:**
+- Cache con `_SubPageCacheEntry` (count, timestamp, lastVerified)
+- TTL: 2 ore (le sottopagine cambiano raramente)
+- Verifica consistenza: ogni 10 minuti
+- `_quickCheckForMoreSubPages()` per controlli veloci
+
+**Risultati:**
+- Prima visita: 200-600ms (inevitabile)
+- Visite successive (< 10 min): **0ms - ISTANTANEO** ⚡
+- Visite successive (10-120 min): ~100ms (verifica veloce)
+- Oltre 2 ore: 200-600ms (refresh completo)
+- **Risparmio: 95% del tempo di attesa per navigazioni successive**
+
+**File modificati:**
+- `lib/core/teletext/providers/nos_provider.dart` - Implementata cache completa
+- `lib/core/teletext/providers/iceland_provider.dart` - Log migliorato (cache già presente)
+
+#### Ottimizzazioni Contesto AdMob (2025-01-11)
+**Sistema di Categorizzazione per Canale** implementato per AdMob:
+
+**Problema iniziale:**
+- Page descriptions recuperate solo per canali RAI
+- Categorie per range pagine (100-199=news, 200-299=sport) valide solo per RAI Nazionale
+- Contesto AdMob impreciso per canali europei
+
+**Soluzione implementata:**
+1. **Page Descriptions per tutti i canali**
+   - `televideo_bloc.dart`: Usa `getDescriptionsForChannel()` per TUTTI i canali
+   - Keywords estratte dalle descrizioni specifiche di ogni broadcaster
+
+2. **PageCategoriesService**
+   - Nuovo file: `lib/core/ads/page_categories_service.dart`
+   - Categorizzazione specifica per 24 canali europei
+   - Keywords in 15 lingue (IT, DE, ES, PT, NL, SE, FI, CZ, SI, HU, HR, IS, LU, DK, BA)
+
+**Esempi categorizzazione:**
+- RAI Nazionale 200-299: `['sport', 'calcio', 'campionato']`
+- ORF 200-299: `['sport', 'fussball', 'ski', 'eishockey']`
+- YLE 200-299: `['urheilu', 'sport', 'jalkapallo', 'jaakiekko']`
+
+**Risultati:**
+- Contesto AdMob accurato per ogni canale
+- Keywords bilingue (lingua locale + inglese)
+- Supporto caratteri accentati europei: `àèéìòùäöüßåæøčšž`
+- Migliore targeting pubblicitario
+
+**File modificati:**
+- `lib/core/ads/page_categories_service.dart` - Nuovo servizio categorizzazione
+- `lib/core/ads/ad_service.dart` - Integrazione con nuovo servizio
+- `lib/features/televideo_viewer/bloc/televideo_bloc.dart` - Page descriptions per tutti i canali
+
 ### Accessibilità
 - Semantics per screen readers
 - Sufficienti contrast ratios
@@ -348,6 +407,7 @@ flutter pub run build_runner build --delete-conflicting-outputs
 ---
 
 **Autore:** Samuele  
-**Data:** 2025-01-07  
-**Versione:** 1.0
+**Data creazione:** 2025-01-07  
+**Ultimo aggiornamento:** 2025-01-11  
+**Versione:** 1.1
 

@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:cursor_televideo/core/settings/app_settings.dart';
 import 'package:cursor_televideo/shared/models/region.dart';
+import 'package:cursor_televideo/core/ads/page_categories_service.dart';
 
 class AdService {
   static final AdService _instance = AdService._internal();
@@ -106,7 +107,7 @@ class AdService {
         // Estrai parole chiave dalla descrizione
         final descriptionWords = _currentSection!
             .toLowerCase()
-            .replaceAll(RegExp(r'[^\w\s]'), '') // Rimuovi punteggiatura
+            .replaceAll(RegExp(r'[^\w\sàèéìòùäöüßåæøčšž]'), '') // Rimuovi punteggiatura ma mantieni caratteri accentati europei
             .split(' ')
             .where((word) => word.length > 3) // Solo parole significative
             .toList();
@@ -114,21 +115,14 @@ class AdService {
         keywords.addAll(descriptionWords);
       }
       
-      // Aggiungi categorie basate sul numero di pagina
-      if (pageNum >= 100 && pageNum < 200) {
-        keywords.addAll(['news', 'attualita', 'cronaca']);
-      } else if (pageNum >= 200 && pageNum < 300) {
-        keywords.addAll(['sport', 'calcio', 'campionato']);
-      } else if (pageNum >= 300 && pageNum < 400) {
-        keywords.addAll(['economia', 'finanza', 'mercati']);
-      } else if (pageNum >= 400 && pageNum < 500) {
-        keywords.addAll(['utilita', 'servizi', 'informazioni']);
-      } else if (pageNum >= 500 && pageNum < 600) {
-        keywords.addAll(['cultura', 'spettacolo', 'entertainment']);
-      } else if (pageNum >= 600 && pageNum < 700) {
-        keywords.addAll(['viabilita', 'trasporti', 'mobilita']);
-      } else if (pageNum >= 700) {
-        keywords.addAll(['meteo', 'previsioni', 'tempo']);
+      // Aggiungi categorie specifiche del canale basate sul range di pagine
+      if (pageNum > 0) {
+        final categoryKeywords = PageCategoriesService().getCategoriesForPage(
+          pageNumber: pageNum,
+          channelId: _channelId,
+          isRegional: _isRegional,
+        );
+        keywords.addAll(categoryKeywords);
       }
 
       // Aggiungi il contesto regionale se presente
@@ -287,7 +281,7 @@ class AdService {
     if (_currentRegion != null) {
       print('Region: ${_currentRegion!.name} (${_currentRegion!.code})');
     }
-    print('Keywords: ${keywords.join(", ")}');
+    print('Keywords (${keywords.length}): ${keywords.join(", ")}');
     print('Content URL: $contentUrl');
     print('Personalized Ads: ${AppSettings.adsPersonalizationEnabled}');
     print('=== FINE CONTESTO ADMOB ===\n');

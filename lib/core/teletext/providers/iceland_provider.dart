@@ -130,9 +130,9 @@ class IcelandProvider extends TeletextProvider {
           print('[IcelandProvider] ✅ Consistency verified: $totalSubPages subpages (unchanged)');
         }
       } else {
-        // Cache valida e verificata di recente
+        // Cache valida e verificata di recente - USA SUBITO!
         totalSubPages = entry.count;
-        print('[IcelandProvider] ✅ Using cached subpage count: $totalSubPages (verified ${timeSinceVerification.inSeconds}s ago)');
+        print('[IcelandProvider] ⚡ Using cached subpage count: $totalSubPages (verified ${timeSinceVerification.inSeconds}s ago) - INSTANT!');
       }
     } else {
       // Prima visita, conta le sottopagine

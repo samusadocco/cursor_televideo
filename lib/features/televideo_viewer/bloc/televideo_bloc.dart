@@ -127,13 +127,15 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
   void _updateAdContext(int pageNumber, {bool isRegional = false, Region? region, TeletextChannel? channel}) {
     print('[TelevideoBloc] _updateAdContext called - page: $pageNumber, channel: ${channel?.id}, country: ${channel?.countryCode}');
     
-    // Ottieni la descrizione della pagina (solo per RAI)
+    // Ottieni la descrizione della pagina per TUTTI i canali (non solo RAI)
     String? description;
-    if (channel?.id.startsWith('rai_') ?? false) {
-      description = PageDescriptionsService().getDescription(
-        pageNumber,
+    if (channel != null) {
+      final descriptions = PageDescriptionsService().getDescriptionsForChannel(
+        channelId: channel.id,
         isRegional: isRegional,
       );
+      description = descriptions[pageNumber];
+      print('[TelevideoBloc] Page description for channel ${channel.id}: $description');
     }
 
     print('[TelevideoBloc] Calling setContext with - channelId: ${channel?.id}, countryCode: ${channel?.countryCode}, language: ${channel?.countryCode.toLowerCase()}');
