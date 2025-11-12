@@ -458,19 +458,22 @@ class TeletextChannels {
       baseUrl: 'https://teletext.zdf.de/teletext/3sat',
       supportsRegions: false,
     ),
-    // 🇩🇪 GERMANIA - RTL
-    TeletextChannel(
-      id: 'rtl_text',
-      name: 'RTL Text',
-      shortName: 'RTL',
-      countryCode: 'DE',
-      countryName: 'Germania',
-      flagEmoji: '🇩🇪',
-      broadcasterName: 'RTL',
-      type: TeletextChannelType.national,
-      baseUrl: 'http://193.16.161.100/teletext/rtl',
-      supportsRegions: false,
-    ),
+    
+    // ⚠️ TEMPORANEAMENTE DISABILITATO - In fase di perfezionamento visualizzazione
+    // // 🇩🇪 GERMANIA - RTL
+    // TeletextChannel(
+    //   id: 'rtl_text',
+    //   name: 'RTL Text',
+    //   shortName: 'RTL',
+    //   countryCode: 'DE',
+    //   countryName: 'Germania',
+    //   flagEmoji: '🇩🇪',
+    //   broadcasterName: 'RTL',
+    //   type: TeletextChannelType.national,
+    //   baseUrl: 'http://193.16.161.100/teletext/rtl',
+    //   supportsRegions: false,
+    // ),
+    
     // 🇨🇭 SVIZZERA - RSI LA 1
     TeletextChannel(
       id: 'rsi_la1',
@@ -1162,19 +1165,20 @@ class TeletextChannels {
       supportsRegions: false,
     ),
 
-    // 🇺🇦 UCRAINA - Intertext
-    TeletextChannel(
-      id: 'intertext',
-      name: 'Intertext',
-      shortName: 'Intertext',
-      countryCode: 'UA',
-      countryName: 'Ucraina',
-      flagEmoji: '🇺🇦',
-      broadcasterName: 'Intertext',
-      type: TeletextChannelType.national,
-      baseUrl: 'https://intertext.com.ua',
-      supportsRegions: false,
-    ),
+    // ⚠️ TEMPORANEAMENTE DISABILITATO - In fase di perfezionamento visualizzazione
+    // // 🇺🇦 UCRAINA - Intertext
+    // TeletextChannel(
+    //   id: 'intertext',
+    //   name: 'Intertext',
+    //   shortName: 'Intertext',
+    //   countryCode: 'UA',
+    //   countryName: 'Ucraina',
+    //   flagEmoji: '🇺🇦',
+    //   broadcasterName: 'Intertext',
+    //   type: TeletextChannelType.national,
+    //   baseUrl: 'https://intertext.com.ua',
+    //   supportsRegions: false,
+    // ),
 
   ];
 

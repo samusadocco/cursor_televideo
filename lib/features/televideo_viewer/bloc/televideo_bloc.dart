@@ -179,61 +179,109 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
   Future<void> _initializeBloc() async {
     await _checkPage100Availability();
     
-    // Prima controlla se c'è uno stato salvato da ripristinare
-    if (AppSettings.lastPageNumber != null) {
-      print('[TelevideoBloc] Ripristino stato salvato - pagina: ${AppSettings.lastPageNumber}, sottopagina: ${AppSettings.lastSubPage}');
-      
-      // Carica la pagina salvata direttamente senza chiamare changeChannel
-      // (per evitare il caricamento della pagina 100 del canale)
-      final lastPage = AppSettings.lastPageNumber!;
-      final isNationalMode = AppSettings.lastIsNationalMode ?? true;
-      
-      if (!isNationalMode && AppSettings.lastRegionCode != null) {
-        // Carica pagina regionale
-        final region = Region.fromCode(AppSettings.lastRegionCode!);
-        add(TelevideoEvent.loadRegionalPage(region, lastPage));
-      } else {
-        // Carica pagina nazionale
-        add(TelevideoEvent.loadNationalPage(lastPage));
-      }
-      return;
-    }
-    
-    // Se non c'è stato salvato e l'impostazione è abilitata, carica il primo preferito
-    if (AppSettings.loadFirstFavorite) {
-      final favorites = FavoritesService().getFavorites();
-      if (favorites.isNotEmpty) {
-        final firstFavorite = favorites.first;
+    // Gestisci l'avvio in base alla preferenza dell'utente
+    switch (AppSettings.startupPageOption) {
+      case StartupPageOption.lastPage:
+        // Carica l'ultima pagina visualizzata
+        if (AppSettings.lastPageNumber != null) {
+          print('[TelevideoBloc] 📄 Caricamento ultima pagina visualizzata: ${AppSettings.lastPageNumber}, sottopagina: ${AppSettings.lastSubPage}');
+          
+          final lastPage = AppSettings.lastPageNumber!;
+          final isNationalMode = AppSettings.lastIsNationalMode ?? true;
+          
+          if (!isNationalMode && AppSettings.lastRegionCode != null) {
+            // Carica pagina regionale
+            final region = Region.fromCode(AppSettings.lastRegionCode!);
+            add(TelevideoEvent.loadRegionalPage(region, lastPage));
+          } else {
+            // Carica pagina nazionale
+            add(TelevideoEvent.loadNationalPage(lastPage));
+          }
+          return;
+        }
+        break;
         
-        // Se ha un channelId, cambia prima il canale
-        if (firstFavorite.channelId != null) {
-          final channel = TeletextChannels.getChannelById(firstFavorite.channelId!);
+      case StartupPageOption.firstFavorite:
+        // Carica il primo preferito, se disponibile
+        final favorites = FavoritesService().getFavorites();
+        if (favorites.isNotEmpty) {
+          final firstFavorite = favorites.first;
+          print('[TelevideoBloc] ⭐ Caricamento primo preferito: pagina ${firstFavorite.pageNumber}');
+          
+          // Se ha un channelId, cambia prima il canale
+          if (firstFavorite.channelId != null) {
+            final channel = TeletextChannels.getChannelById(firstFavorite.channelId!);
+            if (channel != null) {
+              // Cambia il canale e carica la pagina del preferito
+              add(TelevideoEvent.changeChannel(channel));
+              // Il cambio canale caricherà automaticamente la pagina 100 del canale
+              // Quindi dobbiamo aspettare e poi caricare la pagina desiderata
+              Future.delayed(const Duration(milliseconds: 300), () {
+                add(TelevideoEvent.loadNationalPage(firstFavorite.pageNumber));
+              });
+              return;
+            }
+          }
+          
+          // Se è una pagina RAI regionale
+          if (firstFavorite.regionCode != null) {
+            final region = Region.fromCode(firstFavorite.regionCode!);
+            add(TelevideoEvent.loadRegionalPage(region, firstFavorite.pageNumber));
+            return;
+          }
+          
+          // Se è una pagina RAI nazionale
+          add(TelevideoEvent.loadNationalPage(firstFavorite.pageNumber));
+          return;
+        }
+        
+        // Se non ci sono preferiti, fallback all'ultima pagina visualizzata
+        print('[TelevideoBloc] ⚠️ Nessun preferito trovato, fallback all\'ultima pagina');
+        if (AppSettings.lastPageNumber != null) {
+          final lastPage = AppSettings.lastPageNumber!;
+          final isNationalMode = AppSettings.lastIsNationalMode ?? true;
+          
+          if (!isNationalMode && AppSettings.lastRegionCode != null) {
+            final region = Region.fromCode(AppSettings.lastRegionCode!);
+            add(TelevideoEvent.loadRegionalPage(region, lastPage));
+          } else {
+            add(TelevideoEvent.loadNationalPage(lastPage));
+          }
+          return;
+        }
+        break;
+        
+      case StartupPageOption.channelHomePage:
+        // Carica la pagina iniziale dell'ultimo canale visualizzato
+        if (AppSettings.lastChannelId != null) {
+          final channel = TeletextChannels.getChannelById(AppSettings.lastChannelId!);
           if (channel != null) {
-            // Cambia il canale e carica la pagina del preferito
+            print('[TelevideoBloc] 🏠 Caricamento pagina iniziale del canale: ${channel.name}');
+            
+            // Cambia il canale (questo caricherà automaticamente la pagina 100)
             add(TelevideoEvent.changeChannel(channel));
-            // Il cambio canale caricherà automaticamente la pagina 100 del canale
-            // Quindi dobbiamo aspettare e poi caricare la pagina desiderata
-            Future.delayed(const Duration(milliseconds: 300), () {
-              add(TelevideoEvent.loadNationalPage(firstFavorite.pageNumber));
-            });
             return;
           }
         }
         
-        // Se è una pagina RAI regionale
-        if (firstFavorite.regionCode != null) {
-          final region = Region.fromCode(firstFavorite.regionCode!);
-          add(TelevideoEvent.loadRegionalPage(region, firstFavorite.pageNumber));
+        // Se non c'è un canale salvato, fallback all'ultima pagina visualizzata
+        print('[TelevideoBloc] ⚠️ Nessun canale salvato, fallback all\'ultima pagina');
+        if (AppSettings.lastPageNumber != null) {
+          final lastPage = AppSettings.lastPageNumber!;
+          final isNationalMode = AppSettings.lastIsNationalMode ?? true;
+          
+          if (!isNationalMode && AppSettings.lastRegionCode != null) {
+            final region = Region.fromCode(AppSettings.lastRegionCode!);
+            add(TelevideoEvent.loadRegionalPage(region, lastPage));
+          } else {
+            add(TelevideoEvent.loadNationalPage(lastPage));
+          }
           return;
         }
-        
-        // Se è una pagina RAI nazionale
-        add(TelevideoEvent.loadNationalPage(firstFavorite.pageNumber));
-        return;
-      }
+        break;
     }
     
-    // Se l'impostazione è disabilitata o non ci sono preferiti, 
+    // Se nessuna delle opzioni sopra ha funzionato, 
     // carica il primo canale dalla lista dei canali selezionati
     try {
       final prefs = await SharedPreferences.getInstance();

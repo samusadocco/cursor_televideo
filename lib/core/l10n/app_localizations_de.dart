@@ -245,11 +245,18 @@ class AppLocalizationsDe extends AppLocalizations {
   String get selectTheme => 'Design auswählen';
 
   @override
-  String get loadFirstFavorite => 'Ersten Favoriten beim Start laden';
+  String get startupPageOption => 'Startseite';
 
   @override
-  String get loadFirstFavoriteDescription =>
-      'Wenn aktiviert, wird der erste Favorit in der Liste beim Start der App geladen';
+  String get startupPageOptionLastPage => 'Zuletzt angezeigte Seite (Standard)';
+
+  @override
+  String get startupPageOptionFirstFavorite =>
+      'Erster Favorit (falls verfügbar)';
+
+  @override
+  String get startupPageOptionChannelHomePage =>
+      'Startseite des letzten Kanals';
 
   @override
   String get cacheDuration =>

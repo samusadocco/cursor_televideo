@@ -244,11 +244,17 @@ class AppLocalizationsSl extends AppLocalizations {
   String get selectTheme => 'Izberi temo';
 
   @override
-  String get loadFirstFavorite => 'Naloži prvo priljubljeno ob zagonu';
+  String get startupPageOption => 'Začetna stran';
 
   @override
-  String get loadFirstFavoriteDescription =>
-      'Če je omogočeno, se bo ob zagonu aplikacije naložila prva priljubljena stran s seznama';
+  String get startupPageOptionLastPage => 'Zadnja ogledana stran (privzeto)';
+
+  @override
+  String get startupPageOptionFirstFavorite =>
+      'Prvo priljubljeno (če je na voljo)';
+
+  @override
+  String get startupPageOptionChannelHomePage => 'Domača stran zadnjega kanala';
 
   @override
   String get cacheDuration =>

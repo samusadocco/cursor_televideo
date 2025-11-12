@@ -243,11 +243,19 @@ class AppLocalizationsCs extends AppLocalizations {
   String get selectTheme => 'Vybrat téma';
 
   @override
-  String get loadFirstFavorite => 'Načíst první oblíbenou při spuštění';
+  String get startupPageOption => 'Úvodní stránka';
 
   @override
-  String get loadFirstFavoriteDescription =>
-      'Pokud je povoleno, při spuštění aplikace se načte první oblíbená stránka ze seznamu';
+  String get startupPageOptionLastPage =>
+      'Naposledy zobrazená stránka (výchozí)';
+
+  @override
+  String get startupPageOptionFirstFavorite =>
+      'První oblíbená (pokud je k dispozici)';
+
+  @override
+  String get startupPageOptionChannelHomePage =>
+      'Domovská stránka posledního kanálu';
 
   @override
   String get cacheDuration =>

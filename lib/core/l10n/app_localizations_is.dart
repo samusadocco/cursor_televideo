@@ -243,11 +243,16 @@ class AppLocalizationsIs extends AppLocalizations {
   String get selectTheme => 'Veldu þema';
 
   @override
-  String get loadFirstFavorite => 'Hlaða fyrsta eftirlæti við ræsingu';
+  String get startupPageOption => 'Upphafssíða';
 
   @override
-  String get loadFirstFavoriteDescription =>
-      'Ef virkt, verður fyrsta eftirlætissíðan á listanum hlaðin þegar forritið er ræst';
+  String get startupPageOptionLastPage => 'Síðasta skoðaða síða (sjálfgefið)';
+
+  @override
+  String get startupPageOptionFirstFavorite => 'Fyrsta eftirlæti (ef í boði)';
+
+  @override
+  String get startupPageOptionChannelHomePage => 'Upphafssíða síðustu rásar';
 
   @override
   String get cacheDuration =>

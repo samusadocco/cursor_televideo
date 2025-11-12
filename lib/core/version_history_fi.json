@@ -1,10 +1,18 @@
 {
   "versions": [
     {
+      "version": "2.0.0",
+      "changes": [
+        "Sovelluksen nimi muutettu Teletext Europeksi",
+        "Lisätty kanavia useimmille Euroopan maille",
+        "Muutettu aloitussivun latausasetuksia"
+      ]
+    },
+    {
       "version": "1.0.8",
       "changes": [
-        "Lisätty tauko- ja toistotoiminto automaattiseen alasivujen päivitykseen",
-        "Lisätty sovelluskielen hallinta"        
+        "Lisätty tauko ja toista -toiminto alasivujen automaattista päivitystä varten",
+        "Lisätty sovelluskielen hallinta"
       ]
     },
     {
@@ -14,34 +22,32 @@
       ]
     },
     {
-        "version": "1.0.6",
-        "changes": [
-          "Suorituskykyoptimointeja",
-          "Korjattu seurannan valtuutusviesti"
-        ]
-      },
+      "version": "1.0.6",
+      "changes": [
+        "Optimoitu suorituskyky",
+        "Korjattu seurannan valtuutusviesti"
+      ]
+    },
     {
-        "version": "1.0.5",
-        "changes": [
-          "Näytä muutosloki käynnistyksessä päivityksen jälkeen"
-        ]
-      },
+      "version": "1.0.5",
+      "changes": [
+        "Näytä muutosloki käynnistyksen yhteydessä päivityksen jälkeen"
+      ]
+    },
     {
-        "version": "1.0.4",
-        "changes": [
-          "Lataa ensimmäinen suosikki käynnistyksessä: valitse millä Teksti-TV-sivulla haluat aloittaa (siirry Asetuksiin)",
-          "GDPR: hallinnoi yksityisyysvalintojasi",
-          "Suorituskykyoptimointeja",
-          "Näytä versio Asetuksissa"
-        ]
-      },
+      "version": "1.0.4",
+      "changes": [
+        "Lataa ensimmäinen suosikki käynnistettäessä: päätä millä Teksti-TV sivulla haluat aloittaa (mene Asetuksiin)",
+        "GDPR: hallitse yksityisyysvalintojasi",
+        "Optimoitu suorituskyky",
+        "Näytä versio Asetuksissa"
+      ]
+    },
     {
       "version": "1.0.3",
       "changes": [
-        "Pieniä bugien korjauksia"
+        "Korjattu pieniä virheitä"
       ]
     }
-    
   ]
 }
-

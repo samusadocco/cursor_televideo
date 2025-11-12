@@ -243,11 +243,18 @@ class AppLocalizationsFi extends AppLocalizations {
   String get selectTheme => 'Valitse teema';
 
   @override
-  String get loadFirstFavorite => 'Lataa ensimmäinen suosikki käynnistettäessä';
+  String get startupPageOption => 'Aloitussivu';
 
   @override
-  String get loadFirstFavoriteDescription =>
-      'Jos käytössä, ensimmäinen suosikki listalta ladataan sovelluksen käynnistyessä';
+  String get startupPageOptionLastPage => 'Viimeksi katsottu sivu (oletus)';
+
+  @override
+  String get startupPageOptionFirstFavorite =>
+      'Ensimmäinen suosikki (jos saatavilla)';
+
+  @override
+  String get startupPageOptionChannelHomePage =>
+      'Viimeisen kanavan aloitussivu';
 
   @override
   String get cacheDuration =>

@@ -1,10 +1,18 @@
 {
   "versions": [
     {
+      "version": "2.0.0",
+      "changes": [
+        "Změněn název aplikace na Teletext Europe",
+        "Přidány kanály pro většinu evropských zemí",
+        "Změněna nastavení načítání úvodní stránky"
+      ]
+    },
+    {
       "version": "1.0.8",
       "changes": [
         "Přidána funkce pozastavení a přehrávání pro automatickou aktualizaci podstránek",
-        "Přidána správa jazyka aplikace"        
+        "Přidána správa jazyka aplikace"
       ]
     },
     {
@@ -14,34 +22,32 @@
       ]
     },
     {
-        "version": "1.0.6",
-        "changes": [
-          "Optimalizace výkonu",
-          "Opravena zpráva o autorizaci sledování"
-        ]
-      },
+      "version": "1.0.6",
+      "changes": [
+        "Optimalizovaný výkon",
+        "Opravena zpráva o autorizaci sledování"
+      ]
+    },
     {
-        "version": "1.0.5",
-        "changes": [
-          "Zobrazit protokol změn při spuštění po aktualizaci"
-        ]
-      },
+      "version": "1.0.5",
+      "changes": [
+        "Zobrazit seznam změn při spuštění po aktualizaci"
+      ]
+    },
     {
-        "version": "1.0.4",
-        "changes": [
-          "Načíst první oblíbenou položku při spuštění: vyberte, se kterou stránkou Teletextu chcete začít (přejděte do Nastavení)",
-          "GDPR: spravujte své možnosti ochrany soukromí",
-          "Optimalizace výkonu",
-          "Zobrazit verzi v Nastavení"
-        ]
-      },
+      "version": "1.0.4",
+      "changes": [
+        "Načíst první oblíbenou při spuštění: rozhodněte, s jakou stránkou Teletextu začít (přejděte do Nastavení)",
+        "GDPR: spravujte své volby ochrany soukromí",
+        "Optimalizovaný výkon",
+        "Zobrazit verzi v Nastavení"
+      ]
+    },
     {
       "version": "1.0.3",
       "changes": [
-        "Drobné opravy chyb"
+        "Opraveny drobné chyby"
       ]
     }
-    
   ]
 }
-

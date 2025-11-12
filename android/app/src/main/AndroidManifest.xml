@@ -6,7 +6,7 @@
     <application
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
-        android:label="TeleRetrò"
+        android:label="Teletext Europe"
         tools:replace="android:label">
         <meta-data
             android:name="io.flutter.embedding.android.EnableDeferredComponents"

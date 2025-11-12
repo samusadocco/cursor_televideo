@@ -27,7 +27,7 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  late bool _loadFirstFavorite;
+  late StartupPageOption _startupPageOption;
   late double _cacheSliderValue;
   late bool _liveShowEnabled;
   late double _liveShowIntervalValue;
@@ -39,7 +39,7 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   void initState() {
     super.initState();
-    _loadFirstFavorite = AppSettings.loadFirstFavorite;
+    _startupPageOption = AppSettings.startupPageOption;
     _cacheSliderValue = AppSettings.cacheDurationInSeconds.toDouble();
     _liveShowEnabled = AppSettings.liveShowEnabled;
     _liveShowIntervalValue = AppSettings.liveShowIntervalSeconds.toDouble();
@@ -89,11 +89,57 @@ class _SettingsPageState extends State<SettingsPage> {
     });
   }
 
-  Future<void> _updateLoadFirstFavorite(bool value) async {
+  Future<void> _updateStartupPageOption(StartupPageOption option) async {
     setState(() {
-      _loadFirstFavorite = value;
+      _startupPageOption = option;
     });
-    await AppSettings.setLoadFirstFavorite(value);
+    await AppSettings.setStartupPageOption(option);
+  }
+  
+  String _getStartupPageOptionLabel(StartupPageOption option, AppLocalizations l10n) {
+    switch (option) {
+      case StartupPageOption.lastPage:
+        return l10n.startupPageOptionLastPage;
+      case StartupPageOption.firstFavorite:
+        return l10n.startupPageOptionFirstFavorite;
+      case StartupPageOption.channelHomePage:
+        return l10n.startupPageOptionChannelHomePage;
+    }
+  }
+  
+  void _showStartupPageOptionDialog() {
+    final l10n = AppLocalizations.of(context)!;
+    
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(l10n.startupPageOption),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: StartupPageOption.values.map((option) {
+              return RadioListTile<StartupPageOption>(
+                title: Text(_getStartupPageOptionLabel(option, l10n)),
+                value: option,
+                groupValue: _startupPageOption,
+                onChanged: (value) {
+                  if (value != null) {
+                    _updateStartupPageOption(value);
+                    Navigator.of(context).pop();
+                  }
+                },
+              );
+            }).toList(),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text(l10n.cancel),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   Future<void> _updateCacheDuration(double value) async {
@@ -186,12 +232,12 @@ class _SettingsPageState extends State<SettingsPage> {
       ),
       body: ListView(
         children: [
-          // Sezione Caricamento Preferiti
-          SwitchListTile(
-            title: Text(l10n.loadFirstFavorite),
-            subtitle: Text(l10n.loadFirstFavoriteDescription),
-            value: _loadFirstFavorite,
-            onChanged: _updateLoadFirstFavorite,
+          // Sezione Pagina di Avvio
+          ListTile(
+            title: Text(l10n.startupPageOption),
+            subtitle: Text(_getStartupPageOptionLabel(_startupPageOption, l10n)),
+            trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+            onTap: _showStartupPageOptionDialog,
           ),
           const Divider(),
 

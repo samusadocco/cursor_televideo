@@ -1,10 +1,18 @@
 {
   "versions": [
     {
+      "version": "2.0.0",
+      "changes": [
+        "Anwendungsname in Teletext Europe geändert",
+        "Kanäle für die meisten europäischen Länder hinzugefügt",
+        "Startseiten-Ladeeinstellungen geändert"
+      ]
+    },
+    {
       "version": "1.0.8",
       "changes": [
-        "Pause- und Wiedergabefunktion für automatische Unterseiten-Aktualisierung hinzugefügt",
-        "Verwaltung der Anwendungssprache hinzugefügt"        
+        "Pause- und Play-Funktion für automatische Unterseiten-Aktualisierung hinzugefügt",
+        "Anwendungssprachenverwaltung hinzugefügt"
       ]
     },
     {
@@ -14,34 +22,32 @@
       ]
     },
     {
-        "version": "1.0.6",
-        "changes": [
-          "Leistungsoptimierungen",
-          "Tracking-Autorisierungsnachricht behoben"
-        ]
-      },
+      "version": "1.0.6",
+      "changes": [
+        "Optimierte Leistung",
+        "Tracking-Autorisierungsnachricht behoben"
+      ]
+    },
     {
-        "version": "1.0.5",
-        "changes": [
-          "Änderungsprotokoll beim Start nach einem Update anzeigen"
-        ]
-      },
+      "version": "1.0.5",
+      "changes": [
+        "Changelog beim Start nach einem Update anzeigen"
+      ]
+    },
     {
-        "version": "1.0.4",
-        "changes": [
-          "Ersten Favoriten beim Start laden: Wählen Sie, mit welcher Televideo-Seite Sie starten möchten (gehen Sie zu Einstellungen)",
-          "DSGVO: Verwalten Sie Ihre Datenschutzoptionen",
-          "Leistungsoptimierungen",
-          "Version in den Einstellungen anzeigen"
-        ]
-      },
+      "version": "1.0.4",
+      "changes": [
+        "Ersten Favoriten beim Start laden: Entscheiden Sie, mit welcher Teletext-Seite Sie beginnen möchten (gehen Sie zu den Einstellungen)",
+        "DSGVO: Verwalten Sie Ihre Datenschutzoptionen",
+        "Optimierte Leistung",
+        "Version in den Einstellungen anzeigen"
+      ]
+    },
     {
       "version": "1.0.3",
       "changes": [
-        "Kleinere Fehlerbehebungen"
+        "Kleinere Fehler behoben"
       ]
     }
-    
   ]
 }
-

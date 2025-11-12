@@ -243,11 +243,17 @@ class AppLocalizationsHu extends AppLocalizations {
   String get selectTheme => 'Téma kiválasztása';
 
   @override
-  String get loadFirstFavorite => 'Első kedvenc betöltése indításkor';
+  String get startupPageOption => 'Kezdőoldal';
 
   @override
-  String get loadFirstFavoriteDescription =>
-      'Ha engedélyezve van, az alkalmazás indításakor az első kedvenc oldal töltődik be';
+  String get startupPageOptionLastPage =>
+      'Utoljára megtekintett oldal (alapértelmezett)';
+
+  @override
+  String get startupPageOptionFirstFavorite => 'Első kedvenc (ha elérhető)';
+
+  @override
+  String get startupPageOptionChannelHomePage => 'Utolsó csatorna kezdőoldala';
 
   @override
   String get cacheDuration =>

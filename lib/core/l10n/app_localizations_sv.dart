@@ -243,11 +243,17 @@ class AppLocalizationsSv extends AppLocalizations {
   String get selectTheme => 'Välj tema';
 
   @override
-  String get loadFirstFavorite => 'Ladda första favoriten vid start';
+  String get startupPageOption => 'Startsida';
 
   @override
-  String get loadFirstFavoriteDescription =>
-      'Om aktiverad kommer den första favoriten i listan att laddas när appen startar';
+  String get startupPageOptionLastPage => 'Senast visade sida (standard)';
+
+  @override
+  String get startupPageOptionFirstFavorite =>
+      'Första favorit (om tillgänglig)';
+
+  @override
+  String get startupPageOptionChannelHomePage => 'Startsida för senaste kanal';
 
   @override
   String get cacheDuration =>

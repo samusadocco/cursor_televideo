@@ -243,11 +243,18 @@ class AppLocalizationsHr extends AppLocalizations {
   String get selectTheme => 'Odaberi temu';
 
   @override
-  String get loadFirstFavorite => 'Učitaj prvi favorit pri pokretanju';
+  String get startupPageOption => 'Početna stranica';
 
   @override
-  String get loadFirstFavoriteDescription =>
-      'Ako je omogućeno, prvi favorit s popisa će se učitati pri pokretanju aplikacije';
+  String get startupPageOptionLastPage =>
+      'Posljednja pregledana stranica (zadano)';
+
+  @override
+  String get startupPageOptionFirstFavorite => 'Prvi favorit (ako je dostupan)';
+
+  @override
+  String get startupPageOptionChannelHomePage =>
+      'Početna stranica zadnjeg kanala';
 
   @override
   String get cacheDuration =>

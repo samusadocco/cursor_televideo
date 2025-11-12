@@ -1,10 +1,18 @@
 {
   "versions": [
     {
+      "version": "2.0.0",
+      "changes": [
+        "Applikationsnavn ændret til Teletext Europe",
+        "Tilføjet kanaler for de fleste europæiske lande",
+        "Ændret indstillinger for indlæsning af startside"
+      ]
+    },
+    {
       "version": "1.0.8",
       "changes": [
-        "Tilføjet pause- og afspilningsfunktion til automatisk opdatering af undersider",
-        "Tilføjet administration af applikationssprog"        
+        "Tilføjet pause og afspil funktion for automatisk opdatering af undersider",
+        "Tilføjet administration af applikationssprog"
       ]
     },
     {
@@ -14,34 +22,32 @@
       ]
     },
     {
-        "version": "1.0.6",
-        "changes": [
-          "Ydeevneoptimeringer",
-          "Rettet sporingsautorisationsmeddelelse"
-        ]
-      },
+      "version": "1.0.6",
+      "changes": [
+        "Optimeret ydeevne",
+        "Rettet sporingsautoriseringsbesked"
+      ]
+    },
     {
-        "version": "1.0.5",
-        "changes": [
-          "Vis ændringslog ved opstart efter en opdatering"
-        ]
-      },
+      "version": "1.0.5",
+      "changes": [
+        "Vis ændringslog ved opstart efter en opdatering"
+      ]
+    },
     {
-        "version": "1.0.4",
-        "changes": [
-          "Indlæs første favorit ved opstart: vælg hvilken Tekst-TV-side du vil starte med (gå til Indstillinger)",
-          "GDPR: administrer dine fortrolighedsvalg",
-          "Ydeevneoptimeringer",
-          "Vis version i Indstillinger"
-        ]
-      },
+      "version": "1.0.4",
+      "changes": [
+        "Indlæs første favorit ved opstart: beslut hvilken Tekst-TV side du vil starte med (gå til Indstillinger)",
+        "GDPR: administrer dine privatlivsvalg",
+        "Optimeret ydeevne",
+        "Vis version i Indstillinger"
+      ]
+    },
     {
       "version": "1.0.3",
       "changes": [
-        "Mindre fejlrettelser"
+        "Rettet mindre fejl"
       ]
     }
-    
   ]
 }
-

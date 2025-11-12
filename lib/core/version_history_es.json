@@ -1,47 +1,53 @@
 {
   "versions": [
     {
+      "version": "2.0.0",
+      "changes": [
+        "Nombre de la aplicación cambiado a Teletext Europe",
+        "Añadidos canales para la mayoría de países europeos",
+        "Modificada la configuración de carga de página de inicio"
+      ]
+    },
+    {
       "version": "1.0.8",
       "changes": [
-        "Añadida función de pausa y reproducción para la actualización automática de subpáginas",
-        "Añadida gestión del idioma de la aplicación"        
+        "Añadida función de pausa y reproducción para actualización automática de subpáginas",
+        "Añadida gestión de idioma de la aplicación"
       ]
     },
     {
       "version": "1.0.7",
       "changes": [
-        "Mejora en la gestión de reseñas"
+        "Mejorada la gestión de reseñas"
       ]
     },
     {
-        "version": "1.0.6",
-        "changes": [
-          "Optimizaciones de rendimiento",
-          "Corregido el mensaje de autorización de seguimiento"
-        ]
-      },
+      "version": "1.0.6",
+      "changes": [
+        "Rendimiento optimizado",
+        "Corregido mensaje de autorización de seguimiento"
+      ]
+    },
     {
-        "version": "1.0.5",
-        "changes": [
-          "Mostrar registro de cambios al inicio después de una actualización"
-        ]
-      },
+      "version": "1.0.5",
+      "changes": [
+        "Mostrar registro de cambios al iniciar después de una actualización"
+      ]
+    },
     {
-        "version": "1.0.4",
-        "changes": [
-          "Cargar el primer favorito al inicio: elige con qué página de Teletexto comenzar (ve a Ajustes)",
-          "RGPD: gestiona tus opciones de privacidad",
-          "Optimizaciones de rendimiento",
-          "Mostrar versión en Ajustes"
-        ]
-      },
+      "version": "1.0.4",
+      "changes": [
+        "Cargar primer favorito al inicio: decide con qué página de Teletexto empezar (ve a Configuración)",
+        "RGPD: gestiona tus opciones de privacidad",
+        "Rendimiento optimizado",
+        "Mostrar versión en Configuración"
+      ]
+    },
     {
       "version": "1.0.3",
       "changes": [
-        "Correcciones de errores menores"
+        "Corregidos errores menores"
       ]
     }
-    
   ]
 }
-

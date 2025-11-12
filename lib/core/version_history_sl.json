@@ -1,10 +1,18 @@
 {
   "versions": [
     {
+      "version": "2.0.0",
+      "changes": [
+        "Ime aplikacije spremenjeno v Teletext Europe",
+        "Dodani kanali za večino evropskih držav",
+        "Spremenjene nastavitve nalaganja začetne strani"
+      ]
+    },
+    {
       "version": "1.0.8",
       "changes": [
-        "Dodana funkcija pavze in predvajanja za samodejno osvežitev podstrani",
-        "Dodano upravljanje jezika aplikacije"        
+        "Dodana funkcija premora in predvajanja za samodejno osvežitev podstrani",
+        "Dodano upravljanje jezika aplikacije"
       ]
     },
     {
@@ -14,34 +22,32 @@
       ]
     },
     {
-        "version": "1.0.6",
-        "changes": [
-          "Optimizacije zmogljivosti",
-          "Popravljena avtorizacijska sporočila za sledenje"
-        ]
-      },
+      "version": "1.0.6",
+      "changes": [
+        "Optimizirana zmogljivost",
+        "Popravljeno sporočilo o avtorizaciji sledenja"
+      ]
+    },
     {
-        "version": "1.0.5",
-        "changes": [
-          "Prikaži dnevnik sprememb ob zagonu po posodobitvi"
-        ]
-      },
+      "version": "1.0.5",
+      "changes": [
+        "Prikaži seznam sprememb ob zagonu po posodobitvi"
+      ]
+    },
     {
-        "version": "1.0.4",
-        "changes": [
-          "Naloži prvo priljubljeno ob zagonu: izberite s katero stranjo Teleteksta želite začeti (pojdite v Nastavitve)",
-          "GDPR: upravljajte svoje izbire zasebnosti",
-          "Optimizacije zmogljivosti",
-          "Prikaži različico v Nastavitvah"
-        ]
-      },
+      "version": "1.0.4",
+      "changes": [
+        "Naloži prvo priljubljeno ob zagonu: odločite, s katero stranjo Teleteksta želite začeti (pojdite v Nastavitve)",
+        "GDPR: upravljajte svoje izbire zasebnosti",
+        "Optimizirana zmogljivost",
+        "Prikaži različico v Nastavitvah"
+      ]
+    },
     {
       "version": "1.0.3",
       "changes": [
-        "Manjše popravke napak"
+        "Popravljene manjše napake"
       ]
     }
-    
   ]
 }
-

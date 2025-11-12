@@ -1,6 +1,14 @@
 {
   "versions": [
     {
+      "version": "2.0.0",
+      "changes": [
+        "Cambiato nome applicazione in Teletext Europe",
+        "Aggiunti canali per la maggior parte dei paesi europei",
+        "Modificata impostazione per caricamento in avvio dell' ultima pagina visualizzata"
+      ]
+    },
+   {
       "version": "1.0.8",
       "changes": [
         "Aggiunta la funzione di pausa e play dell' aggiornamento automatico di sottopagine",

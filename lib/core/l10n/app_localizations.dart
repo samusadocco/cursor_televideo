@@ -546,17 +546,29 @@ abstract class AppLocalizations {
   /// **'Select theme'**
   String get selectTheme;
 
-  /// No description provided for @loadFirstFavorite.
+  /// No description provided for @startupPageOption.
   ///
   /// In en, this message translates to:
-  /// **'Load first favorite at startup'**
-  String get loadFirstFavorite;
+  /// **'Startup page'**
+  String get startupPageOption;
 
-  /// No description provided for @loadFirstFavoriteDescription.
+  /// No description provided for @startupPageOptionLastPage.
   ///
   /// In en, this message translates to:
-  /// **'If enabled, the first favorite in the list will be loaded when the app starts'**
-  String get loadFirstFavoriteDescription;
+  /// **'Last viewed page (default)'**
+  String get startupPageOptionLastPage;
+
+  /// No description provided for @startupPageOptionFirstFavorite.
+  ///
+  /// In en, this message translates to:
+  /// **'First favorite (if available)'**
+  String get startupPageOptionFirstFavorite;
+
+  /// No description provided for @startupPageOptionChannelHomePage.
+  ///
+  /// In en, this message translates to:
+  /// **'Last channel home page'**
+  String get startupPageOptionChannelHomePage;
 
   /// No description provided for @cacheDuration.
   ///

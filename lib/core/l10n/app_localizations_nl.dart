@@ -244,11 +244,18 @@ class AppLocalizationsNl extends AppLocalizations {
   String get selectTheme => 'Selecteer thema';
 
   @override
-  String get loadFirstFavorite => 'Laad eerste favoriet bij opstarten';
+  String get startupPageOption => 'Startpagina';
 
   @override
-  String get loadFirstFavoriteDescription =>
-      'Indien ingeschakeld wordt de eerste favoriet in de lijst geladen bij het starten van de app';
+  String get startupPageOptionLastPage => 'Laatst bekeken pagina (standaard)';
+
+  @override
+  String get startupPageOptionFirstFavorite =>
+      'Eerste favoriet (indien beschikbaar)';
+
+  @override
+  String get startupPageOptionChannelHomePage =>
+      'Startpagina van laatste kanaal';
 
   @override
   String get cacheDuration =>

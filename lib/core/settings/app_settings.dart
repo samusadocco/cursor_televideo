@@ -1,12 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+/// Opzioni per la pagina da caricare all'avvio dell'app
+enum StartupPageOption {
+  /// Carica l'ultima pagina visualizzata (default)
+  lastPage,
+  
+  /// Carica il primo preferito, se disponibile, altrimenti l'ultima pagina
+  firstFavorite,
+  
+  /// Carica la pagina iniziale dell'ultimo canale visualizzato
+  channelHomePage,
+}
+
 class AppSettings {
   static const String _cacheDurationKey = 'cache_duration_seconds';
   static const String _liveShowEnabledKey = 'live_show_enabled';
   static const String _liveShowIntervalKey = 'live_show_interval_seconds';
   static const String _themeModeKey = 'theme_mode';
-  static const String _loadFirstFavoriteKey = 'load_first_favorite';
+  static const String _startupPageOptionKey = 'startup_page_option';
   static const String _adsPersonalizationEnabledKey = 'ads_personalization_enabled';
   
   // State Persistence keys
@@ -21,7 +33,7 @@ class AppSettings {
   static const bool _defaultLiveShowEnabled = true;
   static const int _defaultLiveShowInterval = 10; // 10 secondi
   static const ThemeMode _defaultThemeMode = ThemeMode.dark;
-  static const bool _defaultLoadFirstFavorite = false;
+  static const StartupPageOption _defaultStartupPageOption = StartupPageOption.lastPage;
   static const bool _defaultAdsPersonalizationEnabled = true;
 
   // Valori in memoria
@@ -29,7 +41,7 @@ class AppSettings {
   static bool _liveShowEnabled = _defaultLiveShowEnabled;
   static int _liveShowIntervalSeconds = _defaultLiveShowInterval;
   static ThemeMode _themeMode = _defaultThemeMode;
-  static bool _loadFirstFavorite = _defaultLoadFirstFavorite;
+  static StartupPageOption _startupPageOption = _defaultStartupPageOption;
   static bool _adsPersonalizationEnabled = _defaultAdsPersonalizationEnabled;
   
   // State Persistence values
@@ -44,7 +56,7 @@ class AppSettings {
   static bool get liveShowEnabled => _liveShowEnabled;
   static int get liveShowIntervalSeconds => _liveShowIntervalSeconds;
   static ThemeMode get themeMode => _themeMode;
-  static bool get loadFirstFavorite => _loadFirstFavorite;
+  static StartupPageOption get startupPageOption => _startupPageOption;
   static bool get adsPersonalizationEnabled => _adsPersonalizationEnabled;
   
   // State Persistence getters
@@ -61,13 +73,17 @@ class AppSettings {
     _cacheDurationInSeconds = prefs.getInt(_cacheDurationKey) ?? _defaultCacheDuration;
     _liveShowEnabled = prefs.getBool(_liveShowEnabledKey) ?? _defaultLiveShowEnabled;
     _liveShowIntervalSeconds = prefs.getInt(_liveShowIntervalKey) ?? _defaultLiveShowInterval;
-    _loadFirstFavorite = prefs.getBool(_loadFirstFavoriteKey) ?? _defaultLoadFirstFavorite;
     _adsPersonalizationEnabled = prefs.getBool(_adsPersonalizationEnabledKey) ?? _defaultAdsPersonalizationEnabled;
     
     final themeModeIndex = prefs.getInt(_themeModeKey);
     _themeMode = themeModeIndex != null 
         ? ThemeMode.values[themeModeIndex]
         : _defaultThemeMode;
+    
+    final startupPageOptionIndex = prefs.getInt(_startupPageOptionKey);
+    _startupPageOption = startupPageOptionIndex != null 
+        ? StartupPageOption.values[startupPageOptionIndex]
+        : _defaultStartupPageOption;
     
     // Carica State Persistence
     _lastPageNumber = prefs.getInt(_lastPageNumberKey);
@@ -106,10 +122,10 @@ class AppSettings {
     _themeMode = mode;
   }
 
-  static Future<void> setLoadFirstFavorite(bool enabled) async {
+  static Future<void> setStartupPageOption(StartupPageOption option) async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool(_loadFirstFavoriteKey, enabled);
-    _loadFirstFavorite = enabled;
+    await prefs.setInt(_startupPageOptionKey, option.index);
+    _startupPageOption = option;
   }
 
   static Future<void> setAdsPersonalizationEnabled(bool enabled) async {
