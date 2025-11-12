@@ -304,7 +304,9 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
       print('[TelevideoBloc] Error loading channel from preferences: $e');
     }
     _currentPage = pageNumber;
+    print('[TelevideoBloc] 🔄 Emitting loading state for page $pageNumber');
     emit(TelevideoState.loading(pageNumber: pageNumber, selectedChannel: currentChannel));
+    print('[TelevideoBloc] ✅ Loading state emitted, starting fetch...');
     _currentRegion = null; // Reset della regione quando si carica una pagina nazionale
     
     // Aggiorna il RegionBloc se disponibile
@@ -343,8 +345,10 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
         _adService.incrementPageView(isSubPage: false);
       }
       
-      print('[TelevideoBloc] National page loaded successfully'); // Debug print
+      final fetchDuration = DateTime.now().difference(startTime).inMilliseconds;
+      print('[TelevideoBloc] ✅ National page loaded successfully in ${fetchDuration}ms'); // Debug print
       print('[TelevideoBloc] Page info - number: ${page.pageNumber}, maxSubPages: ${page.maxSubPages}, isHtmlContent: ${page.isHtmlContent}');
+      print('[TelevideoBloc] 🎨 Emitting loaded state...');
       if (!emit.isDone) {
         // Aggiorna ultima pagina caricata con successo
         _updateLastSuccessfulPage(pageNumber, targetSubPage);
@@ -486,6 +490,9 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
         print('[TelevideoBloc] Attempting to load suggested page: $suggestedNextPage');
         final currentChannel = state.selectedChannel;
         
+        // Emetti loading PRIMA del test (importante per canali HTML lenti)
+        emit(TelevideoState.loading(pageNumber: suggestedNextPage!, selectedChannel: currentChannel));
+        
         try {
           // Prova a caricare la pagina suggerita
           final provider = TeletextProviderFactory.getProvider(currentChannel!);
@@ -540,6 +547,9 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
       if (suggestedPrevPage != null) {
         print('[TelevideoBloc] Attempting to load suggested page: $suggestedPrevPage');
         final currentChannel = state.selectedChannel;
+        
+        // Emetti loading PRIMA del test (importante per canali HTML lenti)
+        emit(TelevideoState.loading(pageNumber: suggestedPrevPage!, selectedChannel: currentChannel));
         
         try {
           // Prova a caricare la pagina suggerita

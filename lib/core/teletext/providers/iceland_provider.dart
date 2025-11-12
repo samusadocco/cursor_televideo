@@ -57,6 +57,11 @@ class IcelandProvider extends TeletextProvider {
   @override
   Future<TelevideoPage> fetchNationalPage(int pageNumber, {int subPage = 1}) async {
     print('[IcelandProvider] Fetching page $pageNumber subpage $subPage');
+    
+    // Piccolo delay per permettere alla UI di mostrare lo stato loading
+    // PRIMA di iniziare la richiesta HTTP
+    await Future.delayed(const Duration(milliseconds: 50));
+    
     final url = '$baseUrl/sida/$pageNumber/$subPage';
     print('[IcelandProvider] URL: $url');
     
@@ -114,10 +119,12 @@ class IcelandProvider extends TeletextProvider {
         totalSubPages = await _reloadSubPageCount(pageNumber, currentSubPage);
       } else if (entry.needsConsistencyCheck(_consistencyCheckInterval)) {
         // Cache ancora valida ma necessita controllo di consistenza
-        print('[IcelandProvider] 🔍 Performing consistency check (last verified ${timeSinceVerification.inMinutes}m ago)...');
+        print('[IcelandProvider] 🔍 Consistency check needed (last verified ${timeSinceVerification.inMinutes}m ago)');
+        print('[IcelandProvider] 📊 Verifying subpage count...');
         
         // Verifica solo se ce ne sono di nuove ricontando da dove ci eravamo fermati
         totalSubPages = await _countTotalSubPages(pageNumber, entry.count);
+        print('[IcelandProvider] ✅ Verification complete');
         
         if (totalSubPages > entry.count) {
           // Trovate nuove sottopagine!
@@ -136,8 +143,10 @@ class IcelandProvider extends TeletextProvider {
       }
     } else {
       // Prima visita, conta le sottopagine
-      print('[IcelandProvider] 🆕 First visit to page $pageNumber, counting subpages...');
+      print('[IcelandProvider] 🆕 First visit to page $pageNumber');
+      print('[IcelandProvider] 📊 Counting subpages (this may take a moment)...');
       totalSubPages = await _reloadSubPageCount(pageNumber, currentSubPage);
+      print('[IcelandProvider] ✅ Subpage count complete: $totalSubPages');
     }
     
     // Costruisci l'HTML ottimizzato (solo head + layerData)

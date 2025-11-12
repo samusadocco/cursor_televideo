@@ -65,6 +65,10 @@ class NOSProvider implements TeletextProvider {
   Future<TelevideoPage> fetchNationalPage(int pageNumber, {int subPage = 1}) async {
     print('[NOSProvider] Fetching page $pageNumber subpage $subPage');
 
+    // Piccolo delay per permettere alla UI di mostrare lo stato loading
+    // PRIMA di iniziare la richiesta HTTP
+    await Future.delayed(const Duration(milliseconds: 50));
+
     // Formato URL: https://nos.nl/teletekst/100 (prima sottopagina)
     //              https://nos.nl/teletekst/100/2 (seconda sottopagina)
     //              https://nos.nl/teletekst/100/3 (terza sottopagina)
@@ -136,10 +140,12 @@ class NOSProvider implements TeletextProvider {
         print('[NOSProvider] 💾 Cached subpage count: $totalSubPages');
       } else if (entry.needsConsistencyCheck(_consistencyCheckInterval)) {
         // Cache ancora valida ma necessita controllo di consistenza
-        print('[NOSProvider] 🔍 Performing consistency check (last verified ${timeSinceVerification.inMinutes}m ago)...');
+        print('[NOSProvider] 🔍 Consistency check needed (last verified ${timeSinceVerification.inMinutes}m ago)');
+        print('[NOSProvider] 📊 Verifying subpage count...');
         
         // Verifica solo se ce ne sono di nuove, partendo dal conteggio cached
         final updatedCount = await _quickCheckForMoreSubPages(pageNumber, entry.count);
+        print('[NOSProvider] ✅ Verification complete');
         
         if (updatedCount > entry.count) {
           // Trovate nuove sottopagine!
@@ -159,10 +165,12 @@ class NOSProvider implements TeletextProvider {
       }
     } else {
       // Prima visita, conta le sottopagine
-      print('[NOSProvider] 🆕 First visit to page $pageNumber, counting subpages...');
+      print('[NOSProvider] 🆕 First visit to page $pageNumber');
+      print('[NOSProvider] 📊 Counting subpages (this may take a moment)...');
       totalSubPages = await _extractTotalSubPages(document, pageNumber, subPage);
       _subPageCache[pageNumber] = _SubPageCacheEntry(totalSubPages, DateTime.now());
-      print('[NOSProvider] 💾 Cached subpage count: $totalSubPages');
+      print('[NOSProvider] ✅ Subpage count complete: $totalSubPages');
+      print('[NOSProvider] 💾 Cached for future visits');
     }
 
     // Estrai link di navigazione

@@ -55,6 +55,9 @@ class _ShortcutsMenuState extends State<ShortcutsMenu> {
       loaded: (_, __, ___, selectedChannel) {
         channelId = selectedChannel?.id;
       },
+      loading: (_, selectedChannel) {
+        channelId = selectedChannel?.id;
+      },
       error: (_, selectedChannel) {
         channelId = selectedChannel?.id;
       },
@@ -76,6 +79,9 @@ class _ShortcutsMenuState extends State<ShortcutsMenu> {
     String? channelId;
     bloc.state.maybeWhen(
       loaded: (_, __, ___, selectedChannel) {
+        channelId = selectedChannel?.id;
+      },
+      loading: (_, selectedChannel) {
         channelId = selectedChannel?.id;
       },
       error: (_, selectedChannel) {
