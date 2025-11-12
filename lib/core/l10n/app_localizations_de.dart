@@ -292,6 +292,89 @@ class AppLocalizationsDe extends AppLocalizations {
       'Favoriten speichern und wiederherstellen';
 
   @override
+  String get support => 'Support';
+
+  @override
+  String get supportDescription => 'Kontaktieren Sie uns für Unterstützung';
+
+  @override
+  String get supportTitle => 'Wir sind hier um zu helfen!';
+
+  @override
+  String get supportSubtitle =>
+      'Bei Fragen oder Unterstützungsbedarf zögern Sie nicht, uns zu kontaktieren';
+
+  @override
+  String get directContact => 'Direkter Kontakt';
+
+  @override
+  String get emailLabel => 'E-Mail';
+
+  @override
+  String get websiteLabel => 'Webseite';
+
+  @override
+  String get responseTime => 'Durchschnittliche Antwortzeit: 24-48 Stunden';
+
+  @override
+  String get faq => 'Häufig gestellte Fragen';
+
+  @override
+  String get faqGeolocation => 'Wie funktioniert die Geolokalisierung?';
+
+  @override
+  String get faqGeolocationAnswer =>
+      'Die App nutzt den Standort Ihres Geräts, um automatisch Ihre Region zu identifizieren und relevante lokale Nachrichten anzuzeigen. Sie können diese Funktion in den App-Einstellungen deaktivieren.';
+
+  @override
+  String get faqFavorites => 'Wie speichere ich eine Seite in den Favoriten?';
+
+  @override
+  String get faqFavoritesAnswer =>
+      'Tippen Sie beim Anzeigen einer Seite auf das Stern-Symbol, um sie zu den Favoriten hinzuzufügen. Sie können über das Hauptmenü auf Ihre Favoritenseiten zugreifen.';
+
+  @override
+  String get faqTheme => 'Wie ändere ich das App-Design?';
+
+  @override
+  String get faqThemeAnswer =>
+      'Gehen Sie zu den App-Einstellungen und wählen Sie Ihr gewünschtes Design (hell/dunkel). Die App unterstützt auch ein automatisches Design basierend auf den Systemeinstellungen.';
+
+  @override
+  String get faqOffline => 'Funktioniert die App offline?';
+
+  @override
+  String get faqOfflineAnswer =>
+      'Nein, eine aktive Internetverbindung ist erforderlich, um auf Teletext-Seiten in Echtzeit zuzugreifen.';
+
+  @override
+  String get faqReportProblem => 'Wie melde ich ein Problem?';
+
+  @override
+  String get faqReportProblemAnswer =>
+      'Senden Sie eine detaillierte E-Mail an samuele@codebysam.it und beschreiben Sie das aufgetretene Problem.';
+
+  @override
+  String get reportBugTitle => 'Problem melden';
+
+  @override
+  String get reportBugInstructions =>
+      'Wenn Sie ein Problem melden, geben Sie bitte wenn möglich an:';
+
+  @override
+  String get reportBugItems =>
+      'App-Version\nGerätemodell\nBetriebssystem\nScreenshot des Problems';
+
+  @override
+  String get developedBy => 'Entwickelt von CodeBySam';
+
+  @override
+  String get errorOpeningLink => 'Link konnte nicht geöffnet werden';
+
+  @override
+  String get errorOpeningEmail => 'E-Mail konnte nicht geöffnet werden';
+
+  @override
   String get privacySettings => 'Datenschutzeinstellungen';
 
   @override
