@@ -62,6 +62,14 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
   DateTime? _timerStartTime;  // Quando è partito il timer corrente
   Duration _remainingTime = Duration.zero;  // Tempo rimanente quando in pausa
 
+  static final CacheManager _cacheManager = CacheManager(
+    Config(
+      'teletext_cache',
+      stalePeriod: const Duration(seconds: 300),
+      maxNrOfCacheObjects: 100,
+    ),
+  );
+  
   @override
   void initState() {
     super.initState();
@@ -265,15 +273,10 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
     }
     
     // URL normale - usa CachedNetworkImage con durata cache personalizzata
+    print('[TelevideoViewer] 🖼️ CachedNetworkImage URL: ${page.imageUrl}');
     return CachedNetworkImage(
       imageUrl: page.imageUrl,
-      cacheManager: CacheManager(
-        Config(
-          'teletext_cache',
-          stalePeriod: Duration(seconds: AppSettings.cacheDurationInSeconds),
-          maxNrOfCacheObjects: 100,
-        ),
-      ),
+      cacheManager: _cacheManager,
       httpHeaders: {
         'Cache-Control': 'max-age=${AppSettings.cacheDurationInSeconds}',
       },
@@ -504,11 +507,12 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
                   TelevideoEvent.loadRegionalPage(
                     regionState.selectedRegion!,
                     widget.page.pageNumber,
+                    forceRefresh: true, // Swipe down forza sempre il refresh
                   ),
                 );
               } else {
                 context.read<TelevideoBloc>().add(
-                  TelevideoEvent.loadNationalPage(widget.page.pageNumber),
+                  TelevideoEvent.loadNationalPage(widget.page.pageNumber, forceRefresh: true), // Swipe down forza sempre il refresh
                 );
               }
               // Reset dello stato di refresh
@@ -821,8 +825,8 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
 
                             if (lastEvent != null) {
                               lastEvent.when(
-                                loadNationalPage: (_) => transitionType = PageTransitionType.fade,
-                                loadRegionalPage: (_, __) => transitionType = PageTransitionType.fade,
+                                loadNationalPage: (_, __) => transitionType = PageTransitionType.fade,
+                                loadRegionalPage: (_, __, ___) => transitionType = PageTransitionType.fade,
                                 nextPage: (_) {
                                   // Usa slideHorizontal per canali con IMMAGINI (RAI, MTVA, CT, RTVSLO, YLE, SVT, HRT, Spanish, ORF, Swiss)
                                   // Per canali con HTML/WebView (RTL, Iceland, NOS, ZDF, ARD) usa fade per evitare problemi di rendering
@@ -876,14 +880,14 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
                               final lastEvent = context.read<TelevideoBloc>().lastEvent;
                               
                               lastEvent?.when(
-                                loadNationalPage: (pageNumber) {
+                                loadNationalPage: (pageNumber, forceRefresh) {
                                   context.read<TelevideoBloc>().add(
-                                    TelevideoEvent.loadNationalPage(pageNumber),
+                                    TelevideoEvent.loadNationalPage(pageNumber, forceRefresh: forceRefresh),
                                   );
                                 },
-                                loadRegionalPage: (region, pageNumber) {
+                                loadRegionalPage: (region, pageNumber, forceRefresh) {
                                   context.read<TelevideoBloc>().add(
-                                    TelevideoEvent.loadRegionalPage(region, pageNumber),
+                                    TelevideoEvent.loadRegionalPage(region, pageNumber, forceRefresh: forceRefresh),
                                   );
                                 },
                                 nextPage: (currentPage) {

@@ -293,87 +293,87 @@ class AppLocalizationsEs extends AppLocalizations {
   String get backupFavoritesDescription => 'Guardar y restaurar tus favoritos';
 
   @override
-  String get support => 'Support';
+  String get support => 'Soporte';
 
   @override
-  String get supportDescription => 'Contact us for assistance';
+  String get supportDescription => 'Contáctenos para asistencia';
 
   @override
-  String get supportTitle => 'We\'re here to help!';
+  String get supportTitle => '¡Estamos aquí para ayudarte!';
 
   @override
   String get supportSubtitle =>
-      'For any questions or assistance, don\'t hesitate to contact us';
+      'Para cualquier pregunta o asistencia, no dudes en contactarnos';
 
   @override
-  String get directContact => 'Direct Contact';
+  String get directContact => 'Contacto Directo';
 
   @override
   String get emailLabel => 'Email';
 
   @override
-  String get websiteLabel => 'Website';
+  String get websiteLabel => 'Sitio Web';
 
   @override
-  String get responseTime => 'Average response time: 24-48 hours';
+  String get responseTime => 'Tiempo de respuesta promedio: 24-48 horas';
 
   @override
-  String get faq => 'Frequently Asked Questions';
+  String get faq => 'Preguntas Frecuentes';
 
   @override
-  String get faqGeolocation => 'How does geolocation work?';
+  String get faqGeolocation => '¿Cómo funciona la geolocalización?';
 
   @override
   String get faqGeolocationAnswer =>
-      'The app uses your device\'s location to automatically identify your region and show you relevant local news. You can disable this feature in the app settings.';
+      'La aplicación utiliza la ubicación de tu dispositivo para identificar automáticamente tu región y mostrarte noticias locales relevantes. Puedes desactivar esta función en los ajustes de la aplicación.';
 
   @override
-  String get faqFavorites => 'How to save a page to favorites?';
+  String get faqFavorites => '¿Cómo guardar una página en favoritos?';
 
   @override
   String get faqFavoritesAnswer =>
-      'While viewing a page, tap the star icon to add it to favorites. You can access your favorite pages from the main menu.';
+      'Mientras visualizas una página, toca el ícono de estrella para agregarla a favoritos. Puedes acceder a tus páginas favoritas desde el menú principal.';
 
   @override
-  String get faqTheme => 'How to change the app theme?';
+  String get faqTheme => '¿Cómo cambiar el tema de la aplicación?';
 
   @override
   String get faqThemeAnswer =>
-      'Go to the app settings and select your desired theme (light/dark). The app also supports automatic theme based on system settings.';
+      'Ve a los ajustes de la aplicación y selecciona el tema deseado (claro/oscuro). La aplicación también admite la configuración automática basada en los ajustes del sistema.';
 
   @override
-  String get faqOffline => 'Does the app work offline?';
+  String get faqOffline => '¿La aplicación funciona sin conexión?';
 
   @override
   String get faqOfflineAnswer =>
-      'No, an active internet connection is required to access real-time Teletext pages.';
+      'No, se requiere una conexión a Internet activa para acceder a las páginas de Teletexto en tiempo real.';
 
   @override
-  String get faqReportProblem => 'How to report a problem?';
+  String get faqReportProblem => '¿Cómo reportar un problema?';
 
   @override
   String get faqReportProblemAnswer =>
-      'Send a detailed email to samuele@codebysam.it describing the problem you encountered.';
+      'Envía un email detallado a samuele@codebysam.it describiendo el problema encontrado.';
 
   @override
-  String get reportBugTitle => 'Report a problem';
+  String get reportBugTitle => 'Reportar un problema';
 
   @override
   String get reportBugInstructions =>
-      'When reporting a problem, please include if possible:';
+      'Al reportar un problema, incluye si es posible:';
 
   @override
   String get reportBugItems =>
-      'App version\nDevice model\nOperating system\nScreenshot of the problem';
+      'Versión de la aplicación\nModelo del dispositivo\nSistema operativo\nCaptura de pantalla del problema';
 
   @override
-  String get developedBy => 'Developed by CodeBySam';
+  String get developedBy => 'Desarrollado por CodeBySam';
 
   @override
-  String get errorOpeningLink => 'Unable to open link';
+  String get errorOpeningLink => 'No se puede abrir el enlace';
 
   @override
-  String get errorOpeningEmail => 'Unable to open email';
+  String get errorOpeningEmail => 'No se puede abrir el email';
 
   @override
   String get privacySettings => 'Ajustes de privacidad';

@@ -291,87 +291,87 @@ class AppLocalizationsCs extends AppLocalizations {
   String get backupFavoritesDescription => 'Uložit a obnovit vaše oblíbené';
 
   @override
-  String get support => 'Support';
+  String get support => 'Podpora';
 
   @override
-  String get supportDescription => 'Contact us for assistance';
+  String get supportDescription => 'Kontaktujte nás pro pomoc';
 
   @override
-  String get supportTitle => 'We\'re here to help!';
+  String get supportTitle => 'Jsme tu, abychom vám pomohli!';
 
   @override
   String get supportSubtitle =>
-      'For any questions or assistance, don\'t hesitate to contact us';
+      'Pro jakékoli otázky nebo pomoc nás neváhejte kontaktovat';
 
   @override
-  String get directContact => 'Direct Contact';
+  String get directContact => 'Přímý Kontakt';
 
   @override
-  String get emailLabel => 'Email';
+  String get emailLabel => 'E-mail';
 
   @override
-  String get websiteLabel => 'Website';
+  String get websiteLabel => 'Webová stránka';
 
   @override
-  String get responseTime => 'Average response time: 24-48 hours';
+  String get responseTime => 'Průměrná doba odezvy: 24-48 hodin';
 
   @override
-  String get faq => 'Frequently Asked Questions';
+  String get faq => 'Často Kladené Otázky';
 
   @override
-  String get faqGeolocation => 'How does geolocation work?';
+  String get faqGeolocation => 'Jak funguje geolokace?';
 
   @override
   String get faqGeolocationAnswer =>
-      'The app uses your device\'s location to automatically identify your region and show you relevant local news. You can disable this feature in the app settings.';
+      'Aplikace používá polohu vašeho zařízení k automatické identifikaci vaší oblasti a zobrazení relevantních místních zpráv. Tuto funkci můžete vypnout v nastavení aplikace.';
 
   @override
-  String get faqFavorites => 'How to save a page to favorites?';
+  String get faqFavorites => 'Jak uložit stránku do oblíbených?';
 
   @override
   String get faqFavoritesAnswer =>
-      'While viewing a page, tap the star icon to add it to favorites. You can access your favorite pages from the main menu.';
+      'Při prohlížení stránky klepněte na ikonu hvězdičky a přidejte ji do oblíbených. K oblíbeným stránkám se dostanete z hlavní nabídky.';
 
   @override
-  String get faqTheme => 'How to change the app theme?';
+  String get faqTheme => 'Jak změnit motiv aplikace?';
 
   @override
   String get faqThemeAnswer =>
-      'Go to the app settings and select your desired theme (light/dark). The app also supports automatic theme based on system settings.';
+      'Přejděte do nastavení aplikace a vyberte požadovaný motiv (světlý/tmavý). Aplikace také podporuje automatické nastavení na základě systémových nastavení.';
 
   @override
-  String get faqOffline => 'Does the app work offline?';
+  String get faqOffline => 'Funguje aplikace offline?';
 
   @override
   String get faqOfflineAnswer =>
-      'No, an active internet connection is required to access real-time Teletext pages.';
+      'Ne, pro přístup ke stránkám Teletextu v reálném čase je vyžadováno aktivní připojení k internetu.';
 
   @override
-  String get faqReportProblem => 'How to report a problem?';
+  String get faqReportProblem => 'Jak nahlásit problém?';
 
   @override
   String get faqReportProblemAnswer =>
-      'Send a detailed email to samuele@codebysam.it describing the problem you encountered.';
+      'Zašlete podrobný e-mail na adresu samuele@codebysam.it s popisem problému.';
 
   @override
-  String get reportBugTitle => 'Report a problem';
+  String get reportBugTitle => 'Nahlásit problém';
 
   @override
   String get reportBugInstructions =>
-      'When reporting a problem, please include if possible:';
+      'Při nahlašování problému uveďte pokud možno:';
 
   @override
   String get reportBugItems =>
-      'App version\nDevice model\nOperating system\nScreenshot of the problem';
+      'Verze aplikace\nModel zařízení\nOperační systém\nSnímek obrazovky problému';
 
   @override
-  String get developedBy => 'Developed by CodeBySam';
+  String get developedBy => 'Vyvinuto společností CodeBySam';
 
   @override
-  String get errorOpeningLink => 'Unable to open link';
+  String get errorOpeningLink => 'Nelze otevřít odkaz';
 
   @override
-  String get errorOpeningEmail => 'Unable to open email';
+  String get errorOpeningEmail => 'Nelze otevřít e-mail';
 
   @override
   String get privacySettings => 'Nastavení soukromí';

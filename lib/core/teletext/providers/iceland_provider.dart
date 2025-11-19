@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:cursor_televideo/shared/models/televideo_page.dart';
 import 'package:cursor_televideo/core/teletext/providers/teletext_provider.dart';
 import 'package:html/parser.dart' as html_parser;
@@ -70,6 +71,7 @@ class IcelandProvider extends TeletextProvider {
         Uri.parse(url),
         headers: {
           'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+          'Accept-Charset': 'utf-8',
         },
       );
       
@@ -77,7 +79,9 @@ class IcelandProvider extends TeletextProvider {
         throw Exception('Failed to load page: ${response.statusCode}');
       }
       
-      return await _parseHtmlPage(response.body, pageNumber, subPage);
+      // Decodifica esplicitamente come UTF-8 per garantire caratteri islandesi corretti
+      final htmlContent = utf8.decode(response.bodyBytes);
+      return await _parseHtmlPage(htmlContent, pageNumber, subPage);
     } catch (e) {
       print('[IcelandProvider] Error fetching page: $e');
       rethrow;
@@ -211,13 +215,20 @@ class IcelandProvider extends TeletextProvider {
     for (int i = startFrom; i < startFrom + maxAttempts; i++) {
       try {
         final url = '$baseUrl/sida/$pageNumber/${i + 1}';
-        final response = await http.get(Uri.parse(url)).timeout(
+        final response = await http.get(
+          Uri.parse(url),
+          headers: {
+            'Accept-Charset': 'utf-8',
+          },
+        ).timeout(
           const Duration(seconds: 5),
           onTimeout: () => http.Response('Timeout', 408),
         );
         
         if (response.statusCode == 200) {
-          final document = html_parser.parse(response.body);
+          // Decodifica esplicitamente come UTF-8
+          final htmlContent = utf8.decode(response.bodyBytes);
+          final document = html_parser.parse(htmlContent);
           final layerData = document.querySelector('div#layerData');
           
           if (layerData != null && _hasActualContent(layerData)) {
@@ -339,13 +350,28 @@ class IcelandProvider extends TeletextProvider {
     final buffer = StringBuffer();
     buffer.writeln('<!DOCTYPE html>');
     buffer.writeln('<html>');
+    buffer.writeln('<head>');
     
-    // Aggiungi l'head completo per CSS e font
+    // FORZA sempre il charset UTF-8 come prima cosa
+    buffer.writeln('<meta charset="UTF-8">');
+    
+    // Aggiungi il resto dell'head se esiste (CSS, font, etc)
     if (head != null) {
-      buffer.writeln(head.outerHtml);
-    } else {
-      buffer.writeln('<head><meta charset="UTF-8"></head>');
+      // Rimuovi eventuali meta charset già presenti per evitare duplicati
+      final headChildren = head.children.where((child) {
+        if (child.localName == 'meta') {
+          final charset = child.attributes['charset'];
+          return charset == null; // Mantieni solo meta tag che NON hanno charset
+        }
+        return true; // Mantieni tutti gli altri elementi
+      });
+      
+      for (var child in headChildren) {
+        buffer.writeln(child.outerHtml);
+      }
     }
+    
+    buffer.writeln('</head>');
     
     buffer.writeln('<body style="margin:0;padding:0;background-color:black;">');
     

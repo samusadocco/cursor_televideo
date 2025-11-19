@@ -290,87 +290,87 @@ class AppLocalizationsHr extends AppLocalizations {
   String get backupFavoritesDescription => 'Spremite i vratite svoje favorite';
 
   @override
-  String get support => 'Support';
+  String get support => 'Podrška';
 
   @override
-  String get supportDescription => 'Contact us for assistance';
+  String get supportDescription => 'Kontaktirajte nas za pomoć';
 
   @override
-  String get supportTitle => 'We\'re here to help!';
+  String get supportTitle => 'Tu smo da pomognemo!';
 
   @override
   String get supportSubtitle =>
-      'For any questions or assistance, don\'t hesitate to contact us';
+      'Za bilo kakva pitanja ili pomoć, ne ustručavajte se kontaktirati nas';
 
   @override
-  String get directContact => 'Direct Contact';
+  String get directContact => 'Izravni Kontakt';
 
   @override
-  String get emailLabel => 'Email';
+  String get emailLabel => 'E-mail';
 
   @override
-  String get websiteLabel => 'Website';
+  String get websiteLabel => 'Web stranica';
 
   @override
-  String get responseTime => 'Average response time: 24-48 hours';
+  String get responseTime => 'Prosječno vrijeme odgovora: 24-48 sati';
 
   @override
-  String get faq => 'Frequently Asked Questions';
+  String get faq => 'Često Postavljana Pitanja';
 
   @override
-  String get faqGeolocation => 'How does geolocation work?';
+  String get faqGeolocation => 'Kako funkcionira geolokacija?';
 
   @override
   String get faqGeolocationAnswer =>
-      'The app uses your device\'s location to automatically identify your region and show you relevant local news. You can disable this feature in the app settings.';
+      'Aplikacija koristi lokaciju vašeg uređaja za automatsku identifikaciju vaše regije i prikaz relevantnih lokalnih vijesti. Ovu funkciju možete onemogućiti u postavkama aplikacije.';
 
   @override
-  String get faqFavorites => 'How to save a page to favorites?';
+  String get faqFavorites => 'Kako spremiti stranicu u favorite?';
 
   @override
   String get faqFavoritesAnswer =>
-      'While viewing a page, tap the star icon to add it to favorites. You can access your favorite pages from the main menu.';
+      'Dok gledate stranicu, dodirnite ikonu zvijezde da je dodate u favorite. Možete pristupiti svojim omiljenim stranicama iz glavnog izbornika.';
 
   @override
-  String get faqTheme => 'How to change the app theme?';
+  String get faqTheme => 'Kako promijeniti temu aplikacije?';
 
   @override
   String get faqThemeAnswer =>
-      'Go to the app settings and select your desired theme (light/dark). The app also supports automatic theme based on system settings.';
+      'Idite u postavke aplikacije i odaberite željenu temu (svijetla/tamna). Aplikacija također podržava automatsko postavljanje na temelju postavki sustava.';
 
   @override
-  String get faqOffline => 'Does the app work offline?';
+  String get faqOffline => 'Radi li aplikacija offline?';
 
   @override
   String get faqOfflineAnswer =>
-      'No, an active internet connection is required to access real-time Teletext pages.';
+      'Ne, aktivna internetska veza potrebna je za pristup stranicama Teleteksta u stvarnom vremenu.';
 
   @override
-  String get faqReportProblem => 'How to report a problem?';
+  String get faqReportProblem => 'Kako prijaviti problem?';
 
   @override
   String get faqReportProblemAnswer =>
-      'Send a detailed email to samuele@codebysam.it describing the problem you encountered.';
+      'Pošaljite detaljnu e-poruku na samuele@codebysam.it opisujući problem.';
 
   @override
-  String get reportBugTitle => 'Report a problem';
+  String get reportBugTitle => 'Prijavite problem';
 
   @override
   String get reportBugInstructions =>
-      'When reporting a problem, please include if possible:';
+      'Prilikom prijavljivanja problema, uključite ako je moguće:';
 
   @override
   String get reportBugItems =>
-      'App version\nDevice model\nOperating system\nScreenshot of the problem';
+      'Verzija aplikacije\nModel uređaja\nOperacijski sustav\nSnimka zaslona problema';
 
   @override
-  String get developedBy => 'Developed by CodeBySam';
+  String get developedBy => 'Razvio CodeBySam';
 
   @override
-  String get errorOpeningLink => 'Unable to open link';
+  String get errorOpeningLink => 'Nije moguće otvoriti poveznicu';
 
   @override
-  String get errorOpeningEmail => 'Unable to open email';
+  String get errorOpeningEmail => 'Nije moguće otvoriti e-poštu';
 
   @override
   String get privacySettings => 'Postavke privatnosti';

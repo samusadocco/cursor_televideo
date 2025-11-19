@@ -290,87 +290,87 @@ class AppLocalizationsHu extends AppLocalizations {
       'Kedvencek mentése és visszaállítása';
 
   @override
-  String get support => 'Support';
+  String get support => 'Támogatás';
 
   @override
-  String get supportDescription => 'Contact us for assistance';
+  String get supportDescription => 'Lépjen kapcsolatba velünk segítségért';
 
   @override
-  String get supportTitle => 'We\'re here to help!';
+  String get supportTitle => 'Azért vagyunk itt, hogy segítsünk!';
 
   @override
   String get supportSubtitle =>
-      'For any questions or assistance, don\'t hesitate to contact us';
+      'Bármilyen kérdés vagy segítség esetén ne habozzon kapcsolatba lépni velünk';
 
   @override
-  String get directContact => 'Direct Contact';
+  String get directContact => 'Közvetlen Kapcsolat';
 
   @override
-  String get emailLabel => 'Email';
+  String get emailLabel => 'E-mail';
 
   @override
-  String get websiteLabel => 'Website';
+  String get websiteLabel => 'Weboldal';
 
   @override
-  String get responseTime => 'Average response time: 24-48 hours';
+  String get responseTime => 'Átlagos válaszidő: 24-48 óra';
 
   @override
-  String get faq => 'Frequently Asked Questions';
+  String get faq => 'Gyakran Ismételt Kérdések';
 
   @override
-  String get faqGeolocation => 'How does geolocation work?';
+  String get faqGeolocation => 'Hogyan működik a helymeghatározás?';
 
   @override
   String get faqGeolocationAnswer =>
-      'The app uses your device\'s location to automatically identify your region and show you relevant local news. You can disable this feature in the app settings.';
+      'Az alkalmazás a készüléke helyét használja a régiójának automatikus azonosításához és a releváns helyi hírek megjelenítéséhez. Ezt a funkciót kikapcsolhatja az alkalmazás beállításaiban.';
 
   @override
-  String get faqFavorites => 'How to save a page to favorites?';
+  String get faqFavorites => 'Hogyan menthetek el egy oldalt a kedvencek közé?';
 
   @override
   String get faqFavoritesAnswer =>
-      'While viewing a page, tap the star icon to add it to favorites. You can access your favorite pages from the main menu.';
+      'Oldal megtekintése közben érintse meg a csillag ikont a kedvencekhez adásához. A kedvenc oldalakhoz a főmenüből férhet hozzá.';
 
   @override
-  String get faqTheme => 'How to change the app theme?';
+  String get faqTheme => 'Hogyan változtathatom meg az alkalmazás témáját?';
 
   @override
   String get faqThemeAnswer =>
-      'Go to the app settings and select your desired theme (light/dark). The app also supports automatic theme based on system settings.';
+      'Lépjen az alkalmazás beállításaihoz és válassza ki a kívánt témát (világos/sötét). Az alkalmazás támogatja az automatikus beállítást is a rendszerbeállítások alapján.';
 
   @override
-  String get faqOffline => 'Does the app work offline?';
+  String get faqOffline => 'Működik az alkalmazás offline?';
 
   @override
   String get faqOfflineAnswer =>
-      'No, an active internet connection is required to access real-time Teletext pages.';
+      'Nem, aktív internetkapcsolat szükséges a valós idejű Teletext oldalak eléréséhez.';
 
   @override
-  String get faqReportProblem => 'How to report a problem?';
+  String get faqReportProblem => 'Hogyan jelentsek problémát?';
 
   @override
   String get faqReportProblemAnswer =>
-      'Send a detailed email to samuele@codebysam.it describing the problem you encountered.';
+      'Küldjön részletes e-mailt a samuele@codebysam.it címre a probléma leírásával.';
 
   @override
-  String get reportBugTitle => 'Report a problem';
+  String get reportBugTitle => 'Probléma jelentése';
 
   @override
   String get reportBugInstructions =>
-      'When reporting a problem, please include if possible:';
+      'Probléma jelentésekor kérjük, adja meg, ha lehetséges:';
 
   @override
   String get reportBugItems =>
-      'App version\nDevice model\nOperating system\nScreenshot of the problem';
+      'Alkalmazás verziója\nKészülék modellje\nOperációs rendszer\nKépernyőkép a problémáról';
 
   @override
-  String get developedBy => 'Developed by CodeBySam';
+  String get developedBy => 'Fejlesztette: CodeBySam';
 
   @override
-  String get errorOpeningLink => 'Unable to open link';
+  String get errorOpeningLink => 'A link nem nyitható meg';
 
   @override
-  String get errorOpeningEmail => 'Unable to open email';
+  String get errorOpeningEmail => 'Az e-mail nem nyitható meg';
 
   @override
   String get privacySettings => 'Adatvédelmi beállítások';

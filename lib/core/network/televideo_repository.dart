@@ -11,7 +11,11 @@ class TelevideoRepository {
   final String _htmlBaseUrl = 'https://www.televideo.rai.it/televideo/pub/pagina.jsp';
   final String _htmlRegionalBaseUrl = 'https://www.televideo.rai.it/televideo/pub/homeregione.jsp';
   final String _corsProxy = 'https://corsproxy.io/?';
+  
   TelevideoRepository({Dio? dio}) : _dio = dio ?? Dio() {
+    print('📦 [TelevideoRepository] Repository creato');
+    print('📅 [TelevideoRepository] Session timestamp da AppSettings: ${AppSettings.appSessionTimestamp}');
+    
     // Configura Dio per utilizzare la durata della cache dalle impostazioni
     _dio.options.headers = {
       'Cache-Control': 'max-age=${AppSettings.cacheDurationInSeconds}',
@@ -194,7 +198,7 @@ class TelevideoRepository {
       }
 
       final rawImageUrl = _buildImageUrl(_baseUrl, 'Nazionale', pageNumber, subPage: subPage);
-      final imageUrl = kIsWeb ? '$_corsProxy$rawImageUrl' : rawImageUrl;
+      var imageUrl = kIsWeb ? '$_corsProxy$rawImageUrl' : rawImageUrl;
       final baseHtmlUrl = '$_htmlBaseUrl?p=$pageNumber';
       final htmlUrl = subPage > 1 ? '$baseHtmlUrl&s=$subPage&r=Nazionale' : baseHtmlUrl;
       
@@ -227,6 +231,19 @@ class TelevideoRepository {
         }
         
         final clickableAreas = await _extractClickableAreas(htmlResponse.data);
+        
+        // Aggiungi il session timestamp all'URL per invalidare la cache all'avvio dell'app
+        // Usa un timestamp aggiuntivo se forceRefresh è true (per swipe down)
+        final timestamp = forceRefresh 
+          ? DateTime.now().millisecondsSinceEpoch 
+          : AppSettings.appSessionTimestamp;
+        imageUrl = imageUrl.contains('?') 
+          ? '$imageUrl&_t=$timestamp'
+          : '$imageUrl?_t=$timestamp';
+        
+        if (forceRefresh) {
+          print('🔄 Force refresh: URL con timestamp aggiornato: $imageUrl');
+        }
         
         return TelevideoPage(
           pageNumber: pageNumber,
@@ -263,7 +280,7 @@ class TelevideoRepository {
       print('[TelevideoRepository] Loading regional page for region: "$region"');
       
       final rawImageUrl = _buildImageUrl(_baseUrl, region, pageNumber, subPage: subPage);
-      final imageUrl = kIsWeb ? '$_corsProxy$rawImageUrl' : rawImageUrl;
+      var imageUrl = kIsWeb ? '$_corsProxy$rawImageUrl' : rawImageUrl;
       final baseHtmlUrl = '$_htmlRegionalBaseUrl?r=$region&p=$pageNumber';
       final htmlUrl = subPage > 1 ? '$baseHtmlUrl&s=$subPage' : baseHtmlUrl;
       
@@ -292,6 +309,19 @@ class TelevideoRepository {
         }
         
         final clickableAreas = await _extractClickableAreas(htmlResponse.data);
+        
+        // Aggiungi il session timestamp all'URL per invalidare la cache all'avvio dell'app
+        // Usa un timestamp aggiuntivo se forceRefresh è true (per swipe down)
+        final timestamp = forceRefresh 
+          ? DateTime.now().millisecondsSinceEpoch 
+          : AppSettings.appSessionTimestamp;
+        imageUrl = imageUrl.contains('?') 
+          ? '$imageUrl&_t=$timestamp'
+          : '$imageUrl?_t=$timestamp';
+        
+        if (forceRefresh) {
+          print('🔄 Force refresh: URL con timestamp aggiornato: $imageUrl');
+        }
         
         return TelevideoPage(
           pageNumber: pageNumber,

@@ -291,84 +291,84 @@ class AppLocalizationsDa extends AppLocalizations {
   String get support => 'Support';
 
   @override
-  String get supportDescription => 'Contact us for assistance';
+  String get supportDescription => 'Kontakt os for hjælp';
 
   @override
-  String get supportTitle => 'We\'re here to help!';
+  String get supportTitle => 'Vi er her for at hjælpe!';
 
   @override
   String get supportSubtitle =>
-      'For any questions or assistance, don\'t hesitate to contact us';
+      'For spørgsmål eller hjælp, tøv ikke med at kontakte os';
 
   @override
-  String get directContact => 'Direct Contact';
+  String get directContact => 'Direkte Kontakt';
 
   @override
-  String get emailLabel => 'Email';
+  String get emailLabel => 'E-mail';
 
   @override
-  String get websiteLabel => 'Website';
+  String get websiteLabel => 'Hjemmeside';
 
   @override
-  String get responseTime => 'Average response time: 24-48 hours';
+  String get responseTime => 'Gennemsnitlig svartid: 24-48 timer';
 
   @override
-  String get faq => 'Frequently Asked Questions';
+  String get faq => 'Ofte Stillede Spørgsmål';
 
   @override
-  String get faqGeolocation => 'How does geolocation work?';
+  String get faqGeolocation => 'Hvordan virker geolokation?';
 
   @override
   String get faqGeolocationAnswer =>
-      'The app uses your device\'s location to automatically identify your region and show you relevant local news. You can disable this feature in the app settings.';
+      'Appen bruger din enheds placering til automatisk at identificere din region og vise relevante lokale nyheder. Du kan deaktivere denne funktion i app-indstillingerne.';
 
   @override
-  String get faqFavorites => 'How to save a page to favorites?';
+  String get faqFavorites => 'Hvordan gemmer jeg en side i favoritter?';
 
   @override
   String get faqFavoritesAnswer =>
-      'While viewing a page, tap the star icon to add it to favorites. You can access your favorite pages from the main menu.';
+      'Mens du ser en side, tryk på stjerneikonet for at tilføje den til favoritter. Du kan få adgang til dine favoritside fra hovedmenuen.';
 
   @override
-  String get faqTheme => 'How to change the app theme?';
+  String get faqTheme => 'Hvordan ændrer jeg app-temaet?';
 
   @override
   String get faqThemeAnswer =>
-      'Go to the app settings and select your desired theme (light/dark). The app also supports automatic theme based on system settings.';
+      'Gå til app-indstillingerne og vælg det ønskede tema (lyst/mørkt). Appen understøtter også automatisk indstilling baseret på systemindstillinger.';
 
   @override
-  String get faqOffline => 'Does the app work offline?';
+  String get faqOffline => 'Virker appen offline?';
 
   @override
   String get faqOfflineAnswer =>
-      'No, an active internet connection is required to access real-time Teletext pages.';
+      'Nej, en aktiv internetforbindelse er påkrævet for at få adgang til Tekst-TV-sider i realtid.';
 
   @override
-  String get faqReportProblem => 'How to report a problem?';
+  String get faqReportProblem => 'Hvordan rapporterer jeg et problem?';
 
   @override
   String get faqReportProblemAnswer =>
-      'Send a detailed email to samuele@codebysam.it describing the problem you encountered.';
+      'Send en detaljeret e-mail til samuele@codebysam.it med en beskrivelse af problemet.';
 
   @override
-  String get reportBugTitle => 'Report a problem';
+  String get reportBugTitle => 'Rapporter et problem';
 
   @override
   String get reportBugInstructions =>
-      'When reporting a problem, please include if possible:';
+      'Når du rapporterer et problem, medtag hvis muligt:';
 
   @override
   String get reportBugItems =>
-      'App version\nDevice model\nOperating system\nScreenshot of the problem';
+      'App-version\nEnhedsmodel\nOperativsystem\nSkærmbillede af problemet';
 
   @override
-  String get developedBy => 'Developed by CodeBySam';
+  String get developedBy => 'Udviklet af CodeBySam';
 
   @override
-  String get errorOpeningLink => 'Unable to open link';
+  String get errorOpeningLink => 'Kan ikke åbne link';
 
   @override
-  String get errorOpeningEmail => 'Unable to open email';
+  String get errorOpeningEmail => 'Kan ikke åbne e-mail';
 
   @override
   String get privacySettings => 'Privatlivsindstillinger';

@@ -20,6 +20,7 @@ class AppSettings {
   static const String _themeModeKey = 'theme_mode';
   static const String _startupPageOptionKey = 'startup_page_option';
   static const String _adsPersonalizationEnabledKey = 'ads_personalization_enabled';
+  static const String _appSessionTimestampKey = 'app_session_timestamp';
   
   // State Persistence keys
   static const String _lastPageNumberKey = 'last_page_number';
@@ -43,6 +44,7 @@ class AppSettings {
   static ThemeMode _themeMode = _defaultThemeMode;
   static StartupPageOption _startupPageOption = _defaultStartupPageOption;
   static bool _adsPersonalizationEnabled = _defaultAdsPersonalizationEnabled;
+  static int _appSessionTimestamp = DateTime.now().millisecondsSinceEpoch;
   
   // State Persistence values
   static int? _lastPageNumber;
@@ -58,6 +60,7 @@ class AppSettings {
   static ThemeMode get themeMode => _themeMode;
   static StartupPageOption get startupPageOption => _startupPageOption;
   static bool get adsPersonalizationEnabled => _adsPersonalizationEnabled;
+  static int get appSessionTimestamp => _appSessionTimestamp;
   
   // State Persistence getters
   static int? get lastPageNumber => _lastPageNumber;
@@ -84,6 +87,13 @@ class AppSettings {
     _startupPageOption = startupPageOptionIndex != null 
         ? StartupPageOption.values[startupPageOptionIndex]
         : _defaultStartupPageOption;
+    
+    // Genera un nuovo session timestamp ad ogni avvio dell'app
+    _appSessionTimestamp = DateTime.now().millisecondsSinceEpoch;
+    await prefs.setInt(_appSessionTimestampKey, _appSessionTimestamp);
+    final date = DateTime.fromMillisecondsSinceEpoch(_appSessionTimestamp);
+    print('🚀 [AppSettings] Nuovo session timestamp generato: $_appSessionTimestamp');
+    print('📅 [AppSettings] Data sessione: ${date.day}/${date.month}/${date.year} ${date.hour}:${date.minute}:${date.second}');
     
     // Carica State Persistence
     _lastPageNumber = prefs.getInt(_lastPageNumberKey);

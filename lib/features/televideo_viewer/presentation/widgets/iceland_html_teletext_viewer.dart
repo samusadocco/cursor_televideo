@@ -93,7 +93,12 @@ class _IcelandHtmlTeletextViewerState extends State<IcelandHtmlTeletextViewer> {
       final htmlString = _buildHtmlString(scaleX, scaleY);
       print('[IcelandViewer] Final HTML length: ${htmlString.length} bytes');
       
-      _controller.loadHtmlString(htmlString);
+      // Usa loadHtmlString con baseUrl per permettere il caricamento del font
+      // Il baseUrl consente al WebView di caricare risorse esterne (font, CSS) senza problemi CORS
+      _controller.loadHtmlString(
+        htmlString,
+        baseUrl: 'https://textavarp.is/',
+      );
       
       _lastWidth = width;
       _lastHeight = height;

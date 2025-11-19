@@ -289,87 +289,87 @@ class AppLocalizationsFi extends AppLocalizations {
   String get backupFavoritesDescription => 'Tallenna ja palauta suosikkisi';
 
   @override
-  String get support => 'Support';
+  String get support => 'Tuki';
 
   @override
-  String get supportDescription => 'Contact us for assistance';
+  String get supportDescription => 'Ota yhteyttä apua varten';
 
   @override
-  String get supportTitle => 'We\'re here to help!';
+  String get supportTitle => 'Olemme täällä auttamassa!';
 
   @override
   String get supportSubtitle =>
-      'For any questions or assistance, don\'t hesitate to contact us';
+      'Kysymyksissä tai avun tarpeessa, älä epäröi ottaa yhteyttä';
 
   @override
-  String get directContact => 'Direct Contact';
+  String get directContact => 'Suora Yhteys';
 
   @override
-  String get emailLabel => 'Email';
+  String get emailLabel => 'Sähköposti';
 
   @override
-  String get websiteLabel => 'Website';
+  String get websiteLabel => 'Verkkosivusto';
 
   @override
-  String get responseTime => 'Average response time: 24-48 hours';
+  String get responseTime => 'Keskimääräinen vastausaika: 24-48 tuntia';
 
   @override
-  String get faq => 'Frequently Asked Questions';
+  String get faq => 'Usein Kysytyt Kysymykset';
 
   @override
-  String get faqGeolocation => 'How does geolocation work?';
+  String get faqGeolocation => 'Miten paikannus toimii?';
 
   @override
   String get faqGeolocationAnswer =>
-      'The app uses your device\'s location to automatically identify your region and show you relevant local news. You can disable this feature in the app settings.';
+      'Sovellus käyttää laitteesi sijaintia tunnistaakseen automaattisesti alueesi ja näyttääkseen asiaankuuluvat paikalliset uutiset. Voit poistaa tämän toiminnon käytöstä sovelluksen asetuksista.';
 
   @override
-  String get faqFavorites => 'How to save a page to favorites?';
+  String get faqFavorites => 'Miten tallennan sivun suosikkeihin?';
 
   @override
   String get faqFavoritesAnswer =>
-      'While viewing a page, tap the star icon to add it to favorites. You can access your favorite pages from the main menu.';
+      'Katsellessasi sivua napauta tähtikuvaketta lisätäksesi sen suosikkeihin. Voit käyttää suosikkisivujasi päävalikosta.';
 
   @override
-  String get faqTheme => 'How to change the app theme?';
+  String get faqTheme => 'Miten vaihdan sovelluksen teemaa?';
 
   @override
   String get faqThemeAnswer =>
-      'Go to the app settings and select your desired theme (light/dark). The app also supports automatic theme based on system settings.';
+      'Siirry sovelluksen asetuksiin ja valitse haluamasi teema (vaalea/tumma). Sovellus tukee myös automaattista asetusta järjestelmäasetusten perusteella.';
 
   @override
-  String get faqOffline => 'Does the app work offline?';
+  String get faqOffline => 'Toimiiko sovellus offline-tilassa?';
 
   @override
   String get faqOfflineAnswer =>
-      'No, an active internet connection is required to access real-time Teletext pages.';
+      'Ei, aktiivinen internetyhteys vaaditaan reaaliaikaisten Teksti-TV-sivujen käyttämiseen.';
 
   @override
-  String get faqReportProblem => 'How to report a problem?';
+  String get faqReportProblem => 'Miten ilmoitan ongelmasta?';
 
   @override
   String get faqReportProblemAnswer =>
-      'Send a detailed email to samuele@codebysam.it describing the problem you encountered.';
+      'Lähetä yksityiskohtainen sähköposti osoitteeseen samuele@codebysam.it kuvaten kohtaamasi ongelma.';
 
   @override
-  String get reportBugTitle => 'Report a problem';
+  String get reportBugTitle => 'Ilmoita ongelmasta';
 
   @override
   String get reportBugInstructions =>
-      'When reporting a problem, please include if possible:';
+      'Ilmoittaessasi ongelmasta, sisällytä jos mahdollista:';
 
   @override
   String get reportBugItems =>
-      'App version\nDevice model\nOperating system\nScreenshot of the problem';
+      'Sovelluksen versio\nLaitteen malli\nKäyttöjärjestelmä\nKuvakaappaus ongelmasta';
 
   @override
-  String get developedBy => 'Developed by CodeBySam';
+  String get developedBy => 'Kehittänyt CodeBySam';
 
   @override
-  String get errorOpeningLink => 'Unable to open link';
+  String get errorOpeningLink => 'Linkkiä ei voi avata';
 
   @override
-  String get errorOpeningEmail => 'Unable to open email';
+  String get errorOpeningEmail => 'Sähköpostia ei voi avata';
 
   @override
   String get privacySettings => 'Yksityisyysasetukset';

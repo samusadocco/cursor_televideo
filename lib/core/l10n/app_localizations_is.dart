@@ -289,87 +289,87 @@ class AppLocalizationsIs extends AppLocalizations {
       'Vista og endurheimta eftirlætin þín';
 
   @override
-  String get support => 'Support';
+  String get support => 'Stuðningur';
 
   @override
-  String get supportDescription => 'Contact us for assistance';
+  String get supportDescription => 'Hafðu samband við okkur fyrir aðstoð';
 
   @override
-  String get supportTitle => 'We\'re here to help!';
+  String get supportTitle => 'Við erum hér til að hjálpa!';
 
   @override
   String get supportSubtitle =>
-      'For any questions or assistance, don\'t hesitate to contact us';
+      'Fyrir allar spurningar eða aðstoð, ekki hika við að hafa samband';
 
   @override
-  String get directContact => 'Direct Contact';
+  String get directContact => 'Bein Samskipti';
 
   @override
-  String get emailLabel => 'Email';
+  String get emailLabel => 'Tölvupóstur';
 
   @override
-  String get websiteLabel => 'Website';
+  String get websiteLabel => 'Vefsíða';
 
   @override
-  String get responseTime => 'Average response time: 24-48 hours';
+  String get responseTime => 'Meðal svartími: 24-48 klukkustundir';
 
   @override
-  String get faq => 'Frequently Asked Questions';
+  String get faq => 'Algengar Spurningar';
 
   @override
-  String get faqGeolocation => 'How does geolocation work?';
+  String get faqGeolocation => 'Hvernig virkar staðsetning?';
 
   @override
   String get faqGeolocationAnswer =>
-      'The app uses your device\'s location to automatically identify your region and show you relevant local news. You can disable this feature in the app settings.';
+      'Forritið notar staðsetningu tækisins til að bera kennsl á svæðið þitt sjálfkrafa og sýna viðeigandi staðbundnar fréttir. Þú getur slökkt á þessari aðgerð í stillingum forritsins.';
 
   @override
-  String get faqFavorites => 'How to save a page to favorites?';
+  String get faqFavorites => 'Hvernig vista ég síðu í eftirlæti?';
 
   @override
   String get faqFavoritesAnswer =>
-      'While viewing a page, tap the star icon to add it to favorites. You can access your favorite pages from the main menu.';
+      'Á meðan þú skoðar síðu, ýttu á stjörnumerkið til að bæta henni við eftirlæti. Þú getur nálgast eftirlætissíðurnar þínar frá aðalvalmyndinni.';
 
   @override
-  String get faqTheme => 'How to change the app theme?';
+  String get faqTheme => 'Hvernig breyti ég þema forritsins?';
 
   @override
   String get faqThemeAnswer =>
-      'Go to the app settings and select your desired theme (light/dark). The app also supports automatic theme based on system settings.';
+      'Farðu í stillingar forritsins og veldu umhverfið sem þú vilt (ljóst/dökkt). Forritið styður einnig sjálfvirka stillingu byggða á kerfisstillingum.';
 
   @override
-  String get faqOffline => 'Does the app work offline?';
+  String get faqOffline => 'Virkar forritið án nettengingar?';
 
   @override
   String get faqOfflineAnswer =>
-      'No, an active internet connection is required to access real-time Teletext pages.';
+      'Nei, virk nettengd er nauðsynleg til að fá aðgang að Textavarp síðum í rauntíma.';
 
   @override
-  String get faqReportProblem => 'How to report a problem?';
+  String get faqReportProblem => 'Hvernig tilkynni ég vandamál?';
 
   @override
   String get faqReportProblemAnswer =>
-      'Send a detailed email to samuele@codebysam.it describing the problem you encountered.';
+      'Sendu ítarlegan tölvupóst á samuele@codebysam.it með lýsingu á vandamálinu.';
 
   @override
-  String get reportBugTitle => 'Report a problem';
+  String get reportBugTitle => 'Tilkynna vandamál';
 
   @override
   String get reportBugInstructions =>
-      'When reporting a problem, please include if possible:';
+      'Við að tilkynna vandamál, láttu fylgja ef mögulegt:';
 
   @override
   String get reportBugItems =>
-      'App version\nDevice model\nOperating system\nScreenshot of the problem';
+      'Útgáfa forritsins\nTæki tegund\nStýrikerfi\nSkjámynd af vandamálinu';
 
   @override
-  String get developedBy => 'Developed by CodeBySam';
+  String get developedBy => 'Þróað af CodeBySam';
 
   @override
-  String get errorOpeningLink => 'Unable to open link';
+  String get errorOpeningLink => 'Ekki er hægt að opna tengil';
 
   @override
-  String get errorOpeningEmail => 'Unable to open email';
+  String get errorOpeningEmail => 'Ekki er hægt að opna tölvupóst';
 
   @override
   String get privacySettings => 'Persónuverndstillingar';
