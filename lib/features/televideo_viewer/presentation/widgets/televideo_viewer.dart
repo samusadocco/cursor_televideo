@@ -24,7 +24,6 @@ import 'package:cursor_televideo/features/televideo_viewer/presentation/widgets/
 import 'package:cursor_televideo/features/televideo_viewer/presentation/widgets/nos_html_teletext_viewer.dart';
 import 'package:cursor_televideo/features/televideo_viewer/presentation/widgets/iceland_html_teletext_viewer.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 
 class TelevideoViewer extends StatefulWidget {
   final TelevideoPage page;
@@ -62,14 +61,16 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
   DateTime? _timerStartTime;  // Quando è partito il timer corrente
   Duration _remainingTime = Duration.zero;  // Tempo rimanente quando in pausa
 
-  static final CacheManager _cacheManager = CacheManager(
-    Config(
-      'teletext_cache',
-      stalePeriod: const Duration(seconds: 300),
-      maxNrOfCacheObjects: 100,
-    ),
-  );
-  
+  /// Aggiunge un timestamp unico all'URL per disabilitare completamente la cache
+  /// Funziona per TUTTI i provider con immagini (RAI, MTVA, CT, YLE, SVT, ecc.)
+  String _addTimestampToUrl(String url) {
+    final timestamp = DateTime.now().millisecondsSinceEpoch;
+    final separator = url.contains('?') ? '&' : '?';
+    final urlWithTimestamp = '$url${separator}_t=$timestamp';
+    print('[TelevideoViewer] 🔄 URL con timestamp (cache disabilitata): $urlWithTimestamp');
+    return urlWithTimestamp;
+  }
+
   @override
   void initState() {
     super.initState();
@@ -236,8 +237,9 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
     
     // Per MTVA usa il provider personalizzato che gestisce certificati self-signed
     if (page.providerId == 'mtva_teletext') {
+      final imageUrlWithTimestamp = _addTimestampToUrl(page.imageUrl);
       return Image(
-        image: MTVAImageProvider(page.imageUrl),
+        image: MTVAImageProvider(imageUrlWithTimestamp),
         fit: BoxFit.fill,
         errorBuilder: (context, error, stackTrace) {
           print('[TeletextViewer] Error loading MTVA image: $error');
@@ -255,8 +257,9 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
     
     // Per Intertext usa il provider personalizzato con headers per bypassare 403
     if (page.providerId == 'intertext') {
+      final imageUrlWithTimestamp = _addTimestampToUrl(page.imageUrl);
       return Image(
-        image: IntertextImageProvider(page.imageUrl),
+        image: IntertextImageProvider(imageUrlWithTimestamp),
         fit: BoxFit.fill,
         errorBuilder: (context, error, stackTrace) {
           print('[TeletextViewer] Error loading Intertext image: $error');
@@ -272,13 +275,13 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
       );
     }
     
-    // URL normale - usa CachedNetworkImage con durata cache personalizzata
-    print('[TelevideoViewer] 🖼️ CachedNetworkImage URL: ${page.imageUrl}');
+    // URL normale - usa CachedNetworkImage con timestamp per disabilitare cache
+    // Funziona per TUTTI i provider (RAI, MTVA, CT, YLE, SVT, HRT, Spanish, ORF, Swiss, DR, ecc.)
+    final imageUrlWithTimestamp = _addTimestampToUrl(page.imageUrl);
     return CachedNetworkImage(
-      imageUrl: page.imageUrl,
-      cacheManager: _cacheManager,
+      imageUrl: imageUrlWithTimestamp,
       httpHeaders: {
-        'Cache-Control': 'max-age=${AppSettings.cacheDurationInSeconds}',
+        'Cache-Control': 'no-cache',
       },
       fit: BoxFit.fill,
       // Animazioni più veloci per un effetto meno "dissolto"
@@ -507,12 +510,11 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
                   TelevideoEvent.loadRegionalPage(
                     regionState.selectedRegion!,
                     widget.page.pageNumber,
-                    forceRefresh: true, // Swipe down forza sempre il refresh
                   ),
                 );
               } else {
                 context.read<TelevideoBloc>().add(
-                  TelevideoEvent.loadNationalPage(widget.page.pageNumber, forceRefresh: true), // Swipe down forza sempre il refresh
+                  TelevideoEvent.loadNationalPage(widget.page.pageNumber),
                 );
               }
               // Reset dello stato di refresh
@@ -825,8 +827,8 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
 
                             if (lastEvent != null) {
                               lastEvent.when(
-                                loadNationalPage: (_, __) => transitionType = PageTransitionType.fade,
-                                loadRegionalPage: (_, __, ___) => transitionType = PageTransitionType.fade,
+                                loadNationalPage: (_) => transitionType = PageTransitionType.fade,
+                                loadRegionalPage: (_, __) => transitionType = PageTransitionType.fade,
                                 nextPage: (_) {
                                   // Usa slideHorizontal per canali con IMMAGINI (RAI, MTVA, CT, RTVSLO, YLE, SVT, HRT, Spanish, ORF, Swiss)
                                   // Per canali con HTML/WebView (RTL, Iceland, NOS, ZDF, ARD) usa fade per evitare problemi di rendering
@@ -880,14 +882,14 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
                               final lastEvent = context.read<TelevideoBloc>().lastEvent;
                               
                               lastEvent?.when(
-                                loadNationalPage: (pageNumber, forceRefresh) {
+                                loadNationalPage: (pageNumber) {
                                   context.read<TelevideoBloc>().add(
-                                    TelevideoEvent.loadNationalPage(pageNumber, forceRefresh: forceRefresh),
+                                    TelevideoEvent.loadNationalPage(pageNumber),
                                   );
                                 },
-                                loadRegionalPage: (region, pageNumber, forceRefresh) {
+                                loadRegionalPage: (region, pageNumber) {
                                   context.read<TelevideoBloc>().add(
-                                    TelevideoEvent.loadRegionalPage(region, pageNumber, forceRefresh: forceRefresh),
+                                    TelevideoEvent.loadRegionalPage(region, pageNumber),
                                   );
                                 },
                                 nextPage: (currentPage) {

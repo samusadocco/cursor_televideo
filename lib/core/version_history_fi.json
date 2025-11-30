@@ -1,6 +1,12 @@
 {
   "versions": [
     {
+      "version": "2.0.2",
+      "changes": [
+        "Sivun latausvirheiden korjauksia ja suorituskyvyn optimointia"
+      ]
+    },
+    {
       "version": "2.0.0",
       "changes": [
         "Sovelluksen nimi muutettu Teletext Europeksi",

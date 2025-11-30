@@ -13,8 +13,7 @@ class TelevideoRepository {
   final String _corsProxy = 'https://corsproxy.io/?';
   
   TelevideoRepository({Dio? dio}) : _dio = dio ?? Dio() {
-    print('📦 [TelevideoRepository] Repository creato');
-    print('📅 [TelevideoRepository] Session timestamp da AppSettings: ${AppSettings.appSessionTimestamp}');
+    print('📦 [TelevideoRepository] Repository creato (cache disabilitata per RAI)');
     
     // Configura Dio per utilizzare la durata della cache dalle impostazioni
     _dio.options.headers = {
@@ -232,19 +231,7 @@ class TelevideoRepository {
         
         final clickableAreas = await _extractClickableAreas(htmlResponse.data);
         
-        // Aggiungi il session timestamp all'URL per invalidare la cache all'avvio dell'app
-        // Usa un timestamp aggiuntivo se forceRefresh è true (per swipe down)
-        final timestamp = forceRefresh 
-          ? DateTime.now().millisecondsSinceEpoch 
-          : AppSettings.appSessionTimestamp;
-        imageUrl = imageUrl.contains('?') 
-          ? '$imageUrl&_t=$timestamp'
-          : '$imageUrl?_t=$timestamp';
-        
-        if (forceRefresh) {
-          print('🔄 Force refresh: URL con timestamp aggiornato: $imageUrl');
-        }
-        
+        // Il timestamp per la cache viene aggiunto dal TelevideoViewer
         return TelevideoPage(
           pageNumber: pageNumber,
           imageUrl: imageUrl,
@@ -310,19 +297,7 @@ class TelevideoRepository {
         
         final clickableAreas = await _extractClickableAreas(htmlResponse.data);
         
-        // Aggiungi il session timestamp all'URL per invalidare la cache all'avvio dell'app
-        // Usa un timestamp aggiuntivo se forceRefresh è true (per swipe down)
-        final timestamp = forceRefresh 
-          ? DateTime.now().millisecondsSinceEpoch 
-          : AppSettings.appSessionTimestamp;
-        imageUrl = imageUrl.contains('?') 
-          ? '$imageUrl&_t=$timestamp'
-          : '$imageUrl?_t=$timestamp';
-        
-        if (forceRefresh) {
-          print('🔄 Force refresh: URL con timestamp aggiornato: $imageUrl');
-        }
-        
+        // Il timestamp per la cache viene aggiunto dal TelevideoViewer
         return TelevideoPage(
           pageNumber: pageNumber,
           imageUrl: imageUrl,

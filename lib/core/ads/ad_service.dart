@@ -13,8 +13,8 @@ class AdService {
 
   InterstitialAd? _interstitialAd;
   int _pageViewCount = 0;
-  final int _pagesBeforeAd = 15;
-  final int _pagesBeforeBannerRefresh = 10;
+  final int _pagesBeforeAd = 10;
+  final int _pagesBeforeBannerRefresh = 8;
   bool _isLoadingAd = false;
   bool _isShowingAd = false;
   

@@ -1,6 +1,12 @@
 {
   "versions": [
     {
+      "version": "2.0.2",
+      "changes": [
+        "Corrections de bugs de chargement des pages et optimisation des performances"
+      ]
+    },
+    {
       "version": "2.0.0",
       "changes": [
         "Nom de l'application changé en Teletext Europe",

@@ -1,6 +1,12 @@
 {
   "versions": [
     {
+      "version": "2.0.2",
+      "changes": [
+        "Fejlrettelser i sideindlæsning og ydeevneoptimering"
+      ]
+    },
+    {
       "version": "2.0.0",
       "changes": [
         "Applikationsnavn ændret til Teletext Europe",

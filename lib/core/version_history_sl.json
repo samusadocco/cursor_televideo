@@ -1,6 +1,12 @@
 {
   "versions": [
     {
+      "version": "2.0.2",
+      "changes": [
+        "Popravki napak pri nalaganju strani in optimizacija zmogljivosti"
+      ]
+    },
+    {
       "version": "2.0.0",
       "changes": [
         "Ime aplikacije spremenjeno v Teletext Europe",

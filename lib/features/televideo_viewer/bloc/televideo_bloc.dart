@@ -161,8 +161,8 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
       _lastEvent = event;
       print('[TelevideoBloc] Received event: $event'); // Debug print
       await event.when(
-        loadNationalPage: (pageNumber, forceRefresh) => _onLoadNationalPage(pageNumber, emit, forceRefresh: forceRefresh),
-        loadRegionalPage: (region, pageNumber, forceRefresh) => _onLoadRegionalPage(region, pageNumber, emit, forceRefresh: forceRefresh),
+        loadNationalPage: (pageNumber) => _onLoadNationalPage(pageNumber, emit),
+        loadRegionalPage: (region, pageNumber) => _onLoadRegionalPage(region, pageNumber, emit),
         nextPage: (currentPage) => _onNextPage(currentPage, emit),
         previousPage: (currentPage) => _onPreviousPage(currentPage, emit),
         nextSubPage: () => _onNextSubPage(emit),
@@ -335,7 +335,7 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
     emit(TelevideoState.loading(pageNumber: _currentPage, selectedChannel: currentChannel));
   }
 
-  Future<void> _onLoadNationalPage(int pageNumber, Emitter<TelevideoState> emit, {bool forceRefresh = false}) async {
+  Future<void> _onLoadNationalPage(int pageNumber, Emitter<TelevideoState> emit) async {
     // Verifica se il bloc è già stato chiuso
     if (isClosed) {
       print('[TelevideoBloc] Bloc already closed, skipping loadNationalPage');
@@ -386,8 +386,8 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
       TelevideoPage page;
       // Se il canale corrente è RAI o null, usa il repository normale
       if (currentChannel == null || currentChannel.id == 'rai_nazionale' || currentChannel.id.startsWith('rai_')) {
-        // Usa forceRefresh solo quando esplicitamente richiesto (es. swipe down)
-        page = await _loadPageWithContext(pageNumber, subPage: targetSubPage, forceRefresh: forceRefresh);
+        // Cache disabilitata: ogni URL ha un timestamp unico
+        page = await _loadPageWithContext(pageNumber, subPage: targetSubPage, forceRefresh: false);
       } else {
         // Per altri canali, usa il provider specifico
         final provider = TeletextProviderFactory.getProvider(currentChannel);
@@ -435,7 +435,7 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
     }
   }
 
-  Future<void> _onLoadRegionalPage(Region region, int pageNumber, Emitter<TelevideoState> emit, {bool forceRefresh = false}) async {
+  Future<void> _onLoadRegionalPage(Region region, int pageNumber, Emitter<TelevideoState> emit) async {
     // Verifica se il bloc è già stato chiuso
     if (isClosed) {
       print('[TelevideoBloc] Bloc already closed, skipping loadRegionalPage');
@@ -474,8 +474,8 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
       
       // Prima carichiamo la pagina regionale
       print('[TelevideoBloc] Fetching regional page from repository'); // Debug print
-      // Usa forceRefresh solo quando esplicitamente richiesto (es. swipe down)
-      final page = await _loadPageWithContext(pageNumber, isRegional: true, region: region, subPage: targetSubPage, forceRefresh: forceRefresh);
+      // Cache disabilitata: ogni URL ha un timestamp unico
+      final page = await _loadPageWithContext(pageNumber, isRegional: true, region: region, subPage: targetSubPage, forceRefresh: false);
       
       // Solo dopo un caricamento riuscito, aggiorniamo lo stato e le variabili
       _currentRegion = region;
