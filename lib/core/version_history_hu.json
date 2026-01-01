@@ -1,6 +1,12 @@
 {
   "versions": [
     {
+      "version": "2.0.3",
+      "changes": [
+        "Általános optimalizálások és hibajavítások"
+      ]
+    },
+    {
       "version": "2.0.2",
       "changes": [
         "Oldalletöltési hibajavítások és teljesítményoptimalizálás"

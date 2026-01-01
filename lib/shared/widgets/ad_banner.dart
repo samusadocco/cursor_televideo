@@ -48,13 +48,26 @@ class _AdBannerState extends State<AdBanner> {
   Future<void> _loadAd(bool isPortrait) async {
     if (!mounted) return;
     
+    // Imposta subito isLoaded a false per evitare che il widget mostri un banner non valido
+    if (mounted) {
+      setState(() {
+        _isLoaded = false;
+      });
+    }
+    
     _bannerAd?.dispose();
+    _bannerAd = null;
+    
     _bannerAd = await _adService.createBannerAd(isPortrait: isPortrait);
     
     if (_bannerAd != null && mounted) {
-      setState(() {
-        _isLoaded = true;
-      });
+      // Aspetta un momento per essere sicuri che il banner sia completamente pronto
+      await Future.delayed(Duration(milliseconds: 50));
+      if (mounted) {
+        setState(() {
+          _isLoaded = true;
+        });
+      }
     }
   }
   
@@ -104,14 +117,9 @@ class _AdBannerState extends State<AdBanner> {
     if (!_isInitialized) {
       _isInitialized = true;
       _loadAd(isPortrait);
-    } else {
-      final currentSize = _bannerAd?.size;
-      final expectedSize =(isPortrait ? AdSize.largeBanner : AdSize.banner);
-      
-      if (currentSize != expectedSize) {
-        _loadAd(isPortrait);
-      }
     }
+    // Con adaptive banner, non controlliamo più la dimensione perché è dinamica
+    // Il banner verrà ricaricato solo quando richiesto dal refresh stream
   }
 
   @override

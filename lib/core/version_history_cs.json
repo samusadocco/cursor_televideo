@@ -1,6 +1,12 @@
 {
   "versions": [
     {
+      "version": "2.0.3",
+      "changes": [
+        "Obecné optimalizace a opravy chyb"
+      ]
+    },
+    {
       "version": "2.0.2",
       "changes": [
         "Opravy chyb načítání stránek a optimalizace výkonu"

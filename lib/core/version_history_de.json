@@ -1,6 +1,12 @@
 {
   "versions": [
     {
+      "version": "2.0.3",
+      "changes": [
+        "Allgemeine Optimierungen und Fehlerbehebungen"
+      ]
+    },
+    {
       "version": "2.0.2",
       "changes": [
         "Fehlerbehebungen beim Laden von Seiten und Leistungsoptimierung"

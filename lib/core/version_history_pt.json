@@ -1,6 +1,12 @@
 {
   "versions": [
     {
+      "version": "2.0.3",
+      "changes": [
+        "Otimizações gerais e correção de bugs"
+      ]
+    },
+    {
       "version": "2.0.2",
       "changes": [
         "Correções de bugs no carregamento de páginas e otimização de desempenho"

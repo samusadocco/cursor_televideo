@@ -1,6 +1,18 @@
 {
   "versions": [
     {
+      "version": "2.0.3",
+      "changes": [
+        "Ottimizzazioni generali e bugfixing"
+      ]
+    },
+    {
+      "version": "2.0.2",
+      "changes": [
+        "Bugfixing su caricamento pagine e ottimizzazione prestazioni"
+      ]
+    },
+    {
       "version": "2.0.0",
       "changes": [
         "Cambiato nome applicazione in Teletext Europe",

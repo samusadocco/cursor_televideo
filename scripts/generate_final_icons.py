@@ -77,6 +77,13 @@ ANDROID_ICONS = [
     (192, "mipmap-xxxhdpi/ic_launcher.png"),
 ]
 
+# Icona per Play Store (512x512)
+PLAYSTORE_ICON_SIZE = 512
+
+# Feature Graphic per Play Store (1024x500)
+FEATURE_GRAPHIC_SIZE = (1024, 500)
+FEATURE_GRAPHIC_TEXT = "Teletext Europe"
+
 MACOS_ICONS = [
     (16, "app_icon_16.png"),
     (32, "app_icon_32.png"),
@@ -338,7 +345,7 @@ def create_launch_screen_image(size=1024):
         font = ImageFont.load_default()
     
     # Calcola la posizione del testo per centrarlo
-    text = "TeleRetrò\n  Italia"
+    text = "Teletext\n Europe"
     text_bbox = draw.textbbox((0, 0), text, font=font)
     text_width = text_bbox[2] - text_bbox[0]
     text_height = text_bbox[3] - text_bbox[1]
@@ -406,6 +413,156 @@ def generate_macos_icons(background):
         icon = create_base_icon(size, background)
         icon_with_text = add_text(icon)
         icon_with_text.save(f"../macos/Runner/Assets.xcassets/AppIcon.appiconset/{filename}")
+
+def generate_playstore_icon(background):
+    """Genera l'icona 512x512 per Google Play Store"""
+    print("\nGenerazione icona per Play Store (512x512)...")
+    
+    # Crea la directory se non esiste
+    os.makedirs("../app_icons/android", exist_ok=True)
+    
+    # Genera l'icona 512x512
+    icon = create_base_icon(PLAYSTORE_ICON_SIZE, background)
+    icon_with_text = add_text(icon)
+    
+    # Salva l'icona
+    output_path = "../app_icons/android/icon_512playstore.png"
+    icon_with_text.save(output_path)
+    print(f"✅ Icona Play Store salvata: {output_path}")
+
+def generate_feature_graphic(background):
+    """Genera l'immagine Feature Graphic 1024x500 per Google Play Store"""
+    print("\nGenerazione Feature Graphic per Play Store (1024x500)...")
+    
+    width, height = FEATURE_GRAPHIC_SIZE
+    
+    # Crea la directory se non esiste
+    os.makedirs("../app_icons/android", exist_ok=True)
+    
+    # Converti in RGBA
+    bg = background.convert('RGBA')
+    
+    # Aumenta il contrasto
+    enhancer = ImageEnhance.Contrast(bg)
+    bg = enhancer.enhance(BACKGROUND_CONTRAST)
+    
+    # Ridimensiona e ritaglia per coprire 1024x500
+    aspect_ratio = bg.width / bg.height
+    target_aspect = width / height
+    
+    if aspect_ratio > target_aspect:
+        # L'immagine è più larga, ridimensiona per altezza
+        new_height = height
+        new_width = int(height * aspect_ratio)
+    else:
+        # L'immagine è più alta, ridimensiona per larghezza
+        new_width = width
+        new_height = int(width / aspect_ratio)
+    
+    resized = bg.resize((new_width, new_height), Image.Resampling.LANCZOS)
+    
+    # Ritaglia al centro
+    left = (resized.width - width) // 2
+    top = (resized.height - height) // 2
+    cropped = resized.crop((left, top, left + width, top + height))
+    
+    # Applica sfocatura
+    blurred = cropped.filter(ImageFilter.GaussianBlur(BLUR_RADIUS + 2))
+    
+    # Regola saturazione
+    enhancer = ImageEnhance.Color(blurred)
+    enhanced = enhancer.enhance(BACKGROUND_SATURATION)
+    
+    # Regola luminosità (più scuro per far risaltare il testo)
+    darkener = ImageEnhance.Brightness(enhanced)
+    darkened = darkener.enhance(BACKGROUND_BRIGHTNESS * 0.8)
+    
+    # Crea un'immagine per il testo
+    txt_layer = Image.new('RGBA', (width, height), (255, 255, 255, 0))
+    draw = ImageDraw.Draw(txt_layer)
+    
+    # Calcola la dimensione del font - ridotta per stare nell'immagine
+    font_size = int(height * 0.22)  # Ridotto da 0.35 a 0.22
+    try:
+        font = ImageFont.truetype("/System/Library/Fonts/Supplemental/Arial Bold.ttf", font_size)
+    except:
+        try:
+            font = ImageFont.truetype("/System/Library/Fonts/Supplemental/Arial.ttf", font_size)
+        except:
+            font = ImageFont.load_default()
+    
+    # Calcola le dimensioni del testo
+    text_width = draw.textlength(FEATURE_GRAPHIC_TEXT, font=font)
+    text_height = font_size
+    
+    # Verifica che il testo entri nell'immagine con margine
+    max_text_width = width * 0.9  # Max 90% della larghezza
+    if text_width > max_text_width:
+        # Riduci ulteriormente il font se necessario
+        scale_factor = max_text_width / text_width
+        font_size = int(font_size * scale_factor)
+        try:
+            font = ImageFont.truetype("/System/Library/Fonts/Supplemental/Arial Bold.ttf", font_size)
+        except:
+            pass
+        text_width = draw.textlength(FEATURE_GRAPHIC_TEXT, font=font)
+        text_height = font_size
+    
+    # Centra il testo
+    x = (width - text_width) // 2
+    y = (height - text_height) // 2 - int(height * 0.08)  # Leggermente sopra il centro
+    
+    # Disegna il testo in giallo (come TXT nell'icona)
+    draw.text((x, y), FEATURE_GRAPHIC_TEXT, font=font, fill=TEXT_COLOR_YELLOW)
+    
+    # Applica effetto pixelato al testo (ridotto per non tagliare)
+    txt_layer = pixelate(txt_layer, 3)
+    
+    # Applica una leggera sfocatura
+    txt_layer = txt_layer.filter(ImageFilter.GaussianBlur(TEXT_BLUR_RADIUS + 0.3))
+    
+    # Aggiungi scanlines al testo
+    txt_layer = create_scanlines(txt_layer)
+    
+    # Crea l'effetto bagliore
+    glow = create_glow_effect(txt_layer, glow_color=(100, 100, 0), blur_radius=12)
+    
+    # Combina: sfondo + bagliore + testo
+    result = Image.alpha_composite(darkened, glow)
+    result = Image.alpha_composite(result, txt_layer)
+    
+    # Aggiungi un sottotitolo più piccolo
+    subtitle_font_size = int(height * 0.07)
+    try:
+        subtitle_font = ImageFont.truetype("/System/Library/Fonts/Supplemental/Arial.ttf", subtitle_font_size)
+    except:
+        subtitle_font = ImageFont.load_default()
+    
+    subtitle_layer = Image.new('RGBA', (width, height), (255, 255, 255, 0))
+    subtitle_draw = ImageDraw.Draw(subtitle_layer)
+    
+    subtitle_text = "70+ European Teletext Channels"
+    subtitle_width = subtitle_draw.textlength(subtitle_text, font=subtitle_font)
+    subtitle_x = (width - subtitle_width) // 2
+    subtitle_y = y + text_height + int(height * 0.12)
+    
+    subtitle_draw.text((subtitle_x, subtitle_y), subtitle_text, font=subtitle_font, fill=TEXT_COLOR)
+    
+    # Pixela il sottotitolo
+    subtitle_layer = pixelate(subtitle_layer, 2)
+    subtitle_layer = subtitle_layer.filter(ImageFilter.GaussianBlur(0.5))
+    
+    # Combina con il sottotitolo
+    result = Image.alpha_composite(result, subtitle_layer)
+    
+    # Converti in RGB per il salvataggio
+    result_rgb = Image.new('RGB', result.size, (0, 0, 0))
+    result_rgb.paste(result, mask=result.split()[3])
+    
+    # Salva l'immagine
+    output_path = "../app_icons/android/feature_graphic_1024x500.png"
+    result_rgb.save(output_path)
+    print(f"✅ Feature Graphic salvata: {output_path}")
 
 def generate_android_launch_images(base_image):
     """Genera le immagini di avvio per Android"""
@@ -495,6 +652,12 @@ def main():
         
         print("\nGenerazione icone per macOS...")
         generate_macos_icons(background)
+        
+        # Genera l'icona per Play Store (512x512)
+        generate_playstore_icon(background)
+        
+        # Genera la Feature Graphic per Play Store (1024x500)
+        generate_feature_graphic(background)
         
         # Genera le immagini di avvio
         print("\nGenerazione immagini di avvio...")
