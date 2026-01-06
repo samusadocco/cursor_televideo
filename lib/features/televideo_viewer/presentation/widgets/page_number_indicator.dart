@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:cursor_televideo/core/analytics/analytics_service.dart';
 import 'package:cursor_televideo/core/ads/ad_service.dart';
+import 'package:cursor_televideo/core/debug/debug_logger.dart';
 
 class PageNumberIndicator extends StatefulWidget {
   final int pageNumber;
@@ -156,6 +157,10 @@ class _PageNumberIndicatorState extends State<PageNumberIndicator> with SingleTi
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: widget.onTap,
+      onLongPress: () {
+        // Gesto segreto: long press sul numero pagina per esportare i log di debug
+        DebugLogger().showLogsDialog(context);
+      },
       child: AnimatedBuilder(
         animation: _animation,
         builder: (context, child) {

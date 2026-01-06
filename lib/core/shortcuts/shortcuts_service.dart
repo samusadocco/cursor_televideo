@@ -51,6 +51,20 @@ class ShortcutsService {
     const ShortcutPage(pageNumber: 790, title: 'Inhalt A-Z'),
   ];
 
+  // BR Text (Bayern - Bayerischer Rundfunk)
+  final List<ShortcutPage> _brShortcuts = [
+    const ShortcutPage(pageNumber: 100, title: 'Startseite'),
+    const ShortcutPage(pageNumber: 790, title: 'Übersicht'),
+    const ShortcutPage(pageNumber: 101, title: 'Nachrichten'),
+    const ShortcutPage(pageNumber: 155, title: 'Wirtschaft'),
+    const ShortcutPage(pageNumber: 360, title: 'Bayern'),
+    const ShortcutPage(pageNumber: 200, title: 'Sport'),
+    const ShortcutPage(pageNumber: 300, title: 'Fernsehen'),
+    const ShortcutPage(pageNumber: 470, title: 'BR-Intern'),
+    const ShortcutPage(pageNumber: 710, title: 'Börse'),
+    const ShortcutPage(pageNumber: 170, title: 'Wetter'),
+  ];
+
   // ZDF Text (Germania - Hauptprogramm)
   final List<ShortcutPage> _zdfShortcuts = [
     const ShortcutPage(pageNumber: 100, title: 'Übersicht'),
@@ -485,6 +499,11 @@ class ShortcutsService {
     // ARD Text
     if (channelId == 'ard_text') {
       return _ardShortcuts;
+    }
+    
+    // BR Text (Bayern - Bayerischer Rundfunk)
+    if (channelId == 'br_text') {
+      return _brShortcuts;
     }
     
     // ZDF Text (Germania - Hauptprogramm)

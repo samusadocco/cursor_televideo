@@ -3,6 +3,7 @@ import 'package:webview_flutter/webview_flutter.dart';
 import 'package:cursor_televideo/shared/models/televideo_page.dart';
 import 'package:http/http.dart' as http;
 import 'package:html/parser.dart' as html_parser;
+import 'package:cursor_televideo/core/debug/debug_logger.dart';
 
 /// Widget per visualizzare pagine ARD Teletext in formato HTML
 /// 
@@ -36,7 +37,28 @@ class _ARDHtmlTeletextViewerState extends State<ARDHtmlTeletextViewer> {
   @override
   void initState() {
     super.initState();
+    DebugLogger().log('ARD', 'initState - page: ${widget.page.pageNumber}_${widget.page.subPage}');
     _extractContent();
+  }
+
+  @override
+  void didUpdateWidget(ARDHtmlTeletextViewer oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // Ricarica il contenuto se la pagina o la sottopagina sono cambiate
+    if (oldWidget.page.pageNumber != widget.page.pageNumber ||
+        oldWidget.page.subPage != widget.page.subPage) {
+      print('[HtmlTeletextViewer] Page changed, reloading content');
+      // IMPORTANTE: Setta _isLoading = true PRIMA di chiamare _extractContent
+      // per bloccare il build() dal creare il WebView con il vecchio contenuto
+      setState(() {
+        _isLoading = true;
+      });
+      // Resetta le dimensioni per forzare il reload del WebView
+      _lastWidth = null;
+      _lastHeight = null;
+      // Ricarica il contenuto
+      _extractContent();
+    }
   }
 
   @override
@@ -47,6 +69,9 @@ class _ARDHtmlTeletextViewerState extends State<ARDHtmlTeletextViewer> {
   /// Estrae il contenuto del div ardtext_classic (solo una volta)
   Future<void> _extractContent() async {
     if (!mounted) return;
+    
+    print('[HtmlTeletextViewer] _extractContent called for page ${widget.page.pageNumber}_${widget.page.subPage}');
+    print('[HtmlTeletextViewer] Current _rawHtmlContent: ${_rawHtmlContent?.substring(0, 50) ?? "null"}');
     
     setState(() {
       _isLoading = true;
@@ -98,6 +123,14 @@ class _ARDHtmlTeletextViewerState extends State<ARDHtmlTeletextViewer> {
       
       print('[HtmlTeletextViewer] Converted image paths');
       
+      // Wrappa ogni immagine GIF in uno span con larghezza fissa per allineamento perfetto
+      htmlContent = htmlContent.replaceAllMapped(
+        RegExp(r'<img src="[^"]+\.gif"[^>]*>'),
+        (match) => '<span style="width:10px;display:inline-block;margin:0;padding:0;border:0;outline:0;vertical-align:top;">${match.group(0)}</span>'
+      );
+      
+      print('[HtmlTeletextViewer] Wrapped GIF images in fixed-width spans');
+      
       // Estrai i CSS inline dalla pagina originale (solo i tag <style>)
       final styleTags = document.querySelectorAll('style');
       final cssBuffer = StringBuffer();
@@ -114,7 +147,7 @@ class _ARDHtmlTeletextViewerState extends State<ARDHtmlTeletextViewer> {
       // Scarica SOLO il CSS principale per i colori (stylesheet_master_fira.css)
       final mainCssUrl = 'https://www.ard-text.de/classic_stylesheets/stylesheet_master_fira.css?t=1';
       try {
-        print('[HtmlTeletextViewer] Downloading main CSS: $mainCssUrl');
+        print('[HtmlTeletextViewer] Downloading main CSS: $mainCssUrl'  );
         final cssResponse = await http.get(Uri.parse(mainCssUrl));
         if (cssResponse.statusCode == 200) {
           // Rimuovi tutti i riferimenti a font-family dal CSS
@@ -168,7 +201,6 @@ class _ARDHtmlTeletextViewerState extends State<ARDHtmlTeletextViewer> {
     /* Override per forzare sfondo nero, font monospace e allineamento perfetto */
     * {
       box-sizing: border-box;
-      font-family: 'Courier New', 'Courier', monospace !important;
     }
     html, body {
       background: #000 !important;
@@ -178,17 +210,19 @@ class _ARDHtmlTeletextViewerState extends State<ARDHtmlTeletextViewer> {
       height: 100%;
       overflow: hidden;
       line-height: 1 !important;
-      font-family: 'Courier New', 'Courier', monospace !important;
     }
     #content {
       padding: 0;
       background: #000 !important;
       line-height: 1 !important;
-      font-family: 'Courier New', 'Courier', monospace !important;
       transform: scale($scaleX, $scaleY);
       transform-origin: top left;
       width: ${100 / scaleX}%;
       height: ${100 / scaleY}%;
+    }
+    /* Forza Courier New SOLO sul testo (fallback per font CORS bloccati) */
+    #content, #content span, #content nobr, #content a {
+      font-family: 'Courier New', 'Courier', monospace !important;
     }
     /* Forza tutte le immagini alla stessa dimensione e rimuovi spacing */
     img {
@@ -198,6 +232,16 @@ class _ARDHtmlTeletextViewerState extends State<ARDHtmlTeletextViewer> {
       padding: 0 !important;
       border: 0 !important;
       line-height: 1 !important;
+    }
+    /* Fix per eliminare righe verticali negli elementi inline-block con width 10px */
+    span[style*="width:10px"][style*="display:inline-block"] {
+      font-size: 0;
+      line-height: 0;
+    }
+    span[style*="width:10px"][style*="display:inline-block"] img {
+      display: block;
+      width: 10px;
+      height: auto;
     }
     /* Rimuovi spacing da nobr e span */
     nobr {
@@ -342,10 +386,19 @@ class _ARDHtmlTeletextViewerState extends State<ARDHtmlTeletextViewer> {
         ..loadHtmlString(htmlContent, baseUrl: widget.page.imageUrl);
       
       print('[HtmlTeletextViewer] WebView initialized');
+      print('[HtmlTeletextViewer] → Loaded page: ${widget.page.pageNumber}_${widget.page.subPage}');
+      print('[HtmlTeletextViewer] → baseUrl: ${widget.page.imageUrl}');
+      print('[HtmlTeletextViewer] → HTML length: ${htmlContent.length}');
+      print('[HtmlTeletextViewer] → _rawHtmlContent length: ${_rawHtmlContent?.length ?? 0}');
     } else {
       // Controller già esistente, ricarica con nuovo HTML
-      _controller!.loadHtmlString(htmlContent, baseUrl: widget.page.imageUrl);
       print('[HtmlTeletextViewer] WebView updated with new scaling');
+      print('[HtmlTeletextViewer] → Page should be: ${widget.page.pageNumber}_${widget.page.subPage}');
+      print('[HtmlTeletextViewer] → baseUrl: ${widget.page.imageUrl}');
+      print('[HtmlTeletextViewer] → HTML length: ${htmlContent.length}');
+      print('[HtmlTeletextViewer] → _rawHtmlContent length: ${_rawHtmlContent?.length ?? 0}');
+      print('[HtmlTeletextViewer] → _rawHtmlContent preview: ${_rawHtmlContent?.substring(0, 100) ?? "NULL"}');
+      _controller!.loadHtmlString(htmlContent, baseUrl: widget.page.imageUrl);
     }
     
     // Salva le dimensioni correnti
@@ -418,14 +471,25 @@ class _ARDHtmlTeletextViewerState extends State<ARDHtmlTeletextViewer> {
         final width = constraints.maxWidth;
         final height = constraints.maxHeight;
         
-        // Inizializza o aggiorna il WebView se le dimensioni sono cambiate
-        if (_controller == null || _lastWidth != width || _lastHeight != height) {
+        // Inizializza o aggiorna il WebView se le dimensioni sono cambiate SIGNIFICATIVAMENTE
+        // Ignora piccoli cambi (< 20px) causati dall'UI che si assesta (es. ad banner)
+        final bool needsUpdate = _controller == null ||
+            _lastWidth == null || 
+            _lastHeight == null ||
+            (width - (_lastWidth ?? 0)).abs() > 20 ||
+            (height - (_lastHeight ?? 0)).abs() > 20;
+            
+        if (needsUpdate) {
+          print('[HtmlTeletextViewer] Dimensions changed significantly, updating WebView');
+          print('[HtmlTeletextViewer] Old: ${_lastWidth}x$_lastHeight, New: ${width}x$height');
           // Usa addPostFrameCallback per evitare di chiamare setState durante il build
           WidgetsBinding.instance.addPostFrameCallback((_) {
             if (mounted) {
               _initializeOrUpdateWebView(width, height);
             }
           });
+        } else {
+          print('[HtmlTeletextViewer] Ignoring small dimension change: ${_lastWidth}x$_lastHeight -> ${width}x$height');
         }
         
         if (_controller == null) {

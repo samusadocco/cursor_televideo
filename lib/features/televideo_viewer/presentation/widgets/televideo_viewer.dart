@@ -20,6 +20,7 @@ import 'package:cursor_televideo/features/televideo_viewer/presentation/widgets/
 import 'package:cursor_televideo/core/l10n/app_localizations.dart';
 import 'package:cursor_televideo/features/televideo_viewer/presentation/widgets/rtl_html_teletext_viewer.dart';
 import 'package:cursor_televideo/features/televideo_viewer/presentation/widgets/ard_html_teletext_viewer.dart';
+import 'package:cursor_televideo/features/televideo_viewer/presentation/widgets/br_html_teletext_viewer.dart';
 import 'package:cursor_televideo/features/televideo_viewer/presentation/widgets/zdf_html_teletext_viewer.dart';
 import 'package:cursor_televideo/features/televideo_viewer/presentation/widgets/nos_html_teletext_viewer.dart';
 import 'package:cursor_televideo/features/televideo_viewer/presentation/widgets/iceland_html_teletext_viewer.dart';
@@ -329,8 +330,9 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
     
     final isNOS = page.providerId == 'nos_teletekst';
     final isIceland = page.providerId == 'ruv_textavarp';
+    final isBR = page.providerId == 'br_text';
     
-    print('[TelevideoViewer] Viewer selection - isRTL: $isRTL, isIceland: $isIceland, isZDF: $isZDF, isNOS: $isNOS');
+    print('[TelevideoViewer] Viewer selection - isRTL: $isRTL, isIceland: $isIceland, isZDF: $isZDF, isNOS: $isNOS, isBR: $isBR');
     
     if (isRTL) {
       print('[TelevideoViewer] Using RTLHtmlTeletextViewer');
@@ -375,10 +377,23 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
         },
         onTap: () => _handlePageTap(page),
       );
+    } else if (isBR) {
+      print('[TelevideoViewer] Using BRHtmlTeletextViewer');
+      return BRHtmlTeletextViewer(
+        key: ValueKey('br_${page.imageUrl}_$currentSubPage'),
+        page: page,
+        onPageNavigation: (pageNumber) {
+          // Naviga alla pagina tramite il Bloc
+          if (widget.onPageNumberSubmitted != null) {
+            widget.onPageNumberSubmitted!(pageNumber);
+          }
+        },
+        onTap: () => _handlePageTap(page),
+      );
     } else {
       // ARD o altri provider HTML
       return ARDHtmlTeletextViewer(
-        key: ValueKey('ard_${page.pageNumber}_$currentSubPage'),
+        key: ValueKey('ard_${page.imageUrl}_$currentSubPage'),
         page: page,
         onPageNavigation: (pageNumber) {
           // Naviga alla pagina tramite il Bloc

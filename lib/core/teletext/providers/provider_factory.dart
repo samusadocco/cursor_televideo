@@ -2,6 +2,7 @@ import 'package:cursor_televideo/core/teletext/providers/teletext_provider.dart'
 import 'package:cursor_televideo/core/teletext/providers/rai_provider.dart';
 import 'package:cursor_televideo/core/teletext/providers/rtl_provider.dart';
 import 'package:cursor_televideo/core/teletext/providers/ard_provider.dart';
+import 'package:cursor_televideo/core/teletext/providers/br_provider.dart';
 import 'package:cursor_televideo/core/teletext/providers/zdf_provider.dart';
 import 'package:cursor_televideo/core/teletext/providers/swiss_provider.dart';
 import 'package:cursor_televideo/core/teletext/providers/orf_provider.dart';
@@ -46,6 +47,9 @@ class TeletextProviderFactory {
     } else if (channel.id == 'ard_text') {
       // ARD Text (Germania)
       provider = ARDProvider();
+    } else if (channel.id == 'br_text') {
+      // BR Text (Bayerischer Rundfunk - Germania/Baviera)
+      provider = BRProvider();
     } else if (channel.id == 'zdf_text' || 
                channel.id == 'zdfinfo_text' || 
                channel.id == 'zdfneo_text' || 

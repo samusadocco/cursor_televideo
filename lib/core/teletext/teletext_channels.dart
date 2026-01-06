@@ -459,6 +459,21 @@ class TeletextChannels {
       supportsRegions: false,
     ),
     
+    // 🇩🇪 GERMANIA - BR (Bayerischer Rundfunk)
+    TeletextChannel(
+      id: 'br_text',
+      name: 'BR Text',
+      shortName: 'BR',
+      countryCode: 'DE',
+      countryName: 'Germania',
+      flagEmoji: '🇩🇪',
+      broadcasterName: 'Bayerischer Rundfunk',
+      type: TeletextChannelType.regional,
+      baseUrl: 'https://www.br.de/fernsehen/ardtext',
+      htmlBaseUrl: 'https://www.br.de/fernsehen/ardtext/ardtext-100.html',
+      supportsRegions: false,
+    ),
+    
     // ⚠️ TEMPORANEAMENTE DISABILITATO - In fase di perfezionamento visualizzazione
     // // 🇩🇪 GERMANIA - RTL
     // TeletextChannel(

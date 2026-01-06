@@ -81,37 +81,52 @@ class _NOSHtmlTeletextViewerState extends State<NOSHtmlTeletextViewer> {
     }
   }
 
-  /// Inizializza o aggiorna il WebView con scaling dinamico
+  /// Inizializza o aggiorna il WebView con scaling device-specific
+  /// Con viewport fisso a 800px, NOS userà sempre le dimensioni CSS desktop (breakpoint > 760px)
   void _initializeOrUpdateWebView(double width, double height) {
-    // NOS Teletekst - dimensioni native adattive in base al dispositivo
-    // Calcoliamo le dimensioni native in base all'aspect ratio disponibile
     final aspectRatio = width / height;
+    final isLandscape = aspectRatio > 1.0;
+    String deviceType;
     
-    if (aspectRatio > 1.5) {
-      // iPad orizzontale o dispositivo molto largo
-      // Usa dimensioni native più grandi per evitare ingrandimento eccessivo
-      _nativeWidth = 480.0;
-      _nativeHeight = 600.0;
-      print('[NOSHtmlTeletextViewer] Mode: iPad landscape (wide)');
-    } else if (aspectRatio > 0.7) {
-      // iPad verticale o tablet
-      _nativeWidth = 480.0;
-      _nativeHeight = 600.0;
-      print('[NOSHtmlTeletextViewer] Mode: iPad portrait (medium)');
+    // Con viewport=800, NOS usa il breakpoint desktop (font più grandi ~27%)
+    // Dimensioni native calibrate per riempire ogni dispositivo
+    
+    if (width < 500 || height < 500) {
+      // iPhone
+      if (isLandscape) {
+        // iPhone landscape (es. 844x390, 926x428)
+        deviceType = 'iPhone landscape';
+        _nativeWidth = 580.0;
+        _nativeHeight = 720.0;
+      } else {
+        // iPhone portrait (es. 390x844, 428x926)
+        deviceType = 'iPhone portrait';
+        _nativeWidth = 480.0;
+        _nativeHeight = 600.0;
+      }
     } else {
-      // iPhone o dispositivo stretto
-      _nativeWidth = 360.0;
-      _nativeHeight = 460.0;
-      print('[NOSHtmlTeletextViewer] Mode: iPhone (narrow)');
+      // iPad
+      if (isLandscape) {
+        // iPad landscape (es. 1366x1024, 1032x768)
+        deviceType = 'iPad landscape';
+        _nativeWidth =560.0;
+        _nativeHeight = 720.0;
+      } else {
+        // iPad portrait (es. 1024x1366, 768x1024)
+        deviceType = 'iPad portrait';
+        _nativeWidth = 480.0;
+        _nativeHeight = 600.0;
+      }
     }
     
-    // Calcola scale factors
+    // Calcola scale factors per riempire lo schermo
     final scaleX = width / _nativeWidth;
     final scaleY = height / _nativeHeight;
     
-    print('[NOSHtmlTeletextViewer] Widget size: ${width}x$height (aspect: ${aspectRatio.toStringAsFixed(2)})');
-    print('[NOSHtmlTeletextViewer] Native content: ${_nativeWidth}x$_nativeHeight');
-    print('[NOSHtmlTeletextViewer] Calculated scales - X: $scaleX, Y: $scaleY');
+    print('[NOSHtmlTeletextViewer] Device: $deviceType | Viewport: 800px fixed (desktop CSS)');
+    print('[NOSHtmlTeletextViewer] Widget size: ${width.toStringAsFixed(0)}x${height.toStringAsFixed(0)} (ratio: ${aspectRatio.toStringAsFixed(2)})');
+    print('[NOSHtmlTeletextViewer] Native content: ${_nativeWidth.toStringAsFixed(0)}x${_nativeHeight.toStringAsFixed(0)}');
+    print('[NOSHtmlTeletextViewer] Scale factors: ${scaleX.toStringAsFixed(3)} x ${scaleY.toStringAsFixed(3)}');
     
     // Salva le dimensioni correnti
     _lastWidth = width;
@@ -212,13 +227,15 @@ class _NOSHtmlTeletextViewerState extends State<NOSHtmlTeletextViewer> {
       },
     );
     
-    // Inserisci CSS per lo scaling prima di </head>
-    // Approccio semplice come ZDF
+    // Inserisci meta viewport FISSATO e CSS per lo scaling prima di </head>
+    // Viewport a 800px attiva il breakpoint desktop di NOS (@media min-width: 47.5rem = 760px)
+    // Questo usa i font più grandi e spaziature desktop
     final htmlWithScaling = html.replaceFirst(
       '</head>',
       '''
+  <meta name="viewport" content="width=800, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <style id="nos-teletext-override">
-    /* Styling base per lo scaling (come ZDF) */
+    /* Styling base per lo scaling */
     body {
       margin: 0 !important;
       padding: 0 !important;
@@ -279,9 +296,9 @@ class _NOSHtmlTeletextViewerState extends State<NOSHtmlTeletextViewer> {
     return htmlWithScripts;
   }
   
-  /// Converte un percorso relativo in assoluto per ZDF
+  /// Converte un percorso relativo in assoluto per NOS
   String _makeAbsoluteUrl(String relativePath) {
-    const baseUrl = 'https://teletext.zdf.de';
+    const baseUrl = 'https://nos.nl';
     
     // Se inizia con /, è già assoluto relativo al dominio
     if (relativePath.startsWith('/')) {
@@ -289,8 +306,7 @@ class _NOSHtmlTeletextViewerState extends State<NOSHtmlTeletextViewer> {
     }
     
     // Altrimenti è relativo alla cartella corrente
-    // Assumi che siamo in /teletext/zdf/seiten/klassisch/
-    return '$baseUrl/teletext/zdf/seiten/klassisch/$relativePath';
+    return '$baseUrl/$relativePath';
   }
 
   @override
