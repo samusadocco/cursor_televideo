@@ -536,6 +536,90 @@ class PageDescriptionsService {
     899: 'Letzte Seite',
   };
 
+  // Descrizioni WDR Text (NRW - Westdeutscher Rundfunk)
+  final Map<int, String> wdrDescriptions = {
+    100: 'Startseite',
+    101: 'Nachrichten / Aktuelles',
+    108: 'Nachrichten Tagesschau',
+    111: 'Nachrichten Schlagzeilen',
+    112: 'Nachrichten Inland',
+    113: 'Nachrichten Regional',
+    114: 'Nachrichten Politik',
+    115: 'Nachrichten Wirtschaft',
+    180: 'Wetter in NRW',
+    181: 'Wetter Deutschland',
+    182: 'Wetter Europa',
+    184: 'Luftdruck',
+    187: 'Pollenflug',
+    190: 'Verkehr / Pegelstände / Rheinpegel',
+    196: 'Schneehöhen',
+    197: 'Luftqualität / Feinstaub / Ozon/Smog',
+    200: 'Sport',
+    201: 'Sport Fußball',
+    210: 'Sport Bundesliga',
+    220: 'Sport 2. Bundesliga',
+    235: 'Sport Ergebnisse / Fußball',
+    250: 'Sport Regional',
+    300: 'WDR Fernsehen',
+    301: 'WDR Fernsehen Heute',
+    310: 'WDR Fernsehen Diese Woche',
+    319: 'WDR Fernsehen Jetzt',
+    333: 'Jetzt im TV',
+    350: 'WDR Fernsehen Tipps',
+    352: 'WDR Fernsehen Zusatzinfos',
+    353: 'Audiodeskripte',
+    362: 'Aktuelle Stunde',
+    369: 'Hotline',
+    370: 'Lokalzeit Samstag',
+    386: 'Kochen mit Martina u. Moritz',
+    389: 'Markt',
+    393: 'Quarks & Co.',
+    395: 'Hier und heute',
+    398: 'Einschaltquoten / Quoten',
+    400: 'WDR Hörfunk',
+    406: 'COSMO',
+    408: 'Hörer-Telefon',
+    410: 'WDR 2',
+    420: 'WDR 3',
+    430: 'WDR 4',
+    440: 'WDR 5',
+    450: '1LIVE',
+    451: 'Neues vom WDR',
+    460: 'COSMO',
+    472: 'Karten',
+    474: 'Führungen',
+    479: 'Mitschnitt',
+    480: 'Analog-digital / DVB / Kanäle / Frequenzen / Sender/Kanäle / Empfang',
+    500: 'Service-Seiten',
+    510: 'Rezepte',
+    530: 'Gartenzeit',
+    550: 'Gewinnzahlen / Lottozahlen',
+    554: 'Keno',
+    555: 'Flughäfen',
+    570: 'Gehörlose / Lesen + Hören',
+    600: 'Kultur',
+    603: 'Basketball',
+    607: 'Handball',
+    620: 'Fußball-Ticker',
+    690: 'Verkehr',
+    700: 'Landesstudios / Lokalzeit',
+    710: 'Studio Köln',
+    720: 'Studio Düsseldorf',
+    730: 'Studio Dortmund',
+    740: 'Studio Essen',
+    750: 'Studio Duisburg',
+    760: 'Studio Münster',
+    770: 'Studio Bielefeld',
+    780: 'Studio Siegen',
+    790: 'Studio Aachen',
+    800: 'Aktuelle Dossiers',
+    891: 'Inhalt A-Z (Seite 1)',
+    892: 'Inhalt A-Z (Seite 2)',
+    893: 'Inhalt A-Z (Seite 3)',
+    897: 'Eishockey / Impressum',
+    898: 'Infoblatt',
+  };
+
   // Descrizioni ZDF Text (Germania - ZDF Hauptprogramm)
   final Map<int, String> zdfDescriptions = {
     100: 'Übersicht (Indice)',
@@ -2281,6 +2365,11 @@ class PageDescriptionsService {
     // BR Text (Bayern - Bayerischer Rundfunk)
     if (channelId == 'br_text') {
       return brDescriptions;
+    }
+    
+    // WDR Text (NRW - Westdeutscher Rundfunk)
+    if (channelId == 'wdr_text') {
+      return wdrDescriptions;
     }
     
     // ZDF Text (Germania - Hauptprogramm)

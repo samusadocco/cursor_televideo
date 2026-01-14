@@ -473,6 +473,51 @@ class TeletextChannels {
       htmlBaseUrl: 'https://www.br.de/fernsehen/ardtext/ardtext-100.html',
       supportsRegions: false,
     ),
+
+    // 🇩🇪 GERMANIA - WDR (Westdeutscher Rundfunk)
+    TeletextChannel(
+      id: 'wdr_text',
+      name: 'WDR Text',
+      shortName: 'WDR',
+      countryCode: 'DE',
+      countryName: 'Germania',
+      flagEmoji: '🇩🇪',
+      broadcasterName: 'Westdeutscher Rundfunk',
+      type: TeletextChannelType.regional,
+      baseUrl: 'https://www1.wdr.de/wdrtext',
+      htmlBaseUrl: 'https://www1.wdr.de/wdrtext/index.html',
+      supportsRegions: false,
+    ),
+    
+    // 🇩🇪 GERMANIA - SWR BW (Baden-Württemberg)
+    TeletextChannel(
+      id: 'swr_bw',
+      name: 'SWR BW Text',
+      shortName: 'SWR BW',
+      countryCode: 'DE',
+      countryName: 'Germania',
+      flagEmoji: '🇩🇪',
+      broadcasterName: 'Südwestrundfunk (Baden-Württemberg)',
+      type: TeletextChannelType.regional,
+      baseUrl: 'https://wraps.swr.de/videotext/',
+      htmlBaseUrl: 'https://wraps.swr.de/videotext/?page=100&stream=bw',
+      supportsRegions: false,
+    ),
+    
+    // 🇩🇪 GERMANIA - SWR RP (Rheinland-Pfalz)
+    TeletextChannel(
+      id: 'swr_rp',
+      name: 'SWR RP Text',
+      shortName: 'SWR RP',
+      countryCode: 'DE',
+      countryName: 'Germania',
+      flagEmoji: '🇩🇪',
+      broadcasterName: 'Südwestrundfunk (Rheinland-Pfalz)',
+      type: TeletextChannelType.regional,
+      baseUrl: 'https://wraps.swr.de/videotext/',
+      htmlBaseUrl: 'https://wraps.swr.de/videotext/?page=100&stream=rp',
+      supportsRegions: false,
+    ),
     
     // ⚠️ TEMPORANEAMENTE DISABILITATO - In fase di perfezionamento visualizzazione
     // // 🇩🇪 GERMANIA - RTL

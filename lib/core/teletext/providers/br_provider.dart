@@ -149,17 +149,17 @@ class BRProvider implements TeletextProvider {
     final images = element.querySelectorAll('img[src]');
     for (final img in images) {
       final src = img.attributes['src'];
-      if (src != null && !src.startsWith('http')) {
-        final absoluteUrl = src.startsWith('/')
-            ? '$_baseUrl$src'
-            : '$_baseUrl/$src';
-        img.attributes['src'] = absoluteUrl;
-        print('[BRProvider] Converted image: $src -> $absoluteUrl');
-      }
-    }
+                                                                                                                                                                                                                                                                                                    if (src != null && !src.startsWith('http')) {
+                                                                                                                                                                                                                                                                                                      final absoluteUrl = src.startsWith('/')
+                                                                                                                                                                                                                                                                                                          ? '$_baseUrl$src'
+                                                                                                                                                                                                                                                                                                          : '$_baseUrl/$src';
+                                                                                                                                                                                                                                                                                                      img.attributes['src'] = absoluteUrl;
+                                                                                                                                                                                                                                                                                                      print('[BRProvider] Converted image: $src -> $absoluteUrl');
+                                                                                                                                                                                                                                                                                                    }
+                                                                                                                                                                                                                                                                                                  }
 
-    // Converti link CSS
-    final links = element.querySelectorAll('link[href]');
+                                                                                                                                                                                                                                                                                                  // Converti link CSS
+                                                                                                                                                                                                                                                                                                  final links = element.querySelectorAll('link[href]');
     for (final link in links) {
       final href = link.attributes['href'];
       if (href != null && !href.startsWith('http') && href.endsWith('.css')) {

@@ -81,26 +81,15 @@ class _BRHtmlTeletextViewerState extends State<BRHtmlTeletextViewer> {
 
   /// Estrae il contenuto del div bayerntext_container (solo una volta)
   Future<void> _extractContent() async {
-    final logger = DebugLogger();
-    logger.log('BR', '_extractContent START - page: ${widget.page.pageNumber}_${widget.page.subPage}');
-    logger.log('BR', '_extractContent - URL: ${widget.page.imageUrl}');
-    logger.log('BR', '_extractContent - mounted: $mounted');
-    
-    if (!mounted) {
-      logger.log('BR', '_extractContent ABORTED - not mounted');
-      return;
-    }
+    if (!mounted) return;
     
     setState(() {
       _isLoading = true;
       _errorMessage = null;
     });
     
-    logger.log('BR', '_extractContent - setState completed, _isLoading = true');
-    
     try {
       print('[BRHtmlTeletextViewer] Fetching page: ${widget.page.imageUrl}');
-      logger.log('BR', '_extractContent - Starting HTTP GET');
       
       final response = await http.get(Uri.parse(widget.page.imageUrl));
       print('[BRHtmlTeletextViewer] Response status: ${response.statusCode}');
@@ -135,18 +124,13 @@ class _BRHtmlTeletextViewerState extends State<BRHtmlTeletextViewer> {
       
       await _processContent(brDiv, htmlString);
       
-      logger.log('BR', '_extractContent COMPLETED - _rawHtmlContent: ${_rawHtmlContent?.length ?? 0} chars, _rawCss: ${_rawCss?.length ?? 0} chars');
-      logger.log('BR', '_extractContent - _isLoading: $_isLoading');
-      
     } catch (e) {
       print('[BRHtmlTeletextViewer] Error extracting content: $e');
-      logger.log('BR', '_extractContent ERROR: $e');
       if (mounted) {
         setState(() {
           _errorMessage = 'Errore nel caricamento della pagina: $e';
           _isLoading = false;
         });
-        logger.log('BR', '_extractContent - Error setState completed');
       }
     }
   }
@@ -281,7 +265,7 @@ class _BRHtmlTeletextViewerState extends State<BRHtmlTeletextViewer> {
       background: #000 !important;
       margin: 0;
       padding: 0;
-      width: 100%;
+      width: 1024px;
       height: 100%;
       overflow: hidden;
       line-height: 1 !important;
@@ -360,12 +344,6 @@ class _BRHtmlTeletextViewerState extends State<BRHtmlTeletextViewer> {
 
   /// Inizializza o aggiorna il WebViewController con l'HTML scalato
   void _initializeOrUpdateWebView(double width, double height) {
-    final logger = DebugLogger();
-    logger.log('BR', '_initializeOrUpdateWebView START - size: ${width}x$height');
-    logger.log('BR', '_initializeOrUpdateWebView - _controller: ${_controller != null ? "EXISTS" : "NULL"}');
-    logger.log('BR', '_initializeOrUpdateWebView - _rawHtmlContent: ${_rawHtmlContent?.length ?? 0} chars');
-    logger.log('BR', '_initializeOrUpdateWebView - page URL: ${widget.page.imageUrl}');
-    
     // Dimensioni native del contenuto BR Teletext
     // BR usa un layout più compatto, ridotte rispetto ad ARD per maggiore scaling
     const nativeWidth = 450.0;  // Ridotto per aumentare lo scaling
@@ -378,11 +356,9 @@ class _BRHtmlTeletextViewerState extends State<BRHtmlTeletextViewer> {
     print('[BRHtmlTeletextViewer] Widget size: ${width}x$height (real available space)');
     print('[BRHtmlTeletextViewer] Native content: ${nativeWidth}x$nativeHeight');
     print('[BRHtmlTeletextViewer] Calculated scales - X: $scaleX, Y: $scaleY');
-    logger.log('BR', '_initializeOrUpdateWebView - scales: X=$scaleX, Y=$scaleY');
     
     // Genera HTML con gli scale factors corretti
     final htmlContent = _buildHtmlWithScaling(scaleX, scaleY);
-    logger.log('BR', '_initializeOrUpdateWebView - htmlContent generated: ${htmlContent.length} chars');
     
     if (_controller == null) {
       // Prima inizializzazione
@@ -470,28 +446,15 @@ class _BRHtmlTeletextViewerState extends State<BRHtmlTeletextViewer> {
         ..loadHtmlString(htmlContent, baseUrl: widget.page.imageUrl);
       
       print('[BRHtmlTeletextViewer] WebView initialized');
-      print('[BRHtmlTeletextViewer] → Loaded page: ${widget.page.pageNumber}_${widget.page.subPage}');
-      print('[BRHtmlTeletextViewer] → baseUrl: ${widget.page.imageUrl}');
-      print('[BRHtmlTeletextViewer] → HTML length: ${htmlContent.length}');
-      print('[BRHtmlTeletextViewer] → _rawHtmlContent length: ${_rawHtmlContent?.length ?? 0}');
-      logger.log('BR', '_initializeOrUpdateWebView - NEW controller created and loaded');
     } else {
       // Controller già esistente, ricarica con nuovo HTML
-      print('[BRHtmlTeletextViewer] WebView updated with new scaling');
-      print('[BRHtmlTeletextViewer] → Page should be: ${widget.page.pageNumber}_${widget.page.subPage}');
-      print('[BRHtmlTeletextViewer] → baseUrl: ${widget.page.imageUrl}');
-      print('[BRHtmlTeletextViewer] → HTML length: ${htmlContent.length}');
-      print('[BRHtmlTeletextViewer] → _rawHtmlContent length: ${_rawHtmlContent?.length ?? 0}');
-      print('[BRHtmlTeletextViewer] → _rawHtmlContent preview: ${_rawHtmlContent?.substring(0, 100) ?? "NULL"}');
-      logger.log('BR', '_initializeOrUpdateWebView - REUSING existing controller, reloading HTML');
       _controller!.loadHtmlString(htmlContent, baseUrl: widget.page.imageUrl);
-      logger.log('BR', '_initializeOrUpdateWebView - HTML reloaded in existing controller');
+      print('[BRHtmlTeletextViewer] WebView updated with new scaling');
     }
     
     // Salva le dimensioni correnti
     _lastWidth = width;
     _lastHeight = height;
-    logger.log('BR', '_initializeOrUpdateWebView COMPLETED');
   }
 
   /// Gestisce la navigazione da un link cliccato
@@ -511,11 +474,7 @@ class _BRHtmlTeletextViewerState extends State<BRHtmlTeletextViewer> {
 
   @override
   Widget build(BuildContext context) {
-    final logger = DebugLogger();
-    logger.log('BR', 'build() START - _isLoading: $_isLoading, _rawHtmlContent: ${_rawHtmlContent != null ? "${_rawHtmlContent!.length} chars" : "NULL"}, _controller: ${_controller != null ? "EXISTS" : "NULL"}');
-    
     if (_errorMessage != null) {
-      logger.log('BR', 'build() RETURN - ERROR MESSAGE');
       return Container(
         color: Colors.black,
         child: Center(
@@ -549,7 +508,6 @@ class _BRHtmlTeletextViewerState extends State<BRHtmlTeletextViewer> {
     }
 
     if (_isLoading || _rawHtmlContent == null || _rawCss == null) {
-      logger.log('BR', 'build() RETURN - SPINNER (loading or content not ready)');
       return Container(
         color: Colors.black,
         child: const Center(
@@ -558,39 +516,23 @@ class _BRHtmlTeletextViewerState extends State<BRHtmlTeletextViewer> {
       );
     }
 
-    logger.log('BR', 'build() - Content ready, entering LayoutBuilder');
     // Usa LayoutBuilder per ottenere le dimensioni reali disponibili
     return LayoutBuilder(
       builder: (context, constraints) {
         final width = constraints.maxWidth;
         final height = constraints.maxHeight;
-        logger.log('BR', 'build.LayoutBuilder - constraints: ${width}x$height');
         
-        // Inizializza o aggiorna il WebView se le dimensioni sono cambiate SIGNIFICATIVAMENTE
-        // Ignora piccoli cambi (< 20px) causati dall'UI che si assesta (es. ad banner)
-        final bool needsUpdate = _controller == null ||
-            _lastWidth == null || 
-            _lastHeight == null ||
-            (width - (_lastWidth ?? 0)).abs() > 20 ||
-            (height - (_lastHeight ?? 0)).abs() > 20;
-            
-        if (needsUpdate) {
-          print('[BRHtmlTeletextViewer] Dimensions changed significantly, updating WebView');
-          print('[BRHtmlTeletextViewer] Old: ${_lastWidth}x$_lastHeight, New: ${width}x$height');
-          logger.log('BR', 'build.LayoutBuilder - Need WebView init/update (_controller: ${_controller != null ? "EXISTS" : "NULL"}, _lastWidth: $_lastWidth, _lastHeight: $_lastHeight)');
+        // Inizializza o aggiorna il WebView se le dimensioni sono cambiate
+        if (_controller == null || _lastWidth != width || _lastHeight != height) {
           // Usa addPostFrameCallback per evitare di chiamare setState durante il build
           WidgetsBinding.instance.addPostFrameCallback((_) {
             if (mounted) {
-              logger.log('BR', 'build.PostFrameCallback - Calling _initializeOrUpdateWebView');
               _initializeOrUpdateWebView(width, height);
             }
           });
-        } else {
-          print('[BRHtmlTeletextViewer] Ignoring small dimension change: ${_lastWidth}x$_lastHeight -> ${width}x$height');
         }
         
         if (_controller == null) {
-          logger.log('BR', 'build.LayoutBuilder RETURN - SPINNER (controller null, waiting for PostFrameCallback)');
           return Container(
             color: Colors.black,
             child: const Center(
@@ -599,7 +541,6 @@ class _BRHtmlTeletextViewerState extends State<BRHtmlTeletextViewer> {
           );
         }
         
-        logger.log('BR', 'build.LayoutBuilder RETURN - WebViewWidget with controller');
         return Container(
           color: Colors.black,
           child: WebViewWidget(controller: _controller!),

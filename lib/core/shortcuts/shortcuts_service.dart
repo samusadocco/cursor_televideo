@@ -65,6 +65,20 @@ class ShortcutsService {
     const ShortcutPage(pageNumber: 170, title: 'Wetter'),
   ];
 
+  // WDR Text (NRW - Westdeutscher Rundfunk)
+  final List<ShortcutPage> _wdrShortcuts = [
+    const ShortcutPage(pageNumber: 100, title: 'Startseite'),
+    const ShortcutPage(pageNumber: 101, title: 'Nachrichten'),
+    const ShortcutPage(pageNumber: 180, title: 'Wetter in NRW'),
+    const ShortcutPage(pageNumber: 200, title: 'Sport'),
+    const ShortcutPage(pageNumber: 300, title: 'WDR Fernsehen'),
+    const ShortcutPage(pageNumber: 400, title: 'WDR Hörfunk'),
+    const ShortcutPage(pageNumber: 500, title: 'Service-Seiten'),
+    const ShortcutPage(pageNumber: 700, title: 'Landesstudios'),
+    const ShortcutPage(pageNumber: 800, title: 'Aktuelle Dossiers'),
+    const ShortcutPage(pageNumber: 891, title: 'A-Z'),
+  ];
+
   // ZDF Text (Germania - Hauptprogramm)
   final List<ShortcutPage> _zdfShortcuts = [
     const ShortcutPage(pageNumber: 100, title: 'Übersicht'),
@@ -504,6 +518,11 @@ class ShortcutsService {
     // BR Text (Bayern - Bayerischer Rundfunk)
     if (channelId == 'br_text') {
       return _brShortcuts;
+    }
+    
+    // WDR Text (NRW - Westdeutscher Rundfunk)
+    if (channelId == 'wdr_text') {
+      return _wdrShortcuts;
     }
     
     // ZDF Text (Germania - Hauptprogramm)

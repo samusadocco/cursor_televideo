@@ -3,6 +3,8 @@ import 'package:cursor_televideo/core/teletext/providers/rai_provider.dart';
 import 'package:cursor_televideo/core/teletext/providers/rtl_provider.dart';
 import 'package:cursor_televideo/core/teletext/providers/ard_provider.dart';
 import 'package:cursor_televideo/core/teletext/providers/br_provider.dart';
+import 'package:cursor_televideo/core/teletext/providers/wdr_provider.dart';
+import 'package:cursor_televideo/core/teletext/providers/swr_provider.dart';
 import 'package:cursor_televideo/core/teletext/providers/zdf_provider.dart';
 import 'package:cursor_televideo/core/teletext/providers/swiss_provider.dart';
 import 'package:cursor_televideo/core/teletext/providers/orf_provider.dart';
@@ -50,6 +52,15 @@ class TeletextProviderFactory {
     } else if (channel.id == 'br_text') {
       // BR Text (Bayerischer Rundfunk - Germania/Baviera)
       provider = BRProvider();
+    } else if (channel.id == 'wdr_text') {
+      // WDR Text (Westdeutscher Rundfunk - Germania/NRW)
+      provider = WDRProvider();
+    } else if (channel.id == 'swr_bw') {
+      // SWR BW Text (Südwestrundfunk - Baden-Württemberg)
+      provider = SWRProvider('bw');
+    } else if (channel.id == 'swr_rp') {
+      // SWR RP Text (Südwestrundfunk - Rheinland-Pfalz)
+      provider = SWRProvider('rp');
     } else if (channel.id == 'zdf_text' || 
                channel.id == 'zdfinfo_text' || 
                channel.id == 'zdfneo_text' || 

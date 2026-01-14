@@ -21,6 +21,8 @@ import 'package:cursor_televideo/core/l10n/app_localizations.dart';
 import 'package:cursor_televideo/features/televideo_viewer/presentation/widgets/rtl_html_teletext_viewer.dart';
 import 'package:cursor_televideo/features/televideo_viewer/presentation/widgets/ard_html_teletext_viewer.dart';
 import 'package:cursor_televideo/features/televideo_viewer/presentation/widgets/br_html_teletext_viewer.dart';
+import 'package:cursor_televideo/features/televideo_viewer/presentation/widgets/wdr_html_teletext_viewer.dart';
+import 'package:cursor_televideo/features/televideo_viewer/presentation/widgets/swr_html_teletext_viewer.dart';
 import 'package:cursor_televideo/features/televideo_viewer/presentation/widgets/zdf_html_teletext_viewer.dart';
 import 'package:cursor_televideo/features/televideo_viewer/presentation/widgets/nos_html_teletext_viewer.dart';
 import 'package:cursor_televideo/features/televideo_viewer/presentation/widgets/iceland_html_teletext_viewer.dart';
@@ -331,8 +333,10 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
     final isNOS = page.providerId == 'nos_teletekst';
     final isIceland = page.providerId == 'ruv_textavarp';
     final isBR = page.providerId == 'br_text';
+    final isWDR = page.providerId == 'wdr_text';
+    final isSWR = page.providerId == 'swr_bw' || page.providerId == 'swr_rp';
     
-    print('[TelevideoViewer] Viewer selection - isRTL: $isRTL, isIceland: $isIceland, isZDF: $isZDF, isNOS: $isNOS, isBR: $isBR');
+    print('[TelevideoViewer] Viewer selection - isRTL: $isRTL, isIceland: $isIceland, isZDF: $isZDF, isNOS: $isNOS, isBR: $isBR, isWDR: $isWDR, isSWR: $isSWR');
     
     if (isRTL) {
       print('[TelevideoViewer] Using RTLHtmlTeletextViewer');
@@ -381,6 +385,32 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
       print('[TelevideoViewer] Using BRHtmlTeletextViewer');
       return BRHtmlTeletextViewer(
         key: ValueKey('br_${page.imageUrl}_$currentSubPage'),
+        page: page,
+        onPageNavigation: (pageNumber) {
+          // Naviga alla pagina tramite il Bloc
+          if (widget.onPageNumberSubmitted != null) {
+            widget.onPageNumberSubmitted!(pageNumber);
+          }
+        },
+        onTap: () => _handlePageTap(page),
+      );
+    } else if (isWDR) {
+      print('[TelevideoViewer] Using WDRHtmlTeletextViewer');
+      return WDRHtmlTeletextViewer(
+        key: ValueKey('wdr_${page.imageUrl}_$currentSubPage'),
+        page: page,
+        onPageNavigation: (pageNumber) {
+          // Naviga alla pagina tramite il Bloc
+          if (widget.onPageNumberSubmitted != null) {
+            widget.onPageNumberSubmitted!(pageNumber);
+          }
+        },
+        onTap: () => _handlePageTap(page),
+      );
+    } else if (isSWR) {
+      print('[TelevideoViewer] Using SWRHtmlTeletextViewer');
+      return SWRHtmlTeletextViewer(
+        key: ValueKey('swr_${page.imageUrl}_$currentSubPage'),
         page: page,
         onPageNavigation: (pageNumber) {
           // Naviga alla pagina tramite il Bloc
