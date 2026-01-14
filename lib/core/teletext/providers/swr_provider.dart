@@ -209,7 +209,7 @@ class SWRProvider implements TeletextProvider {
     // Estrai il contenuto del div ttxPage
     final pageContent = pageDiv?.outerHtml ?? '<div id="ttxPage"></div>';
     
-    // Template HTML base
+    // Template HTML base con link CSS esterni (come WDR)
     return '''<!DOCTYPE html>
 <html>
 <head>
@@ -229,12 +229,8 @@ class SWRProvider implements TeletextProvider {
 </head>
 
 <body>
-  <div style="text-align: center;">
-    <div id="ttxStage">
-      <div id="ttxContainer">
-        $pageContent
-      </div>
-    </div>
+  <div id="ttxContainer">
+    $pageContent
   </div>
 </body>
 </html>''';

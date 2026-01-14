@@ -49,15 +49,34 @@ class _SWRHtmlTeletextViewerState extends State<SWRHtmlTeletextViewer> {
     final logger = DebugLogger();
     logger.log('SWR', '_initializeOrUpdateWebView START - size: ${width}x$height');
     
-    // Dimensioni native del contenuto SWR Text
-    const nativeWidth = 520.0;
-    const nativeHeight = 520.0;
+    // SWR Text - dimensioni native adattive basate sull'aspect ratio
+    final aspectRatio = width / height;
+    
+    double nativeWidth;
+    double nativeHeight;
+    
+    if (aspectRatio > 1.5) {
+      // iPad orizzontale o dispositivo molto largo
+      nativeWidth = 520.0;
+      nativeHeight = 520.0;
+      print('[SWRHtmlTeletextViewer] Mode: iPad landscape (wide)');
+    } else if (aspectRatio > 0.7) {
+      // iPad verticale o tablet
+      nativeWidth = 520.0;
+      nativeHeight = 520.0;
+      print('[SWRHtmlTeletextViewer] Mode: iPad portrait (medium)');
+    } else {
+      // iPhone o dispositivo stretto
+      nativeWidth = 400.0;
+      nativeHeight = 400.0;
+      print('[SWRHtmlTeletextViewer] Mode: iPhone (narrow)');
+    }
     
     // Calcola scale factors
     final scaleX = width / nativeWidth;
     final scaleY = height / nativeHeight;
     
-    print('[SWRHtmlTeletextViewer] Widget size: ${width}x$height');
+    print('[SWRHtmlTeletextViewer] Widget size: ${width}x$height (aspect: ${aspectRatio.toStringAsFixed(2)})');
     print('[SWRHtmlTeletextViewer] Native content: ${nativeWidth}x$nativeHeight');
     print('[SWRHtmlTeletextViewer] Scale factors: X=$scaleX, Y=$scaleY');
     logger.log('SWR', 'Scale: ${scaleX}x${scaleY}');
@@ -144,17 +163,17 @@ class _SWRHtmlTeletextViewerState extends State<SWRHtmlTeletextViewer> {
           width: 100%;
           height: 100%;
           overflow: hidden;
-   
-                line-height: 1 !important;
         }
-        #ttxStage {
-      padding: 0;
-      background: #000 !important;
-      line-height: 1 !important;
-      transform: scale($scaleX, $scaleY);
-             transform-origin: top left;
-      width: ${100 / scaleX}%;
-      height: ${100 / scaleY}%;
+        #ttxContainer {
+          transform: scale($scaleX, $scaleY) !important;
+          transform-origin: top left !important;
+          width: ${100 / scaleX}% !important;
+          height: ${100 / scaleY}% !important;
+          position: relative !important;
+        }
+        #ttxPage {
+          width: 100% !important;
+          height: auto !important;
         }
       </style>
     ''';
