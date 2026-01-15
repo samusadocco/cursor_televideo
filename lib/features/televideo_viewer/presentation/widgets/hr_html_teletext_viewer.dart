@@ -3,14 +3,13 @@ import 'package:webview_flutter/webview_flutter.dart';
 import 'package:cursor_televideo/shared/models/televideo_page.dart';
 import 'package:cursor_televideo/core/debug/debug_logger.dart';
 
-/// Widget per visualizzare pagine SWR Text usando WebView con HTML rendering
-/// Supporta sia SWR BW (Baden-Württemberg) che SWR RP (Rheinland-Pfalz)
-class SWRHtmlTeletextViewer extends StatefulWidget {
+/// Widget per visualizzare pagine HR Text usando WebView con HTML rendering
+class HRHtmlTeletextViewer extends StatefulWidget {
   final TelevideoPage page;
   final VoidCallback? onTap;
   final Function(int)? onPageNavigation;
 
-  const SWRHtmlTeletextViewer({
+  const HRHtmlTeletextViewer({
     Key? key,
     required this.page,
     this.onTap,
@@ -18,10 +17,10 @@ class SWRHtmlTeletextViewer extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<SWRHtmlTeletextViewer> createState() => _SWRHtmlTeletextViewerState();
+  State<HRHtmlTeletextViewer> createState() => _HRHtmlTeletextViewerState();
 }
 
-class _SWRHtmlTeletextViewerState extends State<SWRHtmlTeletextViewer> {
+class _HRHtmlTeletextViewerState extends State<HRHtmlTeletextViewer> {
   WebViewController? _controller;
   bool _isLoading = true;
   String? _errorMessage;
@@ -29,16 +28,16 @@ class _SWRHtmlTeletextViewerState extends State<SWRHtmlTeletextViewer> {
   @override
   void initState() {
     super.initState();
-    print('[SWRHtmlTeletextViewer] initState - page ${widget.page.pageNumber}');
+    print('[HRHtmlTeletextViewer] initState - page ${widget.page.pageNumber}');
   }
 
   @override
-  void didUpdateWidget(SWRHtmlTeletextViewer oldWidget) {
+  void didUpdateWidget(HRHtmlTeletextViewer oldWidget) {
     super.didUpdateWidget(oldWidget);
     
     if (oldWidget.page.pageNumber != widget.page.pageNumber ||
         oldWidget.page.subPage != widget.page.subPage) {
-      print('[SWRHtmlTeletextViewer] Page changed: ${widget.page.pageNumber}.${widget.page.subPage}');
+      print('[HRHtmlTeletextViewer] Page changed: ${widget.page.pageNumber}.${widget.page.subPage}');
       setState(() {
         _isLoading = true;
       });
@@ -47,34 +46,34 @@ class _SWRHtmlTeletextViewerState extends State<SWRHtmlTeletextViewer> {
 
   void _initializeOrUpdateWebView(double width, double height) {
     final logger = DebugLogger();
-    logger.log('SWR', '_initializeOrUpdateWebView START - size: ${width}x$height');
+    logger.log('HR', '_initializeOrUpdateWebView START - size: ${width}x$height');
     
-    print('[SWRHtmlTeletextViewer] Widget size: ${width}x$height');
-    logger.log('SWR', 'WebView size: ${width}x$height');
+    print('[HRHtmlTeletextViewer] Widget size: ${width}x$height');
+    logger.log('HR', 'WebView size: ${width}x$height');
 
     if (_controller != null) {
-      logger.log('SWR', 'WebView already initialized, loading new content');
+      logger.log('HR', 'WebView already initialized, loading new content');
       final html = _buildHtmlWithScaling();
       _controller!.loadHtmlString(html);
       return;
     }
 
-    logger.log('SWR', 'Creating new WebViewController');
+    logger.log('HR', 'Creating new WebViewController');
     bool isFirstLoad = true;
     
     _controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setBackgroundColor(Colors.black)
       ..addJavaScriptChannel(
-        'SWRDebug',
+        'HRDebug',
         onMessageReceived: (JavaScriptMessage message) {
-          print('[SWRHtmlTeletextViewer][Debug] ${message.message}');
+          print('[HRHtmlTeletextViewer][Debug] ${message.message}');
         },
       )
       ..addJavaScriptChannel(
         'PageNavigation',
         onMessageReceived: (JavaScriptMessage message) {
-          print('[SWRHtmlTeletextViewer] Navigation to page: ${message.message}');
+          print('[HRHtmlTeletextViewer] Navigation to page: ${message.message}');
           final pageNum = int.tryParse(message.message);
           if (pageNum != null && widget.onPageNavigation != null) {
             widget.onPageNavigation!(pageNum);
@@ -84,7 +83,7 @@ class _SWRHtmlTeletextViewerState extends State<SWRHtmlTeletextViewer> {
       ..addJavaScriptChannel(
         'PageTapped',
         onMessageReceived: (JavaScriptMessage message) {
-          print('[SWRHtmlTeletextViewer] Page tapped');
+          print('[HRHtmlTeletextViewer] Page tapped');
           widget.onTap?.call();
         },
       )
@@ -92,7 +91,7 @@ class _SWRHtmlTeletextViewerState extends State<SWRHtmlTeletextViewer> {
         NavigationDelegate(
           onPageFinished: (String url) {
             if (isFirstLoad) {
-              logger.log('SWR', 'WebView first load completed');
+              logger.log('HR', 'WebView first load completed');
               isFirstLoad = false;
               if (mounted) {
                 setState(() {
@@ -102,7 +101,7 @@ class _SWRHtmlTeletextViewerState extends State<SWRHtmlTeletextViewer> {
             }
           },
           onWebResourceError: (WebResourceError error) {
-            print('[SWRHtmlTeletextViewer] WebView error: ${error.description}');
+            print('[HRHtmlTeletextViewer] WebView error: ${error.description}');
             if (mounted) {
               setState(() {
                 _errorMessage = 'Errore caricamento: ${error.description}';
@@ -115,7 +114,7 @@ class _SWRHtmlTeletextViewerState extends State<SWRHtmlTeletextViewer> {
 
     final html = _buildHtmlWithScaling();
     _controller!.loadHtmlString(html);
-    logger.log('SWR', 'HTML loaded into WebView');
+    logger.log('HR', 'HTML loaded into WebView');
   }
 
   /// Costruisce l'HTML finale con scaling appropriato
@@ -127,112 +126,87 @@ class _SWRHtmlTeletextViewerState extends State<SWRHtmlTeletextViewer> {
       return '<html><body style="background: #000; color: #fff;">Nessun contenuto disponibile</body></html>';
     }
     
-    // Aggiungi CSS di base: lo scaling reale viene calcolato via JS
-    final scalingCss = '''
-      <style id="flutter-swr-scaling">
-        * {
-          box-sizing: border-box;
-        }
-        html, body {
-          background: #000 !important;
-          margin: 0;
-          padding: 0;
-          width: 100%;
-          height: 100%;
-          overflow: hidden;
-        }
-        #ttxContainer {
-          transform-origin: top left !important;
-          position: relative !important;
-          display: inline-block !important;
-        }
-        #ttxPage {
-          width: 100% !important;
-          height: auto !important;
-        }
-      </style>
-    ''';
-    
-    // Inserisci il CSS prima del </head>
-    final html = baseHtml.replaceFirst('</head>', '$scalingCss</head>');
-    
-    // Aggiungi JavaScript per la navigazione
-    final jsNavigation = '''
-      <script id="flutter-swr-navigation">
-        function applySWRScale() {
-          const container = document.getElementById('ttxContainer');
-          const page = document.getElementById('ttxPage') || container;
-          if (!container || !page) return;
-          const contentW = page.scrollWidth || page.clientWidth;
-          const contentH = page.scrollHeight || page.clientHeight;
-          if (!contentW || !contentH) return;
-          const vw = window.innerWidth;
-          const vh = window.innerHeight;
-          const scaleX = vw / contentW;
-          const scaleY = vh / contentH;
-          const ar = vw / vh;
-          const maxYRatio = ar > 0.9 ? 1.15 : (ar > 0.7 ? 1.35 : 1.6);
-          const finalScaleY = Math.min(scaleY, scaleX * maxYRatio);
-          container.style.width = contentW + 'px';
-          container.style.height = contentH + 'px';
-          container.style.transformOrigin = 'top left';
-          container.style.transform = 'scale(' + scaleX + ',' + finalScaleY + ')';
-          if (typeof SWRDebug !== 'undefined') {
-            SWRDebug.postMessage(JSON.stringify({
-              phase: 'scaled',
-              content: { w: contentW, h: contentH },
-              viewport: { w: vw, h: vh },
-              scale: { x: scaleX, y: finalScaleY }
-            }));
-          }
-        }
-
-        window.addEventListener('load', function() {
-          applySWRScale();
-          setTimeout(applySWRScale, 50);
-          setTimeout(applySWRScale, 200);
-        });
-        window.addEventListener('resize', applySWRScale);
-
-        function sendSWRDebugInfo() {
+    // Aggiungi JavaScript per lo scaling dinamico e la navigazione
+    final jsScript = '''
+      <script id="flutter-hr-scaling">
+        function applyScaling() {
           try {
             const container = document.getElementById('ttxContainer');
             const page = document.getElementById('ttxPage');
-            const info = {
-              url: window.location.href,
-              dpr: window.devicePixelRatio,
-              viewport: { w: window.innerWidth, h: window.innerHeight },
-              body: { w: document.body.scrollWidth, h: document.body.scrollHeight },
-              container: container ? {
-                w: container.scrollWidth,
-                h: container.scrollHeight,
-                cw: container.clientWidth,
-                ch: container.clientHeight,
-                transform: window.getComputedStyle(container).transform
-              } : null,
-              page: page ? {
-                w: page.scrollWidth,
-                h: page.scrollHeight,
-                cw: page.clientWidth,
-                ch: page.clientHeight
-              } : null,
-              linkCount: document.querySelectorAll('a').length
-            };
-            if (typeof SWRDebug !== 'undefined') {
-              SWRDebug.postMessage(JSON.stringify(info));
+            if (!container || !page) {
+              console.error('HR: container or page not found');
+              return;
+            }
+
+            // Misura le dimensioni reali del contenuto
+            const contentWidth = page.scrollWidth;
+            const contentHeight = page.scrollHeight;
+            
+            // Calcola lo scale in base al viewport
+            const viewportWidth = window.innerWidth;
+            const viewportHeight = window.innerHeight;
+            
+            const scaleX = viewportWidth / contentWidth;
+            const scaleY = viewportHeight / contentHeight;
+            
+            // Determina il device type
+            const aspectRatio = viewportWidth / viewportHeight;
+            let maxYRatio;
+            
+            if (aspectRatio > 1.5) {
+              // iPad landscape
+              maxYRatio = 1.15;
+            } else if (aspectRatio > 0.7) {
+              // iPad portrait
+              maxYRatio = 1.35;
+            } else {
+              // iPhone
+              maxYRatio = 1.60;
+            }
+            
+            // Usa scaleX per la larghezza, limita scaleY
+            const finalScaleY = Math.min(scaleY, scaleX * maxYRatio);
+            
+            // Applica la trasformazione
+            container.style.transform = 'scale(' + scaleX + ', ' + finalScaleY + ')';
+            container.style.transformOrigin = 'top left';
+            container.style.width = contentWidth + 'px';
+            container.style.height = contentHeight + 'px';
+            container.style.position = 'relative';
+            
+            // Invia telemetria
+            if (typeof HRDebug !== 'undefined') {
+              const info = {
+                phase: 'scaled',
+                viewport: { w: viewportWidth, h: viewportHeight },
+                content: { w: contentWidth, h: contentHeight },
+                scale: { x: scaleX, y: finalScaleY },
+                aspectRatio: aspectRatio,
+                maxYRatio: maxYRatio
+              };
+              HRDebug.postMessage(JSON.stringify(info));
             }
           } catch (e) {
-            if (typeof SWRDebug !== 'undefined') {
-              SWRDebug.postMessage('error:' + e.toString());
+            console.error('HR scaling error:', e);
+            if (typeof HRDebug !== 'undefined') {
+              HRDebug.postMessage('error:' + e.toString());
             }
           }
         }
 
-        window.addEventListener('load', function() {
-          sendSWRDebugInfo();
-          setTimeout(sendSWRDebugInfo, 100);
+        // Applica lo scaling quando il DOM è pronto
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(applyScaling, 50);
+          });
+        } else {
+          setTimeout(applyScaling, 50);
+        }
+        
+        // Riapplica su resize
+        window.addEventListener('resize', function() {
+          setTimeout(applyScaling, 50);
         });
-        window.addEventListener('resize', sendSWRDebugInfo);
 
         // Intercetta i click sui link per la navigazione tra pagine
         document.addEventListener('click', function(e) {
@@ -263,7 +237,7 @@ class _SWRHtmlTeletextViewerState extends State<SWRHtmlTeletextViewer> {
       </script>
     ''';
     
-    return html.replaceFirst('</body>', '$jsNavigation</body>');
+    return baseHtml.replaceFirst('</body>', '$jsScript</body>');
   }
 
   @override
@@ -273,7 +247,7 @@ class _SWRHtmlTeletextViewerState extends State<SWRHtmlTeletextViewer> {
         final width = constraints.maxWidth;
         final height = constraints.maxHeight;
         
-        print('[SWRHtmlTeletextViewer] LayoutBuilder: ${width}x$height');
+        print('[HRHtmlTeletextViewer] LayoutBuilder: ${width}x$height');
         
         if (width > 0 && height > 0) {
           _initializeOrUpdateWebView(width, height);
@@ -311,7 +285,7 @@ class _SWRHtmlTeletextViewerState extends State<SWRHtmlTeletextViewer> {
 
   @override
   void dispose() {
-    print('[SWRHtmlTeletextViewer] dispose');
+    print('[HRHtmlTeletextViewer] dispose');
     super.dispose();
   }
 }

@@ -519,6 +519,21 @@ class TeletextChannels {
       supportsRegions: false,
     ),
     
+    // 🇩🇪 GERMANIA - HR (Hessen)
+    TeletextChannel(
+      id: 'hr_text',
+      name: 'HR Text',
+      shortName: 'HR',
+      countryCode: 'DE',
+      countryName: 'Germania',
+      flagEmoji: '🇩🇪',
+      broadcasterName: 'Hessischer Rundfunk',
+      type: TeletextChannelType.regional,
+      baseUrl: 'https://www.hr-text.hr-fernsehen.de/ttxweb/',
+      htmlBaseUrl: 'https://www.hr-text.hr-fernsehen.de/ttxweb/?page=100',
+      supportsRegions: false,
+    ),
+    
     // ⚠️ TEMPORANEAMENTE DISABILITATO - In fase di perfezionamento visualizzazione
     // // 🇩🇪 GERMANIA - RTL
     // TeletextChannel(
