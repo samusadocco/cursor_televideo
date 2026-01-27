@@ -6,11 +6,16 @@ import 'package:cursor_televideo/core/teletext/providers/br_provider.dart';
 import 'package:cursor_televideo/core/teletext/providers/wdr_provider.dart';
 import 'package:cursor_televideo/core/teletext/providers/swr_provider.dart';
 import 'package:cursor_televideo/core/teletext/providers/hr_provider.dart';
+import 'package:cursor_televideo/core/teletext/providers/sr_provider.dart';
+import 'package:cursor_televideo/core/teletext/providers/ndr_provider.dart';
+import 'package:cursor_televideo/core/teletext/providers/kika_provider.dart';
+import 'package:cursor_televideo/core/teletext/providers/zattoo_provider.dart';
 import 'package:cursor_televideo/core/teletext/providers/zdf_provider.dart';
 import 'package:cursor_televideo/core/teletext/providers/swiss_provider.dart';
 import 'package:cursor_televideo/core/teletext/providers/orf_provider.dart';
 import 'package:cursor_televideo/core/teletext/providers/spanish_provider.dart';
 import 'package:cursor_televideo/core/teletext/providers/nos_provider.dart';
+import 'package:cursor_televideo/core/teletext/providers/omroepzeeland_provider.dart';
 import 'package:cursor_televideo/core/teletext/providers/svt_provider.dart';
 import 'package:cursor_televideo/core/teletext/providers/hrt_provider.dart';
 import 'package:cursor_televideo/core/teletext/providers/yle_provider.dart';
@@ -65,6 +70,36 @@ class TeletextProviderFactory {
     } else if (channel.id == 'hr_text') {
       // HR Text (Hessischer Rundfunk - Germania/Hessen)
       provider = HRProvider();
+    } else if (channel.id == 'sr_text') {
+      // SR Text (Saarländischer Rundfunk - Saar Text)
+      provider = SRProvider();
+    } else if (channel.id == 'ndr_text') {
+      // NDR Text (Norddeutscher Rundfunk)
+      provider = NDRProvider();
+    } else if (channel.id == 'kika_text') {
+      // KiKA Text (Kinderkanal - ARD/ZDF)
+      provider = KiKAProvider();
+    } else if (channel.id == 'arte_text') {
+      // ARTE Text (Germania/Francia) - Piattaforma Zattoo con OCR
+      provider = ZattooProvider.arte();
+    } else if (channel.id == 'rbb_text') {
+      // RBB Text (Rundfunk Berlin-Brandenburg) - Piattaforma Zattoo con OCR
+      provider = ZattooProvider.rbb();
+    } else if (channel.id == 'mdr_text') {
+      // MDR Text (Mitteldeutscher Rundfunk) - Piattaforma Zattoo con OCR
+      provider = ZattooProvider.mdr();
+    } else if (channel.id == 'ard_alpha_text') {
+      // ARD Alpha Text - Piattaforma Zattoo con OCR
+      provider = ZattooProvider.ardAlpha();
+    } else if (channel.id == 'phoenix_text') {
+      // Phoenix Text - Piattaforma Zattoo con OCR
+      provider = ZattooProvider.phoenix();
+    } else if (channel.id == 'ntv_text') {
+      // n-tv Text - Piattaforma Zattoo con OCR
+      provider = ZattooProvider.ntv();
+    } else if (channel.id == 'vox_text') {
+      // VOX Text - Piattaforma Zattoo con OCR
+      provider = ZattooProvider.vox();
     } else if (channel.id == 'zdf_text' || 
                channel.id == 'zdfinfo_text' || 
                channel.id == 'zdfneo_text' || 
@@ -89,6 +124,9 @@ class TeletextProviderFactory {
     } else if (channel.id == 'nos_teletekst') {
       // NOS Teletekst (Olanda)
       provider = NOSProvider();
+    } else if (channel.id == 'omroepzeeland_teletekst') {
+      // Omroep Zeeland Teletekst (Olanda)
+      provider = OmroepZeelandProvider();
     } else if (channel.id == 'svt_text') {
       // SVT Text (Svezia)
       provider = SVTProvider();

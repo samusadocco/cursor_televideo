@@ -24,6 +24,7 @@ import 'package:cursor_televideo/core/l10n/language_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:cursor_televideo/core/config/ocr_config_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -77,6 +78,26 @@ void main() async {
     print('LanguageService initialized successfully');
   } catch (e) {
     print('Error initializing services: $e');
+  }
+  
+  // ⚠️ CONFIGURA LA TUA GOOGLE VISION API KEY QUI ⚠️
+  // Sostituisci 'YOUR_API_KEY_HERE' con la tua vera API key
+  // TEMPORANEO: In produzione, crea un'interfaccia nelle impostazioni
+  try {
+    // DECOMMENTARE E SOSTITUIRE CON LA TUA API KEY:
+     await OcrConfigService.setGoogleVisionApiKey('AIzaSyAh-J9L6jsZ-f2ggQSSlSb5showvVZk7Mw');
+     print('✅ Google Vision API key configured for OCR');
+    
+    // Verifica se l'API key è già configurata
+    final hasKey = await OcrConfigService.hasApiKey();
+    if (hasKey) {
+      print('✅ Google Vision OCR: API key configured');
+    } else {
+      print('⚠️ Google Vision OCR: API key NOT configured');
+      print('   OCR will be disabled for ARTE and other image-based channels');
+    }
+  } catch (e) {
+    print('Error configuring OCR: $e');
   }
   
   // Inizializza il servizio di recensioni

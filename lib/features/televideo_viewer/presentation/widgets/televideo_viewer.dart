@@ -24,6 +24,8 @@ import 'package:cursor_televideo/features/televideo_viewer/presentation/widgets/
 import 'package:cursor_televideo/features/televideo_viewer/presentation/widgets/wdr_html_teletext_viewer.dart';
 import 'package:cursor_televideo/features/televideo_viewer/presentation/widgets/swr_html_teletext_viewer.dart';
 import 'package:cursor_televideo/features/televideo_viewer/presentation/widgets/hr_html_teletext_viewer.dart';
+import 'package:cursor_televideo/features/televideo_viewer/presentation/widgets/sr_html_teletext_viewer.dart';
+import 'package:cursor_televideo/features/televideo_viewer/presentation/widgets/ndr_html_teletext_viewer.dart';
 import 'package:cursor_televideo/features/televideo_viewer/presentation/widgets/zdf_html_teletext_viewer.dart';
 import 'package:cursor_televideo/features/televideo_viewer/presentation/widgets/nos_html_teletext_viewer.dart';
 import 'package:cursor_televideo/features/televideo_viewer/presentation/widgets/iceland_html_teletext_viewer.dart';
@@ -337,8 +339,10 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
     final isWDR = page.providerId == 'wdr_text';
     final isSWR = page.providerId == 'swr_bw' || page.providerId == 'swr_rp';
     final isHR = page.providerId == 'hr_text';
+    final isSR = page.providerId == 'sr_text';
+    final isNDR = page.providerId == 'ndr_text';
     
-    print('[TelevideoViewer] Viewer selection - isRTL: $isRTL, isIceland: $isIceland, isZDF: $isZDF, isNOS: $isNOS, isBR: $isBR, isWDR: $isWDR, isSWR: $isSWR, isHR: $isHR');
+    print('[TelevideoViewer] Viewer selection - isRTL: $isRTL, isIceland: $isIceland, isZDF: $isZDF, isNOS: $isNOS, isBR: $isBR, isWDR: $isWDR, isSWR: $isSWR, isHR: $isHR, isSR: $isSR, isNDR: $isNDR');
     
     if (isRTL) {
       print('[TelevideoViewer] Using RTLHtmlTeletextViewer');
@@ -434,6 +438,31 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
           }
         },
         onTap: () => _handlePageTap(page),
+      );
+    } else if (isSR) {
+      print('[TelevideoViewer] Using SRHtmlTeletextViewer');
+      return SRHtmlTeletextViewer(
+        key: ValueKey('sr_${page.pageNumber}_$currentSubPage'),
+        page: page,
+        onPageTap: (pageNumber) {
+          // Naviga alla pagina tramite il Bloc
+          if (widget.onPageNumberSubmitted != null) {
+            widget.onPageNumberSubmitted!(pageNumber);
+          }
+        },
+      );
+    } else if (isNDR) {
+      print('[TelevideoViewer] Using NDRHtmlTeletextViewer');
+      return NDRHtmlTeletextViewer(
+        key: ValueKey('ndr_${page.pageNumber}_$currentSubPage'),
+        page: page,
+        onTap: () => _handlePageTap(page),
+        onPageTap: (pageNumber) {
+          // Naviga alla pagina tramite il Bloc
+          if (widget.onPageNumberSubmitted != null) {
+            widget.onPageNumberSubmitted!(pageNumber);
+          }
+        },
       );
     } else {
       // ARD o altri provider HTML
@@ -693,6 +722,25 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
       // Intertext (UA): 492x432 (dimensioni reali dell'immagine GIF)
       originalWidth = 492.0;
       originalHeight = 432.0;
+    } else if (widget.page.providerId == 'omroepzeeland_teletekst') {
+      // Omroep Zeeland (NL): 400x300
+      originalWidth = 400.0;
+      originalHeight = 300.0;
+    } else if (widget.page.providerId == 'kika_text') {
+      // KiKA (DE): 480x336
+      originalWidth = 480.0;
+      originalHeight = 336.0;
+    } else if (widget.page.providerId == 'arte_text' ||
+               widget.page.providerId == 'rbb_text' ||
+               widget.page.providerId == 'mdr_text' ||
+               widget.page.providerId == 'ard_alpha_text' ||
+               widget.page.providerId == 'phoenix_text' ||
+               widget.page.providerId == 'ntv_text' ||
+               widget.page.providerId == 'vox_text') {
+      // Zattoo (ARTE, RBB, MDR, ARD Alpha, Phoenix, n-tv, VOX): 492x500
+      // Dimensioni standard per tutti i canali Zattoo
+      originalWidth = 492.0;
+      originalHeight = 500.0;
     } else {
       // RAI Televideo: 360x400
       originalWidth = 360.0;

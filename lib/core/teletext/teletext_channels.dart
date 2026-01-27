@@ -458,6 +458,156 @@ class TeletextChannels {
       baseUrl: 'https://teletext.zdf.de/teletext/3sat',
       supportsRegions: false,
     ),
+
+    // 🇩🇪 SR - Saarländischer Rundfunk (Saar Text)
+    TeletextChannel(
+      id: 'sr_text',
+      name: 'Saar Text',
+      shortName: 'SR',
+      countryCode: 'DE',
+      countryName: 'Germania',
+      flagEmoji: '🇩🇪',
+      broadcasterName: 'SR',
+      type: TeletextChannelType.national,
+      baseUrl: 'https://www.saartext.de/',
+      htmlBaseUrl: 'https://www.saartext.de/100',
+      supportsRegions: false,
+    ),
+
+    // 🇩🇪 NDR - Norddeutscher Rundfunk
+    TeletextChannel(
+      id: 'ndr_text',
+      name: 'NDR Text',
+      shortName: 'NDR',
+      countryCode: 'DE',
+      countryName: 'Germania',
+      flagEmoji: '🇩🇪',
+      broadcasterName: 'NDR',
+      type: TeletextChannelType.national,
+      baseUrl: 'https://www.ndr.de/public/teletext/',
+      htmlBaseUrl: 'https://www.ndr.de/public/teletext/100_01.htm',
+      supportsRegions: false,
+    ),
+
+    // 🇩🇪 KiKA - Kinderkanal (ARD/ZDF)
+    TeletextChannel(
+      id: 'kika_text',
+      name: 'KiKA Text',
+      shortName: 'KiKA',
+      countryCode: 'DE',
+      countryName: 'Germania',
+      flagEmoji: '🇩🇪',
+      broadcasterName: 'KiKA',
+      type: TeletextChannelType.national,
+      baseUrl: 'https://www.kika.de/kikatextpages/',
+      htmlBaseUrl: 'https://www.kika.de/kikatextpages/100_0001.htm',
+      supportsRegions: false,
+    ),
+
+    // 🇩🇪 ARTE (Germania) - Piattaforma Zattoo con OCR
+    TeletextChannel(
+      id: 'arte_text',
+      name: 'ARTE Text',
+      shortName: 'ARTE',
+      countryCode: 'DE',
+      countryName: 'Germania',
+      flagEmoji: '🇩🇪',
+      broadcasterName: 'ARTE',
+      type: TeletextChannelType.national,
+      baseUrl: 'https://zapi.zattoo.com/teletext/DE_arte/hd/',
+      htmlBaseUrl: 'https://zapi.zattoo.com/teletext/DE_arte/hd/100/1.html',
+      supportsRegions: false,
+    ),
+
+    // 🇩🇪 RBB (Rundfunk Berlin-Brandenburg) - Piattaforma Zattoo con OCR
+    TeletextChannel(
+      id: 'rbb_text',
+      name: 'RBB Text',
+      shortName: 'RBB',
+      countryCode: 'DE',
+      countryName: 'Germania',
+      flagEmoji: '🇩🇪',
+      broadcasterName: 'RBB',
+      type: TeletextChannelType.national,
+      baseUrl: 'https://zapi.zattoo.com/teletext/rbb/hd/',
+      htmlBaseUrl: 'https://zapi.zattoo.com/teletext/rbb/hd/100/1.html',
+      supportsRegions: false,
+    ),
+
+    // 🇩🇪 MDR (Mitteldeutscher Rundfunk) - Piattaforma Zattoo con OCR
+    TeletextChannel(
+      id: 'mdr_text',
+      name: 'MDR Text Sachsen',
+      shortName: 'MDR',
+      countryCode: 'DE',
+      countryName: 'Germania',
+      flagEmoji: '🇩🇪',
+      broadcasterName: 'MDR',
+      type: TeletextChannelType.national,
+      baseUrl: 'https://zapi.zattoo.com/teletext/mdr-sachsen/hd/',
+      htmlBaseUrl: 'https://zapi.zattoo.com/teletext/mdr-sachsen/hd/100/1.html',
+      supportsRegions: false,
+    ),
+
+    // 🇩🇪 ARD Alpha (Bildungskanal) - Piattaforma Zattoo con OCR
+    TeletextChannel(
+      id: 'ard_alpha_text',
+      name: 'ARD Alpha Text',
+      shortName: 'ARD α',
+      countryCode: 'DE',
+      countryName: 'Germania',
+      flagEmoji: '🇩🇪',
+      broadcasterName: 'ARD Alpha',
+      type: TeletextChannelType.national,
+      baseUrl: 'https://zapi.zattoo.com/teletext/br-alpha/hd/',
+      htmlBaseUrl: 'https://zapi.zattoo.com/teletext/br-alpha/hd/100/1.html',
+      supportsRegions: false,
+    ),
+
+    // 🇩🇪 Phoenix (Ereignis- und Dokumentationskanal) - Piattaforma Zattoo con OCR
+    TeletextChannel(
+      id: 'phoenix_text',
+      name: 'Phoenix Text',
+      shortName: 'Phoenix',
+      countryCode: 'DE',
+      countryName: 'Germania',
+      flagEmoji: '🇩🇪',
+      broadcasterName: 'Phoenix',
+      type: TeletextChannelType.national,
+      baseUrl: 'https://zapi.zattoo.com/teletext/phoenix/hd/',
+      htmlBaseUrl: 'https://zapi.zattoo.com/teletext/phoenix/hd/100/1.html',
+      supportsRegions: false,
+    ),
+
+    // 🇩🇪 n-tv (Nachrichtensender) - Piattaforma Zattoo con OCR
+    TeletextChannel(
+      id: 'ntv_text',
+      name: 'n-tv Text',
+      shortName: 'n-tv',
+      countryCode: 'DE',
+      countryName: 'Germania',
+      flagEmoji: '🇩🇪',
+      broadcasterName: 'n-tv',
+      type: TeletextChannelType.national,
+      baseUrl: 'https://zattoo-abox.zattoo.com/teletext/ntv_de/hd/',
+      htmlBaseUrl: 'https://zattoo-abox.zattoo.com/teletext/ntv_de/hd/100/1.html',
+      supportsRegions: false,
+    ),
+
+    // 🇩🇪 VOX - Piattaforma Zattoo con OCR
+    TeletextChannel(
+      id: 'vox_text',
+      name: 'VOX Text',
+      shortName: 'VOX',
+      countryCode: 'DE',
+      countryName: 'Germania',
+      flagEmoji: '🇩🇪',
+      broadcasterName: 'VOX',
+      type: TeletextChannelType.national,
+      baseUrl: 'https://zattoo-abox.zattoo.com/teletext/vox/hd/',
+      htmlBaseUrl: 'https://zattoo-abox.zattoo.com/teletext/vox/hd/100/1.html',
+      supportsRegions: false,
+    ),
     
     // 🇩🇪 GERMANIA - BR (Bayerischer Rundfunk)
     TeletextChannel(
@@ -770,6 +920,21 @@ class TeletextChannels {
       broadcasterName: 'NOS',
       type: TeletextChannelType.national,
       baseUrl: 'https://nos.nl/teletekst',
+      supportsRegions: false,
+    ),
+
+    // 🇳🇱 OLANDA - Omroep Zeeland
+    TeletextChannel(
+      id: 'omroepzeeland_teletekst',
+      name: 'Omroep Zeeland Teletekst',
+      shortName: 'Omroep Zeeland',
+      countryCode: 'NL',
+      countryName: 'Olanda',
+      flagEmoji: '🇳🇱',
+      broadcasterName: 'Omroep Zeeland',
+      type: TeletextChannelType.national,
+      baseUrl: 'https://teletxt.omroepzeeland.nl/teletext.php',
+      htmlBaseUrl: 'https://teletxt.omroepzeeland.nl/teletext.php?page=100s0',
       supportsRegions: false,
     ),
 
