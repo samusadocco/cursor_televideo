@@ -45,6 +45,8 @@ class TeletextChannel with _$TeletextChannel {
         return l10n.countryPT;
       case 'NL':
         return l10n.countryNL;
+      case 'PL':
+        return l10n.countryPL;
       case 'SE':
         return l10n.countrySE;
       case 'FI':
@@ -935,6 +937,20 @@ class TeletextChannels {
       type: TeletextChannelType.national,
       baseUrl: 'https://teletxt.omroepzeeland.nl/teletext.php',
       htmlBaseUrl: 'https://teletxt.omroepzeeland.nl/teletext.php?page=100s0',
+      supportsRegions: false,
+    ),
+
+    // 🇵🇱 POLONIA - Polsat Telegazeta
+    TeletextChannel(
+      id: 'polsat_telegazeta',
+      name: 'Polsat Telegazeta',
+      shortName: 'Polsat',
+      countryCode: 'PL',
+      flagEmoji: '🇵🇱',
+      broadcasterName: 'Polsat',
+      type: TeletextChannelType.national,
+      baseUrl: 'https://niutech.github.io/telegazeta-browser/popup.html',
+      htmlBaseUrl: 'https://niutech.github.io/telegazeta-browser/popup.html#0-100-1',
       supportsRegions: false,
     ),
 

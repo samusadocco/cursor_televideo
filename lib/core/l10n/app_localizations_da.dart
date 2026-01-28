@@ -608,6 +608,9 @@ class AppLocalizationsDa extends AppLocalizations {
   String get countryNL => 'Nederlandene';
 
   @override
+  String get countryPL => 'Polen';
+
+  @override
   String get countrySE => 'Sverige';
 
   @override

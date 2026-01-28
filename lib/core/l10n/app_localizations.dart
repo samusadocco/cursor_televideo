@@ -1182,6 +1182,12 @@ abstract class AppLocalizations {
   /// **'Netherlands'**
   String get countryNL;
 
+  /// No description provided for @countryPL.
+  ///
+  /// In en, this message translates to:
+  /// **'Poland'**
+  String get countryPL;
+
   /// No description provided for @countrySE.
   ///
   /// In en, this message translates to:

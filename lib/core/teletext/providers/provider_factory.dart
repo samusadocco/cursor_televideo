@@ -16,6 +16,7 @@ import 'package:cursor_televideo/core/teletext/providers/orf_provider.dart';
 import 'package:cursor_televideo/core/teletext/providers/spanish_provider.dart';
 import 'package:cursor_televideo/core/teletext/providers/nos_provider.dart';
 import 'package:cursor_televideo/core/teletext/providers/omroepzeeland_provider.dart';
+import 'package:cursor_televideo/core/teletext/providers/polsat_provider.dart';
 import 'package:cursor_televideo/core/teletext/providers/svt_provider.dart';
 import 'package:cursor_televideo/core/teletext/providers/hrt_provider.dart';
 import 'package:cursor_televideo/core/teletext/providers/yle_provider.dart';
@@ -127,6 +128,9 @@ class TeletextProviderFactory {
     } else if (channel.id == 'omroepzeeland_teletekst') {
       // Omroep Zeeland Teletekst (Olanda)
       provider = OmroepZeelandProvider();
+    } else if (channel.id == 'polsat_telegazeta') {
+      // Polsat Telegazeta (Polonia)
+      provider = PolsatProvider();
     } else if (channel.id == 'svt_text') {
       // SVT Text (Svezia)
       provider = SVTProvider();

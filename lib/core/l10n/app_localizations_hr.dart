@@ -610,6 +610,9 @@ class AppLocalizationsHr extends AppLocalizations {
   String get countryNL => 'Nizozemska';
 
   @override
+  String get countryPL => 'Poljska';
+
+  @override
   String get countrySE => 'Švedska';
 
   @override

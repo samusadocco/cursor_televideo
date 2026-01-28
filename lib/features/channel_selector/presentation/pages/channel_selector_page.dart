@@ -66,6 +66,7 @@ class _ChannelSelectorPageState extends State<ChannelSelectorPage> {
       case 'ES': return l10n.countryES;
       case 'PT': return l10n.countryPT;
       case 'NL': return l10n.countryNL;
+      case 'PL': return l10n.countryPL;
       case 'SE': return l10n.countrySE;
       case 'FI': return l10n.countryFI;
       case 'DK': return l10n.countryDK;

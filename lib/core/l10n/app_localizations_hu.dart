@@ -611,6 +611,9 @@ class AppLocalizationsHu extends AppLocalizations {
   String get countryNL => 'Hollandia';
 
   @override
+  String get countryPL => 'Lengyelország';
+
+  @override
   String get countrySE => 'Svédország';
 
   @override

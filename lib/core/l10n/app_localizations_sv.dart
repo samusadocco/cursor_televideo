@@ -609,6 +609,9 @@ class AppLocalizationsSv extends AppLocalizations {
   String get countryNL => 'Nederländerna';
 
   @override
+  String get countryPL => 'Polen';
+
+  @override
   String get countrySE => 'Sverige';
 
   @override

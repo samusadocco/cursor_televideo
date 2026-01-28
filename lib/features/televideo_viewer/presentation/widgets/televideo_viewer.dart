@@ -726,6 +726,10 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
       // Omroep Zeeland (NL): 400x300
       originalWidth = 400.0;
       originalHeight = 300.0;
+    } else if (widget.page.providerId == 'polsat_telegazeta') {
+      // Polsat Telegazeta (PL): 480x336 (come definito nel JavaScript della pagina)
+      originalWidth = 480.0;
+      originalHeight = 336.0;
     } else if (widget.page.providerId == 'kika_text') {
       // KiKA (DE): 480x336
       originalWidth = 480.0;

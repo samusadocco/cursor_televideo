@@ -609,6 +609,9 @@ class AppLocalizationsFi extends AppLocalizations {
   String get countryNL => 'Alankomaat';
 
   @override
+  String get countryPL => 'Puola';
+
+  @override
   String get countrySE => 'Ruotsi';
 
   @override
