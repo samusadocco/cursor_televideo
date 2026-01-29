@@ -11,6 +11,9 @@ import 'package:cursor_televideo/core/cache/subpage_cache_service.dart';
 class PolsatProvider implements TeletextProvider {
   final Dio _dio;
   static const String _baseUrl = 'https://niutech.github.io/telegazeta-browser/popup.html';
+  
+  // Cache per clickableAreas (chiave: "pageNumber-subPage")
+  final Map<String, List<ClickableArea>> _clickableAreasCache = {};
 
   PolsatProvider({Dio? dio}) : _dio = dio ?? Dio();
 
@@ -41,7 +44,8 @@ class PolsatProvider implements TeletextProvider {
 
   @override
   Future<TelevideoPage> fetchNationalPage(int pageNumber, {int subPage = 1}) async {
-    print('[Polsat] Fetching page $pageNumber, subpage $subPage');
+    final startTime = DateTime.now();
+    print('[Polsat] 🚀 Fetching page $pageNumber, subpage $subPage');
 
     // Costruisci URL immagine direttamente (come fa il JavaScript della pagina)
     // Formato: https://images.weserv.nl/?url=http://gazetatvpolsat.pl/100/100_0001.png&maxage=1d
@@ -54,6 +58,7 @@ class PolsatProvider implements TeletextProvider {
     print('[Polsat] Image URL: $imageUrl');
 
     // Verifica che l'immagine esista facendo una richiesta HEAD
+    final headStart = DateTime.now();
     try {
       final response = await _dio.head(
         imageUrl,
@@ -61,6 +66,9 @@ class PolsatProvider implements TeletextProvider {
           validateStatus: (status) => status! < 500,
         ),
       );
+      
+      final headDuration = DateTime.now().difference(headStart).inMilliseconds;
+      print('[Polsat] ⏱️ HEAD request completed in ${headDuration}ms');
 
       if (response.statusCode == 404) {
         print('[Polsat] Image not found: $pageNumber/$subPage');
@@ -81,11 +89,24 @@ class PolsatProvider implements TeletextProvider {
     List<ClickableArea> clickableAreas = [];
     
     try {
-      print('[Polsat] Extracting clickable areas via WebView for subpage $subPage...');
-      
-      // Estrai link per ogni sottopagina (i link cambiano!)
-      clickableAreas = await _extractClickableAreasViaWebView(pageNumber, subPage);
-      print('[Polsat] WebView extraction found ${clickableAreas.length} clickable areas');
+      // Controlla cache clickableAreas (chiave: pageNumber-subPage)
+      final cacheKey = '$pageNumber-$subPage';
+      if (_clickableAreasCache.containsKey(cacheKey)) {
+        clickableAreas = _clickableAreasCache[cacheKey]!;
+        print('[Polsat] ⚡ Using cached clickable areas for page $pageNumber subpage $subPage: ${clickableAreas.length} areas');
+      } else {
+        // Estrai link via WebView (i link possono essere diversi per ogni sottopagina!)
+        final webviewStart = DateTime.now();
+        print('[Polsat] 🔍 Extracting clickable areas via WebView for page $pageNumber subpage $subPage...');
+        
+        clickableAreas = await _extractClickableAreasViaWebView(pageNumber, subPage);
+        
+        // Salva in cache
+        _clickableAreasCache[cacheKey] = clickableAreas;
+        
+        final webviewDuration = DateTime.now().difference(webviewStart).inMilliseconds;
+        print('[Polsat] ⏱️ WebView extraction completed in ${webviewDuration}ms, found ${clickableAreas.length} clickable areas (cached)');
+      }
 
       // Determina max sottopagine solo per subPage == 1
       int maxSubPages = 1;
@@ -97,16 +118,22 @@ class PolsatProvider implements TeletextProvider {
         );
         if (cached != null) {
           maxSubPages = cached;
-          print('[Polsat] Using cached maxSubPages: $maxSubPages');
+          print('[Polsat] ⚡ Using cached maxSubPages: $maxSubPages');
         } else {
           // Probing sequenziale (come Zattoo)
+          final probingStart = DateTime.now();
+          print('[Polsat] 🔎 Starting subpage detection...');
+          
           maxSubPages = await _detectMaxSubPages(pageNumber);
+          
+          final probingDuration = DateTime.now().difference(probingStart).inMilliseconds;
+          print('[Polsat] ⏱️ Subpage detection completed in ${probingDuration}ms, found $maxSubPages subpages');
+          
           SubpageCacheService.cacheSubpageCount(
             providerId: providerId,
             pageNumber: pageNumber,
             maxSubPages: maxSubPages,
           );
-          print('[Polsat] Detected and cached maxSubPages: $maxSubPages');
         }
       } else {
         // Per subPage > 1, usa cache o default a 1
@@ -115,6 +142,9 @@ class PolsatProvider implements TeletextProvider {
           pageNumber: pageNumber,
         ) ?? 1;
       }
+
+      final totalDuration = DateTime.now().difference(startTime).inMilliseconds;
+      print('[Polsat] ✅ Total page load time: ${totalDuration}ms');
 
       return TelevideoPage(
         pageNumber: pageNumber,
@@ -131,10 +161,12 @@ class PolsatProvider implements TeletextProvider {
           'originalUrl': '$_baseUrl#0-$pageNumber-$subPage',
           'imageUrl': imageUrl,
           'linksCount': clickableAreas.length,
+          'loadTime': totalDuration,
         },
       );
     } catch (e) {
-      print('[Polsat] Error fetching page: $e');
+      final errorDuration = DateTime.now().difference(startTime).inMilliseconds;
+      print('[Polsat] ❌ Error fetching page after ${errorDuration}ms: $e');
       rethrow;
     }
   }
@@ -144,13 +176,15 @@ class PolsatProvider implements TeletextProvider {
     int pageNumber,
     int subPage,
   ) async {
+    final methodStart = DateTime.now();
     final clickableAreas = <ClickableArea>[];
     
     try {
       // SEMPRE carica sottopagina 1 per inizializzare JavaScript correttamente
       final pageUrl = '$_baseUrl#0-$pageNumber-1';
-      print('[Polsat] Loading URL in WebView (always subpage 1): $pageUrl');
+      print('[Polsat]   📄 Loading URL in WebView (always subpage 1): $pageUrl');
       
+      final webviewCreateStart = DateTime.now();
       // Crea WebViewController
       final controller = WebViewController()
         ..setJavaScriptMode(JavaScriptMode.unrestricted)
@@ -166,15 +200,86 @@ class PolsatProvider implements TeletextProvider {
       await controller.clearCache();
       await controller.clearLocalStorage();
       
-      print('[Polsat] Loading fresh page (cache cleared): $pageUrl');
+      final loadStart = DateTime.now();
+      print('[Polsat]   🌐 Loading fresh page (cache cleared)...');
       await controller.loadRequest(Uri.parse(pageUrl));
       
-      // Aspetta che la pagina sia caricata (ridotto a 500ms)
+      // Aspetta che la pagina sia caricata
       await Future.delayed(const Duration(milliseconds: 500));
+      
+      final loadDuration = DateTime.now().difference(loadStart).inMilliseconds;
+      print('[Polsat]   ⏱️ Page loaded in ${loadDuration}ms');
+      
+      // Setup per aspettare che l'immagine sia pronta e forzare dimensioni
+      await controller.runJavaScript(
+        '''
+        (function() {
+          const img = document.querySelector('img');
+          if (img) {
+            window.polsatImageLoaded = false;
+            window.polsatImageDimensions = { width: 0, height: 0 };
+            
+            function forceDimensions() {
+              console.log('[Polsat JS] Subpage 1 - Before force: img.width=' + img.width + ', offsetWidth=' + img.offsetWidth);
+              
+              img.width = 480;
+              img.height = 336;
+              img.setAttribute('width', '480');
+              img.setAttribute('height', '336');
+              img.style.width = '480px';
+              img.style.height = '336px';
+              img.style.minWidth = '480px';
+              img.style.minHeight = '336px';
+              
+              console.log('[Polsat JS] Subpage 1 - After force: img.width=' + img.width);
+              window.polsatImageDimensions = { width: 480, height: 336 };
+              window.polsatImageLoaded = true;
+            }
+            
+            if (img.complete && img.naturalWidth > 0) {
+              console.log('[Polsat JS] Subpage 1 image already loaded');
+              setTimeout(forceDimensions, 50);
+            } else {
+              console.log('[Polsat JS] Waiting for subpage 1 image to load...');
+              img.onload = function() {
+                console.log('[Polsat JS] Subpage 1 image loaded, naturalWidth=' + img.naturalWidth);
+                setTimeout(forceDimensions, 50);
+              };
+            }
+          }
+        })();
+        '''
+      );
+      
+      // Aspetta che l'immagine di subpage 1 sia pronta
+      if (subPage == 1) {
+        print('[Polsat]   ⏳ Waiting for subpage 1 image to be ready...');
+        await Future.delayed(const Duration(milliseconds: 200));
+        
+        int attempts = 0;
+        bool imageReady = false;
+        while (attempts < 25) {
+          await Future.delayed(const Duration(milliseconds: 100));
+          attempts++;
+          
+          final loaded = await controller.runJavaScriptReturningResult('window.polsatImageLoaded || false');
+          if (loaded.toString() == 'true') {
+            final imgWidth = await controller.runJavaScriptReturningResult('document.querySelector("img").width');
+            print('[Polsat]   📐 Subpage 1 image ready: img.width=$imgWidth');
+            imageReady = true;
+            break;
+          }
+        }
+        
+        if (!imageReady) {
+          print('[Polsat]   ⚠️ WARNING: Subpage 1 image timeout, forcing anyway');
+        }
+      }
       
       // Se richiesta sottopagina > 1, modifica l'URL dell'immagine
       if (subPage > 1) {
-        print('[Polsat] Requested subpage $subPage > 1, modifying image URL...');
+        final modifyStart = DateTime.now();
+        print('[Polsat]   🔄 Requested subpage $subPage > 1, modifying image URL...');
         
         final subPagePadded = subPage.toString().padLeft(4, '0');
         await controller.runJavaScript(
@@ -193,33 +298,87 @@ class PolsatProvider implements TeletextProvider {
               
               // Flag per tracciare caricamento
               window.polsatImageLoaded = false;
+              window.polsatImageDimensions = { width: 0, height: 0 };
               
               img.onload = function() {
-                console.log('[Polsat JS] Subpage $subPage image loaded');
-                window.polsatImageLoaded = true;
+                console.log('[Polsat JS] Subpage $subPage image loaded, naturalWidth=' + img.naturalWidth);
+                
+                // Aspetta un tick prima di forzare dimensioni (per assicurarsi che l'immagine sia renderizzata)
+                setTimeout(function() {
+                  console.log('[Polsat JS] Before force: img.width=' + img.width + ', offsetWidth=' + img.offsetWidth);
+                  
+                  // FORZA dimensioni in tutti i modi possibili
+                  img.width = 480;
+                  img.height = 336;
+                  img.setAttribute('width', '480');
+                  img.setAttribute('height', '336');
+                  img.style.width = '480px';
+                  img.style.height = '336px';
+                  img.style.minWidth = '480px';
+                  img.style.minHeight = '336px';
+                  img.style.display = 'block';
+                  
+                  console.log('[Polsat JS] After force: img.width=' + img.width + ', offsetWidth=' + img.offsetWidth);
+                  window.polsatImageDimensions = { width: 480, height: 336 };
+                  window.polsatImageLoaded = true;
+                }, 50);
+              };
+              
+              img.onerror = function(e) {
+                console.error('[Polsat JS] Image loading error:', e);
+                window.polsatImageLoaded = false;
               };
               
               img.src = newSrc;
+              
+              // Fallback: controlla se già caricata (dopo 100ms)
+              setTimeout(function() {
+                if (img.complete && img.naturalWidth > 0 && !window.polsatImageLoaded) {
+                  console.log('[Polsat JS] Image already complete (fallback), forcing dimensions...');
+                  img.width = 480;
+                  img.height = 336;
+                  img.setAttribute('width', '480');
+                  img.setAttribute('height', '336');
+                  img.style.width = '480px';
+                  img.style.height = '336px';
+                  window.polsatImageDimensions = { width: 480, height: 336 };
+                  window.polsatImageLoaded = true;
+                }
+              }, 100);
             }
           })();
           '''
         );
         
         // Aspetta che l'immagine sia caricata (polling intelligente)
+        // Aspetta almeno 200ms per dare tempo al setTimeout(50ms) di eseguire
+        await Future.delayed(const Duration(milliseconds: 200));
+        
         int attempts = 0;
-        while (attempts < 20) { // Max 2 secondi
+        bool imageLoaded = false;
+        while (attempts < 25) { // Max 2.5 secondi dopo il delay iniziale
           await Future.delayed(const Duration(milliseconds: 100));
           attempts++;
           
           final loaded = await controller.runJavaScriptReturningResult('window.polsatImageLoaded || false');
           if (loaded.toString() == 'true') {
-            print('[Polsat] Subpage image loaded after ${attempts * 100}ms');
+            final dims = await controller.runJavaScriptReturningResult('JSON.stringify(window.polsatImageDimensions)');
+            final imgWidth = await controller.runJavaScriptReturningResult('document.querySelector("img").width');
+            print('[Polsat]   📐 Dimensions after load: $dims, actual img.width=$imgWidth');
+            
+            final modifyDuration = DateTime.now().difference(modifyStart).inMilliseconds;
+            print('[Polsat]   ⏱️ Subpage image modified and loaded in ${modifyDuration}ms');
+            imageLoaded = true;
             break;
           }
         }
+        
+        if (!imageLoaded) {
+          print('[Polsat]   ⚠️ WARNING: Image load timeout after ${200 + attempts * 100}ms');
+        }
       }
       
-      // Aspetta che l'immagine sia completamente caricata e POI chiama recognize()
+      // Chiama recognize() (per subpage > 1, dimensioni già forzate in onload)
       await controller.runJavaScript(
         '''
         (function() {
@@ -227,60 +386,29 @@ class PolsatProvider implements TeletextProvider {
           const map = document.querySelector('map[name="links"]');
           
           if (img && map && typeof recognize === 'function') {
-            console.log('[Polsat JS] Current img.width=' + img.width + ', img.height=' + img.height);
+            console.log('[Polsat JS] Preparing recognize()...');
+            console.log('[Polsat JS] img.width=' + img.width + ', img.height=' + img.height);
+            console.log('[Polsat JS] img.naturalWidth=' + img.naturalWidth + ', img.complete=' + img.complete);
             
-            // Funzione per chiamare recognize quando immagine è pronta
-            function callRecognizeWhenReady() {
-              console.log('[Polsat JS] BEFORE force - img.width=' + img.width + ', img.clientWidth=' + img.clientWidth + ', img.offsetWidth=' + img.offsetWidth);
-              
-              // Pulisci la mappa esistente
-              map.innerHTML = '';
-              
-              // Forza dimensioni corrette in tutti i modi possibili
+            // Pulisci la mappa esistente
+            map.innerHTML = '';
+            
+            // Per subpage 1, forza dimensioni (per subpage > 1 già fatto)
+            if (img.width === 0) {
+              console.log('[Polsat JS] WARNING: img.width=0, forcing dimensions...');
               img.width = 480;
               img.height = 336;
               img.setAttribute('width', '480');
               img.setAttribute('height', '336');
               img.style.width = '480px';
               img.style.height = '336px';
-              img.style.maxWidth = '480px';
-              img.style.maxHeight = '336px';
-              
-              console.log('[Polsat JS] AFTER force - img.width=' + img.width + ', img.clientWidth=' + img.clientWidth + ', img.offsetWidth=' + img.offsetWidth);
-              
-              // Chiama recognize() con dimensioni corrette
-              recognize();
-              
-              console.log('[Polsat JS] recognize() called, checking map...');
-              setTimeout(function() {
-                const areas = map.querySelectorAll('area');
-                console.log('[Polsat JS] Map has ' + areas.length + ' areas after recognize()');
-                if (areas.length > 0) {
-                  console.log('[Polsat JS] First area coords: ' + areas[0].getAttribute('coords'));
-                }
-              }, 100);
+              console.log('[Polsat JS] After force: img.width=' + img.width);
             }
             
-            // Se l'immagine è già caricata
-            if (img.complete && img.naturalWidth > 0) {
-              console.log('[Polsat JS] Image already loaded');
-              callRecognizeWhenReady();
-            } else {
-              // Aspetta l'evento onload
-              console.log('[Polsat JS] Waiting for image to load...');
-              img.onload = function() {
-                console.log('[Polsat JS] Image loaded! naturalWidth=' + img.naturalWidth);
-                callRecognizeWhenReady();
-              };
-              
-              // Fallback dopo 3 secondi
-              setTimeout(function() {
-                if (map.querySelectorAll('area').length === 0) {
-                  console.log('[Polsat JS] Timeout fallback - forcing recognize()');
-                  callRecognizeWhenReady();
-                }
-              }, 3000);
-            }
+            // Chiama recognize()
+            console.log('[Polsat JS] Calling recognize()...');
+            recognize();
+            console.log('[Polsat JS] recognize() called');
           } else {
             console.log('[Polsat JS] Error: img=' + !!img + ', map=' + !!map + ', recognize=' + (typeof recognize));
           }
@@ -290,10 +418,16 @@ class PolsatProvider implements TeletextProvider {
       
       // Aspetta che recognize() completi il pattern matching
       // recognize() è asincrono (usa Web Workers), quindi aspettiamo un po'
-      print('[Polsat] Waiting for recognize() to complete pattern matching...');
-      await Future.delayed(const Duration(seconds: 3));
+      // Ridotto a 1.5s per velocizzare il caricamento
+      final recognizeStart = DateTime.now();
+      print('[Polsat]   🤖 Waiting for recognize() to complete pattern matching...');
+      await Future.delayed(const Duration(milliseconds: 1500));
+      
+      final recognizeDuration = DateTime.now().difference(recognizeStart).inMilliseconds;
+      print('[Polsat]   ⏱️ recognize() wait completed in ${recognizeDuration}ms');
       
       // Estrai l'HTML della mappa
+      final extractStart = DateTime.now();
       final result = await controller.runJavaScriptReturningResult(
         '''
         (function() {
@@ -305,7 +439,8 @@ class PolsatProvider implements TeletextProvider {
       );
       final mapHtml = result.toString();
       
-      print('[Polsat] Map HTML extracted: ${mapHtml.toString().length} chars');
+      final extractDuration = DateTime.now().difference(extractStart).inMilliseconds;
+      print('[Polsat]   ⏱️ Map HTML extracted in ${extractDuration}ms: ${mapHtml.length} chars');
       
       // Fai parsing dell'HTML estratto
       if (mapHtml != null && mapHtml.toString().isNotEmpty) {
@@ -377,60 +512,89 @@ class PolsatProvider implements TeletextProvider {
         }
       }
       
-      print('[Polsat] Total clickable areas extracted: ${clickableAreas.length}');
+      final methodDuration = DateTime.now().difference(methodStart).inMilliseconds;
+      print('[Polsat]   ✅ Total WebView extraction time: ${methodDuration}ms, extracted ${clickableAreas.length} areas');
     } catch (e) {
-      print('[Polsat] Error in WebView extraction: $e');
+      final errorDuration = DateTime.now().difference(methodStart).inMilliseconds;
+      print('[Polsat]   ❌ Error in WebView extraction after ${errorDuration}ms: $e');
     }
     
     return clickableAreas;
   }
 
-  /// Rileva numero massimo di sottopagine tramite probing sequenziale
+  /// Rileva numero massimo di sottopagine con ricerca esponenziale + binaria
   Future<int> _detectMaxSubPages(int pageNumber) async {
-    print('[Polsat] Starting subpage detection for page $pageNumber');
+    print('[Polsat] 🔍 Starting optimized subpage detection for page $pageNumber');
     
-    int maxSubPages = 1;
+    // Fase 1: Ricerca esponenziale (2, 4, 8, 16, 32, 64, 128...)
+    int lowerBound = 1; // Sappiamo che esiste almeno subpage 1
+    int upperBound = 1;
+    int probedSubpage = 2;
     
-    // Prova sottopagine da 2 fino a 30
-    for (int subPage = 2; subPage <= 30; subPage++) {
-      // Costruisci URL immagine per questa sottopagina
-      final firstDigit = pageNumber.toString()[0];
-      final subPagePadded = subPage.toString().padLeft(2, '0');
-      final imagePath = '${firstDigit}00/${pageNumber}_00$subPagePadded.png';
-      final polsatBaseUrl = 'http://gazetatvpolsat.pl/';
-      final probeImageUrl = 'https://images.weserv.nl/?url=$polsatBaseUrl$imagePath&maxage=1d';
+    print('[Polsat]   Phase 1: Exponential search...');
+    
+    while (probedSubpage <= 128) { // Max 128 sottopagine
+      final exists = await _checkSubpageExists(pageNumber, probedSubpage);
       
-      try {
-        print('[Polsat] Probing subpage $subPage: $probeImageUrl');
-        
-        // Fai una richiesta HEAD per verificare se l'immagine esiste
-        final response = await _dio.head(
-          probeImageUrl,
-          options: Options(
-            validateStatus: (status) => status! < 500,
-          ),
-        );
-        
-        if (response.statusCode == 404) {
-          print('[Polsat] Subpage $subPage does not exist (404)');
-          break;
-        }
-        
-        if (response.statusCode == 200) {
-          maxSubPages = subPage;
-          print('[Polsat] Subpage $subPage exists');
-        } else {
-          print('[Polsat] Unexpected status ${response.statusCode} for subpage $subPage');
-          break;
-        }
-      } catch (e) {
-        print('[Polsat] Error probing subpage $subPage: $e');
+      if (exists) {
+        print('[Polsat]   ✅ Subpage $probedSubpage exists');
+        lowerBound = probedSubpage;
+        upperBound = probedSubpage * 2;
+        probedSubpage = probedSubpage * 2;
+      } else {
+        print('[Polsat]   ❌ Subpage $probedSubpage not found');
+        upperBound = probedSubpage;
         break;
       }
     }
     
-    print('[Polsat] Max subpages detected: $maxSubPages');
-    return maxSubPages;
+    // Se abbiamo raggiunto il limite senza trovare un KO, il max è 128+
+    if (lowerBound == 128) {
+      print('[Polsat]   ⚠️ Reached max limit (128), stopping search');
+      return 128;
+    }
+    
+    // Fase 2: Ricerca binaria nel range [lowerBound, upperBound]
+    print('[Polsat]   Phase 2: Binary search in range [$lowerBound, $upperBound]...');
+    
+    while (lowerBound < upperBound - 1) {
+      final mid = (lowerBound + upperBound) ~/ 2;
+      final exists = await _checkSubpageExists(pageNumber, mid);
+      
+      if (exists) {
+        print('[Polsat]   ✅ Subpage $mid exists');
+        lowerBound = mid;
+      } else {
+        print('[Polsat]   ❌ Subpage $mid not found');
+        upperBound = mid;
+      }
+    }
+    
+    print('[Polsat]   🎯 Max subpage found: $lowerBound');
+    return lowerBound;
+  }
+  
+  /// Verifica se una sottopagina esiste (HEAD request)
+  Future<bool> _checkSubpageExists(int pageNumber, int subPage) async {
+    final firstDigit = pageNumber.toString()[0];
+    final subPagePadded = subPage.toString().padLeft(2, '0');
+    final imagePath = '${firstDigit}00/${pageNumber}_00$subPagePadded.png';
+    final polsatBaseUrl = 'http://gazetatvpolsat.pl/';
+    final probeImageUrl = 'https://images.weserv.nl/?url=$polsatBaseUrl$imagePath&maxage=1d';
+    
+    try {
+      final response = await _dio.head(
+        probeImageUrl,
+        options: Options(
+          validateStatus: (status) => status! < 500,
+        ),
+      );
+      
+      return response.statusCode == 200;
+    } catch (e) {
+      print('[Polsat]   ⚠️ Error checking subpage $subPage: $e');
+      return false;
+    }
   }
 
   @override
