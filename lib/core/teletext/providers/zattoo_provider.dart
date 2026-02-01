@@ -105,6 +105,17 @@ class ZattooProvider implements TeletextProvider {
     );
   }
 
+  /// Factory per RTL (Germania)
+  factory ZattooProvider.rtl() {
+    return ZattooProvider(
+      channelId: 'rtl',
+      providerId: 'rtl_text',
+      providerName: 'RTL Text',
+      countryCode: 'DE',
+      apiDomain: 'zattoo-abox',
+    );
+  }
+
   String get _baseUrl => 'https://$_apiDomain.zattoo.com/teletext/$_channelId/hd/';
 
   @override

@@ -18,7 +18,6 @@ import 'package:cursor_televideo/shared/widgets/error_page_view.dart';
 import 'package:cursor_televideo/core/analytics/analytics_service.dart';
 import 'package:cursor_televideo/features/televideo_viewer/presentation/widgets/auto_refresh_overlay.dart';
 import 'package:cursor_televideo/core/l10n/app_localizations.dart';
-import 'package:cursor_televideo/features/televideo_viewer/presentation/widgets/rtl_html_teletext_viewer.dart';
 import 'package:cursor_televideo/features/televideo_viewer/presentation/widgets/ard_html_teletext_viewer.dart';
 import 'package:cursor_televideo/features/televideo_viewer/presentation/widgets/br_html_teletext_viewer.dart';
 import 'package:cursor_televideo/features/televideo_viewer/presentation/widgets/wdr_html_teletext_viewer.dart';
@@ -327,7 +326,6 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
     // Determina quale viewer usare in base al provider
     print('[TelevideoViewer] _buildHtmlViewer called with providerId: ${page.providerId}');
     
-    final isRTL = page.providerId == 'rtl_text';
     final isZDF = page.providerId == 'zdf_text' || 
                   page.providerId == 'zdfinfo_text' || 
                   page.providerId == 'zdfneo_text' || 
@@ -342,21 +340,9 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
     final isSR = page.providerId == 'sr_text';
     final isNDR = page.providerId == 'ndr_text';
     
-    print('[TelevideoViewer] Viewer selection - isRTL: $isRTL, isIceland: $isIceland, isZDF: $isZDF, isNOS: $isNOS, isBR: $isBR, isWDR: $isWDR, isSWR: $isSWR, isHR: $isHR, isSR: $isSR, isNDR: $isNDR');
+    print('[TelevideoViewer] Viewer selection - isIceland: $isIceland, isZDF: $isZDF, isNOS: $isNOS, isBR: $isBR, isWDR: $isWDR, isSWR: $isSWR, isHR: $isHR, isSR: $isSR, isNDR: $isNDR');
     
-    if (isRTL) {
-      print('[TelevideoViewer] Using RTLHtmlTeletextViewer');
-      return RTLHtmlTeletextViewer(
-        key: ValueKey('rtl_${page.pageNumber}_$currentSubPage'),
-        page: page,
-        onPageNavigation: (pageNumber) {
-          if (widget.onPageNumberSubmitted != null) {
-            widget.onPageNumberSubmitted!(pageNumber);
-          }
-        },
-        onTap: () => _handlePageTap(page),
-      );
-    } else if (isIceland) {
+    if (isIceland) {
       print('[TelevideoViewer] Using IcelandHtmlTeletextViewer');
       return IcelandHtmlTeletextViewer(
         key: ValueKey('iceland_${page.pageNumber}_$currentSubPage'),
@@ -740,8 +726,9 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
                widget.page.providerId == 'ard_alpha_text' ||
                widget.page.providerId == 'phoenix_text' ||
                widget.page.providerId == 'ntv_text' ||
-               widget.page.providerId == 'vox_text') {
-      // Zattoo (ARTE, RBB, MDR, ARD Alpha, Phoenix, n-tv, VOX): 492x500
+               widget.page.providerId == 'vox_text' ||
+               widget.page.providerId == 'rtl_text') {
+      // Zattoo (ARTE, RBB, MDR, ARD Alpha, Phoenix, n-tv, VOX, RTL): 492x500
       // Dimensioni standard per tutti i canali Zattoo
       originalWidth = 492.0;
       originalHeight = 500.0;

@@ -126,87 +126,82 @@ class _HRHtmlTeletextViewerState extends State<HRHtmlTeletextViewer> {
       return '<html><body style="background: #000; color: #fff;">Nessun contenuto disponibile</body></html>';
     }
     
+    // Aggiungi CSS di base: lo scaling reale viene calcolato via JS
+    final scalingCss = '''
+      <style id="flutter-hr-scaling">
+        * { box-sizing: border-box; }
+        html, body {
+          background: #000 !important;
+          margin: 0;
+          padding: 0;
+          width: 100%;
+          height: 100%;
+          overflow: hidden;
+        }
+        #ttxContainer {
+          transform-origin: top left !important;
+          position: relative !important;
+          display: inline-block !important;
+          opacity: 0;
+        }
+        #ttxPage {
+          width: 100% !important;
+          height: auto !important;
+        }
+      </style>
+    ''';
+
+    final html = baseHtml.replaceFirst('</head>', '$scalingCss</head>');
+
     // Aggiungi JavaScript per lo scaling dinamico e la navigazione
     final jsScript = '''
-      <script id="flutter-hr-scaling">
-        function applyScaling() {
+      <script id="flutter-hr-scaling-script">
+        function applyHRScale() {
           try {
             const container = document.getElementById('ttxContainer');
-            const page = document.getElementById('ttxPage');
-            if (!container || !page) {
-              console.error('HR: container or page not found');
-              return;
-            }
-
-            // Misura le dimensioni reali del contenuto
-            const contentWidth = page.scrollWidth;
-            const contentHeight = page.scrollHeight;
-            
-            // Calcola lo scale in base al viewport
-            const viewportWidth = window.innerWidth;
-            const viewportHeight = window.innerHeight;
-            
-            const scaleX = viewportWidth / contentWidth;
-            const scaleY = viewportHeight / contentHeight;
-            
-            // Determina il device type
-            const aspectRatio = viewportWidth / viewportHeight;
-            let maxYRatio;
-            
-            if (aspectRatio > 1.5) {
-              // iPad landscape
-              maxYRatio = 1.15;
-            } else if (aspectRatio > 0.7) {
-              // iPad portrait
-              maxYRatio = 1.35;
-            } else {
-              // iPhone
-              maxYRatio = 1.60;
-            }
-            
-            // Usa scaleX per la larghezza, limita scaleY
+            const page = document.getElementById('ttxPage') || container;
+            if (!container || !page) return;
+            const contentW = page.scrollWidth || page.clientWidth;
+            const contentH = page.scrollHeight || page.clientHeight;
+            if (!contentW || !contentH) return;
+            // Small safe inset to avoid cropping on some simulators
+            // Reduce X inset on narrow screens to avoid right black margin
+            const insetY = 18;
+            const aspectRatio = window.innerWidth / window.innerHeight;
+            const insetX = aspectRatio < 0.7 ? 2 : 8;
+            const vw = window.innerWidth - insetX;
+            const vh = window.innerHeight - insetY;
+            const scaleX = vw / contentW;
+            const scaleY = vh / contentH;
+            const ar = vw / vh;
+            const maxYRatio = ar > 0.9 ? 1.15 : (ar > 0.7 ? 1.35 : 1.6);
             const finalScaleY = Math.min(scaleY, scaleX * maxYRatio);
-            
-            // Applica la trasformazione
-            container.style.transform = 'scale(' + scaleX + ', ' + finalScaleY + ')';
+            container.style.width = contentW + 'px';
+            container.style.height = contentH + 'px';
             container.style.transformOrigin = 'top left';
-            container.style.width = contentWidth + 'px';
-            container.style.height = contentHeight + 'px';
-            container.style.position = 'relative';
-            
-            // Invia telemetria
+            container.style.transform = 'translate(4px,4px) scale(' + scaleX + ',' + finalScaleY + ')';
+            container.style.opacity = '1';
             if (typeof HRDebug !== 'undefined') {
-              const info = {
+              HRDebug.postMessage(JSON.stringify({
                 phase: 'scaled',
-                viewport: { w: viewportWidth, h: viewportHeight },
-                content: { w: contentWidth, h: contentHeight },
-                scale: { x: scaleX, y: finalScaleY },
-                aspectRatio: aspectRatio,
-                maxYRatio: maxYRatio
-              };
-              HRDebug.postMessage(JSON.stringify(info));
+                content: { w: contentW, h: contentH },
+                viewport: { w: vw, h: vh },
+                scale: { x: scaleX, y: finalScaleY }
+              }));
             }
           } catch (e) {
-            console.error('HR scaling error:', e);
             if (typeof HRDebug !== 'undefined') {
               HRDebug.postMessage('error:' + e.toString());
             }
           }
         }
 
-        // Applica lo scaling quando il DOM è pronto
-        if (document.readyState === 'loading') {
-          document.addEventListener('DOMContentLoaded', function() {
-            setTimeout(applyScaling, 50);
-          });
-        } else {
-          setTimeout(applyScaling, 50);
-        }
-        
-        // Riapplica su resize
-        window.addEventListener('resize', function() {
-          setTimeout(applyScaling, 50);
+        window.addEventListener('load', function() {
+          applyHRScale();
+          setTimeout(applyHRScale, 50);
+          setTimeout(applyHRScale, 200);
         });
+        window.addEventListener('resize', applyHRScale);
 
         // Intercetta i click sui link per la navigazione tra pagine
         document.addEventListener('click', function(e) {
@@ -237,7 +232,7 @@ class _HRHtmlTeletextViewerState extends State<HRHtmlTeletextViewer> {
       </script>
     ''';
     
-    return baseHtml.replaceFirst('</body>', '$jsScript</body>');
+    return html.replaceFirst('</body>', '$jsScript</body>');
   }
 
   @override

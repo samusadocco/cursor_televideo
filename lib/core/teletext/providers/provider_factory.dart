@@ -51,8 +51,8 @@ class TeletextProviderFactory {
       // RAI Televideo (Italia)
       provider = RAIProvider();
     } else if (channel.id == 'rtl_text') {
-      // RTL Text (Germania)
-      provider = RtlProvider();
+      // RTL Text (Germania) - Piattaforma Zattoo con OCR
+      provider = ZattooProvider.rtl();
     } else if (channel.id == 'ard_text') {
       // ARD Text (Germania)
       provider = ARDProvider();

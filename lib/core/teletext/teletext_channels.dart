@@ -686,20 +686,19 @@ class TeletextChannels {
       supportsRegions: false,
     ),
     
-    // ⚠️ TEMPORANEAMENTE DISABILITATO - In fase di perfezionamento visualizzazione
-    // // 🇩🇪 GERMANIA - RTL
-    // TeletextChannel(
-    //   id: 'rtl_text',
-    //   name: 'RTL Text',
-    //   shortName: 'RTL',
-    //   countryCode: 'DE',
-    //   countryName: 'Germania',
-    //   flagEmoji: '🇩🇪',
-    //   broadcasterName: 'RTL',
-    //   type: TeletextChannelType.national,
-    //   baseUrl: 'http://193.16.161.100/teletext/rtl',
-    //   supportsRegions: false,
-    // ),
+    // 🇩🇪 GERMANIA - RTL (Zattoo platform con OCR)
+    TeletextChannel(
+      id: 'rtl_text',
+      name: 'RTL Text',
+      shortName: 'RTL',
+      countryCode: 'DE',
+      countryName: 'Germania',
+      flagEmoji: '🇩🇪',
+      broadcasterName: 'RTL',
+      type: TeletextChannelType.national,
+      baseUrl: 'https://zattoo-abox.zattoo.com/teletext/rtl/hd',
+      supportsRegions: false,
+    ),
     
     // 🇨🇭 SVIZZERA - RSI LA 1
     TeletextChannel(
