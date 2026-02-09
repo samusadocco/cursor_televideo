@@ -23,6 +23,13 @@ _$TeletextChannelImpl _$$TeletextChannelImplFromJson(
       regions:
           (json['regions'] as List<dynamic>?)?.map((e) => e as String).toList(),
       isActive: json['isActive'] as bool? ?? true,
+      shortcuts: (json['shortcuts'] as Map<String, dynamic>?)?.map(
+        (k, e) => MapEntry(int.parse(k), e as String),
+      ),
+      pageDescriptions:
+          (json['pageDescriptions'] as Map<String, dynamic>?)?.map(
+        (k, e) => MapEntry(int.parse(k), e as String),
+      ),
     );
 
 Map<String, dynamic> _$$TeletextChannelImplToJson(
@@ -41,6 +48,9 @@ Map<String, dynamic> _$$TeletextChannelImplToJson(
       'supportsRegions': instance.supportsRegions,
       'regions': instance.regions,
       'isActive': instance.isActive,
+      'shortcuts': instance.shortcuts?.map((k, e) => MapEntry(k.toString(), e)),
+      'pageDescriptions':
+          instance.pageDescriptions?.map((k, e) => MapEntry(k.toString(), e)),
     };
 
 const _$TeletextChannelTypeEnumMap = {

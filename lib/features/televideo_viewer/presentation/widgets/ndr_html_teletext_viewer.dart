@@ -33,6 +33,7 @@ class _NDRHtmlTeletextViewerState extends State<NDRHtmlTeletextViewer> {
     _controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setBackgroundColor(Colors.black)
+      ..enableZoom(false)
       ..addJavaScriptChannel(
         'PageTapped',
         onMessageReceived: (JavaScriptMessage message) {
@@ -43,14 +44,12 @@ class _NDRHtmlTeletextViewerState extends State<NDRHtmlTeletextViewer> {
       ..setNavigationDelegate(
         NavigationDelegate(
           onPageFinished: (String url) {
-            // Aggiungi un piccolo delay per il fade-in
-            Future.delayed(const Duration(milliseconds: 100), () {
-              if (mounted) {
-                setState(() {
-                  _isLoading = false;
-                });
-              }
-            });
+            // Rimuovi loading immediatamente, il fade-in CSS interno gestisce la transizione
+            if (mounted) {
+              setState(() {
+                _isLoading = false;
+              });
+            }
           },
           onNavigationRequest: (NavigationRequest request) {
             // Intercetta click sui link

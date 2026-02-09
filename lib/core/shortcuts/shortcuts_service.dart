@@ -393,14 +393,187 @@ class ShortcutsService {
   // RTL Text (Germania)
   final List<ShortcutPage> _rtlShortcuts = [
     const ShortcutPage(pageNumber: 100, title: 'Startseite'),
-    const ShortcutPage(pageNumber: 102, title: 'Nachrichten'),
-    const ShortcutPage(pageNumber: 110, title: 'Wetter'),
-    const ShortcutPage(pageNumber: 144, title: 'RTL aktuell'),
-    const ShortcutPage(pageNumber: 150, title: 'Guten Morgen Deutschland'),
-    const ShortcutPage(pageNumber: 180, title: 'Punkt 12'),
+    const ShortcutPage(pageNumber: 101, title: 'Index'),
+    const ShortcutPage(pageNumber: 102, title: 'Inhalt'),
+    const ShortcutPage(pageNumber: 110, title: 'News'),
+    const ShortcutPage(pageNumber: 180, title: 'Wetter'),
     const ShortcutPage(pageNumber: 200, title: 'Sport'),
     const ShortcutPage(pageNumber: 300, title: 'TV-Programm'),
+    const ShortcutPage(pageNumber: 400, title: 'Ratgeber'),
+    const ShortcutPage(pageNumber: 500, title: 'Reisen'),
+  ];
+
+  // NDR Text (Norddeutscher Rundfunk)
+  final List<ShortcutPage> _ndrShortcuts = [
+    const ShortcutPage(pageNumber: 100, title: 'Start Seite'),
+    const ShortcutPage(pageNumber: 101, title: 'Inhalt (A-Z)'),
+    const ShortcutPage(pageNumber: 112, title: 'Nachrichten'),
+    const ShortcutPage(pageNumber: 120, title: 'Niedersachsen/Bremen'),
+    const ShortcutPage(pageNumber: 140, title: 'Schleswig-Holstein'),
+    const ShortcutPage(pageNumber: 160, title: 'Mecklenburg-Vorpommern'),
+    const ShortcutPage(pageNumber: 170, title: 'Hamburg'),
+    const ShortcutPage(pageNumber: 180, title: 'Inland/Ausland'),
+    const ShortcutPage(pageNumber: 200, title: 'Sport'),
+    const ShortcutPage(pageNumber: 300, title: 'Fernsehprogramm'),
+    const ShortcutPage(pageNumber: 400, title: 'Radio'),
+    const ShortcutPage(pageNumber: 500, title: 'Mein NDR'),
+    const ShortcutPage(pageNumber: 600, title: 'Service'),
+    const ShortcutPage(pageNumber: 650, title: 'Wetter'),
+    const ShortcutPage(pageNumber: 700, title: 'Verkehr'),
+  ];
+
+  // SWR Text Baden-Württemberg (Südwestrundfunk)
+  final List<ShortcutPage> _swrbwShortcuts = [
+    const ShortcutPage(pageNumber: 100, title: 'Startseite'),
+    const ShortcutPage(pageNumber: 102, title: 'Index A-Z'),
+    const ShortcutPage(pageNumber: 112, title: 'Nachrichten'),
+    const ShortcutPage(pageNumber: 151, title: 'Wetter'),
+    const ShortcutPage(pageNumber: 200, title: 'Sport'),
+    const ShortcutPage(pageNumber: 300, title: 'Fernsehen'),
+    const ShortcutPage(pageNumber: 400, title: 'Hörfunk'),
+    const ShortcutPage(pageNumber: 500, title: 'Reise+Verkehr'),
+    const ShortcutPage(pageNumber: 700, title: 'Service'),
+  ];
+
+  // SWR Text Rheinland-Pfalz (Südwestrundfunk)
+  final List<ShortcutPage> _swrrpShortcuts = [
+    const ShortcutPage(pageNumber: 100, title: 'Startseite'),
+    const ShortcutPage(pageNumber: 102, title: 'Index A-Z'),
+    const ShortcutPage(pageNumber: 112, title: 'Nachrichten'),
+    const ShortcutPage(pageNumber: 151, title: 'Wetter'),
+    const ShortcutPage(pageNumber: 200, title: 'Sport'),
+    const ShortcutPage(pageNumber: 300, title: 'Fernsehen'),
+    const ShortcutPage(pageNumber: 400, title: 'Hörfunk'),
+    const ShortcutPage(pageNumber: 500, title: 'Reise+Verkehr'),
+    const ShortcutPage(pageNumber: 700, title: 'Service'),
+  ];
+
+  // HR Text (Hessischer Rundfunk)
+  final List<ShortcutPage> _hrShortcuts = [
+    const ShortcutPage(pageNumber: 100, title: 'Übersicht'),
+    const ShortcutPage(pageNumber: 102, title: 'Inhalt A-Z'),
+    const ShortcutPage(pageNumber: 112, title: 'Nachrichten'),
+    const ShortcutPage(pageNumber: 170, title: 'Wetter Hessen'),
+    const ShortcutPage(pageNumber: 200, title: 'Sportmeldungen'),
+    const ShortcutPage(pageNumber: 300, title: 'hr-fernsehen'),
+    const ShortcutPage(pageNumber: 400, title: 'Hörfunk'),
+    const ShortcutPage(pageNumber: 500, title: 'Börse'),
+    const ShortcutPage(pageNumber: 570, title: 'Verkehrsinfos'),
+    const ShortcutPage(pageNumber: 620, title: 'Notrufnummern'),
+  ];
+
+  // SR Text (Saarländischer Rundfunk)
+  final List<ShortcutPage> _srShortcuts = [
+    const ShortcutPage(pageNumber: 100, title: 'Übersicht'),
+    const ShortcutPage(pageNumber: 110, title: 'Regionalnachrichten'),
+    const ShortcutPage(pageNumber: 160, title: 'Wetterübersicht'),
+    const ShortcutPage(pageNumber: 200, title: 'Sportübersicht'),
+    const ShortcutPage(pageNumber: 300, title: 'SR Fernsehen'),
+    const ShortcutPage(pageNumber: 400, title: 'Hörfunkübersicht'),
     const ShortcutPage(pageNumber: 500, title: 'Service'),
+    const ShortcutPage(pageNumber: 540, title: 'Verkehrsübersicht'),
+  ];
+
+  // RBB Text (Rundfunk Berlin-Brandenburg)
+  final List<ShortcutPage> _rbbShortcuts = [
+    const ShortcutPage(pageNumber: 100, title: 'Übersicht'),
+    const ShortcutPage(pageNumber: 101, title: 'Nachrichten'),
+    const ShortcutPage(pageNumber: 170, title: 'Wetter'),
+    const ShortcutPage(pageNumber: 200, title: 'Sport I'),
+    const ShortcutPage(pageNumber: 300, title: 'Fernsehen'),
+    const ShortcutPage(pageNumber: 480, title: 'Hörfunk'),
+    const ShortcutPage(pageNumber: 500, title: 'Sport II'),
+    const ShortcutPage(pageNumber: 600, title: 'Sport III'),
+  ];
+
+  // KiKA Text (Kinderkanal von ARD und ZDF)
+  final List<ShortcutPage> _kikaShortcuts = [
+    const ShortcutPage(pageNumber: 100, title: 'Inhalt'),
+    const ShortcutPage(pageNumber: 112, title: 'Mitmach-Aktionen'),
+    const ShortcutPage(pageNumber: 300, title: 'Programm'),
+    const ShortcutPage(pageNumber: 331, title: 'logo!'),
+    const ShortcutPage(pageNumber: 400, title: 'KIKANINCHEN'),
+    const ShortcutPage(pageNumber: 700, title: 'KiKA LIVE'),
+    const ShortcutPage(pageNumber: 780, title: 'Kinderrechte'),
+  ];
+
+  // ARTE Text
+  final List<ShortcutPage> _arteShortcuts = [
+    const ShortcutPage(pageNumber: 100, title: 'Übersicht'),
+    const ShortcutPage(pageNumber: 101, title: 'Inhaltsverzeichnis'),
+    const ShortcutPage(pageNumber: 105, title: 'Aus aller Welt'),
+    const ShortcutPage(pageNumber: 116, title: 'Kultur'),
+    const ShortcutPage(pageNumber: 200, title: 'TV-Service'),
+    const ShortcutPage(pageNumber: 300, title: 'Programm'),
+    const ShortcutPage(pageNumber: 380, title: 'Programm-Highlights'),
+  ];
+
+  // ARD alpha Text
+  final List<ShortcutPage> _ardAlphaShortcuts = [
+    const ShortcutPage(pageNumber: 100, title: 'Übersicht'),
+    const ShortcutPage(pageNumber: 101, title: 'Nachrichten'),
+    const ShortcutPage(pageNumber: 170, title: 'Wetter'),
+    const ShortcutPage(pageNumber: 200, title: 'Sport I'),
+    const ShortcutPage(pageNumber: 300, title: 'Fernsehen'),
+    const ShortcutPage(pageNumber: 400, title: 'Kultur'),
+    const ShortcutPage(pageNumber: 480, title: 'Hörfunk'),
+    const ShortcutPage(pageNumber: 500, title: 'Sport II'),
+    const ShortcutPage(pageNumber: 600, title: 'Sport III'),
+    const ShortcutPage(pageNumber: 720, title: 'Börse'),
+  ];
+
+  // Phoenix Text
+  final List<ShortcutPage> _phoenixShortcuts = [
+    const ShortcutPage(pageNumber: 100, title: 'Übersicht'),
+    const ShortcutPage(pageNumber: 101, title: 'Inhalt'),
+    const ShortcutPage(pageNumber: 110, title: 'Nachrichten'),
+    const ShortcutPage(pageNumber: 116, title: 'Politik'),
+    const ShortcutPage(pageNumber: 170, title: 'Wetter'),
+    const ShortcutPage(pageNumber: 202, title: 'Börse'),
+    const ShortcutPage(pageNumber: 300, title: 'Fernsehen'),
+    const ShortcutPage(pageNumber: 600, title: 'Programmbegleitung'),
+  ];
+
+  // n-tv Text
+  final List<ShortcutPage> _ntvShortcuts = [
+    const ShortcutPage(pageNumber: 100, title: 'Übersicht'),
+    const ShortcutPage(pageNumber: 101, title: 'Nachrichten Übersicht'),
+    const ShortcutPage(pageNumber: 140, title: 'Wetter'),
+    const ShortcutPage(pageNumber: 185, title: 'Sport / Fußball'),
+    const ShortcutPage(pageNumber: 200, title: 'Börse Deutsche Börsen'),
+    const ShortcutPage(pageNumber: 300, title: 'Auslands-Börsen'),
+    const ShortcutPage(pageNumber: 500, title: 'Programm n-tv'),
+  ];
+
+  // VOX Text
+  final List<ShortcutPage> _voxShortcuts = [
+    const ShortcutPage(pageNumber: 100, title: 'Übersicht'),
+    const ShortcutPage(pageNumber: 110, title: 'Aktuelles/News'),
+    const ShortcutPage(pageNumber: 150, title: 'Prominent/Stars'),
+    const ShortcutPage(pageNumber: 180, title: 'Wetter'),
+    const ShortcutPage(pageNumber: 200, title: 'Sport'),
+    const ShortcutPage(pageNumber: 300, title: 'Programm'),
+    const ShortcutPage(pageNumber: 400, title: 'Ratgeber'),
+  ];
+
+  // Omroep Zeeland Teletekst (Olanda)
+  final List<ShortcutPage> _omroepZeelandShortcuts = [
+    const ShortcutPage(pageNumber: 101, title: 'Zeeland Nu'),
+    const ShortcutPage(pageNumber: 200, title: 'Televisie'),
+    const ShortcutPage(pageNumber: 250, title: 'Radio'),
+    const ShortcutPage(pageNumber: 400, title: 'Weer'),
+    const ShortcutPage(pageNumber: 500, title: 'Adverteren'),
+    const ShortcutPage(pageNumber: 600, title: 'Sport'),
+  ];
+
+  // Polsat Teletekst (Polonia)
+  final List<ShortcutPage> _polsatShortcuts = [
+    const ShortcutPage(pageNumber: 109, title: 'Aktualności'),
+    const ShortcutPage(pageNumber: 200, title: 'Sport'),
+    const ShortcutPage(pageNumber: 300, title: 'Program telewizyjny'),
+    const ShortcutPage(pageNumber: 350, title: 'Cyfrowy Polsat'),
+    const ShortcutPage(pageNumber: 500, title: 'Ogłoszenia'),
+    const ShortcutPage(pageNumber: 715, title: 'Rozrywka'),
   ];
   
   // Croatian Teletext (Croazia - HRT)
@@ -630,6 +803,76 @@ class ShortcutsService {
     // RTL Text
     if (channelId == 'rtl_text') {
       return _rtlShortcuts;
+    }
+
+    // NDR Text
+    if (channelId == 'ndr_text') {
+      return _ndrShortcuts;
+    }
+
+    // SWR Text Baden-Württemberg
+    if (channelId == 'swr_bw') {
+      return _swrbwShortcuts;
+    }
+
+    // SWR Text Rheinland-Pfalz
+    if (channelId == 'swr_rp') {
+      return _swrrpShortcuts;
+    }
+
+    // HR Text
+    if (channelId == 'hr_text') {
+      return _hrShortcuts;
+    }
+
+    // SR Text
+    if (channelId == 'sr_text') {
+      return _srShortcuts;
+    }
+
+    // RBB Text
+    if (channelId == 'rbb_text') {
+      return _rbbShortcuts;
+    }
+
+    // KiKA Text
+    if (channelId == 'kika_text') {
+      return _kikaShortcuts;
+    }
+
+    // ARTE Text
+    if (channelId == 'arte_text') {
+      return _arteShortcuts;
+    }
+
+    // ARD alpha Text
+    if (channelId == 'ard_alpha_text') {
+      return _ardAlphaShortcuts;
+    }
+
+    // Phoenix Text
+    if (channelId == 'phoenix_text') {
+      return _phoenixShortcuts;
+    }
+
+    // n-tv Text
+    if (channelId == 'ntv_text') {
+      return _ntvShortcuts;
+    }
+
+    // VOX Text
+    if (channelId == 'vox_text') {
+      return _voxShortcuts;
+    }
+
+    // Omroep Zeeland Teletekst
+    if (channelId == 'omroepzeeland_teletekst') {
+      return _omroepZeelandShortcuts;
+    }
+
+    // Polsat Teletekst
+    if (channelId == 'polsat_telegazeta') {
+      return _polsatShortcuts;
     }
     
     // Croatian Teletext (HRT)

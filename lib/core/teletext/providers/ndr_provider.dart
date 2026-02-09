@@ -75,13 +75,18 @@ class NDRProvider implements TeletextProvider {
         throw Exception('Contenuto Teletext non trovato');
       }
 
-      final pageContent = txtElement.innerHtml;
+      var pageContent = txtElement.innerHtml;
       print('[NDR] Page content extracted: ${pageContent.length} chars');
       
       if (pageContent.trim().isEmpty) {
         print('[NDR] Warning: Page content is empty!');
         throw Exception('Contenuto pagina vuoto');
       }
+
+      // Converti caratteri Private Use Area (U+E000-U+F8FF) in quadratini
+      // Questi caratteri richiedono font custom non disponibili su device iOS fisici
+      pageContent = _replacePrivateUseAreaChars(pageContent);
+      print('[NDR] Private Use Area characters replaced with blocks');
 
       // Estrai info sottopagine da <pre class="hdr">
       // Esempio: <pre class="hdr"> <a id="kbd_left" href="193_01.htm">←</a><span id="pg">194</span><a id="kbd_right" href="195_01.htm">→</a>  1/7<a id="kbd_plus" href="194_02.htm">+</a>   NDR Text  <span id="date"></span></pre>
@@ -135,6 +140,27 @@ class NDRProvider implements TeletextProvider {
       print('[NDR] Error fetching page: $e');
       rethrow;
     }
+  }
+
+  /// Sostituisce caratteri Private Use Area (U+E000-U+F8FF) con quadratini
+  /// Questi caratteri richiedono font custom NDR non disponibili su iOS fisico
+  String _replacePrivateUseAreaChars(String html) {
+    final buffer = StringBuffer();
+    
+    for (int i = 0; i < html.length; i++) {
+      final char = html[i];
+      final code = char.codeUnitAt(0);
+      
+      // Private Use Area: U+E000 to U+F8FF
+      if (code >= 0xE000 && code <= 0xF8FF) {
+        // Sostituisci con Black Small Square (U+25AA) - supportato universalmente
+        buffer.write('▪');
+      } else {
+        buffer.write(char);
+      }
+    }
+    
+    return buffer.toString();
   }
 
   /// Estrae informazioni di navigazione e link cliccabili
@@ -295,45 +321,63 @@ class NDRProvider implements TeletextProvider {
     
     // Scaling dinamico (come SR/SWR - misura contenuto reale)
     function applyNDRScale() {
-      const container = document.getElementById('ndrContainer');
-      const pre = document.querySelector('pre.txt');
-      
-      if (!container || !pre) return;
-      
-      // Misura dimensioni reali del contenuto
-      const contentW = pre.scrollWidth || pre.clientWidth;
-      const contentH = pre.scrollHeight || pre.clientHeight;
-      
-      if (!contentW || !contentH) return;
-      
-      // Dimensioni viewport
-      const vw = window.innerWidth;
-      const vh = window.innerHeight;
-      
-      // Calcola scale X e Y
-      const scaleX = vw / contentW;
-      const scaleY = vh / contentH;
-      
-      // Aspect ratio e limiti Y
-      const ar = vw / vh;
-      const maxYRatio = ar > 0.9 ? 1.15 : (ar > 0.7 ? 1.35 : 1.6);
-      const finalScaleY = Math.min(scaleY, scaleX * maxYRatio);
-      
-      // Applica transform
-      container.style.width = contentW + 'px';
-      container.style.height = contentH + 'px';
-      container.style.transformOrigin = 'top left';
-      container.style.transform = 'scale(' + scaleX + ',' + finalScaleY + ')';
-      
-      console.log('[NDR Scale] Content: ' + contentW + 'x' + contentH + ', Viewport: ' + vw + 'x' + vh + ', Scale: ' + scaleX + ',' + finalScaleY);
+      try {
+        const container = document.getElementById('ndrContainer');
+        const pre = document.querySelector('pre.txt');
+        
+        if (!container || !pre) {
+          console.log('[NDR Scale] Missing elements');
+          return;
+        }
+        
+        // Misura dimensioni reali del contenuto
+        const contentW = pre.scrollWidth || pre.clientWidth;
+        const contentH = pre.scrollHeight || pre.clientHeight;
+        
+        if (!contentW || !contentH) {
+          console.log('[NDR Scale] Zero dimensions: ' + contentW + 'x' + contentH);
+          return;
+        }
+        
+        // Dimensioni viewport
+        const vw = window.innerWidth;
+        const vh = window.innerHeight;
+        
+        // Calcola scale X e Y
+        const scaleX = vw / contentW;
+        const scaleY = vh / contentH;
+        
+        // Aspect ratio e limiti Y
+        const ar = vw / vh;
+        const maxYRatio = ar > 0.9 ? 1.15 : (ar > 0.7 ? 1.35 : 1.6);
+        const finalScaleY = Math.min(scaleY, scaleX * maxYRatio);
+        
+        // Applica transform
+        container.style.width = contentW + 'px';
+        container.style.height = contentH + 'px';
+        container.style.transformOrigin = 'top left';
+        container.style.transform = 'scale(' + scaleX + ',' + finalScaleY + ')';
+        
+        console.log('[NDR Scale] Content: ' + contentW + 'x' + contentH + ', Viewport: ' + vw + 'x' + vh + ', Scale: ' + scaleX.toFixed(2) + ',' + finalScaleY.toFixed(2) + ', AR: ' + ar.toFixed(2));
+      } catch (e) {
+        console.error('[NDR Scale] Error:', e);
+      }
     }
     
     // Applica scaling su load e resize
-    window.addEventListener('load', function() {
+    document.addEventListener('DOMContentLoaded', function() {
+      // Primo tentativo appena il DOM è pronto
       applyNDRScale();
-      setTimeout(applyNDRScale, 50);
-      setTimeout(applyNDRScale, 200);
     });
+    
+    window.addEventListener('load', function() {
+      // Secondo tentativo quando tutto è caricato
+      applyNDRScale();
+      // Retry dopo 100ms per assicurare rendering completo
+      setTimeout(applyNDRScale, 100);
+      
+    });
+    
     window.addEventListener('resize', applyNDRScale);
   </script>
 </body>

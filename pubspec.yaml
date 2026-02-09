@@ -27,7 +27,7 @@ ios:
   displayName: Teletext Europe
   deploymentTarget: 12.0
 
-# VERSIONE WEBVIEW - Senza google_mlkit_text_recognition (SIMULATORE iOS)
+# VERSIONE ML KIT - Con google_mlkit_text_recognition (DEVICE FISICI)
 dependencies:
   flutter:
     sdk: flutter
@@ -72,7 +72,8 @@ dependencies:
   # OCR per teletext con Google Cloud Vision
   # Package image usato per ottimizzare le immagini prima di inviarle all'OCR
   image: ^4.0.17
-  # ML Kit NON incluso per compatibilità simulatore iOS
+  # ML Kit per OCR on-device (veloce e gratuito) - DEVICE FISICI
+  google_mlkit_text_recognition: ^0.13.0
 
 dev_dependencies:
   flutter_test:

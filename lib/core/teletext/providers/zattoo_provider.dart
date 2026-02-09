@@ -266,12 +266,19 @@ class ZattooProvider implements TeletextProvider {
         }
       }
 
-      // Rileva sottopagine provando sequenzialmente (solo per subPage == 1)
-      // Usa cache con TTL 5 minuti per evitare probe ripetuti
-      int maxSubPages = 1;
-      if (subPage == 1) {
+      // Rileva sottopagine provando sequenzialmente
+      // Prima controlla cache (disponibile per tutte le sottopagine)
+      int maxSubPages = SubpageCacheService.getCachedSubpageCount(
+        providerId: providerId,
+        pageNumber: pageNumber,
+      ) ?? 1;
+      
+      // Se non in cache e siamo sulla sottopagina 1, esegui rilevamento
+      if (maxSubPages == 1 && subPage == 1) {
         maxSubPages = await _detectMaxSubPages(pageNumber);
       }
+      
+      print('[Zattoo/$_channelId] Page $pageNumber/$subPage has maxSubPages: $maxSubPages');
 
       return TelevideoPage(
         pageNumber: pageNumber,

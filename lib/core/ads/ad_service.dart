@@ -71,32 +71,143 @@ class AdService {
     // Determina il content URL in base al canale
     String contentUrl = 'https://www.televideo.rai.it'; // Default RAI
     if (_channelId != null) {
+      // Germania - ARD e ZDF
       if (_channelId!.startsWith('ard_') || _channelId!.startsWith('zdf_')) {
         contentUrl = 'https://www.ard-text.de';
-      } else if (_channelId == 'swiss_teletext') {
+      }
+      // Germania - BR (Bayerischer Rundfunk)
+      else if (_channelId == 'br_text') {
+        contentUrl = 'https://www.br.de/text';
+      }
+      // Germania - WDR (Westdeutscher Rundfunk)
+      else if (_channelId == 'wdr_text') {
+        contentUrl = 'https://www1.wdr.de/wdrtext';
+      }
+      // Germania - NDR (Norddeutscher Rundfunk)
+      else if (_channelId == 'ndr_text') {
+        contentUrl = 'https://www.ndr.de/public/teletext';
+      }
+      // Germania - HR (Hessischer Rundfunk)
+      else if (_channelId == 'hr_text') {
+        contentUrl = 'https://www.hr-text.hr-online.de';
+      }
+      // Germania - SWR (Südwestrundfunk) - Baden-Württemberg e Rheinland-Pfalz
+      else if (_channelId == 'swr_bw' || _channelId == 'swr_rp') {
+        contentUrl = 'https://www.swr.de/swrtext';
+      }
+      // Germania - SR (Saarländischer Rundfunk)
+      else if (_channelId == 'sr_text') {
+        contentUrl = 'https://www.sr-online.de/sr-fernsehen/videotext';
+      }
+      // Germania - RTL
+      else if (_channelId == 'rtl_text') {
+        contentUrl = 'https://www.rtl.de/cms/rtltext';
+      }
+      // Germania - 3sat
+      else if (_channelId == '3sat_text') {
+        contentUrl = 'https://teletext.3sat.de';
+      }
+      // Germania - Canali Zattoo (ARTE, RBB, MDR, ARD Alpha, Phoenix, n-tv, VOX)
+      else if (_channelId == 'arte_text') {
+        contentUrl = 'https://zapi.zattoo.com/teletext/DE_arte';
+      } else if (_channelId == 'rbb_text') {
+        contentUrl = 'https://zapi.zattoo.com/teletext/rbb';
+      } else if (_channelId == 'mdr_text') {
+        contentUrl = 'https://zapi.zattoo.com/teletext/mdr-sachsen';
+      } else if (_channelId == 'ard_alpha_text') {
+        contentUrl = 'https://zapi.zattoo.com/teletext/br-alpha';
+      } else if (_channelId == 'phoenix_text') {
+        contentUrl = 'https://zapi.zattoo.com/teletext/phoenix';
+      } else if (_channelId == 'ntv_text') {
+        contentUrl = 'https://zattoo-abox.zattoo.com/teletext/ntv_de';
+      } else if (_channelId == 'vox_text') {
+        contentUrl = 'https://zattoo-abox.zattoo.com/teletext/vox';
+      }
+      // Svizzera
+      else if (_channelId == 'swiss_teletext') {
         contentUrl = 'https://www.teletext.ch';
-      } else if (_channelId == 'orf_teletext') {
+      } else if (_channelId!.startsWith('srf_')) {
+        contentUrl = 'https://www.srf.ch/teletext';
+      } else if (_channelId!.startsWith('rts_')) {
+        contentUrl = 'https://www.rts.ch/teletext';
+      } else if (_channelId!.startsWith('rsi_')) {
+        contentUrl = 'https://www.rsi.ch/teletext';
+      }
+      // Austria - ORF
+      else if (_channelId == 'orf_teletext' || _channelId!.startsWith('orf')) {
         contentUrl = 'https://teletext.orf.at';
-      } else if (_channelId == 'tve_teletexto' || _channelId == 'antena3_teletexto' || _channelId == 'lasexta_teletexto') {
+      }
+      // Spagna
+      else if (_channelId == 'tve' || _channelId == 'tve_teletexto') {
         contentUrl = 'https://www.rtve.es/tve/teletexto';
-      } else if (_channelId == 'rtp_teletexto') {
+      } else if (_channelId == 'antena3' || _channelId == 'antena3_teletexto') {
+        contentUrl = 'https://www.antena3.com/teletexto';
+      } else if (_channelId == 'lasexta' || _channelId == 'lasexta_teletexto') {
+        contentUrl = 'https://www.lasexta.com/teletexto';
+      }
+      // Portogallo
+      else if (_channelId == 'rtp' || _channelId == 'rtp_teletexto') {
         contentUrl = 'https://www.rtp.pt/wportal/teletexto';
-      } else if (_channelId == 'nos_teletekst') {
+      }
+      // Olanda
+      else if (_channelId == 'nos_teletekst') {
         contentUrl = 'https://nos.nl/teletekst';
-      } else if (_channelId == 'svt_text') {
+      }
+      // Svezia
+      else if (_channelId == 'svt_text') {
         contentUrl = 'https://www.svt.se/text-tv';
-      } else if (_channelId == 'hrt_teletekst') {
+      }
+      // Croazia
+      else if (_channelId == 'hrt_teletekst') {
         contentUrl = 'https://teletekst.hrt.hr';
-      } else if (_channelId == 'yle_teksti_tv') {
+      }
+      // Finlandia
+      else if (_channelId == 'yle_teksti_tv') {
         contentUrl = 'https://yle.fi/aihe/yle-ttv';
-      } else if (_channelId == 'ct_teletext') {
+      }
+      // Repubblica Ceca
+      else if (_channelId == 'ct_teletext') {
         contentUrl = 'https://teletext.ceskatelevize.cz';
-      } else if (_channelId == 'rtvslo_teletext') {
+      }
+      // Slovenia
+      else if (_channelId == 'rtvslo_teletext') {
         contentUrl = 'https://teletext.rtvslo.si';
-      } else if (_channelId == 'mtva_teletext') {
+      }
+      // Ungheria
+      else if (_channelId == 'mtva_teletext') {
         contentUrl = 'https://www.teletext.hu';
-      } else if (_channelId == 'ruv_textavarp') {
+      }
+      // Islanda
+      else if (_channelId == 'ruv_textavarp') {
         contentUrl = 'https://textavarp.is';
+      }
+      // Olanda - Omroep Zeeland
+      else if (_channelId == 'omroepzeeland_teletekst') {
+        contentUrl = 'https://www.omroepzeeland.nl/teletekst';
+      }
+      // Ucraina - Intertext
+      else if (_channelId == 'intertext') {
+        contentUrl = 'https://intertext.com.ua';
+      }
+      // Bosnia - BHRT, RTVFBiH
+      else if (_channelId == 'bhrt' || _channelId == 'rtvfbih') {
+        contentUrl = 'https://www.bhrt.ba/teletext';
+      }
+      // Danimarca - DR
+      else if (_channelId == 'dr1' || _channelId == 'dr2') {
+        contentUrl = 'https://www.dr.dk/tekst-tv';
+      }
+      // Polonia - Polsat
+      else if (_channelId == 'polsat_telegazeta') {
+        contentUrl = 'https://www.polsatnews.pl/telegazeta';
+      }
+      // Germania - Kika
+      else if (_channelId == 'kika_text') {
+        contentUrl = 'https://www.kika.de/teletext';
+      }
+      // Germania - SOM Teletextviewer
+      else if (_channelId!.startsWith('som_')) {
+        contentUrl = 'https://www.teletextviewer.de';
       }
     }
 

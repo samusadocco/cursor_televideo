@@ -23,6 +23,8 @@ class TeletextChannel with _$TeletextChannel {
     bool? supportsRegions,
     List<String>? regions,
     @Default(true) bool isActive,
+    Map<int, String>? shortcuts, // Scorciatoie alle pagine principali
+    Map<int, String>? pageDescriptions, // Descrizioni delle pagine
   }) = _TeletextChannel;
 
   factory TeletextChannel.fromJson(Map<String, dynamic> json) =>
@@ -447,6 +449,36 @@ class TeletextChannels {
       supportsRegions: false,
     ),
 
+    // 🇩🇪 NDR - Norddeutscher Rundfunk
+    TeletextChannel(
+      id: 'ndr_text',
+      name: 'NDR Text',
+      shortName: 'NDR',
+      countryCode: 'DE',
+      countryName: 'Germania',
+      flagEmoji: '🇩🇪',
+      broadcasterName: 'NDR',
+      type: TeletextChannelType.national,
+      baseUrl: 'https://www.ndr.de/public/teletext/',
+      htmlBaseUrl: 'https://www.ndr.de/public/teletext/100_01.htm',
+      supportsRegions: false,
+    ),
+    
+    // 🇩🇪 GERMANIA - WDR (Westdeutscher Rundfunk)
+    TeletextChannel(
+      id: 'wdr_text',
+      name: 'WDR Text',
+      shortName: 'WDR',
+      countryCode: 'DE',
+      countryName: 'Germania',
+      flagEmoji: '🇩🇪',
+      broadcasterName: 'Westdeutscher Rundfunk',
+      type: TeletextChannelType.regional,
+      baseUrl: 'https://www1.wdr.de/wdrtext',
+      htmlBaseUrl: 'https://www1.wdr.de/wdrtext/index.html',
+      supportsRegions: false,
+    ),
+    
     // 🇩🇪 GERMANIA - 3sat
     TeletextChannel(
       id: '3sat_text',
@@ -460,6 +492,83 @@ class TeletextChannels {
       baseUrl: 'https://teletext.zdf.de/teletext/3sat',
       supportsRegions: false,
     ),
+
+    // 🇩🇪 GERMANIA - RTL (Zattoo platform con OCR)
+    TeletextChannel(
+      id: 'rtl_text',
+      name: 'RTL Text',
+      shortName: 'RTL',
+      countryCode: 'DE',
+      countryName: 'Germania',
+      flagEmoji: '🇩🇪',
+      broadcasterName: 'RTL',
+      type: TeletextChannelType.national,
+      baseUrl: 'https://zattoo-abox.zattoo.com/teletext/rtl/hd',
+      supportsRegions: false,
+    ),
+    
+       
+    // 🇩🇪 GERMANIA - BR (Bayerischer Rundfunk)
+    TeletextChannel(
+      id: 'br_text',
+      name: 'BR Text',
+      shortName: 'BR',
+      countryCode: 'DE',
+      countryName: 'Germania',
+      flagEmoji: '🇩🇪',
+      broadcasterName: 'Bayerischer Rundfunk',
+      type: TeletextChannelType.regional,
+      baseUrl: 'https://www.br.de/fernsehen/ardtext',
+      htmlBaseUrl: 'https://www.br.de/fernsehen/ardtext/ardtext-100.html',
+      supportsRegions: false,
+    ),
+
+
+    // 🇩🇪 GERMANIA - SWR BW (Baden-Württemberg)
+    TeletextChannel(
+      id: 'swr_bw',
+      name: 'SWR BW Text',
+      shortName: 'SWR BW',
+      countryCode: 'DE',
+      countryName: 'Germania',
+      flagEmoji: '🇩🇪',
+      broadcasterName: 'Südwestrundfunk (Baden-Württemberg)',
+      type: TeletextChannelType.regional,
+      baseUrl: 'https://wraps.swr.de/videotext/',
+      htmlBaseUrl: 'https://wraps.swr.de/videotext/?page=100&stream=bw',
+      supportsRegions: false,
+    ),
+    
+    // 🇩🇪 GERMANIA - SWR RP (Rheinland-Pfalz)
+    TeletextChannel(
+      id: 'swr_rp',
+      name: 'SWR RP Text',
+      shortName: 'SWR RP',
+      countryCode: 'DE',
+      countryName: 'Germania',
+      flagEmoji: '🇩🇪',
+      broadcasterName: 'Südwestrundfunk (Rheinland-Pfalz)',
+      type: TeletextChannelType.regional,
+      baseUrl: 'https://wraps.swr.de/videotext/',
+      htmlBaseUrl: 'https://wraps.swr.de/videotext/?page=100&stream=rp',
+      supportsRegions: false,
+    ),
+    
+    // 🇩🇪 GERMANIA - HR (Hessen)
+    TeletextChannel(
+      id: 'hr_text',
+      name: 'HR Text',
+      shortName: 'HR',
+      countryCode: 'DE',
+      countryName: 'Germania',
+      flagEmoji: '🇩🇪',
+      broadcasterName: 'Hessischer Rundfunk',
+      type: TeletextChannelType.regional,
+      baseUrl: 'https://www.hr-text.hr-fernsehen.de/ttxweb/',
+      htmlBaseUrl: 'https://www.hr-text.hr-fernsehen.de/ttxweb/?page=100',
+      supportsRegions: false,
+    ),
+    
 
     // 🇩🇪 SR - Saarländischer Rundfunk (Saar Text)
     TeletextChannel(
@@ -475,21 +584,21 @@ class TeletextChannels {
       htmlBaseUrl: 'https://www.saartext.de/100',
       supportsRegions: false,
     ),
-
-    // 🇩🇪 NDR - Norddeutscher Rundfunk
+    // 🇩🇪 RBB (Rundfunk Berlin-Brandenburg) - Piattaforma Zattoo con OCR
     TeletextChannel(
-      id: 'ndr_text',
-      name: 'NDR Text',
-      shortName: 'NDR',
+      id: 'rbb_text',
+      name: 'RBB Text',
+      shortName: 'RBB',
       countryCode: 'DE',
       countryName: 'Germania',
       flagEmoji: '🇩🇪',
-      broadcasterName: 'NDR',
+      broadcasterName: 'RBB',
       type: TeletextChannelType.national,
-      baseUrl: 'https://www.ndr.de/public/teletext/',
-      htmlBaseUrl: 'https://www.ndr.de/public/teletext/100_01.htm',
+      baseUrl: 'https://zapi.zattoo.com/teletext/rbb/hd/',
+      htmlBaseUrl: 'https://zapi.zattoo.com/teletext/rbb/hd/100/1.html',
       supportsRegions: false,
     ),
+
 
     // 🇩🇪 KiKA - Kinderkanal (ARD/ZDF)
     TeletextChannel(
@@ -506,7 +615,9 @@ class TeletextChannels {
       supportsRegions: false,
     ),
 
-    // 🇩🇪 ARTE (Germania) - Piattaforma Zattoo con OCR
+ 
+
+   // 🇩🇪 ARTE (Germania) - Piattaforma Zattoo con OCR
     TeletextChannel(
       id: 'arte_text',
       name: 'ARTE Text',
@@ -521,35 +632,6 @@ class TeletextChannels {
       supportsRegions: false,
     ),
 
-    // 🇩🇪 RBB (Rundfunk Berlin-Brandenburg) - Piattaforma Zattoo con OCR
-    TeletextChannel(
-      id: 'rbb_text',
-      name: 'RBB Text',
-      shortName: 'RBB',
-      countryCode: 'DE',
-      countryName: 'Germania',
-      flagEmoji: '🇩🇪',
-      broadcasterName: 'RBB',
-      type: TeletextChannelType.national,
-      baseUrl: 'https://zapi.zattoo.com/teletext/rbb/hd/',
-      htmlBaseUrl: 'https://zapi.zattoo.com/teletext/rbb/hd/100/1.html',
-      supportsRegions: false,
-    ),
-
-    // 🇩🇪 MDR (Mitteldeutscher Rundfunk) - Piattaforma Zattoo con OCR
-    TeletextChannel(
-      id: 'mdr_text',
-      name: 'MDR Text Sachsen',
-      shortName: 'MDR',
-      countryCode: 'DE',
-      countryName: 'Germania',
-      flagEmoji: '🇩🇪',
-      broadcasterName: 'MDR',
-      type: TeletextChannelType.national,
-      baseUrl: 'https://zapi.zattoo.com/teletext/mdr-sachsen/hd/',
-      htmlBaseUrl: 'https://zapi.zattoo.com/teletext/mdr-sachsen/hd/100/1.html',
-      supportsRegions: false,
-    ),
 
     // 🇩🇪 ARD Alpha (Bildungskanal) - Piattaforma Zattoo con OCR
     TeletextChannel(
@@ -610,96 +692,7 @@ class TeletextChannels {
       htmlBaseUrl: 'https://zattoo-abox.zattoo.com/teletext/vox/hd/100/1.html',
       supportsRegions: false,
     ),
-    
-    // 🇩🇪 GERMANIA - BR (Bayerischer Rundfunk)
-    TeletextChannel(
-      id: 'br_text',
-      name: 'BR Text',
-      shortName: 'BR',
-      countryCode: 'DE',
-      countryName: 'Germania',
-      flagEmoji: '🇩🇪',
-      broadcasterName: 'Bayerischer Rundfunk',
-      type: TeletextChannelType.regional,
-      baseUrl: 'https://www.br.de/fernsehen/ardtext',
-      htmlBaseUrl: 'https://www.br.de/fernsehen/ardtext/ardtext-100.html',
-      supportsRegions: false,
-    ),
-
-    // 🇩🇪 GERMANIA - WDR (Westdeutscher Rundfunk)
-    TeletextChannel(
-      id: 'wdr_text',
-      name: 'WDR Text',
-      shortName: 'WDR',
-      countryCode: 'DE',
-      countryName: 'Germania',
-      flagEmoji: '🇩🇪',
-      broadcasterName: 'Westdeutscher Rundfunk',
-      type: TeletextChannelType.regional,
-      baseUrl: 'https://www1.wdr.de/wdrtext',
-      htmlBaseUrl: 'https://www1.wdr.de/wdrtext/index.html',
-      supportsRegions: false,
-    ),
-    
-    // 🇩🇪 GERMANIA - SWR BW (Baden-Württemberg)
-    TeletextChannel(
-      id: 'swr_bw',
-      name: 'SWR BW Text',
-      shortName: 'SWR BW',
-      countryCode: 'DE',
-      countryName: 'Germania',
-      flagEmoji: '🇩🇪',
-      broadcasterName: 'Südwestrundfunk (Baden-Württemberg)',
-      type: TeletextChannelType.regional,
-      baseUrl: 'https://wraps.swr.de/videotext/',
-      htmlBaseUrl: 'https://wraps.swr.de/videotext/?page=100&stream=bw',
-      supportsRegions: false,
-    ),
-    
-    // 🇩🇪 GERMANIA - SWR RP (Rheinland-Pfalz)
-    TeletextChannel(
-      id: 'swr_rp',
-      name: 'SWR RP Text',
-      shortName: 'SWR RP',
-      countryCode: 'DE',
-      countryName: 'Germania',
-      flagEmoji: '🇩🇪',
-      broadcasterName: 'Südwestrundfunk (Rheinland-Pfalz)',
-      type: TeletextChannelType.regional,
-      baseUrl: 'https://wraps.swr.de/videotext/',
-      htmlBaseUrl: 'https://wraps.swr.de/videotext/?page=100&stream=rp',
-      supportsRegions: false,
-    ),
-    
-    // 🇩🇪 GERMANIA - HR (Hessen)
-    TeletextChannel(
-      id: 'hr_text',
-      name: 'HR Text',
-      shortName: 'HR',
-      countryCode: 'DE',
-      countryName: 'Germania',
-      flagEmoji: '🇩🇪',
-      broadcasterName: 'Hessischer Rundfunk',
-      type: TeletextChannelType.regional,
-      baseUrl: 'https://www.hr-text.hr-fernsehen.de/ttxweb/',
-      htmlBaseUrl: 'https://www.hr-text.hr-fernsehen.de/ttxweb/?page=100',
-      supportsRegions: false,
-    ),
-    
-    // 🇩🇪 GERMANIA - RTL (Zattoo platform con OCR)
-    TeletextChannel(
-      id: 'rtl_text',
-      name: 'RTL Text',
-      shortName: 'RTL',
-      countryCode: 'DE',
-      countryName: 'Germania',
-      flagEmoji: '🇩🇪',
-      broadcasterName: 'RTL',
-      type: TeletextChannelType.national,
-      baseUrl: 'https://zattoo-abox.zattoo.com/teletext/rtl/hd',
-      supportsRegions: false,
-    ),
-    
+ 
     // 🇨🇭 SVIZZERA - RSI LA 1
     TeletextChannel(
       id: 'rsi_la1',
@@ -1420,20 +1413,19 @@ class TeletextChannels {
       supportsRegions: false,
     ),
 
-    // ⚠️ TEMPORANEAMENTE DISABILITATO - In fase di perfezionamento visualizzazione
-    // // 🇺🇦 UCRAINA - Intertext
-    // TeletextChannel(
-    //   id: 'intertext',
-    //   name: 'Intertext',
-    //   shortName: 'Intertext',
-    //   countryCode: 'UA',
-    //   countryName: 'Ucraina',
-    //   flagEmoji: '🇺🇦',
-    //   broadcasterName: 'Intertext',
-    //   type: TeletextChannelType.national,
-    //   baseUrl: 'https://intertext.com.ua',
-    //   supportsRegions: false,
-    // ),
+    // 🇺🇦 UCRAINA - Intertext
+    TeletextChannel(
+      id: 'intertext',
+      name: 'Intertext',
+      shortName: 'Intertext',
+      countryCode: 'UA',
+      countryName: 'Ucraina',
+      flagEmoji: '🇺🇦',
+      broadcasterName: 'Intertext',
+      type: TeletextChannelType.national,
+      baseUrl: 'https://intertext.com.ua',
+      supportsRegions: false,
+    ),
 
   ];
 

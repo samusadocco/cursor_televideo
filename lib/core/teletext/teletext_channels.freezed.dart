@@ -36,6 +36,9 @@ mixin _$TeletextChannel {
   bool? get supportsRegions => throw _privateConstructorUsedError;
   List<String>? get regions => throw _privateConstructorUsedError;
   bool get isActive => throw _privateConstructorUsedError;
+  Map<int, String>? get shortcuts =>
+      throw _privateConstructorUsedError; // Scorciatoie alle pagine principali
+  Map<int, String>? get pageDescriptions => throw _privateConstructorUsedError;
 
   /// Serializes this TeletextChannel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -66,7 +69,9 @@ abstract class $TeletextChannelCopyWith<$Res> {
       String? htmlBaseUrl,
       bool? supportsRegions,
       List<String>? regions,
-      bool isActive});
+      bool isActive,
+      Map<int, String>? shortcuts,
+      Map<int, String>? pageDescriptions});
 }
 
 /// @nodoc
@@ -97,6 +102,8 @@ class _$TeletextChannelCopyWithImpl<$Res, $Val extends TeletextChannel>
     Object? supportsRegions = freezed,
     Object? regions = freezed,
     Object? isActive = null,
+    Object? shortcuts = freezed,
+    Object? pageDescriptions = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -151,6 +158,14 @@ class _$TeletextChannelCopyWithImpl<$Res, $Val extends TeletextChannel>
           ? _value.isActive
           : isActive // ignore: cast_nullable_to_non_nullable
               as bool,
+      shortcuts: freezed == shortcuts
+          ? _value.shortcuts
+          : shortcuts // ignore: cast_nullable_to_non_nullable
+              as Map<int, String>?,
+      pageDescriptions: freezed == pageDescriptions
+          ? _value.pageDescriptions
+          : pageDescriptions // ignore: cast_nullable_to_non_nullable
+              as Map<int, String>?,
     ) as $Val);
   }
 }
@@ -176,7 +191,9 @@ abstract class _$$TeletextChannelImplCopyWith<$Res>
       String? htmlBaseUrl,
       bool? supportsRegions,
       List<String>? regions,
-      bool isActive});
+      bool isActive,
+      Map<int, String>? shortcuts,
+      Map<int, String>? pageDescriptions});
 }
 
 /// @nodoc
@@ -205,6 +222,8 @@ class __$$TeletextChannelImplCopyWithImpl<$Res>
     Object? supportsRegions = freezed,
     Object? regions = freezed,
     Object? isActive = null,
+    Object? shortcuts = freezed,
+    Object? pageDescriptions = freezed,
   }) {
     return _then(_$TeletextChannelImpl(
       id: null == id
@@ -259,6 +278,14 @@ class __$$TeletextChannelImplCopyWithImpl<$Res>
           ? _value.isActive
           : isActive // ignore: cast_nullable_to_non_nullable
               as bool,
+      shortcuts: freezed == shortcuts
+          ? _value._shortcuts
+          : shortcuts // ignore: cast_nullable_to_non_nullable
+              as Map<int, String>?,
+      pageDescriptions: freezed == pageDescriptions
+          ? _value._pageDescriptions
+          : pageDescriptions // ignore: cast_nullable_to_non_nullable
+              as Map<int, String>?,
     ));
   }
 }
@@ -279,8 +306,12 @@ class _$TeletextChannelImpl extends _TeletextChannel {
       this.htmlBaseUrl,
       this.supportsRegions,
       final List<String>? regions,
-      this.isActive = true})
+      this.isActive = true,
+      final Map<int, String>? shortcuts,
+      final Map<int, String>? pageDescriptions})
       : _regions = regions,
+        _shortcuts = shortcuts,
+        _pageDescriptions = pageDescriptions,
         super._();
 
   factory _$TeletextChannelImpl.fromJson(Map<String, dynamic> json) =>
@@ -324,10 +355,31 @@ class _$TeletextChannelImpl extends _TeletextChannel {
   @override
   @JsonKey()
   final bool isActive;
+  final Map<int, String>? _shortcuts;
+  @override
+  Map<int, String>? get shortcuts {
+    final value = _shortcuts;
+    if (value == null) return null;
+    if (_shortcuts is EqualUnmodifiableMapView) return _shortcuts;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(value);
+  }
+
+// Scorciatoie alle pagine principali
+  final Map<int, String>? _pageDescriptions;
+// Scorciatoie alle pagine principali
+  @override
+  Map<int, String>? get pageDescriptions {
+    final value = _pageDescriptions;
+    if (value == null) return null;
+    if (_pageDescriptions is EqualUnmodifiableMapView) return _pageDescriptions;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(value);
+  }
 
   @override
   String toString() {
-    return 'TeletextChannel(id: $id, name: $name, shortName: $shortName, countryCode: $countryCode, countryName: $countryName, flagEmoji: $flagEmoji, broadcasterName: $broadcasterName, type: $type, baseUrl: $baseUrl, htmlBaseUrl: $htmlBaseUrl, supportsRegions: $supportsRegions, regions: $regions, isActive: $isActive)';
+    return 'TeletextChannel(id: $id, name: $name, shortName: $shortName, countryCode: $countryCode, countryName: $countryName, flagEmoji: $flagEmoji, broadcasterName: $broadcasterName, type: $type, baseUrl: $baseUrl, htmlBaseUrl: $htmlBaseUrl, supportsRegions: $supportsRegions, regions: $regions, isActive: $isActive, shortcuts: $shortcuts, pageDescriptions: $pageDescriptions)';
   }
 
   @override
@@ -355,7 +407,11 @@ class _$TeletextChannelImpl extends _TeletextChannel {
                 other.supportsRegions == supportsRegions) &&
             const DeepCollectionEquality().equals(other._regions, _regions) &&
             (identical(other.isActive, isActive) ||
-                other.isActive == isActive));
+                other.isActive == isActive) &&
+            const DeepCollectionEquality()
+                .equals(other._shortcuts, _shortcuts) &&
+            const DeepCollectionEquality()
+                .equals(other._pageDescriptions, _pageDescriptions));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -374,7 +430,9 @@ class _$TeletextChannelImpl extends _TeletextChannel {
       htmlBaseUrl,
       supportsRegions,
       const DeepCollectionEquality().hash(_regions),
-      isActive);
+      isActive,
+      const DeepCollectionEquality().hash(_shortcuts),
+      const DeepCollectionEquality().hash(_pageDescriptions));
 
   /// Create a copy of TeletextChannel
   /// with the given fields replaced by the non-null parameter values.
@@ -408,7 +466,9 @@ abstract class _TeletextChannel extends TeletextChannel {
       final String? htmlBaseUrl,
       final bool? supportsRegions,
       final List<String>? regions,
-      final bool isActive}) = _$TeletextChannelImpl;
+      final bool isActive,
+      final Map<int, String>? shortcuts,
+      final Map<int, String>? pageDescriptions}) = _$TeletextChannelImpl;
   const _TeletextChannel._() : super._();
 
   factory _TeletextChannel.fromJson(Map<String, dynamic> json) =
@@ -442,6 +502,10 @@ abstract class _TeletextChannel extends TeletextChannel {
   List<String>? get regions;
   @override
   bool get isActive;
+  @override
+  Map<int, String>? get shortcuts; // Scorciatoie alle pagine principali
+  @override
+  Map<int, String>? get pageDescriptions;
 
   /// Create a copy of TeletextChannel
   /// with the given fields replaced by the non-null parameter values.
