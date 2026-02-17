@@ -131,7 +131,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
   @override
   void initState() {
-    super.initState();
+    super.initState();                          
     WidgetsBinding.instance.addObserver(this);
     _initializeLanguage();
   }
@@ -263,6 +263,8 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
               Locale('is'), // Islandese
               Locale('hu'), // Ungherese
               Locale('bs'), // Bosniaco
+              Locale('pl'), // Polacco
+              Locale('uk'), // Ucraino
             ],
             localizationsDelegates: const [
               AppLocalizations.delegate,

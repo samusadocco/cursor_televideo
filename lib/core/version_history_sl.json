@@ -1,6 +1,11 @@
 {
   "versions": [
     {
+      "version": "2.0.4",
+      "changes": [
+        "20 novih kanalov iz Nemčije, Poljske, Nizozemske in Ukrajine"
+      ]
+    },{
       "version": "2.0.3",
       "changes": [
         "Splošne optimizacije in popravki napak"

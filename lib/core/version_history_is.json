@@ -1,6 +1,11 @@
 {
   "versions": [
     {
+      "version": "2.0.4",
+      "changes": [
+        "20 nýjar rásir frá Þýskalandi, Póllandi, Hollandi og Úkraínu"
+      ]
+    },{
       "version": "2.0.3",
       "changes": [
         "Almennar betrumbætur og villuleiðréttingar"

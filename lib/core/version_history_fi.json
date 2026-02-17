@@ -1,6 +1,11 @@
 {
   "versions": [
     {
+      "version": "2.0.4",
+      "changes": [
+        "20 uutta kanavaa Saksasta, Puolasta, Alankomaista ja Ukrainasta"
+      ]
+    },{
       "version": "2.0.3",
       "changes": [
         "Yleiset optimoinnit ja virheenkorjaukset"

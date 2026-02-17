@@ -1,0 +1,70 @@
+{
+  "versions": [
+    {
+      "version": "2.0.4",
+      "changes": [
+        "20 nowych kanałów z Niemiec, Polski, Holandii i Ukrainy"
+      ]
+    },{
+      "version": "2.0.3",
+      "changes": [
+        "Ogólne optymalizacje i naprawy błędów"
+      ]
+    },
+    {
+      "version": "2.0.2",
+      "changes": [
+        "Naprawy błędów ładowania stron i optymalizacja wydajności"
+      ]
+    },
+    {
+      "version": "2.0.0",
+      "changes": [
+        "Zmieniono nazwę aplikacji na Teletext Europe",
+        "Dodano kanały dla większości krajów europejskich",
+        "Zmodyfikowano ustawienia ładowania strony startowej"
+      ]
+    },
+    {
+      "version": "1.0.8",
+      "changes": [
+        "Dodano funkcję pauzy i odtwarzania dla automatycznego odświeżania podstron",
+        "Dodano zarządzanie językiem aplikacji"
+      ]
+    },
+    {
+      "version": "1.0.7",
+      "changes": [
+        "Ulepszone zarządzanie recenzjami"
+      ]
+    },
+    {
+      "version": "1.0.6",
+      "changes": [
+        "Zoptymalizowana wydajność",
+        "Naprawiono komunikat autoryzacji śledzenia"
+      ]
+    },
+    {
+      "version": "1.0.5",
+      "changes": [
+        "Pokaż dziennik zmian przy uruchomieniu po aktualizacji"
+      ]
+    },
+    {
+      "version": "1.0.4",
+      "changes": [
+        "Załaduj pierwszy ulubiony przy uruchomieniu: zdecyduj, od której strony Teletekstu zacząć (przejdź do Ustawień)",
+        "RODO: zarządzaj swoimi wyborami dotyczącymi prywatności",
+        "Zoptymalizowana wydajność",
+        "Pokaż wersję w Ustawieniach"
+      ]
+    },
+    {
+      "version": "1.0.3",
+      "changes": [
+        "Naprawiono drobne błędy"
+      ]
+    }
+  ]
+}

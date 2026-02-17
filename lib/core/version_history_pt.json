@@ -1,6 +1,11 @@
 {
   "versions": [
     {
+      "version": "2.0.4",
+      "changes": [
+        "20 novos canais da Alemanha, Polónia, Países Baixos e Ucrânia"
+      ]
+    },{
       "version": "2.0.3",
       "changes": [
         "Otimizações gerais e correção de bugs"

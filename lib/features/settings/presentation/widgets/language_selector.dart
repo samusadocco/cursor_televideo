@@ -33,6 +33,8 @@ class LanguageSelector extends StatelessWidget {
       case 'is': return '🇮🇸'; // Islanda
       case 'hu': return '🇭🇺'; // Ungheria
       case 'bs': return '🇧🇦'; // Bosnia ed Erzegovina
+      case 'pl': return '🇵🇱'; // Polonia
+      case 'uk': return '🇺🇦'; // Ucraina
       default: return '🌍'; // Globo generico
     }
   }
@@ -56,6 +58,8 @@ class LanguageSelector extends StatelessWidget {
       case 'is': return 'Íslenska';
       case 'hu': return 'Magyar';
       case 'bs': return 'Bosanski';
+      case 'pl': return 'Polski';
+      case 'uk': return 'Українська';
       default: return languageCode.toUpperCase();
     }
   }
@@ -81,6 +85,8 @@ class LanguageSelector extends StatelessWidget {
         Locale('is'), // Islandese
         Locale('hu'), // Ungherese
         Locale('bs'), // Bosniaco
+        Locale('pl'), // Polacco
+        Locale('uk'), // Ucraino
       ].map((locale) {
         return RadioListTile<String>(
           title: Row(

@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:html/parser.dart' show parse;
 import 'package:html/dom.dart' as dom;
@@ -82,13 +83,27 @@ class ZDFProvider implements TeletextProvider {
       
       print('[ZDFProvider] URL: $url');
       
-      final response = await _dio.get(url);
+      // Forza la risposta come bytes per gestire correttamente l'encoding UTF-8
+      final response = await _dio.get(
+        url,
+        options: Options(
+          responseType: ResponseType.bytes,
+          headers: {
+            'Accept-Charset': 'utf-8',
+          },
+        ),
+      );
       
       if (response.statusCode != 200) {
         throw Exception('Failed to load page: ${response.statusCode}');
       }
 
-      final html = response.data as String;
+      // Decodifica esplicitamente come UTF-8
+      final bytes = response.data as List<int>;
+      final html = utf8.decode(bytes);
+      
+      print('[ZDFProvider] HTML decoded as UTF-8, length: ${html.length} bytes');
+      
       return _parseHtmlPage(html, pageNumber, subPage, url);
     } catch (e) {
       print('[ZDFProvider] Error fetching page: $e');
@@ -142,6 +157,9 @@ class ZDFProvider implements TeletextProvider {
 
     final totalSubPages = subPageInfo['total'] ?? 1;
     
+    // Aggiungi meta charset UTF-8 per Android
+    final processedHtml = _ensureUtf8Charset(html);
+    
     return TelevideoPage(
       pageNumber: pageNumber,
       subPage: subPage,
@@ -151,10 +169,30 @@ class ZDFProvider implements TeletextProvider {
       clickableAreas: clickableAreas,
       timestamp: DateTime.now(),
       isHtmlContent: true, // Flag per indicare che è HTML, non immagine
-      htmlContent: html, // Passa l'HTML completo così com'è
+      htmlContent: processedHtml, // Passa l'HTML con charset corretto
       providerId: providerId,
       metadata: navigationLinks, // Salva i link di navigazione nei metadata
     );
+  }
+  
+  /// Assicura che l'HTML abbia il meta charset UTF-8 per la corretta visualizzazione
+  /// dei caratteri speciali tedeschi su Android
+  String _ensureUtf8Charset(String html) {
+    // Se l'HTML ha già un tag <head>, aggiungi il charset lì
+    if (html.contains('<head>')) {
+      return html.replaceFirst('<head>', '<head>\n<meta charset="UTF-8">');
+    }
+    
+    // Se l'HTML ha un tag <html>, aggiungi head con charset dopo di esso
+    if (html.contains('<html')) {
+      final htmlTagEnd = html.indexOf('>') + 1;
+      return html.substring(0, htmlTagEnd) + 
+             '\n<head><meta charset="UTF-8"></head>' + 
+             html.substring(htmlTagEnd);
+    }
+    
+    // Altrimenti, aggiungi all'inizio del documento
+    return '<head><meta charset="UTF-8"></head>\n' + html;
   }
   
   /// Estrae i link di navigazione (pagina precedente/successiva)

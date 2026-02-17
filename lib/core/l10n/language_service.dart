@@ -70,7 +70,7 @@ class LanguageService {
   /// Verifica se una lingua è supportata
   bool _isSupportedLanguage(String languageCode) {
     return ['it', 'en', 'de', 'fr', 'es', 'pt', 'nl', 'da', 
-            'sv', 'fi', 'cs', 'hr', 'sl', 'is', 'hu', 'bs']
+            'sv', 'fi', 'cs', 'hr', 'sl', 'is', 'hu', 'bs', 'pl', 'uk']
         .contains(languageCode);
   }
 

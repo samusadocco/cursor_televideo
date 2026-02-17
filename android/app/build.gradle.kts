@@ -10,7 +10,7 @@ apply(plugin = "com.google.gms.google-services")
 
 android {
     namespace = "it.codebysam.televideo"
-    compileSdk = 35 // Necessario per le librerie AndroidX
+    compileSdk = 36 // Necessario per le librerie AndroidX
     ndkVersion = "27.0.12077973"
 
     compileOptions {
@@ -30,8 +30,8 @@ android {
         applicationId = "it.codebysam.televideo"
         minSdk = flutter.minSdkVersion
         targetSdk = 35 // Manteniamo Android 14 come target
-        versionCode = 17
-        versionName = "2.0.3"
+        versionCode = 19
+        versionName = "2.0.4"
 
         // Disabilita i componenti differiti
         manifestPlaceholders["enableDeferredComponents"] = "false"

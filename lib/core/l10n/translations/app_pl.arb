@@ -1,0 +1,379 @@
+{
+  "@@locale": "pl",
+  "appTitle": "TeleRetrò Italia",
+  "welcome": "Witaj!",
+  "welcomeSelectChannel": "Wybierz domyślny kanał",
+  "page": "Strona {pageNumber}",
+  "@page": {
+    "description": "Generic page label with number",
+    "placeholders": {
+      "pageNumber": {
+        "type": "int",
+        "example": "100"
+      }
+    }
+  },
+  "pageUnavailable": "Nie można załadować obrazu strony.\nSpróbuj ponownie za chwilę.",
+  "pageNotAvailable": "Żądana strona jest niedostępna",
+  "pageLoadError": "Wystąpił błąd podczas ładowania strony.\nWróć do strony 100",
+  "pageNotAvailableForRegion": "Strona {pageNumber} nie jest dostępna dla {regionName}",
+  "@pageNotAvailableForRegion": {
+    "description": "Error message when a page is not available for a specific region",
+    "placeholders": {
+      "pageNumber": {
+        "type": "int",
+        "example": "100"
+      },
+      "regionName": {
+        "type": "String",
+        "example": "Lombardia"
+      }
+    }
+  },
+  "pageNotAvailableForRegionWithHint": "Strona {pageNumber} nie jest dostępna dla {regionName}.\nSpróbuj innego numeru między 100 a 999.",
+  "@pageNotAvailableForRegionWithHint": {
+    "description": "Error message when a page is not available for a region, with hint",
+    "placeholders": {
+      "pageNumber": {
+        "type": "int",
+        "example": "100"
+      },
+      "regionName": {
+        "type": "String",
+        "example": "Lombardia"
+      }
+    }
+  },
+  "noMorePagesForRegion": "Nie ma więcej dostępnych stron dla {regionName}",
+  "@noMorePagesForRegion": {
+    "description": "Error message when there are no more pages for a region",
+    "placeholders": {
+      "regionName": {
+        "type": "String",
+        "example": "Lombardia"
+      }
+    }
+  },
+  "noMorePages": "Nie ma więcej dostępnych stron",
+  "invalidSubpageNumber": "Nieprawidłowy numer podstrony",
+  "subpageError": "Błąd ładowania podstrony {current} z {total}",
+  "@subpageError": {
+    "description": "Error message when a subpage fails to load",
+    "placeholders": {
+      "current": {
+        "type": "int",
+        "example": "1"
+      },
+      "total": {
+        "type": "int",
+        "example": "8"
+      }
+    }
+  },
+  "swipePrevious": "← Poprzednia",
+  "swipeNext": "Następna →",
+  "swipeNextUp": "Następna ↑",
+  "swipePreviousDown": "Poprzednia ↓",
+  "swipeRefresh": "Odśwież ↻",
+  "pageAddedToFavorites": "Strona dodana do ulubionych",
+  "pageRemovedFromFavorites": "Strona usunięta z ulubionych",
+  "editDescription": "Edytuj opis",
+  "pageAndRegion": "Strona {pageNumber} - {regionName}",
+  "@pageAndRegion": {
+    "description": "Page number and region name",
+    "placeholders": {
+      "pageNumber": {
+        "type": "int",
+        "example": "100"
+      },
+      "regionName": {
+        "type": "String",
+        "example": "Lombardia"
+      }
+    }
+  },
+  "description": "Opis",
+  "enterCustomDescription": "Wprowadź własny opis",
+  "restoreHint": "Wskazówka: przytrzymaj przycisk \"PRZYWRÓĆ\", aby wrócić do domyślnego opisu.",
+  "restore": "PRZYWRÓĆ",
+  "cancel": "Anuluj",
+  "save": "Zapisz",
+  "searchHint": "Szukaj strony...",
+  "noResults": "Brak wyników",
+  "settings": "Ustawienia",
+  "enterPageNumber": "Wprowadź numer strony",
+  "pageNumberRange": "Numer od {minPage} do 999",
+  "@pageNumberRange": {
+    "description": "Hint text for page number input",
+    "placeholders": {
+      "minPage": {
+        "type": "int",
+        "example": "100"
+      }
+    }
+  },
+  "ok": "OK",
+  "favoritesList": "Lista ulubionych",
+  "confirmRemoval": "Potwierdź usunięcie",
+  "confirmRemoveFromFavorites": "Czy na pewno chcesz usunąć {description} z ulubionych?",
+  "@confirmRemoveFromFavorites": {
+    "description": "Confirmation message when removing a page from favorites",
+    "placeholders": {
+      "description": {
+        "type": "String",
+        "example": "Page 100"
+      }
+    }
+  },
+  "remove": "Usuń",
+  "edit": "Edytuj",
+  "close": "Zamknij",
+  "noFavorites": "Brak ulubionych",
+  "useFavoriteIcon": "Użyj ikony ❤️, aby dodać strony do ulubionych",
+  "loadingPage": "Ładowanie strony {pageNumber}...",
+  "@loadingPage": {
+    "description": "Loading message when loading a page",
+    "placeholders": {
+      "pageNumber": {
+        "type": "int",
+        "example": "100"
+      }
+    }
+  },
+  "noPageToAddToFavorites": "Brak strony do dodania do ulubionych",
+  "language": "Język",
+  "systemLanguage": "Język systemowy",
+  "darkMode": "Tryb ciemny",
+  "autoRefresh": "Automatyczne odświeżanie",
+  "favorites": "Ulubione",
+  "search": "Szukaj",
+  "regions": "Regiony",
+  "home": "Strona główna",
+  "addToFavorites": "Dodaj do ulubionych",
+  "removeFromFavorites": "Usuń z ulubionych",
+  "loading": "Ładowanie...",
+  "error": "Błąd",
+  "errorWithMessage": "Błąd: {message}",
+  "@errorWithMessage": {
+    "description": "Error message with details",
+    "placeholders": {
+      "message": {
+        "type": "String",
+        "example": "Network error"
+      }
+    }
+  },
+  "retry": "Ponów próbę",
+  "next": "Dalej",
+  "previous": "Wstecz",
+  "pageNotFound": "Strona nie znaleziona",
+  "networkError": "Błąd sieci",
+  "connectionRequired": "Wymagane połączenie",
+  "refreshing": "Odświeżanie...",
+  "lastUpdate": "Ostatnia aktualizacja",
+  "theme": "Motyw",
+  "systemTheme": "Motyw systemowy",
+  "lightTheme": "Jasny motyw",
+  "darkTheme": "Ciemny motyw",
+  "selectTheme": "Wybierz motyw",
+  "startupPageOption": "Strona startowa",
+  "startupPageOptionLastPage": "Ostatnio oglądana strona (domyślnie)",
+  "startupPageOptionFirstFavorite": "Pierwszy ulubiony (jeśli dostępny)",
+  "startupPageOptionChannelHomePage": "Strona główna ostatniego kanału",
+  "cacheDuration": "Czas przechowywania obrazów stron Teletekstu w pamięci podręcznej (0 sekund, aby wyłączyć)",
+  "seconds": "sekund",
+  "autoRefreshDescription": "Automatycznie odświeżaj podstrony",
+  "refreshInterval": "Interwał odświeżania",
+  "showOnboardingAtStartup": "Pokaż instrukcje przy uruchomieniu",
+  "showOnboardingAtStartupDescription": "Pokazuj instrukcje za każdym razem, gdy otwierasz aplikację",
+  "showInstructions": "Pokaż instrukcje",
+  "showInstructionsDescription": "Przejrzyj instrukcje użytkowania aplikacji",
+  "backupFavorites": "Kopia zapasowa ulubionych",
+  "backupFavoritesDescription": "Zapisz i przywróć swoje ulubione",
+  "support": "Wsparcie",
+  "supportDescription": "Skontaktuj się z nami, aby uzyskać pomoc",
+  "supportTitle": "Jesteśmy tu, aby pomóc!",
+  "supportSubtitle": "W przypadku jakichkolwiek pytań lub pomocy nie wahaj się z nami skontaktować",
+  "directContact": "Bezpośredni kontakt",
+  "emailLabel": "Email",
+  "websiteLabel": "Strona internetowa",
+  "responseTime": "Średni czas odpowiedzi: 24-48 godzin",
+  "faq": "Najczęściej zadawane pytania",
+  "faqGeolocation": "Jak działa geolokalizacja?",
+  "faqGeolocationAnswer": "Aplikacja wykorzystuje lokalizację Twojego urządzenia do automatycznej identyfikacji Twojego regionu i wyświetlania odpowiednich lokalnych wiadomości. Możesz wyłączyć tę funkcję w ustawieniach aplikacji.",
+  "faqFavorites": "Jak zapisać stronę w ulubionych?",
+  "faqFavoritesAnswer": "Podczas przeglądania strony dotknij ikony gwiazdki, aby dodać ją do ulubionych. Możesz uzyskać dostęp do swoich ulubionych stron z menu głównego.",
+  "faqTheme": "Jak zmienić motyw aplikacji?",
+  "faqThemeAnswer": "Przejdź do ustawień aplikacji i wybierz żądany motyw (jasny/ciemny). Aplikacja obsługuje również automatyczny motyw oparty na ustawieniach systemowych.",
+  "faqOffline": "Czy aplikacja działa offline?",
+  "faqOfflineAnswer": "Nie, wymagane jest aktywne połączenie internetowe, aby uzyskać dostęp do stron Teletekstu w czasie rzeczywistym.",
+  "faqReportProblem": "Jak zgłosić problem?",
+  "faqReportProblemAnswer": "Wyślij szczegółowy email na adres samuele@codebysam.it opisujący napotkany problem.",
+  "reportBugTitle": "Zgłoś problem",
+  "reportBugInstructions": "Zgłaszając problem, podaj jeśli to możliwe:",
+  "reportBugItems": "Wersja aplikacji\nModel urządzenia\nSystem operacyjny\nZrzut ekranu problemu",
+  "developedBy": "Opracowane przez CodeBySam",
+  "errorOpeningLink": "Nie można otworzyć linku",
+  "errorOpeningEmail": "Nie można otworzyć emaila",
+  "privacySettings": "Ustawienia prywatności",
+  "privacySettingsDescription": "Modyfikuj swoje preferencje prywatności dotyczące reklam",
+  "resetPrivacySettings": "Resetuj ustawienia prywatności",
+  "resetPrivacySettingsDescription": "Całkowicie zresetuj ustawienia prywatności",
+  "resetPrivacyConfirm": "Czy na pewno chcesz zresetować ustawienia prywatności? Przy następnym uruchomieniu aplikacji zostaniesz ponownie poproszony o zgodę.",
+  "privacySettingsUnavailable": "Ustawienia prywatności są obecnie niedostępne",
+  "privacySettingsReset": "Ustawienia prywatności zresetowane. Uruchom ponownie aplikację, aby wyrazić nową zgodę.",
+  "version": "Wersja",
+  "build": "kompilacja",
+  "onboardingWelcome": "Witaj w Teletext Europe",
+  "onboardingWelcomeDescription": "Aplikacja do przeglądania wszystkich kanałów teletekstu w Europie",
+  "onboardingDefaultChannel": "Wybierz domyślny kanał",
+  "onboardingDefaultChannelDescription": "Przy uruchomieniu aplikacji zostaniesz poproszony o wybranie preferowanego kanału spośród wszystkich dostępnych kanałów.\n\nMożesz zmienić domyślny kanał w dowolnym momencie z menu Ustawienia.",
+  "onboardingNavigation": "Nawigacja po stronach",
+  "onboardingNavigationDescription": "Użyj strzałek bocznych, aby poruszać się między stronami:\n\n• Strzałka w lewo: przejdź do poprzedniej strony\n• Strzałka w prawo: przejdź do następnej strony\n\nMożesz również użyć poziomego przeciągnięcia do tego samego efektu.",
+  "onboardingFavorites": "Ulubione",
+  "onboardingFavoritesDescription": "Zapisz strony, które odwiedzasz najczęściej:\n\n• Dotknij wskazanej ikony, aby dodać bieżącą stronę\n• Dotknij ponownie, aby usunąć ją z ulubionych\n• Ikona zmienia kolor na czerwony, gdy strona jest w ulubionych\n\nMożesz zapisać zarówno strony krajowe, jak i regionalne.",
+  "onboardingRegions": "Kanały z całej Europy",
+  "onboardingRegionsDescription": "Wybierz i organizuj swoje ulubione kanały z całej Europy.\n\nSzukaj według nazwy kanału lub nazwy kraju.\n\nMożesz uzyskać dostęp do teletekstu z Włoch, Niemiec, Austrii, Szwajcarii i wielu innych krajów europejskich!",
+  "onboardingAutoRefresh": "Automatyczne odświeżanie podstron",
+  "onboardingAutoRefreshDescription": "Gdy automatyczne odświeżanie jest aktywne, okrąg wokół numeru strony wypełnia się stopniowo:\n\nMożesz zmienić czas odświeżania w ustawieniach\n\nWskaźnik jest widoczny tylko wtedy, gdy dostępne są podstrony, a automatyczne odświeżanie jest aktywne.",
+  "onboardingPause": "Wstrzymaj automatyczne ładowanie",
+  "onboardingPauseDescription": "Możesz wstrzymać automatyczne odświeżanie podstron:\n\n• Dotknij dowolnego miejsca na stronie, gdzie nie ma klikalnych numerów\n• Zobaczysz ikonę ⏸️, która wskazuje, że odświeżanie jest wstrzymane\n• Dotknij ponownie, aby wznowić odświeżanie (ikona ▶️)\n\nTa funkcja jest przydatna, gdy chcesz spokojnie przeczytać podstronę bez automatycznej zmiany.",
+  "onboardingPageSelector": "Selektor strony",
+  "onboardingPageSelectorDescription": "Dotknij centralnego numeru, aby bezpośrednio wprowadzić stronę.\n\nWprowadź numer między 100 a 999, aby przeskoczyć do tej strony.",
+  "onboardingSubpageNavigation": "Nawigacja po podstronach",
+  "onboardingSubpageNavigationDescription": "Jeśli strona ma podstrony, zobaczysz również wskaźnik:\n• 1/3 oznacza: pierwsza podstrona z trzech dostępnych\n\nUżyj centralnych strzałek, aby poruszać się między podstronami:\n\n• Strzałka w górę: przejdź do następnej podstrony\n• Strzałka w dół: przejdź do poprzedniej podstrony\n\nStrzałki są aktywne tylko wtedy, gdy dostępne są podstrony.",
+  "onboardingSwipe": "Nawigacja przeciąganiem",
+  "onboardingSwipeDescription": "Poruszaj się łatwo między stronami za pomocą gestów pokazanych powyżej.",
+  "onboardingClickableNumbers": "Klikalne numery stron",
+  "onboardingClickableNumbersDescription": "Dotknij wyróżnionych numerów stron, aby przejść bezpośrednio do tej strony\n\n",
+  "onboardingShortcuts": "Menu skrótów",
+  "onboardingShortcutsDescription": "Szybki dostęp do najważniejszych stron Teletekstu.\n\nUżyj tego menu, aby przeskoczyć bezpośrednio do:\n• Strona 100: Indeks krajowy\n• Strona 200: Wiadomości\n.....\nMożesz również wyszukiwać strony według tytułu, wybierając opcję Szukaj strony",
+  "onboardingFavoritesList": "Lista ulubionych",
+  "onboardingFavoritesListDescription": "Zarządzaj swoimi ulubionymi stronami:\n\n• Dotknij strony, aby ją otworzyć\n• Przesuń w lewo, aby ją usunąć\n• Dotknij ołówka, aby edytować opis\n• Przytrzymaj, aby zmienić kolejność\n\n",
+  "onboardingSettingsDescription": "Dostosuj aplikację zgodnie ze swoimi preferencjami:\n\n• Załaduj pierwszy ulubiony przy uruchomieniu: zdecyduj, od której strony Teletekstu zacząć\n• Motyw: wybierz między jasnym, ciemnym lub automatycznym\n• Automatyczne odświeżanie: włącz automatyczne ładowanie podstron\n• Pamięć podręczna: zarządzaj czasem przechowywania stron w pamięci podręcznej\n• Instrukcje: przeglądaj ten samouczek, kiedy chcesz\n• Kopia zapasowa ulubionych: zapisz i przywróć swoje ulubione\n• Ustawienia prywatności i resetowanie: zarządzaj lub resetuj swoje wybory dotyczące prywatności",
+  "dontShowAgain": "Nie pokazuj ponownie",
+  "start": "Start",
+  "reset": "Reset",
+  "resetInitialChannel": "Resetuj kanał początkowy",
+  "resetInitialChannelDescription": "Pokaż ponownie okno dialogowe wyboru kanału przy następnym uruchomieniu",
+  "resetCompleted": "Reset zakończony",
+  "resetInitialChannelMessage": "Kanał początkowy został zresetowany.\n\nPrzy następnym uruchomieniu aplikacji zostaniesz poproszony o ponowny wybór domyślnego kanału.\n\nUruchamianie aplikacji teraz...",
+  "selectYourChannel": "Wybierz swój domyślny kanał Teletekstu.\nMożesz go zmienić w dowolnym momencie.",
+  "backToPage": "Wróć do strony {pageNumber}",
+  "@backToPage": {
+    "description": "Button text to go back to a specific page",
+    "placeholders": {
+      "pageNumber": {
+        "type": "int",
+        "example": "100"
+      }
+    }
+  },
+  "pageUnavailableWithHint": "Strona {pageNumber} jest niedostępna.\nSpróbuj innego numeru między {minPage} a 999.\nWróć do {backPage}",
+  "@pageUnavailableWithHint": {
+    "description": "Error message when a page is not available, with hint",
+    "placeholders": {
+      "pageNumber": {
+        "type": "int",
+        "example": "100"
+      },
+      "minPage": {
+        "type": "int",
+        "example": "100"
+      },
+      "backPage": {
+        "type": "int",
+        "example": "100"
+      }
+    }
+  },
+  "pageLoadErrorWithHint": "Wystąpił błąd podczas ładowania strony.\nWróć do {minPage}",
+  "@pageLoadErrorWithHint": {
+    "description": "Error message when page loading fails, with hint",
+    "placeholders": {
+      "minPage": {
+        "type": "int",
+        "example": "100"
+      }
+    }
+  },
+  "channelSelection": "Wybór kanału",
+  "favoriteChannels": "Ulubione kanały",
+  "reorder": "Zmień kolejność",
+  "searchChannelOrCountry": "Szukaj kanału lub kraju...",
+  "showAllChannels": "Pokaż wszystkie kanały",
+  "channelsAvailableFromCountries": "{count} kanałów dostępnych z {countries} krajów",
+  "@channelsAvailableFromCountries": {
+    "description": "Number of channels available from countries",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "45"
+      },
+      "countries": {
+        "type": "int",
+        "example": "15"
+      }
+    }
+  },
+  "allChannels": "Wszystkie kanały",
+  "noFavoriteChannelsFound": "Nie znaleziono ulubionych kanałów",
+  "noChannelsFound": "Nie znaleziono kanałów",
+  "addedToFavorites": "{emoji} {name} dodany do ulubionych",
+  "@addedToFavorites": {
+    "description": "Message when a channel is added to favorites",
+    "placeholders": {
+      "emoji": {
+        "type": "String",
+        "example": "🇮🇹"
+      },
+      "name": {
+        "type": "String",
+        "example": "RAI Nazionale"
+      }
+    }
+  },
+  "removedFromFavorites": "{emoji} {name} usunięty z ulubionych",
+  "@removedFromFavorites": {
+    "description": "Message when a channel is removed from favorites",
+    "placeholders": {
+      "emoji": {
+        "type": "String",
+        "example": "🇮🇹"
+      },
+      "name": {
+        "type": "String",
+        "example": "RAI Nazionale"
+      }
+    }
+  },
+  "regionsAvailable": "{count} dostępnych regionów",
+  "@regionsAvailable": {
+    "description": "Number of regions available for a channel",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "20"
+      }
+    }
+  },
+  "reorderFavorites": "Zmień kolejność ulubionych",
+  "countryIT": "Włochy",
+  "countryDE": "Niemcy",
+  "countryAT": "Austria",
+  "countryCH": "Szwajcaria",
+  "countryES": "Hiszpania",
+  "countryPT": "Portugalia",
+  "countryNL": "Holandia",
+  "countryPL": "Polska",
+  "countrySE": "Szwecja",
+  "countryFI": "Finlandia",
+  "countryDK": "Dania",
+  "countryCZ": "Czechy",
+  "countryHR": "Chorwacja",
+  "countryBA": "Bośnia i Hercegowina",
+  "countryHU": "Węgry",
+  "countryIS": "Islandia",
+  "countrySI": "Słowenia",
+  "countryUA": "Ukraina"
+}

@@ -1,6 +1,11 @@
 {
   "versions": [
     {
+      "version": "2.0.4",
+      "changes": [
+        "20 nye kanaler fra Tyskland, Polen, Holland og Ukraine"
+      ]
+    },{
       "version": "2.0.3",
       "changes": [
         "Generelle optimeringer og fejlrettelser"

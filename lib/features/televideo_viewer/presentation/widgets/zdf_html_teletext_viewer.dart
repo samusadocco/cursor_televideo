@@ -141,7 +141,10 @@ class _ZDFHtmlTeletextViewerState extends State<ZDFHtmlTeletextViewer> {
           },
         ),
       )
-      ..loadHtmlString(_buildHtmlString(scaleX, scaleY));
+      ..loadHtmlString(
+        _buildHtmlString(scaleX, scaleY),
+        baseUrl: 'https://teletext.zdf.de/',
+      );
 
       print('[ZDFHtmlTeletextViewer] WebView initialized');
       
@@ -152,7 +155,10 @@ class _ZDFHtmlTeletextViewerState extends State<ZDFHtmlTeletextViewer> {
       }
     } else {
       // Aggiorna solo l'HTML con i nuovi scale factors
-      _controller!.loadHtmlString(_buildHtmlString(scaleX, scaleY));
+      _controller!.loadHtmlString(
+        _buildHtmlString(scaleX, scaleY),
+        baseUrl: 'https://teletext.zdf.de/',
+      );
       print('[ZDFHtmlTeletextViewer] WebView updated with new scaling');
     }
   }
@@ -162,6 +168,20 @@ class _ZDFHtmlTeletextViewerState extends State<ZDFHtmlTeletextViewer> {
     // ZDF fornisce HTML completo, ma dobbiamo convertire i percorsi relativi in assoluti
     // per CSS, font e immagini
     var html = _rawHtmlContent!;
+    
+    // Forza UTF-8 encoding per Android aggiungendo/sostituendo il meta charset
+    if (!html.contains('<meta charset')) {
+      // Se non c'è un meta charset, aggiungilo all'inizio del <head>
+      if (html.contains('<head>')) {
+        html = html.replaceFirst(
+          '<head>',
+          '<head>\n<meta charset="UTF-8">\n<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">',
+        );
+      } else {
+        // Se non c'è <head>, aggiungilo
+        html = '<head>\n<meta charset="UTF-8">\n<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">\n</head>\n$html';
+      }
+    }
     
     // Converti link CSS relativi in assoluti
     html = html.replaceAllMapped(

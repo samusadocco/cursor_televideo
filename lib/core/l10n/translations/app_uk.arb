@@ -1,0 +1,379 @@
+{
+  "@@locale": "uk",
+  "appTitle": "TeleRetrò Italia",
+  "welcome": "Ласкаво просимо!",
+  "welcomeSelectChannel": "Виберіть канал за замовчуванням",
+  "page": "Сторінка {pageNumber}",
+  "@page": {
+    "description": "Generic page label with number",
+    "placeholders": {
+      "pageNumber": {
+        "type": "int",
+        "example": "100"
+      }
+    }
+  },
+  "pageUnavailable": "Не вдалося завантажити зображення сторінки.\nСпробуйте ще раз через мить.",
+  "pageNotAvailable": "Запитувана сторінка недоступна",
+  "pageLoadError": "Виникла помилка під час завантаження сторінки.\nПовернутися на сторінку 100",
+  "pageNotAvailableForRegion": "Сторінка {pageNumber} недоступна для {regionName}",
+  "@pageNotAvailableForRegion": {
+    "description": "Error message when a page is not available for a specific region",
+    "placeholders": {
+      "pageNumber": {
+        "type": "int",
+        "example": "100"
+      },
+      "regionName": {
+        "type": "String",
+        "example": "Lombardia"
+      }
+    }
+  },
+  "pageNotAvailableForRegionWithHint": "Сторінка {pageNumber} недоступна для {regionName}.\nСпробуйте інший номер між 100 і 999.",
+  "@pageNotAvailableForRegionWithHint": {
+    "description": "Error message when a page is not available for a region, with hint",
+    "placeholders": {
+      "pageNumber": {
+        "type": "int",
+        "example": "100"
+      },
+      "regionName": {
+        "type": "String",
+        "example": "Lombardia"
+      }
+    }
+  },
+  "noMorePagesForRegion": "Більше немає доступних сторінок для {regionName}",
+  "@noMorePagesForRegion": {
+    "description": "Error message when there are no more pages for a region",
+    "placeholders": {
+      "regionName": {
+        "type": "String",
+        "example": "Lombardia"
+      }
+    }
+  },
+  "noMorePages": "Більше немає доступних сторінок",
+  "invalidSubpageNumber": "Недійсний номер підсторінки",
+  "subpageError": "Помилка завантаження підсторінки {current} з {total}",
+  "@subpageError": {
+    "description": "Error message when a subpage fails to load",
+    "placeholders": {
+      "current": {
+        "type": "int",
+        "example": "1"
+      },
+      "total": {
+        "type": "int",
+        "example": "8"
+      }
+    }
+  },
+  "swipePrevious": "← Попередня",
+  "swipeNext": "Наступна →",
+  "swipeNextUp": "Наступна ↑",
+  "swipePreviousDown": "Попередня ↓",
+  "swipeRefresh": "Оновити ↻",
+  "pageAddedToFavorites": "Сторінка додана до обраного",
+  "pageRemovedFromFavorites": "Сторінка видалена з обраного",
+  "editDescription": "Редагувати опис",
+  "pageAndRegion": "Сторінка {pageNumber} - {regionName}",
+  "@pageAndRegion": {
+    "description": "Page number and region name",
+    "placeholders": {
+      "pageNumber": {
+        "type": "int",
+        "example": "100"
+      },
+      "regionName": {
+        "type": "String",
+        "example": "Lombardia"
+      }
+    }
+  },
+  "description": "Опис",
+  "enterCustomDescription": "Введіть власний опис",
+  "restoreHint": "Порада: довго натисніть кнопку \"ВІДНОВИТИ\", щоб повернутися до опису за замовчуванням.",
+  "restore": "ВІДНОВИТИ",
+  "cancel": "Скасувати",
+  "save": "Зберегти",
+  "searchHint": "Шукати сторінку...",
+  "noResults": "Немає результатів",
+  "settings": "Налаштування",
+  "enterPageNumber": "Введіть номер сторінки",
+  "pageNumberRange": "Номер від {minPage} до 999",
+  "@pageNumberRange": {
+    "description": "Hint text for page number input",
+    "placeholders": {
+      "minPage": {
+        "type": "int",
+        "example": "100"
+      }
+    }
+  },
+  "ok": "OK",
+  "favoritesList": "Список обраного",
+  "confirmRemoval": "Підтвердити видалення",
+  "confirmRemoveFromFavorites": "Ви дійсно хочете видалити {description} з обраного?",
+  "@confirmRemoveFromFavorites": {
+    "description": "Confirmation message when removing a page from favorites",
+    "placeholders": {
+      "description": {
+        "type": "String",
+        "example": "Page 100"
+      }
+    }
+  },
+  "remove": "Видалити",
+  "edit": "Редагувати",
+  "close": "Закрити",
+  "noFavorites": "Немає обраного",
+  "useFavoriteIcon": "Використовуйте значок ❤️, щоб додати сторінки до обраного",
+  "loadingPage": "Завантаження сторінки {pageNumber}...",
+  "@loadingPage": {
+    "description": "Loading message when loading a page",
+    "placeholders": {
+      "pageNumber": {
+        "type": "int",
+        "example": "100"
+      }
+    }
+  },
+  "noPageToAddToFavorites": "Немає сторінки для додавання до обраного",
+  "language": "Мова",
+  "systemLanguage": "Системна мова",
+  "darkMode": "Темний режим",
+  "autoRefresh": "Автоматичне оновлення",
+  "favorites": "Обране",
+  "search": "Пошук",
+  "regions": "Регіони",
+  "home": "Головна",
+  "addToFavorites": "Додати до обраного",
+  "removeFromFavorites": "Видалити з обраного",
+  "loading": "Завантаження...",
+  "error": "Помилка",
+  "errorWithMessage": "Помилка: {message}",
+  "@errorWithMessage": {
+    "description": "Error message with details",
+    "placeholders": {
+      "message": {
+        "type": "String",
+        "example": "Network error"
+      }
+    }
+  },
+  "retry": "Спробувати знову",
+  "next": "Далі",
+  "previous": "Назад",
+  "pageNotFound": "Сторінка не знайдена",
+  "networkError": "Помилка мережі",
+  "connectionRequired": "Потрібне з'єднання",
+  "refreshing": "Оновлення...",
+  "lastUpdate": "Останнє оновлення",
+  "theme": "Тема",
+  "systemTheme": "Системна тема",
+  "lightTheme": "Світла тема",
+  "darkTheme": "Темна тема",
+  "selectTheme": "Виберіть тему",
+  "startupPageOption": "Стартова сторінка",
+  "startupPageOptionLastPage": "Остання переглянута сторінка (за замовчуванням)",
+  "startupPageOptionFirstFavorite": "Перше обране (якщо доступно)",
+  "startupPageOptionChannelHomePage": "Головна сторінка останнього каналу",
+  "cacheDuration": "Тривалість зберігання зображень сторінок Телетексту в кеші (0 секунд для вимкнення)",
+  "seconds": "секунд",
+  "autoRefreshDescription": "Автоматично оновлювати підсторінки",
+  "refreshInterval": "Інтервал оновлення",
+  "showOnboardingAtStartup": "Показувати інструкції при запуску",
+  "showOnboardingAtStartupDescription": "Показувати інструкції щоразу, коли ви відкриваєте програму",
+  "showInstructions": "Показати інструкції",
+  "showInstructionsDescription": "Переглянути інструкції з використання програми",
+  "backupFavorites": "Резервна копія обраного",
+  "backupFavoritesDescription": "Зберегти та відновити ваше обране",
+  "support": "Підтримка",
+  "supportDescription": "Зв'яжіться з нами для отримання допомоги",
+  "supportTitle": "Ми тут, щоб допомогти!",
+  "supportSubtitle": "З будь-яких питань чи допомоги не соромтеся звертатися до нас",
+  "directContact": "Прямий контакт",
+  "emailLabel": "Електронна пошта",
+  "websiteLabel": "Веб-сайт",
+  "responseTime": "Середній час відповіді: 24-48 годин",
+  "faq": "Часті запитання",
+  "faqGeolocation": "Як працює геолокація?",
+  "faqGeolocationAnswer": "Програма використовує місцезнаходження вашого пристрою для автоматичної ідентифікації вашого регіону та відображення відповідних місцевих новин. Ви можете вимкнути цю функцію в налаштуваннях програми.",
+  "faqFavorites": "Як зберегти сторінку в обраному?",
+  "faqFavoritesAnswer": "Під час перегляду сторінки торкніться значка зірки, щоб додати її до обраного. Ви можете отримати доступ до обраних сторінок з головного меню.",
+  "faqTheme": "Як змінити тему програми?",
+  "faqThemeAnswer": "Перейдіть до налаштувань програми та виберіть бажану тему (світлу/темну). Програма також підтримує автоматичну тему на основі системних налаштувань.",
+  "faqOffline": "Чи працює програма офлайн?",
+  "faqOfflineAnswer": "Ні, для доступу до сторінок Телетексту в реальному часі потрібне активне підключення до Інтернету.",
+  "faqReportProblem": "Як повідомити про проблему?",
+  "faqReportProblemAnswer": "Надішліть детальний електронний лист на адресу samuele@codebysam.it з описом проблеми, яку ви зіткнулися.",
+  "reportBugTitle": "Повідомити про проблему",
+  "reportBugInstructions": "Повідомляючи про проблему, вкажіть, якщо можливо:",
+  "reportBugItems": "Версія програми\nМодель пристрою\nОперційна система\nСкріншот проблеми",
+  "developedBy": "Розроблено CodeBySam",
+  "errorOpeningLink": "Не вдалося відкрити посилання",
+  "errorOpeningEmail": "Не вдалося відкрити електронну пошту",
+  "privacySettings": "Налаштування конфіденційності",
+  "privacySettingsDescription": "Змініть свої налаштування конфіденційності для реклами",
+  "resetPrivacySettings": "Скинути налаштування конфіденційності",
+  "resetPrivacySettingsDescription": "Повністю скинути налаштування конфіденційності",
+  "resetPrivacyConfirm": "Ви дійсно хочете скинути налаштування конфіденційності? При наступному запуску програми вас знову попросять дати згоду.",
+  "privacySettingsUnavailable": "Налаштування конфіденційності наразі недоступні",
+  "privacySettingsReset": "Налаштування конфіденційності скинуто. Перезапустіть програму для нової згоди.",
+  "version": "Версія",
+  "build": "збірка",
+  "onboardingWelcome": "Ласкаво просимо до Teletext Europe",
+  "onboardingWelcomeDescription": "Програма для перегляду всіх телетекстових каналів в Європі",
+  "onboardingDefaultChannel": "Виберіть канал за замовчуванням",
+  "onboardingDefaultChannelDescription": "При запуску програми вас попросять вибрати бажаний канал з усіх доступних каналів.\n\nВи можете змінити канал за замовчуванням у будь-який час з меню Налаштування.",
+  "onboardingNavigation": "Навігація сторінками",
+  "onboardingNavigationDescription": "Використовуйте бічні стрілки для переміщення між сторінками:\n\n• Стрілка вліво: перейти до попередньої сторінки\n• Стрілка вправо: перейти до наступної сторінки\n\nВи також можете використовувати горизонтальне перетягування для того ж ефекту.",
+  "onboardingFavorites": "Обране",
+  "onboardingFavoritesDescription": "Збережіть сторінки, які ви відвідуєте найчастіше:\n\n• Торкніться вказаного значка, щоб додати поточну сторінку\n• Торкніться знову, щоб видалити її з обраного\n• Значок стає червоним, коли сторінка в обраному\n\nВи можете зберігати як національні, так і регіональні сторінки.",
+  "onboardingRegions": "Канали з усієї Європи",
+  "onboardingRegionsDescription": "Виберіть та організуйте свої улюблені канали з усієї Європи.\n\nШукайте за назвою каналу або назвою країни.\n\nВи можете отримати доступ до телетексту з Італії, Німеччини, Австрії, Швейцарії та багатьох інших європейських країн!",
+  "onboardingAutoRefresh": "Автоматичне оновлення підсторінок",
+  "onboardingAutoRefreshDescription": "Коли автоматичне оновлення активне, коло навколо номера сторінки поступово заповнюється:\n\nВи можете змінити час оновлення в налаштуваннях\n\nІндикатор видимий лише тоді, коли доступні підсторінки та активне автоматичне оновлення.",
+  "onboardingPause": "Призупинити автоматичне завантаження",
+  "onboardingPauseDescription": "Ви можете призупинити автоматичне оновлення підсторінок:\n\n• Торкніться будь-якого місця на сторінці, де немає клікабельних номерів\n• Ви побачите значок ⏸️, який вказує, що оновлення призупинено\n• Торкніться знову, щоб відновити оновлення (значок ▶️)\n\nЦя функція корисна, коли ви хочете спокійно прочитати підсторінку без автоматичної зміни.",
+  "onboardingPageSelector": "Селектор сторінки",
+  "onboardingPageSelectorDescription": "Торкніться центрального номера, щоб безпосередньо ввести сторінку.\n\nВведіть номер між 100 і 999, щоб перейти до цієї сторінки.",
+  "onboardingSubpageNavigation": "Навігація підсторінками",
+  "onboardingSubpageNavigationDescription": "Якщо сторінка має підсторінки, ви також побачите індикатор:\n• 1/3 означає: перша підсторінка з трьох доступних\n\nВикористовуйте центральні стрілки для переміщення між підсторінками:\n\n• Стрілка вгору: перейти до наступної підсторінки\n• Стрілка вниз: перейти до попередньої підсторінки\n\nСтрілки активні лише тоді, коли доступні підсторінки.",
+  "onboardingSwipe": "Навігація свайпом",
+  "onboardingSwipeDescription": "Легко переміщуйтеся між сторінками за допомогою жестів, показаних вище.",
+  "onboardingClickableNumbers": "Клікабельні номери сторінок",
+  "onboardingClickableNumbersDescription": "Торкніться виділених номерів сторінок, щоб перейти безпосередньо до цієї сторінки\n\n",
+  "onboardingShortcuts": "Меню ярликів",
+  "onboardingShortcutsDescription": "Швидкий доступ до найважливіших сторінок Телетексту.\n\nВикористовуйте це меню, щоб перейти безпосередньо до:\n• Сторінка 100: Національний індекс\n• Сторінка 200: Новини\n.....\nВи також можете шукати сторінки за назвою, вибравши опцію Пошук сторінки",
+  "onboardingFavoritesList": "Список обраного",
+  "onboardingFavoritesListDescription": "Керуйте своїми улюбленими сторінками:\n\n• Торкніться сторінки, щоб відкрити її\n• Проведіть пальцем вліво, щоб видалити її\n• Торкніться олівця, щоб редагувати опис\n• Довго натисніть, щоб змінити порядок\n\n",
+  "onboardingSettingsDescription": "Налаштуйте програму відповідно до ваших уподобань:\n\n• Завантажити перше обране при запуску: вирішіть, з якої сторінки Телетексту почати\n• Тема: виберіть між світлою, темною або автоматичною\n• Автоматичне оновлення: увімкніть автоматичне завантаження підсторінок\n• Кеш: керуйте тривалістю зберігання сторінок у кеші\n• Інструкції: переглядайте цей посібник, коли захочете\n• Резервна копія обраного: збережіть та відновіть своє обране\n• Налаштування конфіденційності та скидання: керуйте або скиньте свої вибори конфіденційності",
+  "dontShowAgain": "Більше не показувати",
+  "start": "Почати",
+  "reset": "Скинути",
+  "resetInitialChannel": "Скинути початковий канал",
+  "resetInitialChannelDescription": "Показати діалогове вікно вибору каналу знову при наступному запуску",
+  "resetCompleted": "Скидання завершено",
+  "resetInitialChannelMessage": "Початковий канал було скинуто.\n\nПри наступному запуску програми вас попросять знову вибрати канал за замовчуванням.\n\nПерезапуск програми зараз...",
+  "selectYourChannel": "Виберіть свій канал Телетексту за замовчуванням.\nВи можете змінити його в будь-який час.",
+  "backToPage": "Повернутися до сторінки {pageNumber}",
+  "@backToPage": {
+    "description": "Button text to go back to a specific page",
+    "placeholders": {
+      "pageNumber": {
+        "type": "int",
+        "example": "100"
+      }
+    }
+  },
+  "pageUnavailableWithHint": "Сторінка {pageNumber} недоступна.\nСпробуйте інший номер між {minPage} і 999.\nПовернутися до {backPage}",
+  "@pageUnavailableWithHint": {
+    "description": "Error message when a page is not available, with hint",
+    "placeholders": {
+      "pageNumber": {
+        "type": "int",
+        "example": "100"
+      },
+      "minPage": {
+        "type": "int",
+        "example": "100"
+      },
+      "backPage": {
+        "type": "int",
+        "example": "100"
+      }
+    }
+  },
+  "pageLoadErrorWithHint": "Виникла помилка під час завантаження сторінки.\nПовернутися до {minPage}",
+  "@pageLoadErrorWithHint": {
+    "description": "Error message when page loading fails, with hint",
+    "placeholders": {
+      "minPage": {
+        "type": "int",
+        "example": "100"
+      }
+    }
+  },
+  "channelSelection": "Вибір каналу",
+  "favoriteChannels": "Обрані канали",
+  "reorder": "Змінити порядок",
+  "searchChannelOrCountry": "Шукати канал або країну...",
+  "showAllChannels": "Показати всі канали",
+  "channelsAvailableFromCountries": "{count} каналів доступно з {countries} країн",
+  "@channelsAvailableFromCountries": {
+    "description": "Number of channels available from countries",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "45"
+      },
+      "countries": {
+        "type": "int",
+        "example": "15"
+      }
+    }
+  },
+  "allChannels": "Усі канали",
+  "noFavoriteChannelsFound": "Обраних каналів не знайдено",
+  "noChannelsFound": "Каналів не знайдено",
+  "addedToFavorites": "{emoji} {name} додано до обраного",
+  "@addedToFavorites": {
+    "description": "Message when a channel is added to favorites",
+    "placeholders": {
+      "emoji": {
+        "type": "String",
+        "example": "🇮🇹"
+      },
+      "name": {
+        "type": "String",
+        "example": "RAI Nazionale"
+      }
+    }
+  },
+  "removedFromFavorites": "{emoji} {name} видалено з обраного",
+  "@removedFromFavorites": {
+    "description": "Message when a channel is removed from favorites",
+    "placeholders": {
+      "emoji": {
+        "type": "String",
+        "example": "🇮🇹"
+      },
+      "name": {
+        "type": "String",
+        "example": "RAI Nazionale"
+      }
+    }
+  },
+  "regionsAvailable": "{count} доступних регіонів",
+  "@regionsAvailable": {
+    "description": "Number of regions available for a channel",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "20"
+      }
+    }
+  },
+  "reorderFavorites": "Змінити порядок обраного",
+  "countryIT": "Італія",
+  "countryDE": "Німеччина",
+  "countryAT": "Австрія",
+  "countryCH": "Швейцарія",
+  "countryES": "Іспанія",
+  "countryPT": "Португалія",
+  "countryNL": "Нідерланди",
+  "countryPL": "Польща",
+  "countrySE": "Швеція",
+  "countryFI": "Фінляндія",
+  "countryDK": "Данія",
+  "countryCZ": "Чехія",
+  "countryHR": "Хорватія",
+  "countryBA": "Боснія і Герцеговина",
+  "countryHU": "Угорщина",
+  "countryIS": "Ісландія",
+  "countrySI": "Словенія",
+  "countryUA": "Україна"
+}
