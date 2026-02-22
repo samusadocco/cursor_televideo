@@ -6,11 +6,15 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:cursor_televideo/core/settings/app_settings.dart';
 import 'package:cursor_televideo/shared/models/region.dart';
 import 'package:cursor_televideo/core/ads/page_categories_service.dart';
+import 'package:cursor_televideo/core/iap/iap_service.dart';
 
 class AdService {
   static final AdService _instance = AdService._internal();
   factory AdService() => _instance;
   AdService._internal();
+  
+  // Riferimento al servizio IAP (sarà impostato dall'esterno)
+  IAPService? _iapService;
 
   InterstitialAd? _interstitialAd;
   int _pageViewCount = 0;
@@ -32,6 +36,27 @@ class AdService {
   // Stream controller per gli eventi di refresh del banner
   final _bannerRefreshController = StreamController<bool>.broadcast();
   Stream<bool> get bannerRefreshStream => _bannerRefreshController.stream;
+
+  /// Imposta il riferimento al servizio IAP
+  void setIAPService(IAPService iapService) {
+    _iapService = iapService;
+    print('[AdService] IAP Service configured');
+  }
+  
+  /// Verifica se gli annunci dovrebbero essere mostrati
+  /// Ritorna false se l'utente è premium
+  bool shouldShowAds() {
+    if (_iapService == null) {
+      // Se IAP non è configurato, mostra comunque gli annunci
+      return true;
+    }
+    
+    final isPremium = _iapService!.isPremium();
+    if (isPremium) {
+      print('[AdService] User is premium, ads disabled');
+    }
+    return !isPremium;
+  }
 
   void dispose() {
     _interstitialAd?.dispose();
@@ -409,6 +434,12 @@ class AdService {
   void incrementPageView({bool isSubPage = false}) {
     if (kIsWeb) return;  // No ads on web
     
+    // Controlla se l'utente è premium
+    if (!shouldShowAds()) {
+      print('[AdService] Premium user, skipping ad logic');
+      return;
+    }
+    
     // Non aggiornare il contesto qui - dovrebbe essere già stato impostato da _updateAdContext
     
     _pageViewCount++;
@@ -438,6 +469,12 @@ class AdService {
 
   void _loadInterstitialAd({int retryAttempt = 0}) {
     if (kIsWeb) return;  // No ads on web
+    
+    // Controlla se l'utente è premium
+    if (!shouldShowAds()) {
+      print('[AdService] Premium user, skipping ad load');
+      return;
+    }
     
     // Se è già in caricamento o se abbiamo già un annuncio, non carichiamo
     if (_isLoadingAd || _interstitialAd != null) {

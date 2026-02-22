@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cursor_televideo/core/settings/app_settings.dart';
@@ -19,6 +20,9 @@ import 'package:cursor_televideo/features/first_launch/initial_channel_selection
 import 'package:cursor_televideo/core/teletext/teletext_channels.dart';
 import 'package:cursor_televideo/features/televideo_viewer/bloc/televideo_bloc.dart';
 import 'package:cursor_televideo/features/televideo_viewer/bloc/televideo_event.dart';
+import 'package:cursor_televideo/core/iap/iap_service.dart';
+import 'package:cursor_televideo/features/premium/presentation/pages/premium_page.dart';
+import 'package:cursor_televideo/core/analytics/analytics_service.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -233,6 +237,80 @@ class _SettingsPageState extends State<SettingsPage> {
       ),
       body: ListView(
         children: [
+          // Sezione Premium (In evidenza)
+          FutureBuilder<SharedPreferences>(
+            future: SharedPreferences.getInstance(),
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) return const SizedBox.shrink();
+              
+              final prefs = snapshot.data!;
+              final isPremium = prefs.getBool('is_premium_user') ?? false;
+              
+              return Container(
+                margin: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: isPremium 
+                        ? [Colors.green[700]!, Colors.green[400]!]
+                        : [Colors.amber[700]!, Colors.amber[400]!],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: (isPremium ? Colors.green : Colors.amber).withOpacity(0.3),
+                      blurRadius: 8,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                ),
+                child: ListTile(
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  leading: Icon(
+                    isPremium ? Icons.check_circle : Icons.star_rounded,
+                    color: Colors.white,
+                    size: 32,
+                  ),
+                  title: Text(
+                    isPremium ? l10n.premiumActivated : l10n.goPremium,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                  ),
+                  subtitle: Text(
+                    isPremium ? l10n.premiumThankYou : l10n.premiumNoAds,
+                    style: const TextStyle(
+                      color: Colors.white70,
+                      fontSize: 13,
+                    ),
+                  ),
+                  trailing: const Icon(
+                    Icons.arrow_forward_ios,
+                    color: Colors.white,
+                    size: 16,
+                  ),
+                  onTap: () async {
+                    final prefs = await SharedPreferences.getInstance();
+                    final iapService = IAPService(prefs);
+                    await iapService.initialize();
+                    
+                    if (context.mounted) {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => PremiumPage(iapService: iapService),
+                        ),
+                      );
+                    }
+                  },
+                ),
+              );
+            },
+          ),
+          const Divider(),
+          
           // Sezione Pagina di Avvio
           ListTile(
             title: Text(l10n.startupPageOption),
@@ -524,6 +602,86 @@ class _SettingsPageState extends State<SettingsPage> {
               title: Text(l10n.version),
               subtitle: Text('${_packageInfo!.version} (${l10n.build} ${_packageInfo!.buildNumber})'),
               trailing: const Icon(Icons.info_outline),
+            ),
+          ],
+          
+          // Sezione Debug (solo in modalità debug)
+          if (kDebugMode) ...[
+            const Divider(),
+            Container(
+              color: Colors.orange[50],
+              child: Column(
+                children: [
+                  ListTile(
+                    leading: const Icon(Icons.bug_report, color: Colors.orange),
+                    title: const Text(
+                      'DEBUG MODE',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.orange,
+                      ),
+                    ),
+                    subtitle: const Text('Opzioni disponibili solo in sviluppo'),
+                  ),
+                  FutureBuilder<SharedPreferences>(
+                    future: SharedPreferences.getInstance(),
+                    builder: (context, snapshot) {
+                      if (!snapshot.hasData) return const SizedBox.shrink();
+                      
+                      final prefs = snapshot.data!;
+                      final isPremium = prefs.getBool('is_premium_user') ?? false;
+                      
+                      return SwitchListTile(
+                        title: const Text('🌟 Simula Abbonamento Premium'),
+                        subtitle: Text(
+                          isPremium 
+                            ? '✅ Abbonamento ATTIVO (debug)'
+                            : '❌ Abbonamento NON attivo',
+                        ),
+                        value: isPremium,
+                        activeColor: Colors.green,
+                        onChanged: (value) async {
+                          await prefs.setBool('is_premium_user', value);
+                          
+                          // Aggiorna anche Analytics
+                          try {
+                            await AnalyticsService().setSubscriptionStatus(value);
+                          } catch (e) {
+                            print('Error updating analytics: $e');
+                          }
+                          
+                          if (mounted) {
+                            setState(() {});
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  value 
+                                    ? '✅ Abbonamento Premium ATTIVATO (debug)'
+                                    : '❌ Abbonamento Premium DISATTIVATO',
+                                ),
+                                backgroundColor: value ? Colors.green : Colors.orange,
+                                duration: const Duration(seconds: 2),
+                              ),
+                            );
+                            
+                            // Suggerisci di riavviare l'app per vedere i cambiamenti
+                            if (value) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text(
+                                    '💡 Chiudi e riapri l\'app per vedere la rimozione degli annunci',
+                                  ),
+                                  duration: Duration(seconds: 3),
+                                ),
+                              );
+                            }
+                          }
+                        },
+                      );
+                    },
+                  ),
+                ],
+              ),
             ),
           ],
         ],

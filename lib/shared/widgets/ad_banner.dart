@@ -127,6 +127,12 @@ class _AdBannerState extends State<AdBanner> {
     if (kIsWeb) {
       return const SizedBox(height: 50);  // Altezza fissa per il web
     }
+    
+    // Controlla se l'utente è premium
+    if (!_adService.shouldShowAds()) {
+      // Utente premium: nessun banner
+      return const SizedBox.shrink();
+    }
 
     // Controlliamo l'orientamento e carichiamo l'ad se necessario
     final isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;

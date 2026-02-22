@@ -25,6 +25,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:cursor_televideo/core/config/ocr_config_service.dart';
+import 'package:cursor_televideo/core/iap/iap_service.dart';
+import 'package:cursor_televideo/core/ads/ad_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -76,6 +78,18 @@ void main() async {
     // Inizializza il servizio della lingua (singleton)
     await LanguageService.initialize(prefs);
     print('LanguageService initialized successfully');
+    
+    // Inizializza il servizio In-App Purchase
+    final iapService = IAPService(prefs);
+    final iapInitialized = await iapService.initialize();
+    if (iapInitialized) {
+      print('✅ IAP Service initialized successfully');
+      // Collega IAP Service ad Ad Service per controllare lo stato premium
+      AdService().setIAPService(iapService);
+      print('✅ IAP Service connected to Ad Service');
+    } else {
+      print('⚠️ IAP Service initialization failed, ads will show normally');
+    }
   } catch (e) {
     print('Error initializing services: $e');
   }

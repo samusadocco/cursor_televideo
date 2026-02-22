@@ -274,4 +274,32 @@ class AnalyticsService {
       value: value,
     ));
   }
+  
+  /// Imposta lo stato dell'abbonamento come User Property
+  /// Questo permette di segmentare gli utenti in Firebase Analytics
+  Future<void> setSubscriptionStatus(bool isPremium) async {
+    final status = isPremium ? 'premium' : 'free';
+    await setUserProperty('subscription_status', status);
+    print('🔍 Analytics: Subscription status set to $status');
+  }
+  
+  /// Log evento specifico per acquisto/abbonamento
+  Future<void> logSubscriptionEvent(String eventName, {
+    String? subscriptionId,
+    String? price,
+    String? currency,
+    Map<String, dynamic>? additionalParams,
+  }) async {
+    final parameters = <String, dynamic>{
+      if (subscriptionId != null) 'subscription_id': subscriptionId,
+      if (price != null) 'price': price,
+      if (currency != null) 'currency': currency,
+      ...?additionalParams,
+    };
+    
+    await _safeLogEvent('logSubscriptionEvent', () => _analytics!.logEvent(
+      name: eventName,
+      parameters: parameters,
+    ));
+  }
 }
