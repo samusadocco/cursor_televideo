@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:in_app_purchase_android/in_app_purchase_android.dart';
 import 'package:in_app_purchase_storekit/in_app_purchase_storekit.dart';
+import 'package:in_app_purchase_storekit/store_kit_wrappers.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cursor_televideo/core/analytics/analytics_service.dart';
 
@@ -62,6 +63,15 @@ class IAPService {
         onDone: () => _subscription.cancel(),
         onError: (error) => print('[IAPService] Purchase stream error: $error'),
       );
+      
+      // Configura delegate per App Store Promotion (iOS)
+      // Gestisce acquisti avviati direttamente dalla pagina prodotto nell'App Store
+      if (defaultTargetPlatform == TargetPlatform.iOS) {
+        final iosPlatformAddition = _inAppPurchase
+            .getPlatformAddition<InAppPurchaseStoreKitPlatformAddition>();
+        await iosPlatformAddition.setDelegate(_AppStorePromotionDelegate());
+        print('[IAPService] App Store Promotion delegate registered');
+      }
       
       // Carica i prodotti
       await _loadProducts();
@@ -355,5 +365,25 @@ class IAPService {
     await _prefs.remove(_isPremiumKey);
     _premiumStatusController.add(false);
     print('[IAPService] Premium status cleared (testing)');
+  }
+}
+
+/// Delegate per supportare la Promozione sull'App Store (iOS).
+/// 
+/// Quando un utente tocca un abbonamento promosso direttamente nell'App Store,
+/// iOS chiama shouldContinueTransaction per decidere se procedere con l'acquisto.
+/// Restituendo true, l'acquisto viene gestito normalmente dal purchaseStream.
+class _AppStorePromotionDelegate implements SKPaymentQueueDelegateWrapper {
+  @override
+  bool shouldContinueTransaction(
+    SKPaymentTransactionWrapper transaction,
+    SKStorefrontWrapper storefront,
+  ) {
+    return true;
+  }
+
+  @override
+  bool shouldShowPriceConsent() {
+    return false;
   }
 }

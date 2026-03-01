@@ -642,4 +642,104 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get countryUA => 'Україна';
+
+  @override
+  String get premiumTitle => 'Teletext Premium';
+
+  @override
+  String get premiumFeatures => 'Преміум-функції';
+
+  @override
+  String get premiumSubtitle => 'Покращте свій досвід роботи з Teletext Europe';
+
+  @override
+  String get premiumNoAds => 'Без реклами';
+
+  @override
+  String get premiumNoAdsDescription =>
+      'Видаліть всі банерні та повноекранні оголошення';
+
+  @override
+  String get premiumFasterExperience => 'Більш плавний досвід';
+
+  @override
+  String get premiumFasterExperienceDescription =>
+      'Навігація без рекламних переривань';
+
+  @override
+  String get premiumSupportDevelopment => 'Підтримати розробку';
+
+  @override
+  String get premiumSupportDevelopmentDescription =>
+      'Допоможіть підтримувати програму з новими каналами та функціями';
+
+  @override
+  String get premiumActivated => 'Premium активовано';
+
+  @override
+  String get premiumThankYou => 'Дякуємо за вашу підтримку!';
+
+  @override
+  String get premiumOneTimePurchase => 'Квартальна підписка';
+
+  @override
+  String get premiumLifetime => 'Автоматичне поновлення кожні 3 місяці';
+
+  @override
+  String get purchasePremium => 'Підписатися зараз';
+
+  @override
+  String get restorePurchases => 'Відновити підписку';
+
+  @override
+  String get premiumProductNotAvailable => 'Преміум-підписка наразі недоступна';
+
+  @override
+  String get premiumPurchaseError =>
+      'Помилка під час підписки. Спробуйте ще раз.';
+
+  @override
+  String get premiumRestoreSuccess => 'Підписку успішно відновлено!';
+
+  @override
+  String get premiumRestoreNoPurchases => 'Активної підписки не знайдено';
+
+  @override
+  String get premiumRestoreError => 'Помилка відновлення підписки';
+
+  @override
+  String get premiumLegalNote =>
+      'Квартальна підписка з автоматичним поновленням. Ви можете скасувати в будь-який час у налаштуваннях облікового запису Apple/Google. Оплата стягується при підтвердженні. Підписка автоматично поновлюється кожні 3 місяці.';
+
+  @override
+  String get goPremium => 'Стати Premium';
+
+  @override
+  String get premiumChoosePlan => 'Виберіть свій план';
+
+  @override
+  String get premiumMonthly => 'Щомісячно';
+
+  @override
+  String get premiumQuarterly => 'Щоквартально';
+
+  @override
+  String get premiumPerMonth => 'на місяць';
+
+  @override
+  String get premiumEvery3Months => 'кожні 3 місяці';
+
+  @override
+  String premiumSavePercent(String percent) {
+    return 'Заощаджуйте $percent';
+  }
+
+  @override
+  String get premiumMonthlyPlan => 'Місячний план';
+
+  @override
+  String get premiumQuarterlyPlan => 'Квартальний план';
+
+  @override
+  String get premiumSubscriptionInfo => 'Інформація про підписку';
 }

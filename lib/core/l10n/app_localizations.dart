@@ -1251,6 +1251,192 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Ukraine'**
   String get countryUA;
+
+  /// No description provided for @premiumTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Teletext Premium'**
+  String get premiumTitle;
+
+  /// No description provided for @premiumFeatures.
+  ///
+  /// In en, this message translates to:
+  /// **'Premium Features'**
+  String get premiumFeatures;
+
+  /// No description provided for @premiumSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Enhance your Teletext Europe experience'**
+  String get premiumSubtitle;
+
+  /// No description provided for @premiumNoAds.
+  ///
+  /// In en, this message translates to:
+  /// **'No Ads'**
+  String get premiumNoAds;
+
+  /// No description provided for @premiumNoAdsDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove all banner ads and interstitial ads'**
+  String get premiumNoAdsDescription;
+
+  /// No description provided for @premiumFasterExperience.
+  ///
+  /// In en, this message translates to:
+  /// **'Smoother Experience'**
+  String get premiumFasterExperience;
+
+  /// No description provided for @premiumFasterExperienceDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Navigate without advertising interruptions'**
+  String get premiumFasterExperienceDescription;
+
+  /// No description provided for @premiumSupportDevelopment.
+  ///
+  /// In en, this message translates to:
+  /// **'Support Development'**
+  String get premiumSupportDevelopment;
+
+  /// No description provided for @premiumSupportDevelopmentDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Help keep the app updated with new channels and features'**
+  String get premiumSupportDevelopmentDescription;
+
+  /// No description provided for @premiumActivated.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscription Active'**
+  String get premiumActivated;
+
+  /// No description provided for @premiumThankYou.
+  ///
+  /// In en, this message translates to:
+  /// **'Thank you for your support!'**
+  String get premiumThankYou;
+
+  /// No description provided for @premiumOneTimePurchase.
+  ///
+  /// In en, this message translates to:
+  /// **'Quarterly subscription'**
+  String get premiumOneTimePurchase;
+
+  /// No description provided for @premiumLifetime.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto-renews every 3 months'**
+  String get premiumLifetime;
+
+  /// No description provided for @purchasePremium.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscribe Now'**
+  String get purchasePremium;
+
+  /// No description provided for @restorePurchases.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore Subscription'**
+  String get restorePurchases;
+
+  /// No description provided for @premiumProductNotAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Premium subscription not available at the moment'**
+  String get premiumProductNotAvailable;
+
+  /// No description provided for @premiumPurchaseError.
+  ///
+  /// In en, this message translates to:
+  /// **'Error during subscription. Please try again.'**
+  String get premiumPurchaseError;
+
+  /// No description provided for @premiumRestoreSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscription restored successfully!'**
+  String get premiumRestoreSuccess;
+
+  /// No description provided for @premiumRestoreNoPurchases.
+  ///
+  /// In en, this message translates to:
+  /// **'No active subscription found'**
+  String get premiumRestoreNoPurchases;
+
+  /// No description provided for @premiumRestoreError.
+  ///
+  /// In en, this message translates to:
+  /// **'Error restoring subscription'**
+  String get premiumRestoreError;
+
+  /// No description provided for @premiumLegalNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Quarterly subscription with auto-renewal. You can cancel anytime from your Apple/Google account settings. Payment will be charged upon confirmation. Subscription automatically renews every 3 months.'**
+  String get premiumLegalNote;
+
+  /// No description provided for @goPremium.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscribe to Premium'**
+  String get goPremium;
+
+  /// No description provided for @premiumChoosePlan.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose your plan'**
+  String get premiumChoosePlan;
+
+  /// No description provided for @premiumMonthly.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly'**
+  String get premiumMonthly;
+
+  /// No description provided for @premiumQuarterly.
+  ///
+  /// In en, this message translates to:
+  /// **'Quarterly'**
+  String get premiumQuarterly;
+
+  /// No description provided for @premiumPerMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'per month'**
+  String get premiumPerMonth;
+
+  /// No description provided for @premiumEvery3Months.
+  ///
+  /// In en, this message translates to:
+  /// **'every 3 months'**
+  String get premiumEvery3Months;
+
+  /// Save percentage badge on quarterly plan
+  ///
+  /// In en, this message translates to:
+  /// **'Save {percent}'**
+  String premiumSavePercent(String percent);
+
+  /// No description provided for @premiumMonthlyPlan.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly Plan'**
+  String get premiumMonthlyPlan;
+
+  /// No description provided for @premiumQuarterlyPlan.
+  ///
+  /// In en, this message translates to:
+  /// **'Quarterly Plan'**
+  String get premiumQuarterlyPlan;
+
+  /// No description provided for @premiumSubscriptionInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscription information'**
+  String get premiumSubscriptionInfo;
 }
 
 class _AppLocalizationsDelegate

@@ -642,4 +642,105 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String get countryUA => 'Ukrajina';
+
+  @override
+  String get premiumTitle => 'Teletext Premium';
+
+  @override
+  String get premiumFeatures => 'Premium funkce';
+
+  @override
+  String get premiumSubtitle => 'Vylepšete svůj zážitek s Teletext Europe';
+
+  @override
+  String get premiumNoAds => 'Žádné reklamy';
+
+  @override
+  String get premiumNoAdsDescription =>
+      'Odstraňte všechny bannerové reklamy a mezistitiální reklamy';
+
+  @override
+  String get premiumFasterExperience => 'Plynulejší zážitek';
+
+  @override
+  String get premiumFasterExperienceDescription =>
+      'Procházejte bez reklamních přerušení';
+
+  @override
+  String get premiumSupportDevelopment => 'Podpořte vývoj';
+
+  @override
+  String get premiumSupportDevelopmentDescription =>
+      'Pomozte udržovat aplikaci aktuální s novými kanály a funkcemi';
+
+  @override
+  String get premiumActivated => 'Premium aktivováno';
+
+  @override
+  String get premiumThankYou => 'Děkujeme za vaši podporu!';
+
+  @override
+  String get premiumOneTimePurchase => 'Čtvrtletní předplatné';
+
+  @override
+  String get premiumLifetime => 'Automatické obnovení každé 3 měsíce';
+
+  @override
+  String get purchasePremium => 'Předplatit nyní';
+
+  @override
+  String get restorePurchases => 'Obnovit předplatné';
+
+  @override
+  String get premiumProductNotAvailable =>
+      'Premium předplatné momentálně není k dispozici';
+
+  @override
+  String get premiumPurchaseError => 'Chyba při předplatném. Zkuste to znovu.';
+
+  @override
+  String get premiumRestoreSuccess => 'Předplatné úspěšně obnoveno!';
+
+  @override
+  String get premiumRestoreNoPurchases =>
+      'Nebylo nalezeno žádné aktivní předplatné';
+
+  @override
+  String get premiumRestoreError => 'Chyba při obnovování předplatného';
+
+  @override
+  String get premiumLegalNote =>
+      'Čtvrtletní předplatné s automatickým obnovením. Můžete zrušit kdykoli z nastavení účtu Apple/Google. Platba bude provedena při potvrzení. Předplatné se automaticky obnovuje každé 3 měsíce.';
+
+  @override
+  String get goPremium => 'Stát se Premium';
+
+  @override
+  String get premiumChoosePlan => 'Vyberte si plán';
+
+  @override
+  String get premiumMonthly => 'Měsíčně';
+
+  @override
+  String get premiumQuarterly => 'Čtvrtletně';
+
+  @override
+  String get premiumPerMonth => 'za měsíc';
+
+  @override
+  String get premiumEvery3Months => 'každé 3 měsíce';
+
+  @override
+  String premiumSavePercent(String percent) {
+    return 'Ušetřete $percent';
+  }
+
+  @override
+  String get premiumMonthlyPlan => 'Měsíční plán';
+
+  @override
+  String get premiumQuarterlyPlan => 'Čtvrtletní plán';
+
+  @override
+  String get premiumSubscriptionInfo => 'Informace o předplatném';
 }

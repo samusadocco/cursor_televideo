@@ -6,9 +6,9 @@ import 'package:html/parser.dart' as html_parser;
 import 'package:cursor_televideo/core/debug/debug_logger.dart';
 
 /// Widget per visualizzare pagine ARD Teletext in formato HTML
-/// 
-/// Questo widget renderizza il contenuto HTML delle pagine ARD teletext
-/// che usano immagini GIF per i caratteri
+///
+/// Estrae il div #ardtext_classic dalla pagina ARD e lo renderizza
+/// in un WebView con CSS che preserva font e colori originali.
 class ARDHtmlTeletextViewer extends StatefulWidget {
   final TelevideoPage page;
   final Function(int pageNumber)? onPageNavigation;
@@ -28,11 +28,11 @@ class ARDHtmlTeletextViewer extends StatefulWidget {
 class _ARDHtmlTeletextViewerState extends State<ARDHtmlTeletextViewer> {
   WebViewController? _controller;
   bool _isLoading = true;
-  String? _rawHtmlContent;  // Contenuto HTML grezzo estratto
-  String? _rawCss;          // CSS estratto
+  String? _rawHtmlContent;
+  String? _rawCss;
   String? _errorMessage;
-  double? _lastWidth;       // Ultima larghezza usata per generare HTML
-  double? _lastHeight;      // Ultima altezza usata per generare HTML
+  double? _lastWidth;
+  double? _lastHeight;
 
   @override
   void initState() {
@@ -44,19 +44,13 @@ class _ARDHtmlTeletextViewerState extends State<ARDHtmlTeletextViewer> {
   @override
   void didUpdateWidget(ARDHtmlTeletextViewer oldWidget) {
     super.didUpdateWidget(oldWidget);
-    // Ricarica il contenuto se la pagina o la sottopagina sono cambiate
     if (oldWidget.page.pageNumber != widget.page.pageNumber ||
         oldWidget.page.subPage != widget.page.subPage) {
-      print('[HtmlTeletextViewer] Page changed, reloading content');
-      // IMPORTANTE: Setta _isLoading = true PRIMA di chiamare _extractContent
-      // per bloccare il build() dal creare il WebView con il vecchio contenuto
       setState(() {
         _isLoading = true;
+        _lastWidth = null;
+        _lastHeight = null;
       });
-      // Resetta le dimensioni per forzare il reload del WebView
-      _lastWidth = null;
-      _lastHeight = null;
-      // Ricarica il contenuto
       _extractContent();
     }
   }
@@ -66,211 +60,155 @@ class _ARDHtmlTeletextViewerState extends State<ARDHtmlTeletextViewer> {
     super.dispose();
   }
 
-  /// Estrae il contenuto del div ardtext_classic (solo una volta)
   Future<void> _extractContent() async {
     if (!mounted) return;
-    
-    print('[HtmlTeletextViewer] _extractContent called for page ${widget.page.pageNumber}_${widget.page.subPage}');
-    print('[HtmlTeletextViewer] Current _rawHtmlContent: ${_rawHtmlContent?.substring(0, 50) ?? "null"}');
-    
     setState(() {
       _isLoading = true;
       _errorMessage = null;
     });
-    
+
     try {
-      print('[HtmlTeletextViewer] Fetching page: ${widget.page.imageUrl}');
-      
       final response = await http.get(Uri.parse(widget.page.imageUrl));
-      print('[HtmlTeletextViewer] Response status: ${response.statusCode}');
-      
       if (response.statusCode != 200) {
-        throw Exception('Failed to load page: ${response.statusCode}');
+        throw Exception('HTTP ${response.statusCode}');
       }
-      
-      print('[HtmlTeletextViewer] Page fetched (${response.body.length} bytes), parsing HTML...');
-      
-      // Parse HTML
+
       final document = html_parser.parse(response.body);
-      
-      // Trova il div ardtext_classic
       final ardDiv = document.getElementById('ardtext_classic');
       if (ardDiv == null) {
         throw Exception('ardtext_classic div not found');
       }
-      
-      print('[HtmlTeletextViewer] Found ardtext_classic, innerHTML length: ${ardDiv.innerHtml.length}');
-      
-      if (ardDiv.innerHtml.isEmpty) {
-        throw Exception('ardtext_classic div is empty');
-      }
-      
-      // Converti percorsi immagini relativi in assoluti
+
       final baseUri = Uri.parse(widget.page.imageUrl);
       final baseUrl = '${baseUri.scheme}://${baseUri.host}';
-      
+
+      // Converti percorsi immagini relativi in assoluti (sia " che ')
       var htmlContent = ardDiv.innerHtml;
-      
-      // Regex per trovare src="./img/..." o src='./img/...'
       htmlContent = htmlContent.replaceAllMapped(
         RegExp(r'src="\./(img/[^"]+)"'),
-        (match) => 'src="$baseUrl/${match.group(1)}"'
+        (m) => 'src="$baseUrl/${m.group(1)}"',
       );
       htmlContent = htmlContent.replaceAllMapped(
         RegExp(r"src='\./(img/[^']+)'"),
-        (match) => "src='$baseUrl/${match.group(1)}'"
+        (m) => "src='$baseUrl/${m.group(1)}'",
       );
-      
-      print('[HtmlTeletextViewer] Converted image paths');
-      
-      // Wrappa ogni immagine GIF in uno span con larghezza fissa per allineamento perfetto
-      htmlContent = htmlContent.replaceAllMapped(
-        RegExp(r'<img src="[^"]+\.gif"[^>]*>'),
-        (match) => '<span style="width:10px;display:inline-block;margin:0;padding:0;border:0;outline:0;vertical-align:top;">${match.group(0)}</span>'
-      );
-      
-      print('[HtmlTeletextViewer] Wrapped GIF images in fixed-width spans');
-      
-      // Estrai i CSS inline dalla pagina originale (solo i tag <style>)
-      final styleTags = document.querySelectorAll('style');
+
+      // Scarica il CSS principale ARD (colori e font)
       final cssBuffer = StringBuffer();
-      
-      for (var style in styleTags) {
-        final styleContent = style.innerHtml;
-        if (styleContent.isNotEmpty) {
-          cssBuffer.writeln(styleContent);
-        }
-      }
-      
-      print('[HtmlTeletextViewer] Extracted ${cssBuffer.length} chars of inline CSS');
-      
-      // Scarica SOLO il CSS principale per i colori (stylesheet_master_fira.css)
-      final mainCssUrl = 'https://www.ard-text.de/classic_stylesheets/stylesheet_master_fira.css?t=1';
       try {
-        print('[HtmlTeletextViewer] Downloading main CSS: $mainCssUrl'  );
-        final cssResponse = await http.get(Uri.parse(mainCssUrl));
+        final cssResponse = await http.get(
+          Uri.parse('https://www.ard-text.de/classic_stylesheets/stylesheet_master_fira.css?t=1'),
+        );
         if (cssResponse.statusCode == 200) {
-          // Rimuovi tutti i riferimenti a font-family dal CSS
-          var cssText = cssResponse.body;
-          cssText = cssText.replaceAll(RegExp(r'font-family:[^;]+;'), '');
-          cssText = cssText.replaceAll(RegExp(r'font-family:[^}]+}'), '}');
-          cssBuffer.writeln(cssText);
-          print('[HtmlTeletextViewer] Downloaded and cleaned main CSS (${cssText.length} bytes)');
+          // Rimuovi font-face (non caricabili per CORS) ma mantieni colori
+          var css = cssResponse.body;
+          css = css.replaceAll(RegExp(r'@font-face\s*\{[^}]+\}'), '');
+          cssBuffer.write(css);
         }
       } catch (e) {
-        print('[HtmlTeletextViewer] Error downloading CSS: $e');
+        print('[ARDViewer] CSS download error: $e');
       }
-      
-      final inlineCSS = cssBuffer.toString();
-      print('[HtmlTeletextViewer] Total CSS: ${inlineCSS.length} chars');
-      
-      // Salva i dati grezzi
+
       if (mounted) {
         setState(() {
           _rawHtmlContent = htmlContent;
-          _rawCss = inlineCSS;
+          _rawCss = cssBuffer.toString();
           _isLoading = false;
         });
       }
-      
-      print('[HtmlTeletextViewer] Content extracted successfully');
-      
     } catch (e) {
-      print('[HtmlTeletextViewer] Error extracting content: $e');
+      print('[ARDViewer] Error: $e');
       if (mounted) {
         setState(() {
-          _errorMessage = 'Errore nel caricamento della pagina: $e';
+          _errorMessage = 'Errore caricamento: $e';
           _isLoading = false;
         });
       }
     }
   }
 
-  /// Genera l'HTML finale con gli scale factors appropriati
-  String _buildHtmlWithScaling(double scaleX, double scaleY) {
-    return '''
-<!DOCTYPE html>
+  String _buildHtml(double scaleX, double scaleY) {
+    return '''<!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <style>
-    /* CSS inline dalla pagina originale (per i colori) */
+    /* CSS ARD originale: colori span (bgb, bgw, fgw, ecc.) */
     $_rawCss
-    
-    /* Override per forzare sfondo nero, font monospace e allineamento perfetto */
-    * {
-      box-sizing: border-box;
-    }
+
+    /* ── Reset base ── */
+    *, *::before, *::after { box-sizing: border-box; }
     html, body {
-      background: #000 !important;
-      margin: 0;
-      padding: 0;
-      width: 100%;
-      height: 100%;
+      margin: 0; padding: 0;
+      width: 100%; height: 100%;
+      background: #000;
       overflow: hidden;
-      line-height: 1 !important;
     }
+
+    /* ── Contenuto scalato ── */
     #content {
-      padding: 0;
-      background: #000 !important;
-      line-height: 1 !important;
+      margin: 0; padding: 0;
+      background: #000;
+      font-family: 'Fira Mono', 'Courier New', monospace;
+      font-size: 10px;
+      line-height: 16px;
       transform: scale($scaleX, $scaleY);
       transform-origin: top left;
-      width: ${100 / scaleX}%;
-      height: ${100 / scaleY}%;
+      width: 390px;
+      height: 400px;
     }
-    /* Forza Courier New SOLO sul testo (fallback per font CORS bloccati) */
-    #content, #content span, #content nobr, #content a {
-      font-family: 'Courier New', 'Courier', monospace !important;
+
+    /* ── Fira Mono via ARD server (stessa origine, bypassa CORS) ── */
+    @font-face {
+      font-family: 'Fira Mono';
+      src: url('https://www.ard-text.de/fira/ttf/FiraMono-Regular.ttf') format('truetype');
+      font-weight: 400;
+      font-style: normal;
     }
-    /* Forza tutte le immagini alla stessa dimensione e rimuovi spacing */
+
+    /* ── Immagini GIF: 9×16px, non ridimensionare ── */
     img {
-      display: inline-block !important;
-      vertical-align: top !important;
-      margin: 0 !important;
-      padding: 0 !important;
-      border: 0 !important;
-      line-height: 1 !important;
+      display: inline;
+      vertical-align: top;
+      width: 9px !important;
+      height: 16px !important;
+      margin: 0; padding: 0; border: 0;
     }
-    /* Fix per eliminare righe verticali negli elementi inline-block con width 10px */
-    span[style*="width:10px"][style*="display:inline-block"] {
-      font-size: 0;
-      line-height: 0;
-    }
-    span[style*="width:10px"][style*="display:inline-block"] img {
-      display: block;
-      width: 10px;
-      height: auto;
-    }
-    /* Rimuovi spacing da nobr e span */
-    nobr {
-      margin: 0 !important;
-      padding: 0 !important;
-      line-height: 1 !important;
-      display: inline !important;
-      white-space: nowrap !important;
-    }
+
+    /* ── Span: font-size 13px + letter-spacing 2.2px = 10px/char (come ARD originale).
+       Il CSS ARD usa #ardtext_classic span, ma il contenuto è in #content,
+       quindi quei selettori non si applicano. Li reimpostiamo qui esplicitamente.
+       Fira Mono 13px ≈ 7.8px char + 2.2px spacing = 10px → corrisponde ai
+       width inline-style degli span (10px, 20px, ..., 380px). ── */
     span {
-      margin: 0 !important;
-      padding: 0 !important;
-      line-height: 1 !important;
-      display: inline-block !important;
-      vertical-align: top !important;
-      box-sizing: border-box !important;
-      overflow: hidden !important;
-      min-height: 1em !important;
+      display: inline-block;
+      vertical-align: top;
+      margin: 0; padding: 0;
+      font-size: 13px !important;
+      letter-spacing: 2.2px !important;
+      line-height: 16px !important;
     }
-    /* Forza i div a non avere spacing */
-    div {
-      margin: 0 !important;
-      padding: 0 !important;
-      line-height: 1 !important;
+
+    nobr {
+      display: inline;
+      white-space: nowrap;
+      margin: 0; padding: 0;
     }
-    /* Forza altezza fissa per i div interni (le righe) */
+
+    a { margin: 0; padding: 0; text-decoration: none; }
+
+    div { margin: 0; padding: 0; }
+
+    /* ── Ogni riga = 16px (altezza GIF) ── */
     #content > div > div {
-      height: 15px !important;
-      line-height: 15px !important;
+      height: 16px;
+      line-height: 16px;
+      overflow: visible;
+      /* font-size:0 elimina i gap whitespace tra inline-block span
+         (il parser Dart può inserire spazi/newline tra </span><span>) */
+      font-size: 0;
+      white-space: nowrap;
     }
   </style>
 </head>
@@ -278,146 +216,74 @@ class _ARDHtmlTeletextViewerState extends State<ARDHtmlTeletextViewer> {
   <div id="content">
     $_rawHtmlContent
   </div>
+  <script>
+    // Intercetta click sui link teletext
+    var lastLink = false;
+    document.querySelectorAll('a').forEach(function(a) {
+      a.addEventListener('click', function(e) {
+        e.preventDefault();
+        lastLink = true;
+        var href = this.getAttribute('href');
+        if (href && window.LinkClicked) LinkClicked.postMessage(href);
+        setTimeout(function(){ lastLink = false; }, 200);
+      });
+    });
+    document.addEventListener('click', function() {
+      setTimeout(function(){
+        if (!lastLink && window.PageTapped) PageTapped.postMessage('tap');
+      }, 100);
+    });
+  </script>
 </body>
-</html>
-''';
+</html>''';
   }
 
-  /// Inizializza o aggiorna il WebViewController con l'HTML scalato
   void _initializeOrUpdateWebView(double width, double height) {
-    // Dimensioni native del contenuto ARD Teletext
+    // La pagina ARD è 390px larga (10 + 380) e 25 righe × 16px = 400px alta
     const nativeWidth = 390.0;
-    const nativeHeight = 375.0;
-    
-    // Calcola scale factors
+    const nativeHeight = 400.0;
+
     final scaleX = width / nativeWidth;
     final scaleY = height / nativeHeight;
-    
-    print('[HtmlTeletextViewer] Widget size: ${width}x$height (real available space)');
-    print('[HtmlTeletextViewer] Native content: ${nativeWidth}x$nativeHeight');
-    print('[HtmlTeletextViewer] Calculated scales - X: $scaleX, Y: $scaleY');
-    
-    // Genera HTML con gli scale factors corretti
-    final htmlContent = _buildHtmlWithScaling(scaleX, scaleY);
-    
+
+    final html = _buildHtml(scaleX, scaleY);
+
     if (_controller == null) {
-      // Prima inizializzazione
-      bool isFirstLoad = true;
-      
+      bool firstLoad = true;
       _controller = WebViewController()
         ..setJavaScriptMode(JavaScriptMode.unrestricted)
         ..setBackgroundColor(Colors.black)
         ..addJavaScriptChannel(
           'LinkClicked',
-          onMessageReceived: (JavaScriptMessage message) {
-            print('[HtmlTeletextViewer] Link clicked: ${message.message}');
-            _handleLinkNavigation(message.message);
-          },
+          onMessageReceived: (msg) => _handleLinkNavigation(msg.message),
         )
         ..addJavaScriptChannel(
           'PageTapped',
-          onMessageReceived: (JavaScriptMessage message) {
-            print('[HtmlTeletextViewer] Page tapped');
-            widget.onTap?.call();
+          onMessageReceived: (_) => widget.onTap?.call(),
+        )
+        ..setNavigationDelegate(NavigationDelegate(
+          onPageFinished: (_) {
+            if (mounted) setState(() => _isLoading = false);
           },
-        )
-        ..setNavigationDelegate(
-          NavigationDelegate(
-            onPageFinished: (String url) {
-              print('[HtmlTeletextViewer] Page loaded');
-              
-              // Intercetta i click sui link e i tap sulla pagina
-              final javascript = '''
-                // Intercetta click sui link
-                var linkClicked = false;
-                document.querySelectorAll('a').forEach(function(link) {
-                  link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    linkClicked = true;
-                    const href = this.getAttribute('href');
-                    if (href && LinkClicked) {
-                      LinkClicked.postMessage(href);
-                    }
-                    setTimeout(function() { linkClicked = false; }, 100);
-                  });
-                });
-                
-                // Intercetta tap sulla pagina (fuori dai link) per play/pause
-                document.addEventListener('click', function(e) {
-                  setTimeout(function() {
-                    if (!linkClicked && PageTapped) {
-                      PageTapped.postMessage('tap');
-                    }
-                  }, 50);
-                });
-              ''';
-              
-              _controller!.runJavaScript(javascript);
-              
-              if (mounted) {
-                setState(() {
-                  _isLoading = false;
-                });
-              }
-            },
-            onWebResourceError: (WebResourceError error) {
-              print('[HtmlTeletextViewer] Error: ${error.description}');
-              if (mounted) {
-                setState(() {
-                  _errorMessage = 'Errore: ${error.description}';
-                  _isLoading = false;
-                });
-              }
-            },
-            onNavigationRequest: (NavigationRequest request) {
-              print('[HtmlTeletextViewer] Navigation: ${request.url}');
-              
-              // Permetti il primo caricamento
-              if (isFirstLoad) {
-                isFirstLoad = false;
-                return NavigationDecision.navigate;
-              }
-              
-              // Blocca tutte le altre navigazioni
-              return NavigationDecision.prevent;
-            },
-          ),
-        )
-        ..loadHtmlString(htmlContent, baseUrl: widget.page.imageUrl);
-      
-      print('[HtmlTeletextViewer] WebView initialized');
-      print('[HtmlTeletextViewer] → Loaded page: ${widget.page.pageNumber}_${widget.page.subPage}');
-      print('[HtmlTeletextViewer] → baseUrl: ${widget.page.imageUrl}');
-      print('[HtmlTeletextViewer] → HTML length: ${htmlContent.length}');
-      print('[HtmlTeletextViewer] → _rawHtmlContent length: ${_rawHtmlContent?.length ?? 0}');
+          onNavigationRequest: (req) {
+            if (firstLoad) { firstLoad = false; return NavigationDecision.navigate; }
+            return NavigationDecision.prevent;
+          },
+        ))
+        ..loadHtmlString(html, baseUrl: widget.page.imageUrl);
     } else {
-      // Controller già esistente, ricarica con nuovo HTML
-      print('[HtmlTeletextViewer] WebView updated with new scaling');
-      print('[HtmlTeletextViewer] → Page should be: ${widget.page.pageNumber}_${widget.page.subPage}');
-      print('[HtmlTeletextViewer] → baseUrl: ${widget.page.imageUrl}');
-      print('[HtmlTeletextViewer] → HTML length: ${htmlContent.length}');
-      print('[HtmlTeletextViewer] → _rawHtmlContent length: ${_rawHtmlContent?.length ?? 0}');
-      print('[HtmlTeletextViewer] → _rawHtmlContent preview: ${_rawHtmlContent?.substring(0, 100) ?? "NULL"}');
-      _controller!.loadHtmlString(htmlContent, baseUrl: widget.page.imageUrl);
+      _controller!.loadHtmlString(html, baseUrl: widget.page.imageUrl);
     }
-    
-    // Salva le dimensioni correnti
+
     _lastWidth = width;
     _lastHeight = height;
   }
 
-  /// Gestisce la navigazione da un link cliccato
   void _handleLinkNavigation(String href) {
-    print('[HtmlTeletextViewer] Handling link: $href');
-    
-    // Estrai il numero di pagina dall'URL
-    final pageMatch = RegExp(r'[?&]page=(\d+)').firstMatch(href);
-    if (pageMatch != null) {
-      final pageNumber = int.tryParse(pageMatch.group(1)!);
-      if (pageNumber != null && widget.onPageNavigation != null) {
-        print('[HtmlTeletextViewer] Navigate to page: $pageNumber');
-        widget.onPageNavigation!(pageNumber);
-      }
+    final m = RegExp(r'[?&]page=(\d+)').firstMatch(href);
+    if (m != null) {
+      final p = int.tryParse(m.group(1)!);
+      if (p != null) widget.onPageNavigation?.call(p);
     }
   }
 
@@ -432,22 +298,10 @@ class _ARDHtmlTeletextViewerState extends State<ARDHtmlTeletextViewer> {
             children: [
               const Icon(Icons.error_outline, color: Colors.red, size: 48),
               const SizedBox(height: 16),
-              Text(
-                _errorMessage!,
-                style: const TextStyle(color: Colors.white),
-                textAlign: TextAlign.center,
-              ),
+              Text(_errorMessage!, style: const TextStyle(color: Colors.white), textAlign: TextAlign.center),
               const SizedBox(height: 16),
               ElevatedButton(
-                onPressed: () {
-                  if (mounted) {
-                    setState(() {
-                      _errorMessage = null;
-                      _isLoading = true;
-                    });
-                  }
-                  _extractContent();
-                },
+                onPressed: () { setState(() { _errorMessage = null; _isLoading = true; }); _extractContent(); },
                 child: const Text('Riprova'),
               ),
             ],
@@ -459,48 +313,30 @@ class _ARDHtmlTeletextViewerState extends State<ARDHtmlTeletextViewer> {
     if (_isLoading || _rawHtmlContent == null || _rawCss == null) {
       return Container(
         color: Colors.black,
-        child: const Center(
-          child: CircularProgressIndicator(color: Colors.white),
-        ),
+        child: const Center(child: CircularProgressIndicator(color: Colors.white)),
       );
     }
 
-    // Usa LayoutBuilder per ottenere le dimensioni reali disponibili
     return LayoutBuilder(
       builder: (context, constraints) {
-        final width = constraints.maxWidth;
-        final height = constraints.maxHeight;
-        
-        // Inizializza o aggiorna il WebView se le dimensioni sono cambiate SIGNIFICATIVAMENTE
-        // Ignora piccoli cambi (< 20px) causati dall'UI che si assesta (es. ad banner)
-        final bool needsUpdate = _controller == null ||
-            _lastWidth == null || 
-            _lastHeight == null ||
-            (width - (_lastWidth ?? 0)).abs() > 20 ||
-            (height - (_lastHeight ?? 0)).abs() > 20;
-            
+        final w = constraints.maxWidth;
+        final h = constraints.maxHeight;
+        final needsUpdate = _controller == null ||
+            _lastWidth == null || _lastHeight == null ||
+            (w - (_lastWidth ?? 0)).abs() > 20 ||
+            (h - (_lastHeight ?? 0)).abs() > 20;
+
         if (needsUpdate) {
-          print('[HtmlTeletextViewer] Dimensions changed significantly, updating WebView');
-          print('[HtmlTeletextViewer] Old: ${_lastWidth}x$_lastHeight, New: ${width}x$height');
-          // Usa addPostFrameCallback per evitare di chiamare setState durante il build
           WidgetsBinding.instance.addPostFrameCallback((_) {
-            if (mounted) {
-              _initializeOrUpdateWebView(width, height);
-            }
+            if (mounted) _initializeOrUpdateWebView(w, h);
           });
-        } else {
-          print('[HtmlTeletextViewer] Ignoring small dimension change: ${_lastWidth}x$_lastHeight -> ${width}x$height');
         }
-        
+
         if (_controller == null) {
-          return Container(
-            color: Colors.black,
-            child: const Center(
-              child: CircularProgressIndicator(color: Colors.white),
-            ),
-          );
+          return Container(color: Colors.black,
+            child: const Center(child: CircularProgressIndicator(color: Colors.white)));
         }
-        
+
         return Container(
           color: Colors.black,
           child: WebViewWidget(controller: _controller!),

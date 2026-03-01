@@ -69,13 +69,15 @@ class VersionManager {
 
         // Ottiene la cronologia delle versioni
         final List<VersionInfo> allVersions = await getVersionHistory();
-        
+
         // Filtra le versioni più recenti dell'ultima versione eseguita
-        return allVersions.where((v) {
+        final filtered = allVersions.where((v) {
           return _compareVersions(v.version, lastVersion) > 0 &&
                  _compareVersions(v.version, currentVersion) <= 0;
-        }).toList()
-          ..sort((a, b) => _compareVersions(a.version, b.version));
+        }).toList();
+        // Ordine decrescente: versione più recente per prima (2.1.0 in cima)
+        filtered.sort((a, b) => _compareVersions(b.version, a.version));
+        return filtered;
       }
 
       return [];
@@ -85,15 +87,24 @@ class VersionManager {
     }
   }
 
-  // Confronta due numeri di versione (assume il formato x.y.z)
+  /// Confronta due versioni (formato x.y.z, eventuale +build ignorato).
+  /// Gestisce versioni con 2 parti (es. "2.1" → "2.1.0").
   int _compareVersions(String v1, String v2) {
-    final List<int> v1Parts = v1.split('.').map(int.parse).toList();
-    final List<int> v2Parts = v2.split('.').map(int.parse).toList();
-
+    v1 = _normalizeVersion(v1);
+    v2 = _normalizeVersion(v2);
+    var v1Parts = v1.split('.').map((s) => int.tryParse(s) ?? 0).toList();
+    var v2Parts = v2.split('.').map((s) => int.tryParse(s) ?? 0).toList();
+    while (v1Parts.length < 3) v1Parts.add(0);
+    while (v2Parts.length < 3) v2Parts.add(0);
     for (int i = 0; i < 3; i++) {
       if (v1Parts[i] > v2Parts[i]) return 1;
       if (v1Parts[i] < v2Parts[i]) return -1;
     }
     return 0;
+  }
+
+  String _normalizeVersion(String v) {
+    final plus = v.indexOf('+');
+    return (plus >= 0) ? v.substring(0, plus).trim() : v.trim();
   }
 }

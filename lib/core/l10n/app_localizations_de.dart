@@ -643,4 +643,107 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get countryUA => 'Ukraine';
+
+  @override
+  String get premiumTitle => 'Teletext Premium';
+
+  @override
+  String get premiumFeatures => 'Premium-Funktionen';
+
+  @override
+  String get premiumSubtitle => 'Verbessern Sie Ihre Teletext Europe Erfahrung';
+
+  @override
+  String get premiumNoAds => 'Keine Werbung';
+
+  @override
+  String get premiumNoAdsDescription =>
+      'Entfernen Sie alle Bannerwerbung und Interstitial-Anzeigen';
+
+  @override
+  String get premiumFasterExperience => 'Flüssigeres Erlebnis';
+
+  @override
+  String get premiumFasterExperienceDescription =>
+      'Navigieren Sie ohne Werbeunterbrechungen';
+
+  @override
+  String get premiumSupportDevelopment => 'Entwicklung unterstützen';
+
+  @override
+  String get premiumSupportDevelopmentDescription =>
+      'Helfen Sie, die App mit neuen Kanälen und Funktionen aktuell zu halten';
+
+  @override
+  String get premiumActivated => 'Abonnement aktiv';
+
+  @override
+  String get premiumThankYou => 'Vielen Dank für Ihre Unterstützung!';
+
+  @override
+  String get premiumOneTimePurchase => 'Quartalsabonnement';
+
+  @override
+  String get premiumLifetime => 'Verlängert sich alle 3 Monate';
+
+  @override
+  String get purchasePremium => 'Jetzt abonnieren';
+
+  @override
+  String get restorePurchases => 'Abonnement wiederherstellen';
+
+  @override
+  String get premiumProductNotAvailable =>
+      'Premium-Abonnement derzeit nicht verfügbar';
+
+  @override
+  String get premiumPurchaseError =>
+      'Fehler beim Abonnement. Bitte versuchen Sie es erneut.';
+
+  @override
+  String get premiumRestoreSuccess =>
+      'Abonnement erfolgreich wiederhergestellt!';
+
+  @override
+  String get premiumRestoreNoPurchases => 'Kein aktives Abonnement gefunden';
+
+  @override
+  String get premiumRestoreError =>
+      'Fehler beim Wiederherstellen des Abonnements';
+
+  @override
+  String get premiumLegalNote =>
+      'Quartalsabonnement mit automatischer Verlängerung. Sie können jederzeit in Ihren Apple/Google-Kontoeinstellungen kündigen. Die Zahlung erfolgt bei Bestätigung. Das Abonnement verlängert sich automatisch alle 3 Monate.';
+
+  @override
+  String get goPremium => 'Premium abonnieren';
+
+  @override
+  String get premiumChoosePlan => 'Wähle deinen Plan';
+
+  @override
+  String get premiumMonthly => 'Monatlich';
+
+  @override
+  String get premiumQuarterly => 'Vierteljährlich';
+
+  @override
+  String get premiumPerMonth => 'pro Monat';
+
+  @override
+  String get premiumEvery3Months => 'alle 3 Monate';
+
+  @override
+  String premiumSavePercent(String percent) {
+    return 'Spare $percent';
+  }
+
+  @override
+  String get premiumMonthlyPlan => 'Monatsplan';
+
+  @override
+  String get premiumQuarterlyPlan => 'Quartalsplan';
+
+  @override
+  String get premiumSubscriptionInfo => 'Abonnementinformationen';
 }

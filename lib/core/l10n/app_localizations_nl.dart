@@ -642,4 +642,105 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get countryUA => 'Oekraïne';
+
+  @override
+  String get premiumTitle => 'Teletext Premium';
+
+  @override
+  String get premiumFeatures => 'Premium-functies';
+
+  @override
+  String get premiumSubtitle => 'Verbeter uw Teletext Europe ervaring';
+
+  @override
+  String get premiumNoAds => 'Geen advertenties';
+
+  @override
+  String get premiumNoAdsDescription =>
+      'Verwijder alle banneradvertenties en interstitial advertenties';
+
+  @override
+  String get premiumFasterExperience => 'Vloeiendere ervaring';
+
+  @override
+  String get premiumFasterExperienceDescription =>
+      'Navigeer zonder reclame-onderbrekingen';
+
+  @override
+  String get premiumSupportDevelopment => 'Ondersteun ontwikkeling';
+
+  @override
+  String get premiumSupportDevelopmentDescription =>
+      'Help de app up-to-date te houden met nieuwe kanalen en functies';
+
+  @override
+  String get premiumActivated => 'Premium geactiveerd';
+
+  @override
+  String get premiumThankYou => 'Bedankt voor uw steun!';
+
+  @override
+  String get premiumOneTimePurchase => 'Driemaandelijks abonnement';
+
+  @override
+  String get premiumLifetime => 'Automatisch verlengd elke 3 maanden';
+
+  @override
+  String get purchasePremium => 'Nu abonneren';
+
+  @override
+  String get restorePurchases => 'Abonnement herstellen';
+
+  @override
+  String get premiumProductNotAvailable =>
+      'Premium abonnement momenteel niet beschikbaar';
+
+  @override
+  String get premiumPurchaseError =>
+      'Fout tijdens abonnement. Probeer opnieuw.';
+
+  @override
+  String get premiumRestoreSuccess => 'Abonnement succesvol hersteld!';
+
+  @override
+  String get premiumRestoreNoPurchases => 'Geen actief abonnement gevonden';
+
+  @override
+  String get premiumRestoreError => 'Fout bij het herstellen van abonnement';
+
+  @override
+  String get premiumLegalNote =>
+      'Driemaandelijks abonnement met automatische verlenging. U kunt op elk moment annuleren via uw Apple/Google-accountinstellingen. Betaling vindt plaats bij bevestiging. Abonnement wordt automatisch verlengd elke 3 maanden.';
+
+  @override
+  String get goPremium => 'Word Premium';
+
+  @override
+  String get premiumChoosePlan => 'Kies uw abonnement';
+
+  @override
+  String get premiumMonthly => 'Maandelijks';
+
+  @override
+  String get premiumQuarterly => 'Driemaandelijks';
+
+  @override
+  String get premiumPerMonth => 'per maand';
+
+  @override
+  String get premiumEvery3Months => 'elke 3 maanden';
+
+  @override
+  String premiumSavePercent(String percent) {
+    return 'Bespaar $percent';
+  }
+
+  @override
+  String get premiumMonthlyPlan => 'Maandabonnement';
+
+  @override
+  String get premiumQuarterlyPlan => 'Kwartaalabonnement';
+
+  @override
+  String get premiumSubscriptionInfo => 'Abonnementsinformatie';
 }

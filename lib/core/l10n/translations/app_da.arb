@@ -369,5 +369,14 @@
   "premiumRestoreNoPurchases": "Intet aktivt abonnement fundet",
   "premiumRestoreError": "Fejl ved gendannelse af abonnement",
   "premiumLegalNote": "Kvartalsabonnement med automatisk fornyelse. Du kan annullere når som helst fra dine Apple/Google-kontoindstillinger. Betaling opkræves ved bekræftelse. Abonnementet fornyes automatisk hver 3. måned.",
-  "goPremium": "Bliv Premium"
+  "goPremium": "Bliv Premium",
+  "premiumChoosePlan": "Vælg din plan",
+  "premiumMonthly": "Månedlig",
+  "premiumQuarterly": "Kvartalsvis",
+  "premiumPerMonth": "pr. måned",
+  "premiumEvery3Months": "hver 3. måned",
+  "premiumSavePercent": "Spar {percent}",
+  "premiumMonthlyPlan": "Månedlig plan",
+  "premiumQuarterlyPlan": "Kvartalsplan",
+  "premiumSubscriptionInfo": "Abonnementsoplysninger"
 }

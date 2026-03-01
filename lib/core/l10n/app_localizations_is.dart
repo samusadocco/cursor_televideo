@@ -640,4 +640,103 @@ class AppLocalizationsIs extends AppLocalizations {
 
   @override
   String get countryUA => 'Úkraína';
+
+  @override
+  String get premiumTitle => 'Teletext Premium';
+
+  @override
+  String get premiumFeatures => 'Premium eiginleikar';
+
+  @override
+  String get premiumSubtitle => 'Bættu Teletext Europe upplifun þína';
+
+  @override
+  String get premiumNoAds => 'Engar auglýsingar';
+
+  @override
+  String get premiumNoAdsDescription =>
+      'Fjarlægðu allar borðaauglýsingar og millisíðuauglýsingar';
+
+  @override
+  String get premiumFasterExperience => 'Sléttari upplifun';
+
+  @override
+  String get premiumFasterExperienceDescription => 'Vafraðu án auglýsingahlés';
+
+  @override
+  String get premiumSupportDevelopment => 'Styðja þróun';
+
+  @override
+  String get premiumSupportDevelopmentDescription =>
+      'Hjálpaðu að halda appinu uppfærðu með nýjum rásum og eiginleikum';
+
+  @override
+  String get premiumActivated => 'Premium virkjað';
+
+  @override
+  String get premiumThankYou => 'Þakka þér fyrir stuðninginn!';
+
+  @override
+  String get premiumOneTimePurchase => 'Ársfjórðungsáskrift';
+
+  @override
+  String get premiumLifetime => 'Sjálfvirk endurnýjun á 3 mánaða fresti';
+
+  @override
+  String get purchasePremium => 'Gerast áskrifandi núna';
+
+  @override
+  String get restorePurchases => 'Endurheimta áskrift';
+
+  @override
+  String get premiumProductNotAvailable =>
+      'Premium áskrift ekki tiltæk eins og er';
+
+  @override
+  String get premiumPurchaseError => 'Villa við áskrift. Reyndu aftur.';
+
+  @override
+  String get premiumRestoreSuccess => 'Áskrift endurheimt með góðum árangri!';
+
+  @override
+  String get premiumRestoreNoPurchases => 'Engin virk áskrift fannst';
+
+  @override
+  String get premiumRestoreError => 'Villa við endurheimtu áskriftar';
+
+  @override
+  String get premiumLegalNote =>
+      'Ársfjórðungsáskrift með sjálfvirkri endurnýjun. Þú getur hætt við hvenær sem er í stillingum Apple/Google reikningsins þíns. Greiðsla fer fram við staðfestingu. Áskrift endurnýjast sjálfkrafa á 3 mánaða fresti.';
+
+  @override
+  String get goPremium => 'Verða Premium';
+
+  @override
+  String get premiumChoosePlan => 'Veldu áskrift';
+
+  @override
+  String get premiumMonthly => 'Mánaðarlega';
+
+  @override
+  String get premiumQuarterly => 'Ársfjórðungslega';
+
+  @override
+  String get premiumPerMonth => 'á mánuði';
+
+  @override
+  String get premiumEvery3Months => 'á 3 mánaða fresti';
+
+  @override
+  String premiumSavePercent(String percent) {
+    return 'Sparaðu $percent';
+  }
+
+  @override
+  String get premiumMonthlyPlan => 'Mánaðarleg áskrift';
+
+  @override
+  String get premiumQuarterlyPlan => 'Fjórðungsáskrift';
+
+  @override
+  String get premiumSubscriptionInfo => 'Upplýsingar um áskrift';
 }

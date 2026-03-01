@@ -1,6 +1,13 @@
 {
   "versions": [
     {
+      "version": "2.1.0",
+      "changes": [
+        "Correction d'un bug d'affichage ARD Text (Allemagne)",
+        "Abonnements Premium : (sans publicité)"
+      ]
+    },
+    {
       "version": "2.0.4",
       "changes": [
         "20 nouvelles chaînes d'Allemagne, Pologne, Pays-Bas et Ukraine"

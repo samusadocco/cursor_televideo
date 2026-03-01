@@ -369,5 +369,14 @@
   "premiumRestoreNoPurchases": "Nebylo nalezeno žádné aktivní předplatné",
   "premiumRestoreError": "Chyba při obnovování předplatného",
   "premiumLegalNote": "Čtvrtletní předplatné s automatickým obnovením. Můžete zrušit kdykoli z nastavení účtu Apple/Google. Platba bude provedena při potvrzení. Předplatné se automaticky obnovuje každé 3 měsíce.",
-  "goPremium": "Stát se Premium"
+  "goPremium": "Stát se Premium",
+  "premiumChoosePlan": "Vyberte si plán",
+  "premiumMonthly": "Měsíčně",
+  "premiumQuarterly": "Čtvrtletně",
+  "premiumPerMonth": "za měsíc",
+  "premiumEvery3Months": "každé 3 měsíce",
+  "premiumSavePercent": "Ušetřete {percent}",
+  "premiumMonthlyPlan": "Měsíční plán",
+  "premiumQuarterlyPlan": "Čtvrtletní plán",
+  "premiumSubscriptionInfo": "Informace o předplatném"
 }

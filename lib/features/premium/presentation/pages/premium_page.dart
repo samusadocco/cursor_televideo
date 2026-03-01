@@ -193,7 +193,7 @@ class _PremiumPageState extends State<PremiumPage> {
                 if (monthlyProduct != null && quarterlyProduct != null) ...[
                   // Mostra entrambi i piani
                   Text(
-                    'Scegli il tuo piano',
+                    l10n.premiumChoosePlan,
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
@@ -206,7 +206,7 @@ class _PremiumPageState extends State<PremiumPage> {
                     context,
                     plan: SubscriptionPlan.monthly,
                     product: monthlyProduct,
-                    title: 'Mensile',
+                    title: l10n.premiumMonthly,
                     subtitle: _calculateMonthlyPrice(monthlyProduct.price, 1),
                     isSelected: _selectedPlan == SubscriptionPlan.monthly,
                     onTap: () => setState(() => _selectedPlan = SubscriptionPlan.monthly),
@@ -219,10 +219,10 @@ class _PremiumPageState extends State<PremiumPage> {
                     context,
                     plan: SubscriptionPlan.quarterly,
                     product: quarterlyProduct,
-                    title: 'Trimestrale',
-                    subtitle: '${_calculateMonthlyPrice(quarterlyProduct.price, 3)}/mese',
+                    title: l10n.premiumQuarterly,
+                    subtitle: '${_calculateMonthlyPrice(quarterlyProduct.price, 3)} ${l10n.premiumPerMonth}',
                     badge: _calculateSavings(monthlyProduct, quarterlyProduct) != null
-                        ? 'Risparmia ${_calculateSavings(monthlyProduct, quarterlyProduct)}'
+                        ? l10n.premiumSavePercent(_calculateSavings(monthlyProduct, quarterlyProduct)!)
                         : null,
                     isSelected: _selectedPlan == SubscriptionPlan.quarterly,
                     isBestValue: true,
@@ -297,7 +297,7 @@ class _PremiumPageState extends State<PremiumPage> {
                             borderRadius: BorderRadius.circular(20),
                           ),
                           child: Text(
-                            '≈ ${_calculateMonthlyPrice(quarterlyProduct.price, 3)}/mese',
+                            '≈ ${_calculateMonthlyPrice(quarterlyProduct.price, 3)} ${l10n.premiumPerMonth}',
                             style: const TextStyle(
                               color: Colors.white,
                               fontSize: 12,
@@ -343,10 +343,10 @@ class _PremiumPageState extends State<PremiumPage> {
                             ),
                             if (hasProducts) ...[
                               const SizedBox(height: 4),
-                              Text(
-                                _selectedPlan == SubscriptionPlan.monthly
-                                    ? 'Piano Mensile'
-                                    : 'Piano Trimestrale',
+                            Text(
+                              _selectedPlan == SubscriptionPlan.monthly
+                                  ? l10n.premiumMonthlyPlan
+                                  : l10n.premiumQuarterlyPlan,
                                 style: const TextStyle(
                                   fontSize: 13,
                                   color: Colors.white70,
@@ -458,7 +458,7 @@ class _PremiumPageState extends State<PremiumPage> {
                       Icon(Icons.info_outline, size: 16, color: Colors.grey[700]),
                       const SizedBox(width: 8),
                       Text(
-                        'Informazioni abbonamento',
+                        l10n.premiumSubscriptionInfo,
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Colors.grey[800],
@@ -540,6 +540,7 @@ class _PremiumPageState extends State<PremiumPage> {
     bool isBestValue = false,
     required VoidCallback onTap,
   }) {
+    final l10n = AppLocalizations.of(context)!;
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -659,7 +660,7 @@ class _PremiumPageState extends State<PremiumPage> {
                       ),
                     ),
                     Text(
-                      plan == SubscriptionPlan.monthly ? 'al mese' : 'ogni 3 mesi',
+                      plan == SubscriptionPlan.monthly ? l10n.premiumPerMonth : l10n.premiumEvery3Months,
                       style: TextStyle(
                         color: isSelected ? Colors.white70 : Colors.grey[600],
                         fontSize: 11,

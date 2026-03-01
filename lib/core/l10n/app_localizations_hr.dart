@@ -641,4 +641,105 @@ class AppLocalizationsHr extends AppLocalizations {
 
   @override
   String get countryUA => 'Ukrajina';
+
+  @override
+  String get premiumTitle => 'Teletext Premium';
+
+  @override
+  String get premiumFeatures => 'Premium značajke';
+
+  @override
+  String get premiumSubtitle => 'Poboljšajte svoje Teletext Europe iskustvo';
+
+  @override
+  String get premiumNoAds => 'Bez oglasa';
+
+  @override
+  String get premiumNoAdsDescription =>
+      'Uklonite sve oglasne bannere i interstitial oglase';
+
+  @override
+  String get premiumFasterExperience => 'Ugodnije iskustvo';
+
+  @override
+  String get premiumFasterExperienceDescription =>
+      'Navigirajte bez prekida zbog oglasa';
+
+  @override
+  String get premiumSupportDevelopment => 'Podržite razvoj';
+
+  @override
+  String get premiumSupportDevelopmentDescription =>
+      'Pomozite održavati aplikaciju ažurnom s novim kanalima i značajkama';
+
+  @override
+  String get premiumActivated => 'Premium aktiviran';
+
+  @override
+  String get premiumThankYou => 'Hvala vam na podršci!';
+
+  @override
+  String get premiumOneTimePurchase => 'Tromjesečna pretplata';
+
+  @override
+  String get premiumLifetime => 'Automatska obnova svakih 3 mjeseca';
+
+  @override
+  String get purchasePremium => 'Pretplati se sada';
+
+  @override
+  String get restorePurchases => 'Vrati pretplatu';
+
+  @override
+  String get premiumProductNotAvailable =>
+      'Premium pretplata trenutno nije dostupna';
+
+  @override
+  String get premiumPurchaseError =>
+      'Greška tijekom pretplate. Pokušajte ponovno.';
+
+  @override
+  String get premiumRestoreSuccess => 'Pretplata uspješno vraćena!';
+
+  @override
+  String get premiumRestoreNoPurchases => 'Nije pronađena aktivna pretplata';
+
+  @override
+  String get premiumRestoreError => 'Greška pri vraćanju pretplate';
+
+  @override
+  String get premiumLegalNote =>
+      'Tromjesečna pretplata s automatskom obnovom. Možete otkazati bilo kada iz postavki vašeg Apple/Google računa. Naplata će se izvršiti pri potvrdi. Pretplata se automatski obnavlja svakih 3 mjeseca.';
+
+  @override
+  String get goPremium => 'Postani Premium';
+
+  @override
+  String get premiumChoosePlan => 'Odaberite plan';
+
+  @override
+  String get premiumMonthly => 'Mjesečno';
+
+  @override
+  String get premiumQuarterly => 'Tromjesečno';
+
+  @override
+  String get premiumPerMonth => 'po mjesecu';
+
+  @override
+  String get premiumEvery3Months => 'svakih 3 mjeseca';
+
+  @override
+  String premiumSavePercent(String percent) {
+    return 'Uštedite $percent';
+  }
+
+  @override
+  String get premiumMonthlyPlan => 'Mjesečni plan';
+
+  @override
+  String get premiumQuarterlyPlan => 'Tromjesečni plan';
+
+  @override
+  String get premiumSubscriptionInfo => 'Informacije o pretplati';
 }

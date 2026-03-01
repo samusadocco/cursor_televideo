@@ -397,5 +397,14 @@
   "premiumRestoreNoPurchases": "Активної підписки не знайдено",
   "premiumRestoreError": "Помилка відновлення підписки",
   "premiumLegalNote": "Квартальна підписка з автоматичним поновленням. Ви можете скасувати в будь-який час у налаштуваннях облікового запису Apple/Google. Оплата стягується при підтвердженні. Підписка автоматично поновлюється кожні 3 місяці.",
-  "goPremium": "Стати Premium"
+  "goPremium": "Стати Premium",
+  "premiumChoosePlan": "Виберіть свій план",
+  "premiumMonthly": "Щомісячно",
+  "premiumQuarterly": "Щоквартально",
+  "premiumPerMonth": "на місяць",
+  "premiumEvery3Months": "кожні 3 місяці",
+  "premiumSavePercent": "Заощаджуйте {percent}",
+  "premiumMonthlyPlan": "Місячний план",
+  "premiumQuarterlyPlan": "Квартальний план",
+  "premiumSubscriptionInfo": "Інформація про підписку"
 }

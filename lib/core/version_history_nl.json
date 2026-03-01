@@ -1,6 +1,13 @@
 {
   "versions": [
     {
+      "version": "2.1.0",
+      "changes": [
+        "Bug in ARD Text weergave opgelost (Duitsland)",
+        "Premium abonnementen: (advertentievrij)"
+      ]
+    },
+    {
       "version": "2.0.4",
       "changes": [
         "20 nieuwe kanalen uit Duitsland, Polen, Nederland en Oekraïne"

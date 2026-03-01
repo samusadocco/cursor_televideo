@@ -369,5 +369,14 @@
   "premiumRestoreNoPurchases": "Kein aktives Abonnement gefunden",
   "premiumRestoreError": "Fehler beim Wiederherstellen des Abonnements",
   "premiumLegalNote": "Quartalsabonnement mit automatischer Verlängerung. Sie können jederzeit in Ihren Apple/Google-Kontoeinstellungen kündigen. Die Zahlung erfolgt bei Bestätigung. Das Abonnement verlängert sich automatisch alle 3 Monate.",
-  "goPremium": "Premium abonnieren"
+  "goPremium": "Premium abonnieren",
+  "premiumChoosePlan": "Wähle deinen Plan",
+  "premiumMonthly": "Monatlich",
+  "premiumQuarterly": "Vierteljährlich",
+  "premiumPerMonth": "pro Monat",
+  "premiumEvery3Months": "alle 3 Monate",
+  "premiumSavePercent": "Spare {percent}",
+  "premiumMonthlyPlan": "Monatsplan",
+  "premiumQuarterlyPlan": "Quartalsplan",
+  "premiumSubscriptionInfo": "Abonnementinformationen"
 }

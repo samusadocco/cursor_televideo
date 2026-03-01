@@ -640,4 +640,104 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String get countryUA => 'Ukraina';
+
+  @override
+  String get premiumTitle => 'Teletext Premium';
+
+  @override
+  String get premiumFeatures => 'Premium-funktioner';
+
+  @override
+  String get premiumSubtitle => 'Förbättra din Teletext Europe upplevelse';
+
+  @override
+  String get premiumNoAds => 'Inga annonser';
+
+  @override
+  String get premiumNoAdsDescription =>
+      'Ta bort alla bannerannonser och interstitiella annonser';
+
+  @override
+  String get premiumFasterExperience => 'Smidigare upplevelse';
+
+  @override
+  String get premiumFasterExperienceDescription =>
+      'Navigera utan reklamavbrott';
+
+  @override
+  String get premiumSupportDevelopment => 'Stöd utvecklingen';
+
+  @override
+  String get premiumSupportDevelopmentDescription =>
+      'Hjälp till att hålla appen uppdaterad med nya kanaler och funktioner';
+
+  @override
+  String get premiumActivated => 'Premium aktiverat';
+
+  @override
+  String get premiumThankYou => 'Tack för ditt stöd!';
+
+  @override
+  String get premiumOneTimePurchase => 'Kvartalsabonnemang';
+
+  @override
+  String get premiumLifetime => 'Förnyas automatiskt var 3:e månad';
+
+  @override
+  String get purchasePremium => 'Prenumerera nu';
+
+  @override
+  String get restorePurchases => 'Återställ prenumeration';
+
+  @override
+  String get premiumProductNotAvailable =>
+      'Premium-prenumeration inte tillgänglig för tillfället';
+
+  @override
+  String get premiumPurchaseError => 'Fel under prenumeration. Försök igen.';
+
+  @override
+  String get premiumRestoreSuccess => 'Prenumeration återställd framgångsrikt!';
+
+  @override
+  String get premiumRestoreNoPurchases => 'Ingen aktiv prenumeration hittades';
+
+  @override
+  String get premiumRestoreError => 'Fel vid återställning av prenumeration';
+
+  @override
+  String get premiumLegalNote =>
+      'Kvartalsabonnemang med automatisk förnyelse. Du kan avsluta när som helst från dina Apple/Google-kontoinställningar. Betalning debiteras vid bekräftelse. Abonnemanget förnyas automatiskt var 3:e månad.';
+
+  @override
+  String get goPremium => 'Bli Premium';
+
+  @override
+  String get premiumChoosePlan => 'Välj din plan';
+
+  @override
+  String get premiumMonthly => 'Månadsvis';
+
+  @override
+  String get premiumQuarterly => 'Kvartalsvis';
+
+  @override
+  String get premiumPerMonth => 'per månad';
+
+  @override
+  String get premiumEvery3Months => 'var 3:e månad';
+
+  @override
+  String premiumSavePercent(String percent) {
+    return 'Spara $percent';
+  }
+
+  @override
+  String get premiumMonthlyPlan => 'Månadsplan';
+
+  @override
+  String get premiumQuarterlyPlan => 'Kvartalsplan';
+
+  @override
+  String get premiumSubscriptionInfo => 'Prenumerationsinformation';
 }

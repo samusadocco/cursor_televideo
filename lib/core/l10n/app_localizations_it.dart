@@ -646,4 +646,106 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get countryUA => 'Ucraina';
+
+  @override
+  String get premiumTitle => 'Teletext Premium';
+
+  @override
+  String get premiumFeatures => 'Funzionalità Premium';
+
+  @override
+  String get premiumSubtitle =>
+      'Migliora la tua esperienza con Teletext Europe';
+
+  @override
+  String get premiumNoAds => 'Nessuna pubblicità';
+
+  @override
+  String get premiumNoAdsDescription =>
+      'Rimuovi tutti i banner pubblicitari e gli annunci interstitial';
+
+  @override
+  String get premiumFasterExperience => 'Esperienza più fluida';
+
+  @override
+  String get premiumFasterExperienceDescription =>
+      'Naviga senza interruzioni pubblicitarie';
+
+  @override
+  String get premiumSupportDevelopment => 'Supporta lo sviluppo';
+
+  @override
+  String get premiumSupportDevelopmentDescription =>
+      'Aiuta a mantenere l\'app aggiornata con nuovi canali e funzionalità';
+
+  @override
+  String get premiumActivated => 'Abbonamento Attivo';
+
+  @override
+  String get premiumThankYou => 'Grazie per il tuo supporto!';
+
+  @override
+  String get premiumOneTimePurchase => 'Abbonamento trimestrale';
+
+  @override
+  String get premiumLifetime => 'Rinnovo automatico ogni 3 mesi';
+
+  @override
+  String get purchasePremium => 'Abbonati Ora';
+
+  @override
+  String get restorePurchases => 'Ripristina abbonamento';
+
+  @override
+  String get premiumProductNotAvailable =>
+      'Abbonamento Premium non disponibile al momento';
+
+  @override
+  String get premiumPurchaseError => 'Errore durante l\'abbonamento. Riprova.';
+
+  @override
+  String get premiumRestoreSuccess => 'Abbonamento ripristinato con successo!';
+
+  @override
+  String get premiumRestoreNoPurchases => 'Nessun abbonamento attivo trovato';
+
+  @override
+  String get premiumRestoreError =>
+      'Errore durante il ripristino dell\'abbonamento';
+
+  @override
+  String get premiumLegalNote =>
+      'Abbonamento trimestrale con rinnovo automatico. Puoi annullare in qualsiasi momento dalle impostazioni del tuo account Apple/Google. Il pagamento verrà addebitato al momento della conferma. L\'abbonamento si rinnova automaticamente ogni 3 mesi.';
+
+  @override
+  String get goPremium => 'Abbonati a Premium';
+
+  @override
+  String get premiumChoosePlan => 'Scegli il tuo piano';
+
+  @override
+  String get premiumMonthly => 'Mensile';
+
+  @override
+  String get premiumQuarterly => 'Trimestrale';
+
+  @override
+  String get premiumPerMonth => 'al mese';
+
+  @override
+  String get premiumEvery3Months => 'ogni 3 mesi';
+
+  @override
+  String premiumSavePercent(String percent) {
+    return 'Risparmia $percent';
+  }
+
+  @override
+  String get premiumMonthlyPlan => 'Piano Mensile';
+
+  @override
+  String get premiumQuarterlyPlan => 'Piano Trimestrale';
+
+  @override
+  String get premiumSubscriptionInfo => 'Informazioni abbonamento';
 }

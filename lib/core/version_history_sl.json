@@ -1,6 +1,13 @@
 {
   "versions": [
     {
+      "version": "2.1.0",
+      "changes": [
+        "Popravljena napaka prikaza ARD Text (Nemčija)",
+        "Premium naročnine: (brez oglasov)"
+      ]
+    },
+    {
       "version": "2.0.4",
       "changes": [
         "20 novih kanalov iz Nemčije, Poljske, Nizozemske in Ukrajine"

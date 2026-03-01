@@ -639,4 +639,104 @@ class AppLocalizationsDa extends AppLocalizations {
 
   @override
   String get countryUA => 'Ukraine';
+
+  @override
+  String get premiumTitle => 'Teletext Premium';
+
+  @override
+  String get premiumFeatures => 'Premium-funktioner';
+
+  @override
+  String get premiumSubtitle => 'Forbedr din Teletext Europe oplevelse';
+
+  @override
+  String get premiumNoAds => 'Ingen reklamer';
+
+  @override
+  String get premiumNoAdsDescription =>
+      'Fjern alle bannerannoncer og interstitielle annoncer';
+
+  @override
+  String get premiumFasterExperience => 'Mere flydende oplevelse';
+
+  @override
+  String get premiumFasterExperienceDescription =>
+      'Naviger uden reklameafbrydelser';
+
+  @override
+  String get premiumSupportDevelopment => 'Støt udviklingen';
+
+  @override
+  String get premiumSupportDevelopmentDescription =>
+      'Hjælp med at holde appen opdateret med nye kanaler og funktioner';
+
+  @override
+  String get premiumActivated => 'Premium aktiveret';
+
+  @override
+  String get premiumThankYou => 'Tak for din støtte!';
+
+  @override
+  String get premiumOneTimePurchase => 'Kvartalsabonnement';
+
+  @override
+  String get premiumLifetime => 'Fornyes automatisk hver 3. måned';
+
+  @override
+  String get purchasePremium => 'Abonner nu';
+
+  @override
+  String get restorePurchases => 'Gendan abonnement';
+
+  @override
+  String get premiumProductNotAvailable =>
+      'Premium-abonnement ikke tilgængeligt i øjeblikket';
+
+  @override
+  String get premiumPurchaseError => 'Fejl under abonnement. Prøv igen.';
+
+  @override
+  String get premiumRestoreSuccess => 'Abonnement gendannet med succes!';
+
+  @override
+  String get premiumRestoreNoPurchases => 'Intet aktivt abonnement fundet';
+
+  @override
+  String get premiumRestoreError => 'Fejl ved gendannelse af abonnement';
+
+  @override
+  String get premiumLegalNote =>
+      'Kvartalsabonnement med automatisk fornyelse. Du kan annullere når som helst fra dine Apple/Google-kontoindstillinger. Betaling opkræves ved bekræftelse. Abonnementet fornyes automatisk hver 3. måned.';
+
+  @override
+  String get goPremium => 'Bliv Premium';
+
+  @override
+  String get premiumChoosePlan => 'Vælg din plan';
+
+  @override
+  String get premiumMonthly => 'Månedlig';
+
+  @override
+  String get premiumQuarterly => 'Kvartalsvis';
+
+  @override
+  String get premiumPerMonth => 'pr. måned';
+
+  @override
+  String get premiumEvery3Months => 'hver 3. måned';
+
+  @override
+  String premiumSavePercent(String percent) {
+    return 'Spar $percent';
+  }
+
+  @override
+  String get premiumMonthlyPlan => 'Månedlig plan';
+
+  @override
+  String get premiumQuarterlyPlan => 'Kvartalsplan';
+
+  @override
+  String get premiumSubscriptionInfo => 'Abonnementsoplysninger';
 }

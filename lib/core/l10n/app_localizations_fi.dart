@@ -640,4 +640,104 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get countryUA => 'Ukraina';
+
+  @override
+  String get premiumTitle => 'Teletext Premium';
+
+  @override
+  String get premiumFeatures => 'Premium-ominaisuudet';
+
+  @override
+  String get premiumSubtitle => 'Paranna Teletext Europe -kokemustasi';
+
+  @override
+  String get premiumNoAds => 'Ei mainoksia';
+
+  @override
+  String get premiumNoAdsDescription =>
+      'Poista kaikki bannerimainokset ja välisivumainokset';
+
+  @override
+  String get premiumFasterExperience => 'Sujuvampi kokemus';
+
+  @override
+  String get premiumFasterExperienceDescription =>
+      'Navigoi ilman mainoskatkosia';
+
+  @override
+  String get premiumSupportDevelopment => 'Tue kehitystä';
+
+  @override
+  String get premiumSupportDevelopmentDescription =>
+      'Auta pitämään sovellus ajan tasalla uusilla kanavilla ja ominaisuuksilla';
+
+  @override
+  String get premiumActivated => 'Premium aktivoitu';
+
+  @override
+  String get premiumThankYou => 'Kiitos tuestasi!';
+
+  @override
+  String get premiumOneTimePurchase => 'Neljännesvuositilaus';
+
+  @override
+  String get premiumLifetime => 'Uusiutuu automaattisesti 3 kuukauden välein';
+
+  @override
+  String get purchasePremium => 'Tilaa nyt';
+
+  @override
+  String get restorePurchases => 'Palauta tilaus';
+
+  @override
+  String get premiumProductNotAvailable =>
+      'Premium-tilaus ei ole tällä hetkellä saatavilla';
+
+  @override
+  String get premiumPurchaseError => 'Virhe tilauksessa. Yritä uudelleen.';
+
+  @override
+  String get premiumRestoreSuccess => 'Tilaus palautettu onnistuneesti!';
+
+  @override
+  String get premiumRestoreNoPurchases => 'Aktiivista tilausta ei löytynyt';
+
+  @override
+  String get premiumRestoreError => 'Virhe tilauksen palauttamisessa';
+
+  @override
+  String get premiumLegalNote =>
+      'Neljännesvuositilaus, joka uusiutuu automaattisesti. Voit peruuttaa milloin tahansa Apple/Google-tilin asetuksista. Maksu veloitetaan vahvistuksen yhteydessä. Tilaus uusiutuu automaattisesti 3 kuukauden välein.';
+
+  @override
+  String get goPremium => 'Hanki Premium';
+
+  @override
+  String get premiumChoosePlan => 'Valitse suunnitelmasi';
+
+  @override
+  String get premiumMonthly => 'Kuukausittain';
+
+  @override
+  String get premiumQuarterly => 'Neljännesvuosittain';
+
+  @override
+  String get premiumPerMonth => 'kuukaudessa';
+
+  @override
+  String get premiumEvery3Months => '3 kuukauden välein';
+
+  @override
+  String premiumSavePercent(String percent) {
+    return 'Säästä $percent';
+  }
+
+  @override
+  String get premiumMonthlyPlan => 'Kuukausisuunnitelma';
+
+  @override
+  String get premiumQuarterlyPlan => 'Kvartaalisuunnitelma';
+
+  @override
+  String get premiumSubscriptionInfo => 'Tilauksen tiedot';
 }

@@ -642,4 +642,105 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String get countryUA => 'Ukrajna';
+
+  @override
+  String get premiumTitle => 'Teletext Premium';
+
+  @override
+  String get premiumFeatures => 'Premium funkciók';
+
+  @override
+  String get premiumSubtitle => 'Javítsa Teletext Europe élményét';
+
+  @override
+  String get premiumNoAds => 'Nincs hirdetés';
+
+  @override
+  String get premiumNoAdsDescription =>
+      'Távolítsa el az összes banner hirdetést és interstitial hirdetést';
+
+  @override
+  String get premiumFasterExperience => 'Gördülékenyebb élmény';
+
+  @override
+  String get premiumFasterExperienceDescription =>
+      'Navigáljon hirdetési megszakítások nélkül';
+
+  @override
+  String get premiumSupportDevelopment => 'Fejlesztés támogatása';
+
+  @override
+  String get premiumSupportDevelopmentDescription =>
+      'Segítsen naprakészen tartani az alkalmazást új csatornákkal és funkciókkal';
+
+  @override
+  String get premiumActivated => 'Premium aktiválva';
+
+  @override
+  String get premiumThankYou => 'Köszönjük a támogatását!';
+
+  @override
+  String get premiumOneTimePurchase => 'Negyedéves előfizetés';
+
+  @override
+  String get premiumLifetime => 'Automatikus megújítás 3 havonta';
+
+  @override
+  String get purchasePremium => 'Előfizetés most';
+
+  @override
+  String get restorePurchases => 'Előfizetés visszaállítása';
+
+  @override
+  String get premiumProductNotAvailable =>
+      'Premium előfizetés jelenleg nem elérhető';
+
+  @override
+  String get premiumPurchaseError =>
+      'Hiba történt az előfizetés során. Próbálja újra.';
+
+  @override
+  String get premiumRestoreSuccess => 'Előfizetés sikeresen visszaállítva!';
+
+  @override
+  String get premiumRestoreNoPurchases => 'Nem található aktív előfizetés';
+
+  @override
+  String get premiumRestoreError => 'Hiba az előfizetés visszaállítása során';
+
+  @override
+  String get premiumLegalNote =>
+      'Negyedéves előfizetés automatikus megújítással. Bármikor lemondhatja az Apple/Google fiók beállításaiban. A fizetés a megerősítéskor történik. Az előfizetés automatikusan megújul 3 havonta.';
+
+  @override
+  String get goPremium => 'Legyen Premium';
+
+  @override
+  String get premiumChoosePlan => 'Válasszon csomagot';
+
+  @override
+  String get premiumMonthly => 'Havi';
+
+  @override
+  String get premiumQuarterly => 'Negyedéves';
+
+  @override
+  String get premiumPerMonth => 'havonta';
+
+  @override
+  String get premiumEvery3Months => '3 havonta';
+
+  @override
+  String premiumSavePercent(String percent) {
+    return 'Megtakarít $percent';
+  }
+
+  @override
+  String get premiumMonthlyPlan => 'Havi csomag';
+
+  @override
+  String get premiumQuarterlyPlan => 'Negyedéves csomag';
+
+  @override
+  String get premiumSubscriptionInfo => 'Előfizetési információk';
 }

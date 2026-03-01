@@ -369,5 +369,14 @@
   "premiumRestoreNoPurchases": "Ingen aktiv prenumeration hittades",
   "premiumRestoreError": "Fel vid återställning av prenumeration",
   "premiumLegalNote": "Kvartalsabonnemang med automatisk förnyelse. Du kan avsluta när som helst från dina Apple/Google-kontoinställningar. Betalning debiteras vid bekräftelse. Abonnemanget förnyas automatiskt var 3:e månad.",
-  "goPremium": "Bli Premium"
+  "goPremium": "Bli Premium",
+  "premiumChoosePlan": "Välj din plan",
+  "premiumMonthly": "Månadsvis",
+  "premiumQuarterly": "Kvartalsvis",
+  "premiumPerMonth": "per månad",
+  "premiumEvery3Months": "var 3:e månad",
+  "premiumSavePercent": "Spara {percent}",
+  "premiumMonthlyPlan": "Månadsplan",
+  "premiumQuarterlyPlan": "Kvartalsplan",
+  "premiumSubscriptionInfo": "Prenumerationsinformation"
 }

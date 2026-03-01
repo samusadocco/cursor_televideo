@@ -642,4 +642,105 @@ class AppLocalizationsSl extends AppLocalizations {
 
   @override
   String get countryUA => 'Ukrajina';
+
+  @override
+  String get premiumTitle => 'Teletext Premium';
+
+  @override
+  String get premiumFeatures => 'Premium funkcije';
+
+  @override
+  String get premiumSubtitle => 'Izboljšajte svojo Teletext Europe izkušnjo';
+
+  @override
+  String get premiumNoAds => 'Brez oglasov';
+
+  @override
+  String get premiumNoAdsDescription =>
+      'Odstranite vse oglasne pasice in medvrstične oglase';
+
+  @override
+  String get premiumFasterExperience => 'Bolj gladka izkušnja';
+
+  @override
+  String get premiumFasterExperienceDescription =>
+      'Krmarite brez oglasnih prekinitev';
+
+  @override
+  String get premiumSupportDevelopment => 'Podprite razvoj';
+
+  @override
+  String get premiumSupportDevelopmentDescription =>
+      'Pomagajte ohranjati aplikacijo posodobljeno z novimi kanali in funkcijami';
+
+  @override
+  String get premiumActivated => 'Premium aktiviran';
+
+  @override
+  String get premiumThankYou => 'Hvala za vašo podporo!';
+
+  @override
+  String get premiumOneTimePurchase => 'Trimesečna naročnina';
+
+  @override
+  String get premiumLifetime => 'Samodejna podaljšava vsakih 3 mesecev';
+
+  @override
+  String get purchasePremium => 'Naroči se zdaj';
+
+  @override
+  String get restorePurchases => 'Obnovi naročnino';
+
+  @override
+  String get premiumProductNotAvailable =>
+      'Premium naročnina trenutno ni na voljo';
+
+  @override
+  String get premiumPurchaseError => 'Napaka med naročnino. Poskusite znova.';
+
+  @override
+  String get premiumRestoreSuccess => 'Naročnina uspešno obnovljena!';
+
+  @override
+  String get premiumRestoreNoPurchases =>
+      'Aktivne naročnine ni bilo mogoče najti';
+
+  @override
+  String get premiumRestoreError => 'Napaka pri obnavljanju naročnine';
+
+  @override
+  String get premiumLegalNote =>
+      'Trimesečna naročnina s samodejno podaljšavo. Lahko prekličete kadarkoli iz nastavitev vašega Apple/Google računa. Plačilo bo izvedeno ob potrditvi. Naročnina se samodejno podaljša vsakih 3 mesecev.';
+
+  @override
+  String get goPremium => 'Postani Premium';
+
+  @override
+  String get premiumChoosePlan => 'Izberite načrt';
+
+  @override
+  String get premiumMonthly => 'Mesečno';
+
+  @override
+  String get premiumQuarterly => 'Četrtletno';
+
+  @override
+  String get premiumPerMonth => 'na mesec';
+
+  @override
+  String get premiumEvery3Months => 'vsakih 3 mesece';
+
+  @override
+  String premiumSavePercent(String percent) {
+    return 'Prihranite $percent';
+  }
+
+  @override
+  String get premiumMonthlyPlan => 'Mesečni načrt';
+
+  @override
+  String get premiumQuarterlyPlan => 'Četrtletni načrt';
+
+  @override
+  String get premiumSubscriptionInfo => 'Informacije o naročnini';
 }

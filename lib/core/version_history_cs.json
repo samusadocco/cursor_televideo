@@ -1,6 +1,13 @@
 {
   "versions": [
     {
+      "version": "2.1.0",
+      "changes": [
+        "Opravena chyba zobrazení ARD Text (Německo)",
+        "Prémiová předplatná: (bez reklam)"
+      ]
+    },
+    {
       "version": "2.0.4",
       "changes": [
         "20 nových kanálů z Německa, Polska, Nizozemska a Ukrajiny"

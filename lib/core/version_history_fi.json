@@ -1,6 +1,13 @@
 {
   "versions": [
     {
+      "version": "2.1.0",
+      "changes": [
+        "Korjattu ARD Textin näyttövirhe (Saksa)",
+        "Premium-tilaukset: (mainoksettomat)"
+      ]
+    },
+    {
       "version": "2.0.4",
       "changes": [
         "20 uutta kanavaa Saksasta, Puolasta, Alankomaista ja Ukrainasta"

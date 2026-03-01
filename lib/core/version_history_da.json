@@ -1,6 +1,13 @@
 {
   "versions": [
     {
+      "version": "2.1.0",
+      "changes": [
+        "Rettet fejl i ARD Text visning (Tyskland)",
+        "Premium abonnementer: (reklamefri)"
+      ]
+    },
+    {
       "version": "2.0.4",
       "changes": [
         "20 nye kanaler fra Tyskland, Polen, Holland og Ukraine"

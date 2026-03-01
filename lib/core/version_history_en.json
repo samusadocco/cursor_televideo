@@ -1,6 +1,13 @@
 {
   "versions": [
     {
+      "version": "2.1.0",
+      "changes": [
+        "Fixed ARD Text display bug (Germany)",
+        "Premium subscriptions: (ad-free)"
+      ]
+    },
+    {
       "version": "2.0.4",
       "changes": [
         "20 new channels from Germany, Poland, Netherlands and Ukraine"

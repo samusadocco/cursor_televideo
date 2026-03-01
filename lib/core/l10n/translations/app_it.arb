@@ -82,8 +82,8 @@
   "enterCustomDescription": "Inserisci una descrizione personalizzata",
   "restoreHint": "Suggerimento: tieni premuto il pulsante \"RIPRISTINA\" per tornare alla descrizione predefinita.",
   "restore": "RIPRISTINA",
-  "cancel": "ANNULLA",
-  "save": "SALVA",
+  "cancel": "Annulla",
+  "save": "Salva",
   "searchHint": "Cerca pagina...",
   "noResults": "Nessun risultato",
   "settings": "Impostazioni",
@@ -358,8 +358,6 @@
     }
   },
   "reorderFavorites": "Riordina Preferiti",
-  "cancel": "Annulla",
-  "save": "Salva",
   "countryIT": "Italia",
   "countryDE": "Germania",
   "countryAT": "Austria",
@@ -399,5 +397,14 @@
   "premiumRestoreNoPurchases": "Nessun abbonamento attivo trovato",
   "premiumRestoreError": "Errore durante il ripristino dell'abbonamento",
   "premiumLegalNote": "Abbonamento trimestrale con rinnovo automatico. Puoi annullare in qualsiasi momento dalle impostazioni del tuo account Apple/Google. Il pagamento verrà addebitato al momento della conferma. L'abbonamento si rinnova automaticamente ogni 3 mesi.",
-  "goPremium": "Abbonati a Premium"
+  "goPremium": "Abbonati a Premium",
+  "premiumChoosePlan": "Scegli il tuo piano",
+  "premiumMonthly": "Mensile",
+  "premiumQuarterly": "Trimestrale",
+  "premiumPerMonth": "al mese",
+  "premiumEvery3Months": "ogni 3 mesi",
+  "premiumSavePercent": "Risparmia {percent}",
+  "premiumMonthlyPlan": "Piano Mensile",
+  "premiumQuarterlyPlan": "Piano Trimestrale",
+  "premiumSubscriptionInfo": "Informazioni abbonamento"
 }

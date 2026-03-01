@@ -641,4 +641,105 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get countryUA => 'Ukraina';
+
+  @override
+  String get premiumTitle => 'Teletext Premium';
+
+  @override
+  String get premiumFeatures => 'Funkcje Premium';
+
+  @override
+  String get premiumSubtitle => 'Popraw swoje doświadczenie z Teletext Europe';
+
+  @override
+  String get premiumNoAds => 'Bez reklam';
+
+  @override
+  String get premiumNoAdsDescription =>
+      'Usuń wszystkie bannery reklamowe i reklamy pełnoekranowe';
+
+  @override
+  String get premiumFasterExperience => 'Płynniejsze doświadczenie';
+
+  @override
+  String get premiumFasterExperienceDescription =>
+      'Nawiguj bez przerw reklamowych';
+
+  @override
+  String get premiumSupportDevelopment => 'Wspieraj rozwój';
+
+  @override
+  String get premiumSupportDevelopmentDescription =>
+      'Pomóż utrzymać aplikację zaktualizowaną nowymi kanałami i funkcjami';
+
+  @override
+  String get premiumActivated => 'Premium aktywowane';
+
+  @override
+  String get premiumThankYou => 'Dziękujemy za wsparcie!';
+
+  @override
+  String get premiumOneTimePurchase => 'Subskrypcja kwartalna';
+
+  @override
+  String get premiumLifetime => 'Automatyczne odnowienie co 3 miesiące';
+
+  @override
+  String get purchasePremium => 'Subskrybuj teraz';
+
+  @override
+  String get restorePurchases => 'Przywróć subskrypcję';
+
+  @override
+  String get premiumProductNotAvailable =>
+      'Subskrypcja Premium obecnie niedostępna';
+
+  @override
+  String get premiumPurchaseError =>
+      'Błąd podczas subskrypcji. Spróbuj ponownie.';
+
+  @override
+  String get premiumRestoreSuccess => 'Subskrypcja przywrócona pomyślnie!';
+
+  @override
+  String get premiumRestoreNoPurchases => 'Nie znaleziono aktywnej subskrypcji';
+
+  @override
+  String get premiumRestoreError => 'Błąd podczas przywracania subskrypcji';
+
+  @override
+  String get premiumLegalNote =>
+      'Subskrypcja kwartalna z automatycznym odnowieniem. Możesz anulować w dowolnym momencie w ustawieniach konta Apple/Google. Płatność zostanie pobrana po potwierdzeniu. Subskrypcja odnawia się automatycznie co 3 miesiące.';
+
+  @override
+  String get goPremium => 'Zostań Premium';
+
+  @override
+  String get premiumChoosePlan => 'Wybierz plan';
+
+  @override
+  String get premiumMonthly => 'Miesięcznie';
+
+  @override
+  String get premiumQuarterly => 'Kwartalnie';
+
+  @override
+  String get premiumPerMonth => 'miesięcznie';
+
+  @override
+  String get premiumEvery3Months => 'co 3 miesiące';
+
+  @override
+  String premiumSavePercent(String percent) {
+    return 'Oszczędź $percent';
+  }
+
+  @override
+  String get premiumMonthlyPlan => 'Plan miesięczny';
+
+  @override
+  String get premiumQuarterlyPlan => 'Plan kwartalny';
+
+  @override
+  String get premiumSubscriptionInfo => 'Informacje o subskrypcji';
 }

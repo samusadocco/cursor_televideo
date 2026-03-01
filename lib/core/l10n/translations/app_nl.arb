@@ -369,5 +369,14 @@
   "premiumRestoreNoPurchases": "Geen actief abonnement gevonden",
   "premiumRestoreError": "Fout bij het herstellen van abonnement",
   "premiumLegalNote": "Driemaandelijks abonnement met automatische verlenging. U kunt op elk moment annuleren via uw Apple/Google-accountinstellingen. Betaling vindt plaats bij bevestiging. Abonnement wordt automatisch verlengd elke 3 maanden.",
-  "goPremium": "Word Premium"
+  "goPremium": "Word Premium",
+  "premiumChoosePlan": "Kies uw abonnement",
+  "premiumMonthly": "Maandelijks",
+  "premiumQuarterly": "Driemaandelijks",
+  "premiumPerMonth": "per maand",
+  "premiumEvery3Months": "elke 3 maanden",
+  "premiumSavePercent": "Bespaar {percent}",
+  "premiumMonthlyPlan": "Maandabonnement",
+  "premiumQuarterlyPlan": "Kwartaalabonnement",
+  "premiumSubscriptionInfo": "Abonnementsinformatie"
 }

@@ -645,4 +645,106 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get countryUA => 'Ukraine';
+
+  @override
+  String get premiumTitle => 'Teletext Premium';
+
+  @override
+  String get premiumFeatures => 'Fonctionnalités Premium';
+
+  @override
+  String get premiumSubtitle => 'Améliorez votre expérience Teletext Europe';
+
+  @override
+  String get premiumNoAds => 'Pas de publicité';
+
+  @override
+  String get premiumNoAdsDescription =>
+      'Supprimez toutes les bannières publicitaires et les annonces interstitielles';
+
+  @override
+  String get premiumFasterExperience => 'Expérience plus fluide';
+
+  @override
+  String get premiumFasterExperienceDescription =>
+      'Naviguez sans interruptions publicitaires';
+
+  @override
+  String get premiumSupportDevelopment => 'Soutenir le développement';
+
+  @override
+  String get premiumSupportDevelopmentDescription =>
+      'Aidez à maintenir l\'application à jour avec de nouveaux canaux et fonctionnalités';
+
+  @override
+  String get premiumActivated => 'Abonnement actif';
+
+  @override
+  String get premiumThankYou => 'Merci pour votre soutien !';
+
+  @override
+  String get premiumOneTimePurchase => 'Abonnement trimestriel';
+
+  @override
+  String get premiumLifetime => 'Renouvellement automatique tous les 3 mois';
+
+  @override
+  String get purchasePremium => 'S\'abonner maintenant';
+
+  @override
+  String get restorePurchases => 'Restaurer l\'abonnement';
+
+  @override
+  String get premiumProductNotAvailable =>
+      'Abonnement Premium non disponible pour le moment';
+
+  @override
+  String get premiumPurchaseError =>
+      'Erreur lors de l\'abonnement. Veuillez réessayer.';
+
+  @override
+  String get premiumRestoreSuccess => 'Abonnement restauré avec succès !';
+
+  @override
+  String get premiumRestoreNoPurchases => 'Aucun abonnement actif trouvé';
+
+  @override
+  String get premiumRestoreError =>
+      'Erreur lors de la restauration de l\'abonnement';
+
+  @override
+  String get premiumLegalNote =>
+      'Abonnement trimestriel avec renouvellement automatique. Vous pouvez annuler à tout moment depuis les paramètres de votre compte Apple/Google. Le paiement sera débité lors de la confirmation. L\'abonnement se renouvelle automatiquement tous les 3 mois.';
+
+  @override
+  String get goPremium => 'S\'abonner à Premium';
+
+  @override
+  String get premiumChoosePlan => 'Choisissez votre forfait';
+
+  @override
+  String get premiumMonthly => 'Mensuel';
+
+  @override
+  String get premiumQuarterly => 'Trimestriel';
+
+  @override
+  String get premiumPerMonth => 'par mois';
+
+  @override
+  String get premiumEvery3Months => 'tous les 3 mois';
+
+  @override
+  String premiumSavePercent(String percent) {
+    return 'Économisez $percent';
+  }
+
+  @override
+  String get premiumMonthlyPlan => 'Plan mensuel';
+
+  @override
+  String get premiumQuarterlyPlan => 'Plan trimestriel';
+
+  @override
+  String get premiumSubscriptionInfo => 'Informations sur l\'abonnement';
 }

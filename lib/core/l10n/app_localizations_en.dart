@@ -637,4 +637,105 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get countryUA => 'Ukraine';
+
+  @override
+  String get premiumTitle => 'Teletext Premium';
+
+  @override
+  String get premiumFeatures => 'Premium Features';
+
+  @override
+  String get premiumSubtitle => 'Enhance your Teletext Europe experience';
+
+  @override
+  String get premiumNoAds => 'No Ads';
+
+  @override
+  String get premiumNoAdsDescription =>
+      'Remove all banner ads and interstitial ads';
+
+  @override
+  String get premiumFasterExperience => 'Smoother Experience';
+
+  @override
+  String get premiumFasterExperienceDescription =>
+      'Navigate without advertising interruptions';
+
+  @override
+  String get premiumSupportDevelopment => 'Support Development';
+
+  @override
+  String get premiumSupportDevelopmentDescription =>
+      'Help keep the app updated with new channels and features';
+
+  @override
+  String get premiumActivated => 'Subscription Active';
+
+  @override
+  String get premiumThankYou => 'Thank you for your support!';
+
+  @override
+  String get premiumOneTimePurchase => 'Quarterly subscription';
+
+  @override
+  String get premiumLifetime => 'Auto-renews every 3 months';
+
+  @override
+  String get purchasePremium => 'Subscribe Now';
+
+  @override
+  String get restorePurchases => 'Restore Subscription';
+
+  @override
+  String get premiumProductNotAvailable =>
+      'Premium subscription not available at the moment';
+
+  @override
+  String get premiumPurchaseError =>
+      'Error during subscription. Please try again.';
+
+  @override
+  String get premiumRestoreSuccess => 'Subscription restored successfully!';
+
+  @override
+  String get premiumRestoreNoPurchases => 'No active subscription found';
+
+  @override
+  String get premiumRestoreError => 'Error restoring subscription';
+
+  @override
+  String get premiumLegalNote =>
+      'Quarterly subscription with auto-renewal. You can cancel anytime from your Apple/Google account settings. Payment will be charged upon confirmation. Subscription automatically renews every 3 months.';
+
+  @override
+  String get goPremium => 'Subscribe to Premium';
+
+  @override
+  String get premiumChoosePlan => 'Choose your plan';
+
+  @override
+  String get premiumMonthly => 'Monthly';
+
+  @override
+  String get premiumQuarterly => 'Quarterly';
+
+  @override
+  String get premiumPerMonth => 'per month';
+
+  @override
+  String get premiumEvery3Months => 'every 3 months';
+
+  @override
+  String premiumSavePercent(String percent) {
+    return 'Save $percent';
+  }
+
+  @override
+  String get premiumMonthlyPlan => 'Monthly Plan';
+
+  @override
+  String get premiumQuarterlyPlan => 'Quarterly Plan';
+
+  @override
+  String get premiumSubscriptionInfo => 'Subscription information';
 }

@@ -397,5 +397,14 @@
   "premiumRestoreNoPurchases": "Nie znaleziono aktywnej subskrypcji",
   "premiumRestoreError": "Błąd podczas przywracania subskrypcji",
   "premiumLegalNote": "Subskrypcja kwartalna z automatycznym odnowieniem. Możesz anulować w dowolnym momencie w ustawieniach konta Apple/Google. Płatność zostanie pobrana po potwierdzeniu. Subskrypcja odnawia się automatycznie co 3 miesiące.",
-  "goPremium": "Zostań Premium"
+  "goPremium": "Zostań Premium",
+  "premiumChoosePlan": "Wybierz plan",
+  "premiumMonthly": "Miesięcznie",
+  "premiumQuarterly": "Kwartalnie",
+  "premiumPerMonth": "miesięcznie",
+  "premiumEvery3Months": "co 3 miesiące",
+  "premiumSavePercent": "Oszczędź {percent}",
+  "premiumMonthlyPlan": "Plan miesięczny",
+  "premiumQuarterlyPlan": "Plan kwartalny",
+  "premiumSubscriptionInfo": "Informacje o subskrypcji"
 }

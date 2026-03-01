@@ -397,5 +397,23 @@
   "premiumRestoreNoPurchases": "No active subscription found",
   "premiumRestoreError": "Error restoring subscription",
   "premiumLegalNote": "Quarterly subscription with auto-renewal. You can cancel anytime from your Apple/Google account settings. Payment will be charged upon confirmation. Subscription automatically renews every 3 months.",
-  "goPremium": "Subscribe to Premium"
+  "goPremium": "Subscribe to Premium",
+  "premiumChoosePlan": "Choose your plan",
+  "premiumMonthly": "Monthly",
+  "premiumQuarterly": "Quarterly",
+  "premiumPerMonth": "per month",
+  "premiumEvery3Months": "every 3 months",
+  "premiumSavePercent": "Save {percent}",
+  "@premiumSavePercent": {
+    "description": "Save percentage badge on quarterly plan",
+    "placeholders": {
+      "percent": {
+        "type": "String",
+        "example": "25%"
+      }
+    }
+  },
+  "premiumMonthlyPlan": "Monthly Plan",
+  "premiumQuarterlyPlan": "Quarterly Plan",
+  "premiumSubscriptionInfo": "Subscription information"
 }

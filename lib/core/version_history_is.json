@@ -1,6 +1,13 @@
 {
   "versions": [
     {
+      "version": "2.1.0",
+      "changes": [
+        "Lagfærð villa í birtingu ARD Text (Þýskaland)",
+        "Premium áskriftir: (án auglýsinga)"
+      ]
+    },
+    {
       "version": "2.0.4",
       "changes": [
         "20 nýjar rásir frá Þýskalandi, Póllandi, Hollandi og Úkraínu"

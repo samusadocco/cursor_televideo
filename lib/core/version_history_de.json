@@ -1,6 +1,13 @@
 {
   "versions": [
     {
+      "version": "2.1.0",
+      "changes": [
+        "ARD Text Anzeigefehler behoben (Deutschland)",
+        "Premium-Abonnements: (werbefrei)"
+      ]
+    },
+    {
       "version": "2.0.4",
       "changes": [
         "20 neue Kanäle aus Deutschland, Polen, Niederlande und Ukraine"
