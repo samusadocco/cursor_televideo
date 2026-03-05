@@ -26,7 +26,7 @@ Nella console di Flutter, cerca questi messaggi:
 [IAPService] Loading products...
 [IAPService] Loaded 2 products
 [IAPService] Product: premium_subscription_monthly - Teletext Premium - €1.49
-[IAPService] Product: premium_subscription_quarterly - Teletext Premium - €2.99
+[IAPService] Product: premium_subscription_quarterly2 - Teletext Premium - €2.99
 ✅ IAP Service initialized successfully
 
 // ❌ PROBLEMA 1: Store non disponibile
@@ -36,7 +36,7 @@ Nella console di Flutter, cerca questi messaggi:
 
 // ❌ PROBLEMA 2: Prodotti non trovati
 [IAPService] Loading products...
-[IAPService] Products not found: [premium_subscription_monthly, premium_subscription_quarterly]
+[IAPService] Products not found: [premium_subscription_monthly, premium_subscription_quarterly2]
 [IAPService] Loaded 0 products  ← PROBLEMA!
 ```
 
@@ -87,7 +87,7 @@ flutter devices
 
 ### ✅ SOLUZIONE 2: Prodotti NON Configurati su App Store Connect (iOS)
 
-**Problema**: I prodotti con ID `premium_subscription_monthly` e `premium_subscription_quarterly` non esistono.
+**Problema**: I prodotti con ID `premium_subscription_monthly` e `premium_subscription_quarterly2` non esistono.
 
 **Soluzione**:
 
@@ -114,7 +114,7 @@ Price: Tier 3 (€1.49)
 **Trimestrale:**
 ```
 + (Plus button) → Auto-Renewable Subscription
-Product ID: premium_subscription_quarterly
+Product ID: premium_subscription_quarterly2
 Reference Name: Premium Quarterly
 Subscription Duration: 3 Months
 Price: Tier 5 (€2.99)

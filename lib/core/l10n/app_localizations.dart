@@ -1375,7 +1375,7 @@ abstract class AppLocalizations {
   /// No description provided for @premiumLegalNote.
   ///
   /// In en, this message translates to:
-  /// **'Quarterly subscription with auto-renewal. You can cancel anytime from your Apple/Google account settings. Payment will be charged upon confirmation. Subscription automatically renews every 3 months.'**
+  /// **'Monthly or quarterly subscription with auto-renewal. You can cancel anytime from your Apple/Google account settings. Payment will be charged upon confirmation. The subscription renews automatically (monthly or every 3 months depending on the selected plan).'**
   String get premiumLegalNote;
 
   /// No description provided for @goPremium.
@@ -1437,6 +1437,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Subscription information'**
   String get premiumSubscriptionInfo;
+
+  /// No description provided for @premiumPrivacyPolicy.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy Policy'**
+  String get premiumPrivacyPolicy;
+
+  /// No description provided for @premiumTermsOfUse.
+  ///
+  /// In en, this message translates to:
+  /// **'Terms of Use (EULA)'**
+  String get premiumTermsOfUse;
 }
 
 class _AppLocalizationsDelegate

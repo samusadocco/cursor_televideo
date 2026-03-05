@@ -710,7 +710,7 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String get premiumLegalNote =>
-      'Negyedéves előfizetés automatikus megújítással. Bármikor lemondhatja az Apple/Google fiók beállításaiban. A fizetés a megerősítéskor történik. Az előfizetés automatikusan megújul 3 havonta.';
+      'Havi vagy negyedéves előfizetés automatikus megújítással. Bármikor lemondhatja az Apple/Google fiók beállításaiban. A fizetés a megerősítéskor történik. Az előfizetés automatikusan megújul (havonta vagy 3 havonta a kiválasztott csomagtól függően).';
 
   @override
   String get goPremium => 'Legyen Premium';
@@ -743,4 +743,10 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String get premiumSubscriptionInfo => 'Előfizetési információk';
+
+  @override
+  String get premiumPrivacyPolicy => 'Adatvédelmi irányelvek';
+
+  @override
+  String get premiumTermsOfUse => 'Felhasználási feltételek (EULA)';
 }

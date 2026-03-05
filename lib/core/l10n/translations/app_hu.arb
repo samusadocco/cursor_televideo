@@ -368,7 +368,7 @@
   "premiumRestoreSuccess": "Előfizetés sikeresen visszaállítva!",
   "premiumRestoreNoPurchases": "Nem található aktív előfizetés",
   "premiumRestoreError": "Hiba az előfizetés visszaállítása során",
-  "premiumLegalNote": "Negyedéves előfizetés automatikus megújítással. Bármikor lemondhatja az Apple/Google fiók beállításaiban. A fizetés a megerősítéskor történik. Az előfizetés automatikusan megújul 3 havonta.",
+  "premiumLegalNote": "Havi vagy negyedéves előfizetés automatikus megújítással. Bármikor lemondhatja az Apple/Google fiók beállításaiban. A fizetés a megerősítéskor történik. Az előfizetés automatikusan megújul (havonta vagy 3 havonta a kiválasztott csomagtól függően).",
   "goPremium": "Legyen Premium",
   "premiumChoosePlan": "Válasszon csomagot",
   "premiumMonthly": "Havi",
@@ -378,5 +378,7 @@
   "premiumSavePercent": "Megtakarít {percent}",
   "premiumMonthlyPlan": "Havi csomag",
   "premiumQuarterlyPlan": "Negyedéves csomag",
-  "premiumSubscriptionInfo": "Előfizetési információk"
+  "premiumSubscriptionInfo": "Előfizetési információk",
+  "premiumPrivacyPolicy": "Adatvédelmi irányelvek",
+  "premiumTermsOfUse": "Felhasználási feltételek (EULA)"
 }

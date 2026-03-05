@@ -705,7 +705,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get premiumLegalNote =>
-      'Quarterly subscription with auto-renewal. You can cancel anytime from your Apple/Google account settings. Payment will be charged upon confirmation. Subscription automatically renews every 3 months.';
+      'Monthly or quarterly subscription with auto-renewal. You can cancel anytime from your Apple/Google account settings. Payment will be charged upon confirmation. The subscription renews automatically (monthly or every 3 months depending on the selected plan).';
 
   @override
   String get goPremium => 'Subscribe to Premium';
@@ -738,4 +738,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get premiumSubscriptionInfo => 'Subscription information';
+
+  @override
+  String get premiumPrivacyPolicy => 'Privacy Policy';
+
+  @override
+  String get premiumTermsOfUse => 'Terms of Use (EULA)';
 }

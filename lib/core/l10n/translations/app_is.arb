@@ -368,7 +368,7 @@
   "premiumRestoreSuccess": "Áskrift endurheimt með góðum árangri!",
   "premiumRestoreNoPurchases": "Engin virk áskrift fannst",
   "premiumRestoreError": "Villa við endurheimtu áskriftar",
-  "premiumLegalNote": "Ársfjórðungsáskrift með sjálfvirkri endurnýjun. Þú getur hætt við hvenær sem er í stillingum Apple/Google reikningsins þíns. Greiðsla fer fram við staðfestingu. Áskrift endurnýjast sjálfkrafa á 3 mánaða fresti.",
+  "premiumLegalNote": "Mánaðar- eða ársfjórðungsáskrift með sjálfvirkri endurnýjun. Þú getur hætt við hvenær sem er í stillingum Apple/Google reikningsins þíns. Greiðsla fer fram við staðfestingu. Áskrift endurnýjast sjálfkrafa (mánaðarlega eða á 3 mánaða fresti eftir valinni áskrift).",
   "goPremium": "Verða Premium",
   "premiumChoosePlan": "Veldu áskrift",
   "premiumMonthly": "Mánaðarlega",
@@ -378,5 +378,7 @@
   "premiumSavePercent": "Sparaðu {percent}",
   "premiumMonthlyPlan": "Mánaðarleg áskrift",
   "premiumQuarterlyPlan": "Fjórðungsáskrift",
-  "premiumSubscriptionInfo": "Upplýsingar um áskrift"
+  "premiumSubscriptionInfo": "Upplýsingar um áskrift",
+  "premiumPrivacyPolicy": "Meðferðarreglur",
+  "premiumTermsOfUse": "Notkunarskilmálar (EULA)"
 }

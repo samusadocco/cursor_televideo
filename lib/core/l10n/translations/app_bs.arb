@@ -368,7 +368,7 @@
   "premiumRestoreSuccess": "Pretplata uspješno vraćena!",
   "premiumRestoreNoPurchases": "Nije pronađena aktivna pretplata",
   "premiumRestoreError": "Greška pri vraćanju pretplate",
-  "premiumLegalNote": "Tromjesečna pretplata s automatskom obnovom. Možete otkazati bilo kada iz postavki vašeg Apple/Google računa. Naplata će se izvršiti pri potvrdi. Pretplata se automatski obnavlja svakih 3 mjeseca.",
+  "premiumLegalNote": "Mjesečna ili tromjesečna pretplata s automatskom obnovom. Možete otkazati bilo kada iz postavki vašeg Apple/Google računa. Naplata će se izvršiti pri potvrdi. Pretplata se automatski obnavlja (mjesečno ili svakih 3 mjeseca ovisno o odabranom planu).",
   "goPremium": "Postani Premium",
   "premiumChoosePlan": "Odaberite plan",
   "premiumMonthly": "Mjesečno",
@@ -378,5 +378,7 @@
   "premiumSavePercent": "Uštedite {percent}",
   "premiumMonthlyPlan": "Mjesečni plan",
   "premiumQuarterlyPlan": "Tromjesečni plan",
-  "premiumSubscriptionInfo": "Informacije o pretplati"
+  "premiumSubscriptionInfo": "Informacije o pretplati",
+  "premiumPrivacyPolicy": "Pravila o privatnosti",
+  "premiumTermsOfUse": "Uslovi korištenja (EULA)"
 }

@@ -396,7 +396,7 @@
   "premiumRestoreSuccess": "Subscription restored successfully!",
   "premiumRestoreNoPurchases": "No active subscription found",
   "premiumRestoreError": "Error restoring subscription",
-  "premiumLegalNote": "Quarterly subscription with auto-renewal. You can cancel anytime from your Apple/Google account settings. Payment will be charged upon confirmation. Subscription automatically renews every 3 months.",
+  "premiumLegalNote": "Monthly or quarterly subscription with auto-renewal. You can cancel anytime from your Apple/Google account settings. Payment will be charged upon confirmation. The subscription renews automatically (monthly or every 3 months depending on the selected plan).",
   "goPremium": "Subscribe to Premium",
   "premiumChoosePlan": "Choose your plan",
   "premiumMonthly": "Monthly",
@@ -415,5 +415,7 @@
   },
   "premiumMonthlyPlan": "Monthly Plan",
   "premiumQuarterlyPlan": "Quarterly Plan",
-  "premiumSubscriptionInfo": "Subscription information"
+  "premiumSubscriptionInfo": "Subscription information",
+  "premiumPrivacyPolicy": "Privacy Policy",
+  "premiumTermsOfUse": "Terms of Use (EULA)"
 }

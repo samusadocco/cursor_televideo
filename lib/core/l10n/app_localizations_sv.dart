@@ -707,7 +707,7 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String get premiumLegalNote =>
-      'Kvartalsabonnemang med automatisk förnyelse. Du kan avsluta när som helst från dina Apple/Google-kontoinställningar. Betalning debiteras vid bekräftelse. Abonnemanget förnyas automatiskt var 3:e månad.';
+      'Månads- eller kvartalsabonnemang med automatisk förnyelse. Du kan avsluta när som helst från dina Apple/Google-kontoinställningar. Betalning debiteras vid bekräftelse. Abonnemanget förnyas automatiskt (månadsvis eller var 3:e månad beroende på valt abonnemang).';
 
   @override
   String get goPremium => 'Bli Premium';
@@ -740,4 +740,10 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String get premiumSubscriptionInfo => 'Prenumerationsinformation';
+
+  @override
+  String get premiumPrivacyPolicy => 'Integritetspolicy';
+
+  @override
+  String get premiumTermsOfUse => 'Användarvillkor (EULA)';
 }

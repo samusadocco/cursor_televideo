@@ -13,7 +13,7 @@ import 'package:cursor_televideo/core/analytics/analytics_service.dart';
 class IAPService {
   // Product IDs per i diversi piani di abbonamento
   static const String _monthlyProductId = 'premium_subscription_monthly';
-  static const String _quarterlyProductId = 'premium_subscription_quarterly';
+  static const String _quarterlyProductId = 'premium_subscription_quarterly2';
   
   static const String _isPremiumKey = 'is_premium_user';
   

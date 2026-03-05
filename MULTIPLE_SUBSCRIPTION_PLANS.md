@@ -8,7 +8,7 @@ Implementazione e strategia per offrire piani Mensile + Trimestrale (e opzionalm
 ```dart
 // Product IDs configurati
 - premium_subscription_monthly (Mensile)
-- premium_subscription_quarterly (Trimestrale)
+- premium_subscription_quarterly2 (Trimestrale)
 ```
 
 ### 2. **UI con Selettore di Piano**
@@ -244,7 +244,7 @@ Reference Name: Premium Monthly
 
 **Trimestrale:**
 ```
-Product ID: premium_subscription_quarterly
+Product ID: premium_subscription_quarterly2
 Duration: 3 months
 Price: €2.99 (Tier 5)
 Reference Name: Premium Quarterly
@@ -385,7 +385,7 @@ Replacement mode:
 // Permettere cambio piano
 if (userHasMonthly && wantsQuarterly) {
   await iapService.purchasePremium(
-    productId: 'premium_subscription_quarterly'
+    productId: 'premium_subscription_quarterly2'
   );
   // Lo store gestisce automaticamente la migrazione
 }

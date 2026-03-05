@@ -714,7 +714,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get premiumLegalNote =>
-      'Abonnement trimestriel avec renouvellement automatique. Vous pouvez annuler à tout moment depuis les paramètres de votre compte Apple/Google. Le paiement sera débité lors de la confirmation. L\'abonnement se renouvelle automatiquement tous les 3 mois.';
+      'Abonnement mensuel ou trimestriel avec renouvellement automatique. Vous pouvez annuler à tout moment depuis les paramètres de votre compte Apple/Google. Le paiement sera débité lors de la confirmation. L\'abonnement se renouvelle automatiquement (mensuellement ou tous les 3 mois selon le forfait choisi).';
 
   @override
   String get goPremium => 'S\'abonner à Premium';
@@ -747,4 +747,10 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get premiumSubscriptionInfo => 'Informations sur l\'abonnement';
+
+  @override
+  String get premiumPrivacyPolicy => 'Politique de confidentialité';
+
+  @override
+  String get premiumTermsOfUse => 'Conditions d\'utilisation (EULA)';
 }

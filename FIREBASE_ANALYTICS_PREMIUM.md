@@ -19,7 +19,7 @@ Questa property viene automaticamente:
 
 **`subscription_purchased`** - Quando un utente completa un nuovo acquisto
 - Parametri:
-  - `subscription_id`: ID del prodotto (`premium_subscription_quarterly`)
+  - `subscription_id`: ID del prodotto (`premium_subscription_quarterly2`)
   - `price`: Prezzo (es. "€2.99")
   - `currency`: Valuta (es. "EUR")
   - `platform`: iOS o Android

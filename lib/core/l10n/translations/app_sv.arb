@@ -368,7 +368,7 @@
   "premiumRestoreSuccess": "Prenumeration återställd framgångsrikt!",
   "premiumRestoreNoPurchases": "Ingen aktiv prenumeration hittades",
   "premiumRestoreError": "Fel vid återställning av prenumeration",
-  "premiumLegalNote": "Kvartalsabonnemang med automatisk förnyelse. Du kan avsluta när som helst från dina Apple/Google-kontoinställningar. Betalning debiteras vid bekräftelse. Abonnemanget förnyas automatiskt var 3:e månad.",
+  "premiumLegalNote": "Månads- eller kvartalsabonnemang med automatisk förnyelse. Du kan avsluta när som helst från dina Apple/Google-kontoinställningar. Betalning debiteras vid bekräftelse. Abonnemanget förnyas automatiskt (månadsvis eller var 3:e månad beroende på valt abonnemang).",
   "goPremium": "Bli Premium",
   "premiumChoosePlan": "Välj din plan",
   "premiumMonthly": "Månadsvis",
@@ -378,5 +378,7 @@
   "premiumSavePercent": "Spara {percent}",
   "premiumMonthlyPlan": "Månadsplan",
   "premiumQuarterlyPlan": "Kvartalsplan",
-  "premiumSubscriptionInfo": "Prenumerationsinformation"
+  "premiumSubscriptionInfo": "Prenumerationsinformation",
+  "premiumPrivacyPolicy": "Integritetspolicy",
+  "premiumTermsOfUse": "Användarvillkor (EULA)"
 }

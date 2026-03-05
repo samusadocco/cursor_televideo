@@ -710,7 +710,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get premiumLegalNote =>
-      'Driemaandelijks abonnement met automatische verlenging. U kunt op elk moment annuleren via uw Apple/Google-accountinstellingen. Betaling vindt plaats bij bevestiging. Abonnement wordt automatisch verlengd elke 3 maanden.';
+      'Maandelijks of driemaandelijks abonnement met automatische verlenging. U kunt op elk moment annuleren via uw Apple/Google-accountinstellingen. Betaling vindt plaats bij bevestiging. Abonnement wordt automatisch verlengd (maandelijks of elke 3 maanden afhankelijk van het gekozen plan).';
 
   @override
   String get goPremium => 'Word Premium';
@@ -743,4 +743,10 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get premiumSubscriptionInfo => 'Abonnementsinformatie';
+
+  @override
+  String get premiumPrivacyPolicy => 'Privacybeleid';
+
+  @override
+  String get premiumTermsOfUse => 'Gebruiksvoorwaarden (EULA)';
 }

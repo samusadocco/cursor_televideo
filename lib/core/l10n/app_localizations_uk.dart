@@ -709,7 +709,7 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get premiumLegalNote =>
-      'Квартальна підписка з автоматичним поновленням. Ви можете скасувати в будь-який час у налаштуваннях облікового запису Apple/Google. Оплата стягується при підтвердженні. Підписка автоматично поновлюється кожні 3 місяці.';
+      'Місячна або квартальна підписка з автоматичним поновленням. Ви можете скасувати в будь-який час у налаштуваннях облікового запису Apple/Google. Оплата стягується при підтвердженні. Підписка автоматично поновлюється (щомісяця або кожні 3 місяці залежно від обраного плану).';
 
   @override
   String get goPremium => 'Стати Premium';
@@ -742,4 +742,10 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get premiumSubscriptionInfo => 'Інформація про підписку';
+
+  @override
+  String get premiumPrivacyPolicy => 'Політика конфіденційності';
+
+  @override
+  String get premiumTermsOfUse => 'Умови використання (EULA)';
 }

@@ -710,7 +710,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get premiumLegalNote =>
-      'Assinatura trimestral com renovação automática. Pode cancelar a qualquer momento nas configurações da sua conta Apple/Google. O pagamento será cobrado na confirmação. A assinatura renova-se automaticamente a cada 3 meses.';
+      'Assinatura mensal ou trimestral com renovação automática. Pode cancelar a qualquer momento nas configurações da sua conta Apple/Google. O pagamento será cobrado na confirmação. A assinatura renova-se automaticamente (mensalmente ou a cada 3 meses consoante o plano selecionado).';
 
   @override
   String get goPremium => 'Tornar-se Premium';
@@ -743,4 +743,10 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get premiumSubscriptionInfo => 'Informações de subscrição';
+
+  @override
+  String get premiumPrivacyPolicy => 'Política de privacidade';
+
+  @override
+  String get premiumTermsOfUse => 'Termos de utilização (EULA)';
 }

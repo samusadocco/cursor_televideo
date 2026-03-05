@@ -18,7 +18,7 @@ Questa guida ti aiuterà a configurare l'**abbonamento trimestrale ricorrente** 
 4. Seleziona **"Auto-Renewable Subscription"**
 
 #### Informazioni di base
-- **Product ID**: `premium_subscription_quarterly`
+- **Product ID**: `premium_subscription_quarterly2`
   - ⚠️ IMPORTANTE: Questo ID deve corrispondere esattamente a quello nel codice
   - Non può essere modificato dopo la creazione
 - **Reference Name**: "Premium Quarterly Subscription"
@@ -118,7 +118,7 @@ Prima di vendere abbonamenti, devi configurare un account commerciante Google:
 2. Clicca su **"Crea abbonamento"**
 
 #### Informazioni di base
-- **Product ID**: `premium_subscription_quarterly`
+- **Product ID**: `premium_subscription_quarterly2`
   - ⚠️ IMPORTANTE: Questo ID deve corrispondere esattamente a quello nel codice
   - Non può essere modificato dopo la creazione
 - **Nome**: "Teletext Premium - Quarterly"
@@ -212,7 +212,7 @@ Il codice è già stato aggiornato per gestire abbonamenti:
 ### Product ID
 ```dart
 // lib/core/iap/iap_service.dart
-static const String _premiumProductId = 'premium_subscription_quarterly';
+static const String _premiumProductId = 'premium_subscription_quarterly2';
 ```
 
 ### Tipo di acquisto
@@ -365,7 +365,7 @@ Prima di lanciare l'abbonamento in produzione:
 
 ### iOS
 - [ ] Abbonamento creato e approvato in App Store Connect
-- [ ] Product ID corretto: `premium_subscription_quarterly`
+- [ ] Product ID corretto: `premium_subscription_quarterly2`
 - [ ] Prezzo impostato per tutti i paesi target
 - [ ] Localizzazioni complete
 - [ ] Screenshot caricato
@@ -376,7 +376,7 @@ Prima di lanciare l'abbonamento in produzione:
 
 ### Android
 - [ ] Abbonamento creato e attivo in Google Play Console
-- [ ] Product ID corretto: `premium_subscription_quarterly`
+- [ ] Product ID corretto: `premium_subscription_quarterly2`
 - [ ] Base plan configurato con periodo 3 mesi
 - [ ] Prezzi impostati per tutti i paesi target
 - [ ] Descrizioni localizzate complete

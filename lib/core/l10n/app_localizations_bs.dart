@@ -709,7 +709,7 @@ class AppLocalizationsBs extends AppLocalizations {
 
   @override
   String get premiumLegalNote =>
-      'Tromjesečna pretplata s automatskom obnovom. Možete otkazati bilo kada iz postavki vašeg Apple/Google računa. Naplata će se izvršiti pri potvrdi. Pretplata se automatski obnavlja svakih 3 mjeseca.';
+      'Mjesečna ili tromjesečna pretplata s automatskom obnovom. Možete otkazati bilo kada iz postavki vašeg Apple/Google računa. Naplata će se izvršiti pri potvrdi. Pretplata se automatski obnavlja (mjesečno ili svakih 3 mjeseca ovisno o odabranom planu).';
 
   @override
   String get goPremium => 'Postani Premium';
@@ -742,4 +742,10 @@ class AppLocalizationsBs extends AppLocalizations {
 
   @override
   String get premiumSubscriptionInfo => 'Informacije o pretplati';
+
+  @override
+  String get premiumPrivacyPolicy => 'Pravila o privatnosti';
+
+  @override
+  String get premiumTermsOfUse => 'Uslovi korištenja (EULA)';
 }

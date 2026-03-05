@@ -368,7 +368,7 @@
   "premiumRestoreSuccess": "Naročnina uspešno obnovljena!",
   "premiumRestoreNoPurchases": "Aktivne naročnine ni bilo mogoče najti",
   "premiumRestoreError": "Napaka pri obnavljanju naročnine",
-  "premiumLegalNote": "Trimesečna naročnina s samodejno podaljšavo. Lahko prekličete kadarkoli iz nastavitev vašega Apple/Google računa. Plačilo bo izvedeno ob potrditvi. Naročnina se samodejno podaljša vsakih 3 mesecev.",
+  "premiumLegalNote": "Mesečna ali trimesečna naročnina s samodejno podaljšavo. Lahko prekličete kadarkoli iz nastavitev vašega Apple/Google računa. Plačilo bo izvedeno ob potrditvi. Naročnina se samodejno podaljša (mesečno ali vsakih 3 mesecev glede na izbrani načrt).",
   "goPremium": "Postani Premium",
   "premiumChoosePlan": "Izberite načrt",
   "premiumMonthly": "Mesečno",
@@ -378,5 +378,7 @@
   "premiumSavePercent": "Prihranite {percent}",
   "premiumMonthlyPlan": "Mesečni načrt",
   "premiumQuarterlyPlan": "Četrtletni načrt",
-  "premiumSubscriptionInfo": "Informacije o naročnini"
+  "premiumSubscriptionInfo": "Informacije o naročnini",
+  "premiumPrivacyPolicy": "Pravilnik o zasebnosti",
+  "premiumTermsOfUse": "Pogoji uporabe (EULA)"
 }

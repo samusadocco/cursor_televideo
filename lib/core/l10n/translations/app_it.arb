@@ -396,7 +396,7 @@
   "premiumRestoreSuccess": "Abbonamento ripristinato con successo!",
   "premiumRestoreNoPurchases": "Nessun abbonamento attivo trovato",
   "premiumRestoreError": "Errore durante il ripristino dell'abbonamento",
-  "premiumLegalNote": "Abbonamento trimestrale con rinnovo automatico. Puoi annullare in qualsiasi momento dalle impostazioni del tuo account Apple/Google. Il pagamento verrà addebitato al momento della conferma. L'abbonamento si rinnova automaticamente ogni 3 mesi.",
+  "premiumLegalNote": "Abbonamento mensile o trimestrale con rinnovo automatico. Puoi annullare in qualsiasi momento dalle impostazioni del tuo account Apple/Google. Il pagamento verrà addebitato al momento della conferma. L'abbonamento si rinnova automaticamente (mensilmente o ogni 3 mesi a seconda del piano selezionato).",
   "goPremium": "Abbonati a Premium",
   "premiumChoosePlan": "Scegli il tuo piano",
   "premiumMonthly": "Mensile",
@@ -406,5 +406,7 @@
   "premiumSavePercent": "Risparmia {percent}",
   "premiumMonthlyPlan": "Piano Mensile",
   "premiumQuarterlyPlan": "Piano Trimestrale",
-  "premiumSubscriptionInfo": "Informazioni abbonamento"
+  "premiumSubscriptionInfo": "Informazioni abbonamento",
+  "premiumPrivacyPolicy": "Informativa sulla privacy",
+  "premiumTermsOfUse": "Termini di utilizzo (EULA)"
 }

@@ -713,7 +713,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get premiumLegalNote =>
-      'Quartalsabonnement mit automatischer Verlängerung. Sie können jederzeit in Ihren Apple/Google-Kontoeinstellungen kündigen. Die Zahlung erfolgt bei Bestätigung. Das Abonnement verlängert sich automatisch alle 3 Monate.';
+      'Monatliches oder vierteljährliches Abonnement mit automatischer Verlängerung. Sie können jederzeit in Ihren Apple/Google-Kontoeinstellungen kündigen. Die Zahlung erfolgt bei Bestätigung. Das Abonnement verlängert sich automatisch (monatlich oder alle 3 Monate je nach gewähltem Plan).';
 
   @override
   String get goPremium => 'Premium abonnieren';
@@ -746,4 +746,10 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get premiumSubscriptionInfo => 'Abonnementinformationen';
+
+  @override
+  String get premiumPrivacyPolicy => 'Datenschutzrichtlinie';
+
+  @override
+  String get premiumTermsOfUse => 'Nutzungsbedingungen (EULA)';
 }

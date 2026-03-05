@@ -710,7 +710,7 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String get premiumLegalNote =>
-      'Čtvrtletní předplatné s automatickým obnovením. Můžete zrušit kdykoli z nastavení účtu Apple/Google. Platba bude provedena při potvrzení. Předplatné se automaticky obnovuje každé 3 měsíce.';
+      'Měsíční nebo čtvrtletní předplatné s automatickým obnovením. Můžete zrušit kdykoli z nastavení účtu Apple/Google. Platba bude provedena při potvrzení. Předplatné se automaticky obnovuje (měsíčně nebo každé 3 měsíce v závislosti na zvoleném plánu).';
 
   @override
   String get goPremium => 'Stát se Premium';
@@ -743,4 +743,10 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String get premiumSubscriptionInfo => 'Informace o předplatném';
+
+  @override
+  String get premiumPrivacyPolicy => 'Zásady ochrany osobních údajů';
+
+  @override
+  String get premiumTermsOfUse => 'Podmínky použití (EULA)';
 }

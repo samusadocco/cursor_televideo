@@ -709,7 +709,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get premiumLegalNote =>
-      'Subskrypcja kwartalna z automatycznym odnowieniem. Możesz anulować w dowolnym momencie w ustawieniach konta Apple/Google. Płatność zostanie pobrana po potwierdzeniu. Subskrypcja odnawia się automatycznie co 3 miesiące.';
+      'Subskrypcja miesięczna lub kwartalna z automatycznym odnowieniem. Możesz anulować w dowolnym momencie w ustawieniach konta Apple/Google. Płatność zostanie pobrana po potwierdzeniu. Subskrypcja odnawia się automatycznie (miesięcznie lub co 3 miesiące w zależności od wybranego planu).';
 
   @override
   String get goPremium => 'Zostań Premium';
@@ -742,4 +742,10 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get premiumSubscriptionInfo => 'Informacje o subskrypcji';
+
+  @override
+  String get premiumPrivacyPolicy => 'Polityka prywatności';
+
+  @override
+  String get premiumTermsOfUse => 'Warunki użytkowania (EULA)';
 }

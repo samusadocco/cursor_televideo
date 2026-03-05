@@ -710,7 +710,7 @@ class AppLocalizationsSl extends AppLocalizations {
 
   @override
   String get premiumLegalNote =>
-      'Trimesečna naročnina s samodejno podaljšavo. Lahko prekličete kadarkoli iz nastavitev vašega Apple/Google računa. Plačilo bo izvedeno ob potrditvi. Naročnina se samodejno podaljša vsakih 3 mesecev.';
+      'Mesečna ali trimesečna naročnina s samodejno podaljšavo. Lahko prekličete kadarkoli iz nastavitev vašega Apple/Google računa. Plačilo bo izvedeno ob potrditvi. Naročnina se samodejno podaljša (mesečno ali vsakih 3 mesecev glede na izbrani načrt).';
 
   @override
   String get goPremium => 'Postani Premium';
@@ -743,4 +743,10 @@ class AppLocalizationsSl extends AppLocalizations {
 
   @override
   String get premiumSubscriptionInfo => 'Informacije o naročnini';
+
+  @override
+  String get premiumPrivacyPolicy => 'Pravilnik o zasebnosti';
+
+  @override
+  String get premiumTermsOfUse => 'Pogoji uporabe (EULA)';
 }

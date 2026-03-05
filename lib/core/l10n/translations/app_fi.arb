@@ -368,7 +368,7 @@
   "premiumRestoreSuccess": "Tilaus palautettu onnistuneesti!",
   "premiumRestoreNoPurchases": "Aktiivista tilausta ei löytynyt",
   "premiumRestoreError": "Virhe tilauksen palauttamisessa",
-  "premiumLegalNote": "Neljännesvuositilaus, joka uusiutuu automaattisesti. Voit peruuttaa milloin tahansa Apple/Google-tilin asetuksista. Maksu veloitetaan vahvistuksen yhteydessä. Tilaus uusiutuu automaattisesti 3 kuukauden välein.",
+  "premiumLegalNote": "Kuukausi- tai neljännesvuositilaus, joka uusiutuu automaattisesti. Voit peruuttaa milloin tahansa Apple/Google-tilin asetuksista. Maksu veloitetaan vahvistuksen yhteydessä. Tilaus uusiutuu automaattisesti (kuukausittain tai 3 kuukauden välein valitusta suunnasta riippuen).",
   "goPremium": "Hanki Premium",
   "premiumChoosePlan": "Valitse suunnitelmasi",
   "premiumMonthly": "Kuukausittain",
@@ -378,5 +378,7 @@
   "premiumSavePercent": "Säästä {percent}",
   "premiumMonthlyPlan": "Kuukausisuunnitelma",
   "premiumQuarterlyPlan": "Kvartaalisuunnitelma",
-  "premiumSubscriptionInfo": "Tilauksen tiedot"
+  "premiumSubscriptionInfo": "Tilauksen tiedot",
+  "premiumPrivacyPolicy": "Tietosuojakäytäntö",
+  "premiumTermsOfUse": "Käyttöehdot (EULA)"
 }

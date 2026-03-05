@@ -706,7 +706,7 @@ class AppLocalizationsIs extends AppLocalizations {
 
   @override
   String get premiumLegalNote =>
-      'Ársfjórðungsáskrift með sjálfvirkri endurnýjun. Þú getur hætt við hvenær sem er í stillingum Apple/Google reikningsins þíns. Greiðsla fer fram við staðfestingu. Áskrift endurnýjast sjálfkrafa á 3 mánaða fresti.';
+      'Mánaðar- eða ársfjórðungsáskrift með sjálfvirkri endurnýjun. Þú getur hætt við hvenær sem er í stillingum Apple/Google reikningsins þíns. Greiðsla fer fram við staðfestingu. Áskrift endurnýjast sjálfkrafa (mánaðarlega eða á 3 mánaða fresti eftir valinni áskrift).';
 
   @override
   String get goPremium => 'Verða Premium';
@@ -739,4 +739,10 @@ class AppLocalizationsIs extends AppLocalizations {
 
   @override
   String get premiumSubscriptionInfo => 'Upplýsingar um áskrift';
+
+  @override
+  String get premiumPrivacyPolicy => 'Meðferðarreglur';
+
+  @override
+  String get premiumTermsOfUse => 'Notkunarskilmálar (EULA)';
 }

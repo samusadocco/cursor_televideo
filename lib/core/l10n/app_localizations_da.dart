@@ -706,7 +706,7 @@ class AppLocalizationsDa extends AppLocalizations {
 
   @override
   String get premiumLegalNote =>
-      'Kvartalsabonnement med automatisk fornyelse. Du kan annullere når som helst fra dine Apple/Google-kontoindstillinger. Betaling opkræves ved bekræftelse. Abonnementet fornyes automatisk hver 3. måned.';
+      'Månedligt eller kvartalsabonnement med automatisk fornyelse. Du kan annullere når som helst fra dine Apple/Google-kontoindstillinger. Betaling opkræves ved bekræftelse. Abonnementet fornyes automatisk (månedligt eller hver 3. måned afhængigt af den valgte plan).';
 
   @override
   String get goPremium => 'Bliv Premium';
@@ -739,4 +739,10 @@ class AppLocalizationsDa extends AppLocalizations {
 
   @override
   String get premiumSubscriptionInfo => 'Abonnementsoplysninger';
+
+  @override
+  String get premiumPrivacyPolicy => 'Privatlivspolitik';
+
+  @override
+  String get premiumTermsOfUse => 'Brugsvilkår (EULA)';
 }

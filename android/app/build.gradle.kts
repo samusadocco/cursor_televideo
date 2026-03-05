@@ -30,7 +30,7 @@ android {
         applicationId = "it.codebysam.televideo"
         minSdk = flutter.minSdkVersion
         targetSdk = 35 // Manteniamo Android 14 come target
-        versionCode = 20
+        versionCode = 21
         versionName = "2.1.0"
 
         // Disabilita i componenti differiti

@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:cursor_televideo/core/iap/iap_service.dart';
 import 'package:cursor_televideo/core/l10n/app_localizations.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
@@ -59,6 +60,31 @@ class _PremiumPageState extends State<PremiumPage> {
     } catch (e) {
       return null;
     }
+  }
+
+  Future<void> _launchUrl(String url) async {
+    final uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    } else if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(AppLocalizations.of(context)!.errorOpeningLink)),
+      );
+    }
+  }
+
+  Widget _buildLegalLink(BuildContext context, String label, String url) {
+    return GestureDetector(
+      onTap: () => _launchUrl(url),
+      child: Text(
+        label,
+        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+          color: Colors.blue[700],
+          decoration: TextDecoration.underline,
+          decorationColor: Colors.blue[700],
+        ),
+      ),
+    );
   }
 
   @override
@@ -476,6 +502,29 @@ class _PremiumPageState extends State<PremiumPage> {
                     ),
                     textAlign: TextAlign.left,
                   ),
+                  const SizedBox(height: 12),
+                  Wrap(
+                    spacing: 8,
+                    runSpacing: 4,
+                    children: [
+                      _buildLegalLink(
+                        context,
+                        l10n.premiumPrivacyPolicy,
+                        'https://www.codebysam.it/teleretro/privacy.html',
+                      ),
+                      Text(
+                        ' • ',
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                      _buildLegalLink(
+                        context,
+                        l10n.premiumTermsOfUse,
+                        'https://www.apple.com/legal/internet-services/itunes/dev/stdeula/',
+                      ),
+                    ],
+                  ),
                 ],
               ),
             ),
@@ -686,7 +735,7 @@ class _PremiumPageState extends State<PremiumPage> {
       // Determina il product ID in base al piano selezionato
       final productId = _selectedPlan == SubscriptionPlan.monthly
           ? 'premium_subscription_monthly'
-          : 'premium_subscription_quarterly';
+          : 'premium_subscription_quarterly2';
       
       final success = await widget.iapService.purchasePremium(productId: productId);
       

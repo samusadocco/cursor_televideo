@@ -368,7 +368,7 @@
   "premiumRestoreSuccess": "¡Suscripción restaurada con éxito!",
   "premiumRestoreNoPurchases": "No se encontró ninguna suscripción activa",
   "premiumRestoreError": "Error al restaurar la suscripción",
-  "premiumLegalNote": "Suscripción trimestral con renovación automática. Puedes cancelar en cualquier momento desde la configuración de tu cuenta Apple/Google. El pago se realizará al confirmar. La suscripción se renueva automáticamente cada 3 meses.",
+  "premiumLegalNote": "Suscripción mensual o trimestral con renovación automática. Puedes cancelar en cualquier momento desde la configuración de tu cuenta Apple/Google. El pago se realizará al confirmar. La suscripción se renueva automáticamente (mensualmente o cada 3 meses según el plan seleccionado).",
   "goPremium": "Suscribirse a Premium",
   "premiumChoosePlan": "Elige tu plan",
   "premiumMonthly": "Mensual",
@@ -378,5 +378,7 @@
   "premiumSavePercent": "Ahorra {percent}",
   "premiumMonthlyPlan": "Plan mensual",
   "premiumQuarterlyPlan": "Plan trimestral",
-  "premiumSubscriptionInfo": "Información de suscripción"
+  "premiumSubscriptionInfo": "Información de suscripción",
+  "premiumPrivacyPolicy": "Política de privacidad",
+  "premiumTermsOfUse": "Términos de uso (EULA)"
 }

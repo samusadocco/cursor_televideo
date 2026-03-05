@@ -707,7 +707,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get premiumLegalNote =>
-      'Neljännesvuositilaus, joka uusiutuu automaattisesti. Voit peruuttaa milloin tahansa Apple/Google-tilin asetuksista. Maksu veloitetaan vahvistuksen yhteydessä. Tilaus uusiutuu automaattisesti 3 kuukauden välein.';
+      'Kuukausi- tai neljännesvuositilaus, joka uusiutuu automaattisesti. Voit peruuttaa milloin tahansa Apple/Google-tilin asetuksista. Maksu veloitetaan vahvistuksen yhteydessä. Tilaus uusiutuu automaattisesti (kuukausittain tai 3 kuukauden välein valitusta suunnasta riippuen).';
 
   @override
   String get goPremium => 'Hanki Premium';
@@ -740,4 +740,10 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get premiumSubscriptionInfo => 'Tilauksen tiedot';
+
+  @override
+  String get premiumPrivacyPolicy => 'Tietosuojakäytäntö';
+
+  @override
+  String get premiumTermsOfUse => 'Käyttöehdot (EULA)';
 }
