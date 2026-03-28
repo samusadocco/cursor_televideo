@@ -169,8 +169,13 @@
   "pageNotFound": "Page not found",
   "networkError": "Network error",
   "connectionRequired": "Connection required",
+  "channelCheckNoConnectivity": "No connection available.\nMake sure you're not in airplane mode and that Wi-Fi or mobile data is on.",
+  "channelCheckNoInternet": "Unable to reach the internet.\nCheck your network connection and try again.",
+  "channelCheckDnsError": "Unable to resolve network addresses.\nCheck your connection or try a different network.",
+  "channelCheckChannelError": "The channel is having connection issues.\nThe broadcaster's server may be temporarily unreachable. Please try again in a few minutes.",
   "refreshing": "Refreshing...",
   "lastUpdate": "Last update",
+  "updateAvailable": "Update available",
   "theme": "Theme",
   "systemTheme": "System theme",
   "lightTheme": "Light theme",
@@ -417,5 +422,7 @@
   "premiumQuarterlyPlan": "Quarterly Plan",
   "premiumSubscriptionInfo": "Subscription information",
   "premiumPrivacyPolicy": "Privacy Policy",
-  "premiumTermsOfUse": "Terms of Use (EULA)"
+  "premiumTermsOfUse": "Terms of Use (EULA)",
+  "premiumLoadingSubscriptions": "Loading subscription options...",
+  "premiumLoadErrorRetry": "Unable to load subscription options. Please try again."
 }

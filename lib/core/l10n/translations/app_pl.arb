@@ -171,6 +171,7 @@
   "connectionRequired": "Wymagane połączenie",
   "refreshing": "Odświeżanie...",
   "lastUpdate": "Ostatnia aktualizacja",
+  "updateAvailable": "Dostępna aktualizacja",
   "theme": "Motyw",
   "systemTheme": "Motyw systemowy",
   "lightTheme": "Jasny motyw",

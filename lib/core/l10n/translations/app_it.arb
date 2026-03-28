@@ -155,8 +155,13 @@
   "pageNotFound": "Pagina non trovata",
   "networkError": "Errore di rete",
   "connectionRequired": "Connessione richiesta",
+  "channelCheckNoConnectivity": "Nessuna connessione disponibile.\nVerifica di non essere in modalità aereo e che Wi-Fi o dati mobili siano attivi.",
+  "channelCheckNoInternet": "Impossibile raggiungere internet.\nVerifica la connessione di rete e riprova.",
+  "channelCheckDnsError": "Impossibile risolvere gli indirizzi di rete.\nVerifica la connessione o prova con un'altra rete.",
+  "channelCheckChannelError": "Il canale presenta problemi di connessione.\nProbabilmente il server della rete televisiva è temporaneamente non raggiungibile. Riprova tra qualche minuto.",
   "refreshing": "Aggiornamento...",
   "lastUpdate": "Ultimo aggiornamento",
+  "updateAvailable": "Aggiornamento disponibile",
   "theme": "Tema",
   "systemTheme": "Tema di sistema",
   "lightTheme": "Tema chiaro",
@@ -408,5 +413,7 @@
   "premiumQuarterlyPlan": "Piano Trimestrale",
   "premiumSubscriptionInfo": "Informazioni abbonamento",
   "premiumPrivacyPolicy": "Informativa sulla privacy",
-  "premiumTermsOfUse": "Termini di utilizzo (EULA)"
+  "premiumTermsOfUse": "Termini di utilizzo (EULA)",
+  "premiumLoadingSubscriptions": "Caricamento opzioni abbonamento...",
+  "premiumLoadErrorRetry": "Impossibile caricare le opzioni. Riprova."
 }

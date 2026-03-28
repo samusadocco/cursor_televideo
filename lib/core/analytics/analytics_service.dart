@@ -15,7 +15,8 @@ class AnalyticsService {
 
   AnalyticsService._internal();
 
-  static Future<void> initialize() async {
+  /// [trackingAllowed] false quando l'utente ha selezionato "Ask App Not to Track" (ATT)
+  static Future<void> initialize({bool trackingAllowed = true}) async {
     if (_instance?._isInitialized ?? false) return;
 
     try {
@@ -34,15 +35,15 @@ class AnalyticsService {
         throw Exception('Firebase Analytics non è supportato su questa piattaforma');
       }
       
-      // Abilita la raccolta dati e il debug verbose
+      // Rispetta ATT: quando tracking negato, non raccogliere dati per advertising (Guideline 5.1.1(iv))
+      await analytics.setConsent(
+        adStorageConsentGranted: trackingAllowed,
+        analyticsStorageConsentGranted: trackingAllowed,
+      );
+      print('Firebase Analytics consent: trackingAllowed=$trackingAllowed');
+      
       await analytics.setAnalyticsCollectionEnabled(true);
       await FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(true);
-      
-      // Abilita il debug verbose per vedere tutti i dettagli degli eventi
-      if (true) { // TODO: cambia in base all'ambiente (dev/prod)
-        await analytics.setConsent(adStorageConsentGranted: true, analyticsStorageConsentGranted: true);
-        print('Firebase Analytics debug verbose enabled');
-      }
       print('Firebase Analytics collection enabled');
       
       // Imposta l'ID utente anonimo
@@ -174,7 +175,7 @@ class AnalyticsService {
   // Eventi di performance
   Future<void> logLoadTime(String pageNumber, {String? subPage, String? channelId, required int durationMillis, bool isError = false}) async {
     await _safeLogEvent('logLoadTime', () async {
-      // Ottieni il tipo di connessione
+      // Ottieni il tipo di connessione (connectivity_plus 6.x: checkConnectivity restituisce List)
       final connectivity = await Connectivity().checkConnectivity();
       final networkInfo = NetworkInfo();
       String connectionType;
@@ -190,47 +191,25 @@ class AnalyticsService {
         parameters['channel_id'] = channelId;
       }
       
-      switch (connectivity) {
-        case ConnectivityResult.wifi:
-          connectionType = 'wifi';
-          // Aggiungi informazioni WiFi
-          try {
-            parameters['wifi_name'] = await networkInfo.getWifiName() ?? 'unknown';
-          } catch (e) {
-            print('Error getting WiFi info: $e');
-          }
-          break;
-        case ConnectivityResult.mobile:
-          connectionType = 'mobile';
-          break;
-        case ConnectivityResult.ethernet:
-          connectionType = 'ethernet';
-          break;
-        case ConnectivityResult.vpn:
-          // Se è VPN, controlliamo la connessione sottostante
-          if (await Connectivity().checkConnectivity() == ConnectivityResult.wifi) {
-            connectionType = 'vpn_wifi';
-            // Aggiungi informazioni WiFi anche per VPN su WiFi
-            try {
-              parameters['wifi_name'] = await networkInfo.getWifiName() ?? 'unknown';
-            } catch (e) {
-              print('Error getting WiFi info: $e');
-            }
-          } else if (await Connectivity().checkConnectivity() == ConnectivityResult.mobile) {
-            connectionType = 'vpn_mobile';
-          } else {
-            connectionType = 'vpn_other';
-          }
-          break;
-        case ConnectivityResult.bluetooth:
-          connectionType = 'bluetooth';
-          break;
-        case ConnectivityResult.other:
-          connectionType = 'other';
-          break;
-        case ConnectivityResult.none:
-          connectionType = 'none';
-          break;
+      if (connectivity.contains(ConnectivityResult.none) && connectivity.length <= 1) {
+        connectionType = 'none';
+      } else if (connectivity.contains(ConnectivityResult.wifi)) {
+        connectionType = connectivity.contains(ConnectivityResult.vpn) ? 'vpn_wifi' : 'wifi';
+        try {
+          parameters['wifi_name'] = await networkInfo.getWifiName() ?? 'unknown';
+        } catch (e) {
+          print('Error getting WiFi info: $e');
+        }
+      } else if (connectivity.contains(ConnectivityResult.mobile)) {
+        connectionType = connectivity.contains(ConnectivityResult.vpn) ? 'vpn_mobile' : 'mobile';
+      } else if (connectivity.contains(ConnectivityResult.ethernet)) {
+        connectionType = 'ethernet';
+      } else if (connectivity.contains(ConnectivityResult.vpn)) {
+        connectionType = 'vpn_other';
+      } else if (connectivity.contains(ConnectivityResult.bluetooth)) {
+        connectionType = 'bluetooth';
+      } else {
+        connectionType = 'other';
       }
 
       parameters['connection_type'] = connectionType;

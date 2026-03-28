@@ -27,11 +27,22 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:cursor_televideo/core/config/ocr_config_service.dart';
 import 'package:cursor_televideo/core/iap/iap_service.dart';
 import 'package:cursor_televideo/core/ads/ad_service.dart';
+import 'package:cursor_televideo/core/messages/remote_messages_overlay.dart';
+import 'package:cursor_televideo/core/messages/remote_messages_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Richiedi autorizzazione al tracciamento su iOS prima di tutto
+  // Inizializza AppSettings prima di ATT (serve per salvare lo stato)
+  try {
+    await AppSettings.initialize();
+    print('AppSettings initialized successfully');
+  } catch (e) {
+    print('Error initializing AppSettings: $e');
+  }
+
+  // Richiedi autorizzazione al tracciamento su iOS
+  // TEMPORANEO: non si applicano restrizioni in caso di rifiuto (annunci, UMP, cookie)
   try {
     await TrackingService.requestTrackingAuthorization();
     print('TrackingService authorization requested successfully');
@@ -52,9 +63,11 @@ void main() async {
       throw Exception('Firebase non è stato inizializzato correttamente');
     }
     
-    // Inizializza Analytics
+    // Inizializza Analytics (TEMPORANEO: si registrano sempre, indipendentemente da ATT)
     print('Starting Analytics initialization...');
-    await AnalyticsService.initialize();
+    await AnalyticsService.initialize(
+      trackingAllowed: true, // !TrackingService.isTrackingDenied
+    );
     print('Analytics initialized successfully');
     
     // Log dell'apertura dell'app
@@ -65,11 +78,9 @@ void main() async {
     print('Stack trace: $stackTrace');
   }
   
-  // Inizializza le impostazioni e i servizi
+  // Inizializza gli altri servizi
   try {
     final prefs = await SharedPreferences.getInstance();
-    await AppSettings.initialize();
-    print('AppSettings initialized successfully');
     await OnboardingService().initialize();
     print('OnboardingService initialized successfully');
     await FavoritesService().initialize();
@@ -173,7 +184,6 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       _saveAppState();
     } else if (state == AppLifecycleState.resumed) {
       // App torna in foreground
-      print('[MyApp] App resumed to foreground');
     }
   }
   
@@ -288,7 +298,11 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
             ],
             home: InitializeScreen(
               targetWidget: OnboardingWrapper(
-                child: HomePage(),
+                child: RemoteMessagesOverlay(
+                  service: RemoteMessagesService(),
+                  messagesUrl: 'https://www.codebysam.it/teleretro/messages.json',
+                  child: HomePage(),
+                ),
               ),
             ),
             debugShowCheckedModeBanner: false,

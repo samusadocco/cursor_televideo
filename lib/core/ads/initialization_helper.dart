@@ -9,6 +9,7 @@ class InitializationHelper {
     // Inizializza prima AdService
     await AdService().initialize();
 
+    // TEMPORANEO: form UMP sempre mostrato, indipendentemente da ATT
     // Richiedi il consenso solo se necessario
     final params = ConsentRequestParameters(
       tagForUnderAgeOfConsent: false,

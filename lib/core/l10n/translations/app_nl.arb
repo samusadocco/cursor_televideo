@@ -157,6 +157,7 @@
   "connectionRequired": "Verbinding vereist",
   "refreshing": "Vernieuwen...",
   "lastUpdate": "Laatste update",
+  "updateAvailable": "Update beschikbaar",
   "theme": "Thema",
   "systemTheme": "Systeemthema",
   "lightTheme": "Licht thema",

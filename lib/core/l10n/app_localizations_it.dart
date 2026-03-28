@@ -224,10 +224,29 @@ class AppLocalizationsIt extends AppLocalizations {
   String get connectionRequired => 'Connessione richiesta';
 
   @override
+  String get channelCheckNoConnectivity =>
+      'Nessuna connessione disponibile.\nVerifica di non essere in modalità aereo e che Wi-Fi o dati mobili siano attivi.';
+
+  @override
+  String get channelCheckNoInternet =>
+      'Impossibile raggiungere internet.\nVerifica la connessione di rete e riprova.';
+
+  @override
+  String get channelCheckDnsError =>
+      'Impossibile risolvere gli indirizzi di rete.\nVerifica la connessione o prova con un\'altra rete.';
+
+  @override
+  String get channelCheckChannelError =>
+      'Il canale presenta problemi di connessione.\nProbabilmente il server della rete televisiva è temporaneamente non raggiungibile. Riprova tra qualche minuto.';
+
+  @override
   String get refreshing => 'Aggiornamento...';
 
   @override
   String get lastUpdate => 'Ultimo aggiornamento';
+
+  @override
+  String get updateAvailable => 'Aggiornamento disponibile';
 
   @override
   String get theme => 'Tema';
@@ -754,4 +773,12 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get premiumTermsOfUse => 'Termini di utilizzo (EULA)';
+
+  @override
+  String get premiumLoadingSubscriptions =>
+      'Caricamento opzioni abbonamento...';
+
+  @override
+  String get premiumLoadErrorRetry =>
+      'Impossibile caricare le opzioni. Riprova.';
 }

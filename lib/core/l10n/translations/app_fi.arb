@@ -157,6 +157,7 @@
   "connectionRequired": "Yhteys vaaditaan",
   "refreshing": "Päivitetään...",
   "lastUpdate": "Viimeisin päivitys",
+  "updateAvailable": "Päivitys saatavilla",
   "theme": "Teema",
   "systemTheme": "Järjestelmän teema",
   "lightTheme": "Vaalea teema",

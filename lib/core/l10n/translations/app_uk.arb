@@ -171,6 +171,7 @@
   "connectionRequired": "Потрібне з'єднання",
   "refreshing": "Оновлення...",
   "lastUpdate": "Останнє оновлення",
+  "updateAvailable": "Оновлення доступне",
   "theme": "Тема",
   "systemTheme": "Системна тема",
   "lightTheme": "Світла тема",

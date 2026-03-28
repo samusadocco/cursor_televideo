@@ -157,6 +157,7 @@
   "connectionRequired": "Potrebna je povezava",
   "refreshing": "Osveževanje...",
   "lastUpdate": "Zadnja posodobitev",
+  "updateAvailable": "Posodobitev na voljo",
   "theme": "Tema",
   "systemTheme": "Sistemska tema",
   "lightTheme": "Svetla tema",

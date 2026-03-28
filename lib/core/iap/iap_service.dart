@@ -16,6 +16,8 @@ class IAPService {
   static const String _quarterlyProductId = 'premium_subscription_quarterly2';
   
   static const String _isPremiumKey = 'is_premium_user';
+  /// Cheat: modalità "solo pubblicità" che bypassa IAP (per test pubblicità con abbonamento attivo)
+  static const String _adsOnlyKey = 'premium_ads_only_mode';
   
   // Lista di tutti i product IDs
   static const Set<String> _allProductIds = {
@@ -98,6 +100,11 @@ class IAPService {
     }
   }
   
+  /// Ricarica i prodotti dallo store (chiamabile dalla UI per retry)
+  Future<void> reloadProducts() async {
+    await _loadProducts();
+  }
+
   /// Carica i prodotti dallo store
   Future<void> _loadProducts() async {
     try {
@@ -246,9 +253,23 @@ class IAPService {
     print('[IAPService] Premium features unlocked');
   }
   
-  /// Verifica se l'utente è premium
+  /// Verifica se l'utente è premium.
+  /// Ritorna false se è attiva la modalità "solo pubblicità" (cheat per test).
   bool isPremium() {
+    if (_prefs.getBool(_adsOnlyKey) == true) return false;
     return _prefs.getBool(_isPremiumKey) ?? false;
+  }
+
+  /// Indica se la modalità "solo pubblicità" è attiva (bypass IAP per test).
+  bool isAdsOnlyMode() => _prefs.getBool(_adsOnlyKey) == true;
+
+  /// Abbonamento attivo da IAP (ignora la modalità ads-only). Usato per mostrare il cheat.
+  bool hasActiveSubscription() => _prefs.getBool(_isPremiumKey) ?? false;
+
+  /// Attiva/disattiva la modalità "solo pubblicità". Emette su premiumStatusStream.
+  Future<void> setAdsOnlyMode(bool enabled) async {
+    await _prefs.setBool(_adsOnlyKey, enabled);
+    _premiumStatusController.add(isPremium());
   }
   
   /// Ottiene il prodotto mensile

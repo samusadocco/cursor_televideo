@@ -157,6 +157,7 @@
   "connectionRequired": "Kapcsolat szükséges",
   "refreshing": "Frissítés...",
   "lastUpdate": "Utolsó frissítés",
+  "updateAvailable": "Frissítés elérhető",
   "theme": "Téma",
   "systemTheme": "Rendszer téma",
   "lightTheme": "Világos téma",

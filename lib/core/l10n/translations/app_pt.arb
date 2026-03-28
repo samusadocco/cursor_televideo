@@ -157,6 +157,7 @@
   "connectionRequired": "Conexão necessária",
   "refreshing": "Atualizando...",
   "lastUpdate": "Última atualização",
+  "updateAvailable": "Atualização disponível",
   "theme": "Tema",
   "systemTheme": "Tema do sistema",
   "lightTheme": "Tema claro",

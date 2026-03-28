@@ -25,6 +25,7 @@ import 'package:cursor_televideo/core/teletext/favorite_channels_service.dart';
 import 'package:cursor_televideo/core/teletext/channel_notifier.dart';
 import 'package:cursor_televideo/core/settings/first_launch_service.dart';
 import 'package:cursor_televideo/features/first_launch/initial_channel_selection_dialog.dart';
+import 'package:cursor_televideo/core/ads/ad_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // Funzione per determinare se il dispositivo è un tablet
@@ -628,8 +629,13 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildBottomAppBar() {
+    // Con abbonamento attivo: barra ~25% più alta (60 → 75)
+    final baseHeight = 60.0;
+    final isPremium = !AdService().shouldShowAds();
+    final height = isPremium ? baseHeight * 1.25 : baseHeight;
+
     return Container(
-      height: 60,
+      height: height,
       child: AppBar(
         leading: BlocBuilder<TelevideoBloc, TelevideoState>(
           builder: (context, state) {

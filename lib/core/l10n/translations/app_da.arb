@@ -157,6 +157,7 @@
   "connectionRequired": "Forbindelse påkrævet",
   "refreshing": "Opdaterer...",
   "lastUpdate": "Seneste opdatering",
+  "updateAvailable": "Opdatering tilgængelig",
   "theme": "Tema",
   "systemTheme": "Systemtema",
   "lightTheme": "Lyst tema",

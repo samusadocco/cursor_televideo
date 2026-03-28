@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -22,8 +24,68 @@ enum SubscriptionPlan { monthly, quarterly }
 
 class _PremiumPageState extends State<PremiumPage> {
   bool _isLoading = false;
+  bool _isLoadingProducts = false;
   String? _errorMessage;
   SubscriptionPlan _selectedPlan = SubscriptionPlan.quarterly; // Default: trimestrale (miglior valore)
+  Timer? _cheatTimer; // pressione 3 sec su ripristina → modalità solo pubblicità
+  
+  @override
+  void initState() {
+    super.initState();
+    // Se i prodotti non sono caricati, ritenta automaticamente (fix per revisione Apple)
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!widget.iapService.isPremium() &&
+          widget.iapService.getAllProducts().isEmpty &&
+          !_isLoadingProducts) {
+        _retryLoadProducts();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _cheatTimer?.cancel();
+    super.dispose();
+  }
+
+  void _startCheatTimer() {
+    _cheatTimer?.cancel();
+    _cheatTimer = Timer(const Duration(seconds: 3), () async {
+      await widget.iapService.setAdsOnlyMode(true);
+      if (mounted) {
+        setState(() {});
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Modalità solo pubblicità attivata'),
+            backgroundColor: Colors.orange,
+          ),
+        );
+      }
+    });
+  }
+
+  void _cancelCheatTimer() {
+    _cheatTimer?.cancel();
+    _cheatTimer = null;
+  }
+  
+  /// Ritenta il caricamento prodotti con delay (risolve timing durante revisione)
+  Future<void> _retryLoadProducts() async {
+    if (!mounted) return;
+    setState(() => _isLoadingProducts = true);
+    
+    for (int attempt = 0; attempt < 3 && mounted; attempt++) {
+      await widget.iapService.reloadProducts();
+      await Future.delayed(const Duration(milliseconds: 800));
+      if (mounted && widget.iapService.getAllProducts().isNotEmpty) {
+        break;
+      }
+    }
+    
+    if (mounted) {
+      setState(() => _isLoadingProducts = false);
+    }
+  }
   
   /// Calcola il prezzo mensile equivalente
   String _calculateMonthlyPrice(String price, int months) {
@@ -203,13 +265,18 @@ class _PremiumPageState extends State<PremiumPage> {
               ),
               const SizedBox(height: 16),
               
-              // Pulsante ripristina acquisti
-              OutlinedButton.icon(
-                onPressed: _isLoading ? null : _restorePurchases,
-                icon: const Icon(Icons.restore),
-                label: Text(l10n.restorePurchases),
-                style: OutlinedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 16),
+              // Pulsante ripristina acquisti (cheat: long press 3 sec → modalità solo pubblicità)
+              Listener(
+                onPointerDown: (_) => _startCheatTimer(),
+                onPointerUp: (_) => _cancelCheatTimer(),
+                onPointerCancel: (_) => _cancelCheatTimer(),
+                child: OutlinedButton.icon(
+                  onPressed: _isLoading ? null : _restorePurchases,
+                  icon: const Icon(Icons.restore),
+                  label: Text(l10n.restorePurchases),
+                  style: OutlinedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                  ),
                 ),
               ),
             ] else ...[
@@ -391,57 +458,54 @@ class _PremiumPageState extends State<PremiumPage> {
                   label: Text(l10n.restorePurchases),
                 ),
               ] else ...[
-                // Prodotto non disponibile
+                // Prodotti non caricati: mostra loading o messaggio con retry
                 Container(
-                  padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
-                    color: Colors.orange[50],
+                    color: _isLoadingProducts ? Colors.blue[50] : Colors.grey[100],
                     borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: Colors.orange, width: 1),
+                    border: Border.all(
+                      color: _isLoadingProducts ? Colors.blue[200]! : Colors.grey[300]!,
+                      width: 1,
+                    ),
                   ),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        children: [
-                          const Icon(Icons.warning_amber, color: Colors.orange),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: Text(
-                              l10n.premiumProductNotAvailable,
-                              style: const TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                        ],
-                      ),
-                      if (kDebugMode) ...[
-                        const SizedBox(height: 12),
-                        const Divider(),
-                        const SizedBox(height: 8),
-                        Text(
-                          'ℹ️ DEBUG INFO',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.grey[700],
-                            fontSize: 12,
-                          ),
+                      if (_isLoadingProducts) ...[
+                        const SizedBox(
+                          width: 40,
+                          height: 40,
+                          child: CircularProgressIndicator(strokeWidth: 2),
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: 16),
                         Text(
-                          'Store disponibile: ${widget.iapService.isInitialized ? "✅ SI" : "❌ NO"}\n'
-                          'Prodotti caricati: ${widget.iapService.getAllProducts().length}\n'
-                          'Mensile: ${monthlyProduct?.id ?? "Non trovato"}\n'
-                          'Trimestrale: ${quarterlyProduct?.id ?? "Non trovato"}\n\n'
-                          '💡 Possibili cause:\n'
-                          '• Prodotti non configurati su App/Play Store\n'
-                          '• Simulatore iOS (usa dispositivo reale)\n'
-                          '• Emulatore Android senza Play Store\n'
-                          '• Product IDs non corrispondenti',
+                          l10n.premiumLoadingSubscriptions,
                           style: TextStyle(
-                            fontSize: 11,
-                            color: Colors.grey[700],
-                            height: 1.4,
+                            color: Colors.blue[800],
+                            fontSize: 15,
                           ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ] else ...[
+                        Icon(
+                          Icons.cloud_off_outlined,
+                          size: 40,
+                          color: Colors.grey[600],
+                        ),
+                        const SizedBox(height: 12),
+                        Text(
+                          l10n.premiumLoadErrorRetry,
+                          style: TextStyle(
+                            color: Colors.grey[700],
+                            fontSize: 14,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: 16),
+                        OutlinedButton.icon(
+                          onPressed: _isLoadingProducts ? null : _retryLoadProducts,
+                          icon: const Icon(Icons.refresh, size: 18),
+                          label: Text(l10n.retry),
                         ),
                       ],
                     ],
@@ -758,11 +822,26 @@ class _PremiumPageState extends State<PremiumPage> {
   }
   
   Future<void> _restorePurchases() async {
+    // Se in modalità solo pubblicità, disattivala al click
+    if (widget.iapService.isAdsOnlyMode()) {
+      await widget.iapService.setAdsOnlyMode(false);
+      if (mounted) {
+        setState(() {});
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Modalità solo pubblicità disattivata'),
+            backgroundColor: Colors.green,
+          ),
+        );
+      }
+      return;
+    }
+
     setState(() {
       _isLoading = true;
       _errorMessage = null;
     });
-    
+
     try {
       await widget.iapService.restorePurchases();
       

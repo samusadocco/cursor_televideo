@@ -222,10 +222,29 @@ class AppLocalizationsFr extends AppLocalizations {
   String get connectionRequired => 'Connexion requise';
 
   @override
+  String get channelCheckNoConnectivity =>
+      'No connection available.\nMake sure you\'re not in airplane mode and that Wi-Fi or mobile data is on.';
+
+  @override
+  String get channelCheckNoInternet =>
+      'Unable to reach the internet.\nCheck your network connection and try again.';
+
+  @override
+  String get channelCheckDnsError =>
+      'Unable to resolve network addresses.\nCheck your connection or try a different network.';
+
+  @override
+  String get channelCheckChannelError =>
+      'The channel is having connection issues.\nThe broadcaster\'s server may be temporarily unreachable. Please try again in a few minutes.';
+
+  @override
   String get refreshing => 'Actualisation...';
 
   @override
   String get lastUpdate => 'Dernière mise à jour';
+
+  @override
+  String get updateAvailable => 'Mise à jour disponible';
 
   @override
   String get theme => 'Thème';
@@ -753,4 +772,11 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get premiumTermsOfUse => 'Conditions d\'utilisation (EULA)';
+
+  @override
+  String get premiumLoadingSubscriptions => 'Loading subscription options...';
+
+  @override
+  String get premiumLoadErrorRetry =>
+      'Unable to load subscription options. Please try again.';
 }

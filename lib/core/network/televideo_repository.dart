@@ -42,12 +42,16 @@ class TelevideoRepository {
     ));
   }
 
-  /// Verifica se la pagina 100 è disponibile
+  /// Verifica se la pagina 100 è disponibile (HTML + immagine, in parallelo)
   Future<bool> isPage100Available() async {
     try {
-      final url = 'https://www.servizitelevideo.rai.it/televideo/pub/tt4web/Nazionale/16_9_page-100.png';
-      final response = await _dio.head(url);
-      return response.statusCode == 200;
+      final htmlUrl = '$_htmlBaseUrl?p=100';
+      final imageUrl = 'https://www.servizitelevideo.rai.it/televideo/pub/tt4web/Nazionale/16_9_page-100.png';
+      final results = await Future.wait([
+        _dio.head(htmlUrl),
+        _dio.head(imageUrl),
+      ]);
+      return results[0].statusCode == 200 && results[1].statusCode == 200;
     } catch (e) {
       return false;
     }

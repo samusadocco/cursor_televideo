@@ -1,0 +1,33 @@
+{
+  "messages": [
+    {
+      "id": "welcome_2025",
+      "content": {
+        "it": "Benvenuto! Novità in arrivo per Teletext Europe.",
+        "en": "Welcome! New features coming to Teletext Europe.",
+        "de": "Willkommen! Neue Funktionen kommen zu Teletext Europe."
+      },
+      "fallbackContent": "Welcome! New features coming.",
+      "countries": ["IT", "DE", "AT", "CH"],
+      "channels": ["rai_nazionale", "ard_text"],
+      "maxVersion": "2.2.0",
+      "minVersion": "2.0.0",
+      "priority": 1,
+      "type": "snackbar"
+    },
+    {
+      "id": "update_reminder",
+      "content": {
+        "it": "È disponibile una nuova versione! Aggiorna per le ultime novità.",
+        "en": "A new version is available! Update for the latest features."
+      },
+      "fallbackContent": "A new version is available! Update for the latest features.",
+      "maxVersion": "2.2.0",
+      "priority": 2,
+      "type": "snackbar",
+      "isUpdateNotification": true,
+      "actionUrl": "https://apps.apple.com/app/teletext-europe/6748967698",
+      "actionLabel": "Update"
+    }
+  ]
+}

@@ -508,6 +508,30 @@ abstract class AppLocalizations {
   /// **'Connection required'**
   String get connectionRequired;
 
+  /// No description provided for @channelCheckNoConnectivity.
+  ///
+  /// In en, this message translates to:
+  /// **'No connection available.\nMake sure you\'re not in airplane mode and that Wi-Fi or mobile data is on.'**
+  String get channelCheckNoConnectivity;
+
+  /// No description provided for @channelCheckNoInternet.
+  ///
+  /// In en, this message translates to:
+  /// **'Unable to reach the internet.\nCheck your network connection and try again.'**
+  String get channelCheckNoInternet;
+
+  /// No description provided for @channelCheckDnsError.
+  ///
+  /// In en, this message translates to:
+  /// **'Unable to resolve network addresses.\nCheck your connection or try a different network.'**
+  String get channelCheckDnsError;
+
+  /// No description provided for @channelCheckChannelError.
+  ///
+  /// In en, this message translates to:
+  /// **'The channel is having connection issues.\nThe broadcaster\'s server may be temporarily unreachable. Please try again in a few minutes.'**
+  String get channelCheckChannelError;
+
   /// No description provided for @refreshing.
   ///
   /// In en, this message translates to:
@@ -519,6 +543,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Last update'**
   String get lastUpdate;
+
+  /// No description provided for @updateAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Update available'**
+  String get updateAvailable;
 
   /// No description provided for @theme.
   ///
@@ -1449,6 +1479,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Terms of Use (EULA)'**
   String get premiumTermsOfUse;
+
+  /// No description provided for @premiumLoadingSubscriptions.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading subscription options...'**
+  String get premiumLoadingSubscriptions;
+
+  /// No description provided for @premiumLoadErrorRetry.
+  ///
+  /// In en, this message translates to:
+  /// **'Unable to load subscription options. Please try again.'**
+  String get premiumLoadErrorRetry;
 }
 
 class _AppLocalizationsDelegate

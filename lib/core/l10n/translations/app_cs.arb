@@ -157,6 +157,7 @@
   "connectionRequired": "Vyžadováno připojení",
   "refreshing": "Obnovování...",
   "lastUpdate": "Poslední aktualizace",
+  "updateAvailable": "Dostupná aktualizace",
   "theme": "Téma",
   "systemTheme": "Systémové téma",
   "lightTheme": "Světlé téma",

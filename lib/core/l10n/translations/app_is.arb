@@ -157,6 +157,7 @@
   "connectionRequired": "Tenging nauðsynleg",
   "refreshing": "Endurnýjar...",
   "lastUpdate": "Síðasta uppfærsla",
+  "updateAvailable": "Uppfærsla tiltæk",
   "theme": "Þema",
   "systemTheme": "Kerfisþema",
   "lightTheme": "Ljóst þema",

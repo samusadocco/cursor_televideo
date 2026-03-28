@@ -1,71 +1,173 @@
 {
   "bs": [
+    "channelCheckNoConnectivity",
+    "channelCheckNoInternet",
+    "channelCheckDnsError",
+    "channelCheckChannelError",
     "pageUnavailableWithHint",
-    "pageLoadErrorWithHint"
+    "pageLoadErrorWithHint",
+    "premiumLoadingSubscriptions",
+    "premiumLoadErrorRetry"
   ],
 
   "cs": [
+    "channelCheckNoConnectivity",
+    "channelCheckNoInternet",
+    "channelCheckDnsError",
+    "channelCheckChannelError",
     "pageUnavailableWithHint",
-    "pageLoadErrorWithHint"
+    "pageLoadErrorWithHint",
+    "premiumLoadingSubscriptions",
+    "premiumLoadErrorRetry"
   ],
 
   "da": [
+    "channelCheckNoConnectivity",
+    "channelCheckNoInternet",
+    "channelCheckDnsError",
+    "channelCheckChannelError",
     "pageUnavailableWithHint",
-    "pageLoadErrorWithHint"
+    "pageLoadErrorWithHint",
+    "premiumLoadingSubscriptions",
+    "premiumLoadErrorRetry"
   ],
 
   "de": [
+    "channelCheckNoConnectivity",
+    "channelCheckNoInternet",
+    "channelCheckDnsError",
+    "channelCheckChannelError",
     "pageUnavailableWithHint",
-    "pageLoadErrorWithHint"
+    "pageLoadErrorWithHint",
+    "premiumLoadingSubscriptions",
+    "premiumLoadErrorRetry"
   ],
 
   "es": [
+    "channelCheckNoConnectivity",
+    "channelCheckNoInternet",
+    "channelCheckDnsError",
+    "channelCheckChannelError",
     "pageUnavailableWithHint",
-    "pageLoadErrorWithHint"
+    "pageLoadErrorWithHint",
+    "premiumLoadingSubscriptions",
+    "premiumLoadErrorRetry"
   ],
 
   "fi": [
+    "channelCheckNoConnectivity",
+    "channelCheckNoInternet",
+    "channelCheckDnsError",
+    "channelCheckChannelError",
     "pageUnavailableWithHint",
-    "pageLoadErrorWithHint"
+    "pageLoadErrorWithHint",
+    "premiumLoadingSubscriptions",
+    "premiumLoadErrorRetry"
   ],
 
   "fr": [
+    "channelCheckNoConnectivity",
+    "channelCheckNoInternet",
+    "channelCheckDnsError",
+    "channelCheckChannelError",
     "pageUnavailableWithHint",
-    "pageLoadErrorWithHint"
+    "pageLoadErrorWithHint",
+    "premiumLoadingSubscriptions",
+    "premiumLoadErrorRetry"
   ],
 
   "hr": [
+    "channelCheckNoConnectivity",
+    "channelCheckNoInternet",
+    "channelCheckDnsError",
+    "channelCheckChannelError",
     "pageUnavailableWithHint",
-    "pageLoadErrorWithHint"
+    "pageLoadErrorWithHint",
+    "premiumLoadingSubscriptions",
+    "premiumLoadErrorRetry"
   ],
 
   "hu": [
+    "channelCheckNoConnectivity",
+    "channelCheckNoInternet",
+    "channelCheckDnsError",
+    "channelCheckChannelError",
     "pageUnavailableWithHint",
-    "pageLoadErrorWithHint"
+    "pageLoadErrorWithHint",
+    "premiumLoadingSubscriptions",
+    "premiumLoadErrorRetry"
   ],
 
   "is": [
+    "channelCheckNoConnectivity",
+    "channelCheckNoInternet",
+    "channelCheckDnsError",
+    "channelCheckChannelError",
     "pageUnavailableWithHint",
-    "pageLoadErrorWithHint"
+    "pageLoadErrorWithHint",
+    "premiumLoadingSubscriptions",
+    "premiumLoadErrorRetry"
   ],
 
   "nl": [
+    "channelCheckNoConnectivity",
+    "channelCheckNoInternet",
+    "channelCheckDnsError",
+    "channelCheckChannelError",
     "pageUnavailableWithHint",
-    "pageLoadErrorWithHint"
+    "pageLoadErrorWithHint",
+    "premiumLoadingSubscriptions",
+    "premiumLoadErrorRetry"
+  ],
+
+  "pl": [
+    "channelCheckNoConnectivity",
+    "channelCheckNoInternet",
+    "channelCheckDnsError",
+    "channelCheckChannelError",
+    "premiumLoadingSubscriptions",
+    "premiumLoadErrorRetry"
   ],
 
   "pt": [
+    "channelCheckNoConnectivity",
+    "channelCheckNoInternet",
+    "channelCheckDnsError",
+    "channelCheckChannelError",
     "pageUnavailableWithHint",
-    "pageLoadErrorWithHint"
+    "pageLoadErrorWithHint",
+    "premiumLoadingSubscriptions",
+    "premiumLoadErrorRetry"
   ],
 
   "sl": [
+    "channelCheckNoConnectivity",
+    "channelCheckNoInternet",
+    "channelCheckDnsError",
+    "channelCheckChannelError",
     "pageUnavailableWithHint",
-    "pageLoadErrorWithHint"
+    "pageLoadErrorWithHint",
+    "premiumLoadingSubscriptions",
+    "premiumLoadErrorRetry"
   ],
 
   "sv": [
+    "channelCheckNoConnectivity",
+    "channelCheckNoInternet",
+    "channelCheckDnsError",
+    "channelCheckChannelError",
     "pageUnavailableWithHint",
-    "pageLoadErrorWithHint"
+    "pageLoadErrorWithHint",
+    "premiumLoadingSubscriptions",
+    "premiumLoadErrorRetry"
+  ],
+
+  "uk": [
+    "channelCheckNoConnectivity",
+    "channelCheckNoInternet",
+    "channelCheckDnsError",
+    "channelCheckChannelError",
+    "premiumLoadingSubscriptions",
+    "premiumLoadErrorRetry"
   ]
 }

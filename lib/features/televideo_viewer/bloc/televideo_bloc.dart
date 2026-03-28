@@ -14,14 +14,17 @@ import 'package:cursor_televideo/core/teletext/teletext_channels.dart';
 import 'package:cursor_televideo/core/teletext/providers/provider_factory.dart';
 import 'package:cursor_televideo/core/teletext/favorite_channels_service.dart';
 import 'package:cursor_televideo/core/teletext/channel_notifier.dart';
+import 'package:cursor_televideo/core/network/channel_check_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
   final TelevideoRepository _repository;
   final AdService _adService = AdService();
+  final ChannelCheckService _channelCheckService = ChannelCheckService();
   RegionBloc? _regionBloc;
   late final int _minPage; // Minima pagina disponibile (100 o 101)
   bool _isPage100Available = true; // Inizialmente assumiamo che sia disponibile
+  bool _hasCompletedFirstLoad = false;
   Region? _currentRegion;
   int _currentPage = 100;
   TelevideoEvent? _lastEvent;
@@ -52,6 +55,22 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
   /// Imposta il RegionBloc da utilizzare per la sincronizzazione dello stato
   void setRegionBloc(RegionBloc regionBloc) {
     _regionBloc = regionBloc;
+  }
+
+  /// Chiave messaggio per ErrorPageView (usa prefisso channelCheck: per risolvere con l10n)
+  String _getChannelCheckErrorKey(ChannelCheckResult result) {
+    switch (result) {
+      case ChannelCheckResult.noConnectivity:
+        return 'channelCheck:noConnectivity';
+      case ChannelCheckResult.noInternet:
+        return 'channelCheck:noInternet';
+      case ChannelCheckResult.dnsError:
+        return 'channelCheck:dnsError';
+      case ChannelCheckResult.channelError:
+        return 'channelCheck:channelError';
+      case ChannelCheckResult.ok:
+        return '';
+    }
   }
 
   /// Salva l'ultima pagina caricata con successo
@@ -360,6 +379,20 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
     } catch (e) {
       print('[TelevideoBloc] Error loading channel from preferences: $e');
     }
+    
+    // Check canale all'avvio (prima del primo caricamento, timeout 5s)
+    if (!_hasCompletedFirstLoad) {
+      final checkResult = await _channelCheckService.checkChannel(currentChannel);
+      if (checkResult != ChannelCheckResult.ok) {
+        final messageKey = _getChannelCheckErrorKey(checkResult);
+        if (!emit.isDone) {
+          emit(TelevideoState.error(messageKey, selectedChannel: currentChannel));
+        }
+        return;
+      }
+      _hasCompletedFirstLoad = true;
+    }
+    
     _currentPage = pageNumber;
     print('[TelevideoBloc] 🔄 Emitting loading state for page $pageNumber');
     emit(TelevideoState.loading(pageNumber: pageNumber, selectedChannel: currentChannel));
@@ -460,6 +493,20 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
     } catch (e) {
       print('[TelevideoBloc] Error loading channel from preferences: $e');
     }
+    
+    // Check canale all'avvio (prima del primo caricamento, timeout 5s)
+    if (!_hasCompletedFirstLoad) {
+      final checkResult = await _channelCheckService.checkChannel(currentChannel);
+      if (checkResult != ChannelCheckResult.ok) {
+        final messageKey = _getChannelCheckErrorKey(checkResult);
+        if (!emit.isDone) {
+          emit(TelevideoState.error(messageKey, selectedChannel: currentChannel));
+        }
+        return;
+      }
+      _hasCompletedFirstLoad = true;
+    }
+    
     final startTime = DateTime.now();
     bool isError = false;
     
@@ -921,6 +968,19 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
 
     // Emetti stato di caricamento con il nuovo canale
     emit(TelevideoState.loading(pageNumber: 100, selectedChannel: channel));
+
+    // Check canale all'avvio (prima del primo caricamento, timeout 5s)
+    if (!_hasCompletedFirstLoad) {
+      final checkResult = await _channelCheckService.checkChannel(channel);
+      if (checkResult != ChannelCheckResult.ok) {
+        final messageKey = _getChannelCheckErrorKey(checkResult);
+        if (!emit.isDone) {
+          emit(TelevideoState.error(messageKey, selectedChannel: channel));
+        }
+        return;
+      }
+      _hasCompletedFirstLoad = true;
+    }
 
     // Verifica se il provider è disponibile
     if (!TeletextProviderFactory.isProviderAvailable(channel)) {
