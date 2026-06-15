@@ -1,6 +1,12 @@
 {
   "versions": [
     {
+      "version": "2.1.2",
+      "changes": [
+        "7 nieuwe zenders uit Polen (TVP1, TVP2, TVP3, TVP Kultura, TVP Sport, TVP Polonia, TVP Historia)"
+      ]
+    },
+    {
       "version": "2.1.0",
       "changes": [
         "Bug in ARD Text weergave opgelost (Duitsland)",

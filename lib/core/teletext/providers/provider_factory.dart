@@ -17,6 +17,7 @@ import 'package:cursor_televideo/core/teletext/providers/spanish_provider.dart';
 import 'package:cursor_televideo/core/teletext/providers/nos_provider.dart';
 import 'package:cursor_televideo/core/teletext/providers/omroepzeeland_provider.dart';
 import 'package:cursor_televideo/core/teletext/providers/polsat_provider.dart';
+import 'package:cursor_televideo/core/teletext/providers/telegazeta_provider.dart';
 import 'package:cursor_televideo/core/teletext/providers/svt_provider.dart';
 import 'package:cursor_televideo/core/teletext/providers/hrt_provider.dart';
 import 'package:cursor_televideo/core/teletext/providers/yle_provider.dart';
@@ -128,6 +129,9 @@ class TeletextProviderFactory {
     } else if (channel.id == 'omroepzeeland_teletekst') {
       // Omroep Zeeland Teletekst (Olanda)
       provider = OmroepZeelandProvider();
+    } else if (channel.id.startsWith('tvp') && channel.id.endsWith('_telegazeta')) {
+      // TVP Telegazeta (Polonia) - TVP1, TVP2, TVP3, Kultura, Historia, Sport, Polonia
+      provider = TelegazetaProvider(channelId: channel.id);
     } else if (channel.id == 'polsat_telegazeta') {
       // Polsat Telegazeta (Polonia)
       provider = PolsatProvider();

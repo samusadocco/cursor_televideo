@@ -4,8 +4,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:cursor_televideo/core/iap/iap_service.dart';
+import 'package:cursor_televideo/core/iap/iap_product.dart';
 import 'package:cursor_televideo/core/l10n/app_localizations.dart';
-import 'package:in_app_purchase/in_app_purchase.dart';
 
 /// Pagina per gestire l'acquisto Premium
 class PremiumPage extends StatefulWidget {
@@ -105,7 +105,7 @@ class _PremiumPageState extends State<PremiumPage> {
   }
   
   /// Calcola il risparmio percentuale del trimestrale rispetto al mensile
-  String? _calculateSavings(ProductDetails? monthly, ProductDetails? quarterly) {
+  String? _calculateSavings(IAPProduct? monthly, IAPProduct? quarterly) {
     if (monthly == null || quarterly == null) return null;
     
     try {
@@ -645,7 +645,7 @@ class _PremiumPageState extends State<PremiumPage> {
   Widget _buildPlanCard(
     BuildContext context, {
     required SubscriptionPlan plan,
-    required ProductDetails product,
+    required IAPProduct product,
     required String title,
     required String subtitle,
     String? badge,

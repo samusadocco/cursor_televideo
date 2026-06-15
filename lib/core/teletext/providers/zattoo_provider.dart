@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:html/parser.dart' as html_parser;
 import 'teletext_provider.dart';
@@ -240,30 +239,10 @@ class ZattooProvider implements TeletextProvider {
       final dataUri = imgElement.attributes['src']!;
       print('[Zattoo/$_channelId] Data URI extracted from HTML: ${dataUri.substring(0, 50)}...');
 
-      // Estrai i bytes dal data URI per l'OCR
-      // Formato: data:image/png;base64,<base64_string>
-      final base64String = dataUri.split(',')[1];
-      final imageBytes = base64Decode(base64String);
-      print('[Zattoo/$_channelId] Image decoded: ${imageBytes.length} bytes');
-
-      // OCR per trovare link cliccabili (solo per subPage == 1)
-      List<ClickableArea> clickableAreas = [];
-      
       final ocrAvailable = await _ocrService.isAvailable;
-      if (ocrAvailable && subPage == 1) {
-        // Esegui OCR solo sulla prima sottopagina per trovare i link
-        print('[Zattoo/$_channelId] Starting Google Vision OCR...');
-        try {
-          final result = await _ocrService.analyzeImage(
-            imageBytes,
-            pageNumber,
-          );
-          clickableAreas = result['clickableAreas'] as List<ClickableArea>;
-          print('[Zattoo/$_channelId] OCR completed: ${clickableAreas.length} links found');
-        } catch (e) {
-          print('[Zattoo/$_channelId] OCR failed: $e');
-          // Continua senza OCR
-        }
+      final lazyOcrPending = ocrAvailable && subPage == 1;
+      if (lazyOcrPending) {
+        print('[Zattoo/$_channelId] OCR deferred to background (lazy ML Kit)');
       }
 
       // Rileva sottopagine provando sequenzialmente
@@ -287,13 +266,16 @@ class ZattooProvider implements TeletextProvider {
         maxSubPages: maxSubPages,
         isHtmlContent: false, // È un'immagine
         providerId: providerId,
-        clickableAreas: clickableAreas,
+        clickableAreas: const [],
         metadata: {
           'source': 'zattoo',
           'format': 'image',
           'originalUrl': targetUrl,
           'ocrEnabled': ocrAvailable && subPage == 1,
-          'ocrLinksCount': clickableAreas.length,
+          'lazyOcrPending': lazyOcrPending,
+          if (lazyOcrPending) 'lazyOcrEngine': 'zattoo',
+          'ocrLinksCount': 0,
+          'linksCount': 0,
           'subpagesDetected': maxSubPages,
         },
       );

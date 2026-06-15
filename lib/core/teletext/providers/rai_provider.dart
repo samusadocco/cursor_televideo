@@ -33,7 +33,7 @@ class RAIProvider implements TeletextProvider {
         'Veneto',
         'Friuli',
         'Liguria',
-        'EmiliaRomagna',
+        'Emilia',
         'Toscana',
         'Umbria',
         'Marche',

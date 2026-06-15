@@ -3,23 +3,20 @@ import 'dart:async';
 import 'package:cursor_televideo/core/teletext/providers/teletext_provider.dart';
 import 'package:cursor_televideo/shared/models/televideo_page.dart';
 import 'package:cursor_televideo/core/cache/subpage_cache_service.dart';
-import 'package:cursor_televideo/core/ocr/mlkit_polsat_ocr_service.dart';
 
 /// Provider per Polsat Telegazeta (Polonia) - VERSIONE ML KIT
 /// Canale basato su immagini con ML Kit OCR per estrarre link cliccabili
 /// ⚠️ SOLO PER DEVICE FISICI (non funziona su simulatore iOS)
 class PolsatProvider implements TeletextProvider {
   final Dio _dio;
-  final MLKitPolsatOcrService _ocrService;
   static const String _baseUrl = 'https://niutech.github.io/telegazeta-browser/popup.html';
   
   // Cache per clickableAreas (chiave: "pageNumber-subPage")
   final Map<String, List<ClickableArea>> _clickableAreasCache = {};
 
   PolsatProvider({Dio? dio})
-      : _dio = dio ?? Dio(),
-        _ocrService = MLKitPolsatOcrService(dio: dio) {
-    print('[Polsat] 🚀 Using ML Kit OCR (fast, device only)');
+      : _dio = dio ?? Dio() {
+    print('[Polsat] 🚀 Using ML Kit OCR (lazy background enrichment)');
   }
 
   @override
@@ -123,28 +120,18 @@ class PolsatProvider implements TeletextProvider {
         ) ?? 1;
       }
 
-      // 3. Estrai clickable areas
+      // 3. Estrai clickable areas (OCR lazy in background)
       final cacheKey = '$pageNumber-$subPage';
       List<ClickableArea> clickableAreas;
-      
+      var lazyOcrPending = true;
+
       if (_clickableAreasCache.containsKey(cacheKey)) {
         clickableAreas = _clickableAreasCache[cacheKey]!;
+        lazyOcrPending = false;
         print('[Polsat] ✅ Using cached clickable areas: ${clickableAreas.length} areas');
       } else {
-        // Estrai link via ML Kit OCR
-        final ocrStart = DateTime.now();
-        print('[Polsat] 🔍 Extracting clickable areas via ML Kit OCR...');
-        
-        clickableAreas = await _ocrService.extractClickableAreas(
-          imageUrl: imageUrl,
-          pageNumber: pageNumber,
-        );
-        
-        // Salva in cache
-        _clickableAreasCache[cacheKey] = clickableAreas;
-        
-        final ocrDuration = DateTime.now().difference(ocrStart).inMilliseconds;
-        print('[Polsat] ⏱️ ML Kit OCR completed in ${ocrDuration}ms, found ${clickableAreas.length} areas (cached)');
+        clickableAreas = [];
+        print('[Polsat] ⚡ Returning page without OCR (lazy enrichment in background)');
       }
 
       final totalDuration = DateTime.now().difference(requestStart).inMilliseconds;
@@ -165,6 +152,8 @@ class PolsatProvider implements TeletextProvider {
           'originalUrl': '$_baseUrl#0-$pageNumber-$subPage',
           'imageUrl': imageUrl,
           'linksCount': clickableAreas.length,
+          'lazyOcrPending': lazyOcrPending,
+          'lazyOcrEngine': 'polsat',
           'ocrMethod': 'mlkit',
         },
       );

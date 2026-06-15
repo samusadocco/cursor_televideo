@@ -101,6 +101,20 @@ class NOSProvider implements TeletextProvider {
     }
   }
 
+  /// Trova il blocco contenuto teletext (NOS cambia spesso le classi styled-components).
+  dom.Element? _findTeletextContent(dom.Document document) {
+    return document.querySelector('pre[data-testid="teletekstPre"]')
+        ?? document.querySelector('[class*="TeletekstContent-style__TeletekstBlock"]')
+        ?? document.querySelector('[class*="Teletekst-style__TeletekstWrapper"]')
+        // Legacy (vecchio sito NOS)
+        ?? document.querySelector('div.sc-5fbcdf78-1.bsxcGC');
+  }
+
+  /// True se la pagina HTML contiene contenuto teletext valido.
+  bool _hasTeletextContent(dom.Document document) {
+    return _findTeletextContent(document) != null;
+  }
+
   /// Parse la pagina HTML per estrarre il contenuto teletext
   Future<TelevideoPage> _parseHtmlPage(String htmlContent, int pageNumber, int subPage, String pageUrl) async {
     print('[NOSProvider] Parsing HTML...');
@@ -112,15 +126,16 @@ class NOSProvider implements TeletextProvider {
     final baseUrl = 'https://nos.nl';
     _convertRelativeUrlsToAbsolute(document, baseUrl);
 
-    // Estrai solo il contenuto teletext dal div specifico
-    final contentDiv = document.querySelector('div.sc-5fbcdf78-1.bsxcGC');
+    // Estrai il contenuto teletext (pre con data-testid o wrapper)
+    final contentDiv = _findTeletextContent(document);
     
     if (contentDiv == null) {
-      print('[NOSProvider] ⚠️ Teletext content div not found');
-      throw Exception('Teletext content div not found');
+      print('[NOSProvider] ⚠️ Teletext content not found');
+      print('[NOSProvider] Tried: pre[data-testid=teletekstPre], TeletekstContent, TeletekstWrapper');
+      throw Exception('Teletext content not found');
     }
 
-    print('[NOSProvider] ✅ Found teletext content div');
+    print('[NOSProvider] ✅ Found teletext content (${contentDiv.localName}.${contentDiv.className})');
 
     // Determina il numero totale di sottopagine usando la cache con verifica di consistenza
     int totalSubPages;
@@ -173,8 +188,10 @@ class NOSProvider implements TeletextProvider {
       print('[NOSProvider] 💾 Cached for future visits');
     }
 
-    // Estrai link di navigazione
+    // Estrai link di navigazione (pulsantiera Vorige/Volgende Pagina)
     final navigationLinks = _extractNavigationLinks(document, pageNumber);
+    navigationLinks['navigationResolved'] = navigationLinks.containsKey('prev') ||
+        navigationLinks.containsKey('next');
 
     // Estrai i link cliccabili dalla pagina
     final clickableAreas = _extractClickableLinks(contentDiv);
@@ -397,71 +414,92 @@ ${contentDiv.outerHtml}
     return clickableAreas;
   }
   
+  /// Pulsantiera pagina/sottopagina (fuori dal blocco teletext).
+  dom.Element? _findNumpadList(dom.Document document) {
+    return document.querySelector('ul[data-tracking*="elementType=page"]')
+        ?? document.querySelector('[class*="NumpadList"]');
+  }
+
+  String _linkLabel(dom.Element link) {
+    final hidden = link.querySelector('[class*="VisuallyHidden"]');
+    if (hidden != null && hidden.text.trim().isNotEmpty) {
+      return hidden.text.trim().toLowerCase();
+    }
+    return link.text.trim().toLowerCase();
+  }
+
   /// Trova il link alla sottopagina successiva nell'HTML
   int? _findNextSubPageLink(dom.Document document, int pageNumber, int currentSubPage) {
-    final allLinks = document.querySelectorAll('a, button');
-    
-    // Pattern: /teletekst/100/2, /teletekst/100/3, etc.
-    // IMPORTANTE: usa interpolazione corretta per includere il pageNumber
-    final pattern = RegExp('/teletekst/$pageNumber/(\\d+)');
-    
-    for (final link in allLinks) {
+    final pattern = RegExp('/teletekst/$pageNumber/(\\d+)\$');
+    final numpad = _findNumpadList(document);
+    if (numpad == null) {
+      print('[NOSProvider] Numpad not found for subpage navigation');
+      return null;
+    }
+
+    for (final link in numpad.querySelectorAll('a[href]')) {
+      final label = _linkLabel(link);
+      if (!label.contains('volgende subpagina') &&
+          !label.contains('next subpage')) {
+        continue;
+      }
+
       final href = link.attributes['href'] ?? '';
-      final ariaLabel = link.attributes['aria-label']?.toLowerCase() ?? '';
-      final text = link.text.toLowerCase();
-      
-      // Cerca link che indicano "prossima sottopagina"
-      if (text.contains('volgende subpagina') || 
-          ariaLabel.contains('volgende subpagina') ||
-          text.contains('next subpage') ||
-          ariaLabel.contains('next subpage')) {
-        
-        print('[NOSProvider] Checking link: href="$href", text="$text"');
-        
-        final match = pattern.firstMatch(href);
-        if (match != null) {
-          final subPageNum = int.tryParse(match.group(1)!);
-          if (subPageNum != null && subPageNum > currentSubPage) {
-            print('[NOSProvider] ✅ Found next subpage link: $subPageNum (current: $currentSubPage)');
-            return subPageNum;
-          }
+      final match = pattern.firstMatch(href);
+      if (match != null) {
+        final subPageNum = int.tryParse(match.group(1)!);
+        if (subPageNum != null && subPageNum > currentSubPage) {
+          print('[NOSProvider] ✅ Found next subpage via numpad: $subPageNum');
+          return subPageNum;
         }
       }
     }
-    
+
+    for (final link in numpad.querySelectorAll('a[href]')) {
+      final href = link.attributes['href'] ?? '';
+      final match = pattern.firstMatch(href);
+      if (match == null) continue;
+
+      final subPageNum = int.tryParse(match.group(1)!);
+      if (subPageNum != null && subPageNum > currentSubPage) {
+        print('[NOSProvider] ✅ Found next subpage via numpad href: $subPageNum');
+        return subPageNum;
+      }
+    }
+
     print('[NOSProvider] No next subpage link found');
     return null;
   }
 
-  /// Estrae i link di navigazione dalla pagina
+  /// Estrae prev/next pagina dalla pulsantiera (Vorige/Volgende Pagina).
   Map<String, dynamic> _extractNavigationLinks(dom.Document document, int currentPage) {
     final result = <String, dynamic>{};
+    final pagePattern = RegExp(r'/teletekst/(\d+)$');
+    final numpad = _findNumpadList(document);
 
-    // Cerca link "Vorige pagina" (previous) e "Volgende pagina" (next)
-    final links = document.querySelectorAll('button, a');
+    if (numpad == null) {
+      print('[NOSProvider] Numpad not found, skipping page navigation');
+      return result;
+    }
 
-    for (final link in links) {
+    for (final link in numpad.querySelectorAll('a[href]')) {
       final href = link.attributes['href'] ?? '';
-      final text = link.text.trim().toLowerCase();
-      final ariaLabel = link.attributes['aria-label']?.toLowerCase() ?? '';
+      if (RegExp(r'/teletekst/\d+/\d+').hasMatch(href)) continue;
 
-      // Estrai numero pagina dall'href (/teletekst/101)
-      final pageMatch = RegExp(r'/teletekst/(\d+)').firstMatch(href);
-      
-      if (pageMatch != null) {
-        final targetPage = int.tryParse(pageMatch.group(1)!);
+      final pageMatch = pagePattern.firstMatch(href);
+      if (pageMatch == null) continue;
 
-        if (targetPage != null && targetPage != currentPage) {
-          if (text.contains('vorige') || ariaLabel.contains('vorige') || 
-              text.contains('previous') || ariaLabel.contains('previous')) {
-            result['prev'] = targetPage;
-            result['previousPage'] = targetPage;
-          } else if (text.contains('volgende') || ariaLabel.contains('volgende') ||
-                     text.contains('next') || ariaLabel.contains('next')) {
-            result['next'] = targetPage;
-            result['nextPage'] = targetPage;
-          }
-        }
+      final targetPage = int.tryParse(pageMatch.group(1)!);
+      if (targetPage == null) continue;
+
+      final label = _linkLabel(link);
+
+      if (label.contains('vorige pagina') || label.contains('previous page')) {
+        result['prev'] = targetPage;
+        result['previousPage'] = targetPage;
+      } else if (label.contains('volgende pagina') || label.contains('next page')) {
+        result['next'] = targetPage;
+        result['nextPage'] = targetPage;
       }
     }
 
@@ -498,12 +536,9 @@ ${contentDiv.outerHtml}
         );
         
         if (response.statusCode == 200) {
-          // Verifica che la pagina contenga effettivamente contenuto teletext
           final htmlContent = response.data as String;
           final document = html_parser.parse(htmlContent);
-          final contentDiv = document.querySelector('div.sc-5fbcdf78-1.bsxcGC');
-          
-          if (contentDiv != null) {
+          if (_hasTeletextContent(document)) {
             print('[NOSProvider] ✅ Found subpage $i');
             // Continua a cercare
             continue;

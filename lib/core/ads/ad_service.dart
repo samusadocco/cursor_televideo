@@ -222,6 +222,12 @@ class AdService {
       else if (_channelId == 'dr1' || _channelId == 'dr2') {
         contentUrl = 'https://www.dr.dk/tekst-tv';
       }
+      // Polonia - TVP Telegazeta
+      else if (_channelId != null &&
+          _channelId!.startsWith('tvp') &&
+          _channelId!.endsWith('_telegazeta')) {
+        contentUrl = 'https://telegazeta.pl';
+      }
       // Polonia - Polsat
       else if (_channelId == 'polsat_telegazeta') {
         contentUrl = 'https://www.polsatnews.pl/telegazeta';

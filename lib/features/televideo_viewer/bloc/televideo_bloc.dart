@@ -25,6 +25,7 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
   late final int _minPage; // Minima pagina disponibile (100 o 101)
   bool _isPage100Available = true; // Inizialmente assumiamo che sia disponibile
   bool _hasCompletedFirstLoad = false;
+  bool _startupPageRestored = false;
   Region? _currentRegion;
   int _currentPage = 100;
   TelevideoEvent? _lastEvent;
@@ -197,7 +198,16 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
   }
 
   Future<void> _initializeBloc() async {
-    await _checkPage100Availability();
+    if (_shouldCheckRaiPage100()) {
+      await _checkPage100Availability();
+    } else {
+      _isPage100Available = true;
+      _minPage = 100;
+      _currentPage = AppSettings.lastPageNumber ?? 100;
+      print('[TelevideoBloc] Skip check RAI pag. 100: canale salvato non RAI (${AppSettings.lastChannelId})');
+    }
+
+    await _restoreStartupChannel();
     
     // Gestisci l'avvio in base alla preferenza dell'utente
     switch (AppSettings.startupPageOption) {
@@ -336,6 +346,28 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
     }
   }
 
+  /// True se all'avvio serve verificare la disponibilità della pagina 100 RAI.
+  bool _shouldCheckRaiPage100() {
+    final channelId = AppSettings.lastChannelId;
+    if (channelId != null &&
+        channelId != 'rai_nazionale' &&
+        !channelId.startsWith('rai_')) {
+      return false;
+    }
+    return true;
+  }
+
+  /// Ripristina il canale salvato nelle preferenze senza caricare una pagina.
+  Future<void> _restoreStartupChannel() async {
+    final channelId = AppSettings.lastChannelId;
+    if (channelId == null) return;
+
+    final channel = TeletextChannels.getChannelById(channelId);
+    if (channel != null) {
+      await _setChannelWithoutLoading(channel);
+    }
+  }
+
   Future<void> _checkPage100Availability() async {
     try {
       _isPage100Available = await _repository.isPage100Available();
@@ -352,6 +384,18 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
   Future<void> _onStartLoading(Emitter<TelevideoState> emit) async {
     final currentChannel = state.selectedChannel;
     emit(TelevideoState.loading(pageNumber: _currentPage, selectedChannel: currentChannel));
+  }
+
+  /// True se la sottopagina salvata va ripristinata per il canale corrente.
+  bool _shouldRestoreSavedSubPage(TeletextChannel? channel, int pageNumber) {
+    if (_startupPageRestored) return false;
+    if (AppSettings.lastPageNumber != pageNumber) return false;
+    if (AppSettings.lastSubPage == null || AppSettings.lastSubPage! <= 0) return false;
+
+    final savedChannelId = AppSettings.lastChannelId;
+    if (savedChannelId == null || channel == null) return false;
+
+    return channel.id == savedChannelId;
   }
 
   Future<void> _onLoadNationalPage(int pageNumber, Emitter<TelevideoState> emit) async {
@@ -411,6 +455,10 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
       // Workaround: pagina 100 sottopagina 1 ha link non cliccabili per canali RAI
       // Quindi carichiamo direttamente la sottopagina 2
       int targetSubPage = 1;
+      if (_shouldRestoreSavedSubPage(currentChannel, pageNumber)) {
+        targetSubPage = AppSettings.lastSubPage!;
+        print('[TelevideoBloc] Ripristino sottopagina salvata: $targetSubPage (canale: ${currentChannel?.id})');
+      }
       if (pageNumber == 100 && (currentChannel == null || currentChannel.id == 'rai_nazionale' || currentChannel.id.startsWith('rai_'))) {
         targetSubPage = 2;
         print('[TelevideoBloc] Page 100 detected for RAI channel, loading subpage 2 instead of 1 (workaround for non-clickable links)');
@@ -424,9 +472,9 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
       } else {
         // Per altri canali, usa il provider specifico
         final provider = TeletextProviderFactory.getProvider(currentChannel);
-        print('[TelevideoBloc] Using provider: ${provider.providerId} for page $pageNumber');
+        print('[TelevideoBloc] Using provider: ${provider.providerId} for page $pageNumber subpage $targetSubPage');
         print('[TelevideoBloc] Current channel info - ID: ${currentChannel.id}, Country: ${currentChannel.countryCode}, Name: ${currentChannel.name}');
-        page = await provider.fetchNationalPage(pageNumber);
+        page = await provider.fetchNationalPage(pageNumber, subPage: targetSubPage);
         
         // Aggiorna il contesto AdMob
         print('[TelevideoBloc] Updating AdMob context with channel: ${currentChannel.id}');
@@ -443,6 +491,7 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
       if (!emit.isDone) {
         // Aggiorna ultima pagina caricata con successo
         _updateLastSuccessfulPage(pageNumber, targetSubPage);
+        _startupPageRestored = true;
         
         emit(TelevideoState.loaded(page, currentSubPage: targetSubPage, isAutoRefreshPaused: false, selectedChannel: currentChannel));
         // Salva lo stato
@@ -565,9 +614,11 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
     if (currentPage < 899) {
       // Per ZDF e Swiss, controlla se abbiamo il link di navigazione nei metadata
       int? suggestedNextPage;
+      var navigationResolved = false;
       state.maybeWhen(
         loaded: (page, _, __, ___) {
           if (page.metadata != null) {
+            navigationResolved = page.metadata!['navigationResolved'] == true;
             // ZDF usa 'next', Swiss usa 'nextPage', SVT usa 'nextPage' (String)
             final nextPageValue = page.metadata!['next'] ?? page.metadata!['nextPage'];
             int? nextPage;
@@ -591,10 +642,11 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
         orElse: () {},
       );
       
+      final currentChannel = state.selectedChannel;
+
       // Se abbiamo un suggerimento dai metadata, prova prima quello
       if (suggestedNextPage != null) {
         print('[TelevideoBloc] Attempting to load suggested page: $suggestedNextPage');
-        final currentChannel = state.selectedChannel;
         
         // Emetti loading PRIMA del test (importante per canali HTML lenti)
         emit(TelevideoState.loading(pageNumber: suggestedNextPage!, selectedChannel: currentChannel));
@@ -608,10 +660,23 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
           print('[TelevideoBloc] ✅ Suggested page exists, loading it');
           add(TelevideoEvent.loadNationalPage(suggestedNextPage!));
         } catch (e) {
+          if (navigationResolved) {
+            print('[TelevideoBloc] ⚠️ Suggested page $suggestedNextPage unavailable (resolved navigation)');
+            emit(TelevideoState.error(
+              'Non sono disponibili altre pagine.',
+              selectedChannel: currentChannel,
+            ));
+            return;
+          }
           // Se fallisce (404), usa la ricerca sequenziale
           print('[TelevideoBloc] ⚠️ Suggested page $suggestedNextPage does not exist, falling back to sequential search');
           await _findNextAvailablePage(currentPage + 1, emit);
         }
+      } else if (navigationResolved) {
+        emit(TelevideoState.error(
+          'Non sono disponibili altre pagine.',
+          selectedChannel: currentChannel,
+        ));
       } else {
         // Nessun suggerimento, usa ricerca sequenziale
         await _findNextAvailablePage(currentPage + 1, emit);
@@ -623,9 +688,11 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
     if (currentPage > _minPage) {
       // Per ZDF e Swiss, controlla se abbiamo il link di navigazione nei metadata
       int? suggestedPrevPage;
+      var navigationResolved = false;
       state.maybeWhen(
         loaded: (page, _, __, ___) {
           if (page.metadata != null) {
+            navigationResolved = page.metadata!['navigationResolved'] == true;
             // ZDF usa 'prev', Swiss usa 'previousPage', SVT usa 'prevPage' (String)
             final prevPageValue = page.metadata!['prev'] ?? page.metadata!['previousPage'] ?? page.metadata!['prevPage'];
             int? prevPage;
@@ -649,10 +716,11 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
         orElse: () {},
       );
       
+      final currentChannel = state.selectedChannel;
+
       // Se abbiamo un suggerimento dai metadata, prova prima quello
       if (suggestedPrevPage != null) {
         print('[TelevideoBloc] Attempting to load suggested page: $suggestedPrevPage');
-        final currentChannel = state.selectedChannel;
         
         // Emetti loading PRIMA del test (importante per canali HTML lenti)
         emit(TelevideoState.loading(pageNumber: suggestedPrevPage!, selectedChannel: currentChannel));
@@ -666,10 +734,23 @@ class TelevideoBloc extends Bloc<TelevideoEvent, TelevideoState> {
           print('[TelevideoBloc] ✅ Suggested page exists, loading it');
           add(TelevideoEvent.loadNationalPage(suggestedPrevPage!));
         } catch (e) {
+          if (navigationResolved) {
+            print('[TelevideoBloc] ⚠️ Suggested page $suggestedPrevPage unavailable (resolved navigation)');
+            emit(TelevideoState.error(
+              'Non sono disponibili altre pagine.',
+              selectedChannel: currentChannel,
+            ));
+            return;
+          }
           // Se fallisce (404), usa la ricerca sequenziale
           print('[TelevideoBloc] ⚠️ Suggested page $suggestedPrevPage does not exist, falling back to sequential search');
           await _findPreviousAvailablePage(currentPage - 1, emit);
         }
+      } else if (navigationResolved) {
+        emit(TelevideoState.error(
+          'Non sono disponibili altre pagine.',
+          selectedChannel: currentChannel,
+        ));
       } else {
         // Nessun suggerimento, usa ricerca sequenziale
         await _findPreviousAvailablePage(currentPage - 1, emit);

@@ -17,13 +17,13 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
 # version: 1.0.8+10
-version: 2.0.3+17
+version: 2.1.2+27
 environment:
   sdk: '>=3.2.3 <4.0.0'
 
 ios:
   bundleId: it.codebysam.teleretroitalia
-  buildNumber: 17
+  buildNumber: 27
   displayName: Teletext Europe
   deploymentTarget: 12.0
 
@@ -41,7 +41,7 @@ dependencies:
   bloc: ^8.1.2
   # Network
   dio: ^5.4.0
-  connectivity_plus: ^5.0.2
+  connectivity_plus: ^6.0.5
   network_info_plus: ^4.1.0
   # Storage
   shared_preferences: ^2.5.3
@@ -74,6 +74,8 @@ dependencies:
   image: ^4.0.17
   # ML Kit per OCR on-device (veloce e gratuito) - DEVICE FISICI
   google_mlkit_text_recognition: ^0.13.0
+  # In-App Purchase (non disponibile in build WebView/simulatore)
+  in_app_purchase: ^3.2.0
 
 dev_dependencies:
   flutter_test:

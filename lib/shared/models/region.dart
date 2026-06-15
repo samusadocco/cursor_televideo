@@ -10,10 +10,21 @@ class Region {
   });
 
   static Region fromCode(String code) {
+    final normalizedCode = _normalizeCode(code);
     return values.firstWhere(
-      (region) => region.code == code,
+      (region) => region.code == normalizedCode,
       orElse: () => throw Exception('Regione non trovata per il codice: $code'),
     );
+  }
+
+  /// Alias legacy usati in teletext_channels / preferenze salvate.
+  static String _normalizeCode(String code) {
+    switch (code) {
+      case 'EmiliaRomagna':
+        return 'Emilia';
+      default:
+        return code;
+    }
   }
 
   static const List<Region> values = [

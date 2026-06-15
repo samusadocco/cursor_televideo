@@ -2950,7 +2950,7 @@ class PageDescriptionsService {
     600: 'Sport',
   };
 
-  // Descrizioni Polsat Teletekst (Polonia)
+  // Polsat Teletekst (Polonia)
   final Map<int, String> polsatDescriptions = {
     101: 'GAZETA TV - instrukcja obsługi / Redakcja',
     108: 'Kartka z kalendarza',
@@ -3018,6 +3018,184 @@ class PageDescriptionsService {
     893: 'Test',
     894: 'Skróty',
     895: 'Kontrola odbioru',
+  };
+
+  // TVP1 Telegazeta (Polonia) – indice pag. 100 + status.json
+  final Map<int, String> tvp1Descriptions = {
+    100: 'Index',
+    110: 'Z kraju',
+    125: 'Z zagranicy',
+    140: 'Gospodarka',
+    141: 'Aktualności',
+    153: 'Indeksy światowe',
+    160: 'Pogoda',
+    180: 'Rząd',
+    185: 'Parlament',
+    186: 'Komunikaty',
+    187: 'Straż graniczna',
+    188: 'Policja',
+    189: 'GIS',
+    190: 'RSO',
+    200: 'Sport',
+    300: 'Program',
+    301: 'TVP1 Dziś',
+    305: 'Omówienia',
+    310: 'Hit TVP1',
+    311: 'TVP2 Dziś',
+    315: 'Omówienia',
+    320: 'Hit TVP2',
+    340: 'Weekend TVP',
+    341: 'TVP Sport',
+    349: 'Nadajniki',
+    350: 'Abonament',
+    356: 'TVP Info',
+    401: 'Agrobiznes',
+    429: 'Alarm',
+    450: 'Ogłoszenia',
+    460: 'Drobne i SMS',
+    461: 'Kupię',
+    463: 'Praca',
+    465: 'Pożyczki',
+    500: 'Auto-giełda',
+    508: 'Spedycja',
+    511: 'Osobowe',
+    523: 'Dostawcze',
+    526: 'Ciężarowe',
+    532: 'Budowlane',
+    535: 'Rolnicze',
+    540: 'Różne',
+    570: 'Pogoda',
+    590: 'Nieruchomości',
+    595: 'Mieszkania',
+    596: 'Domy',
+    597: 'Grunty',
+    598: 'Lokale użytkowe',
+    599: 'Materiały budowlane',
+    600: 'Turystyka',
+    602: 'Morze',
+    608: 'Jeziora',
+    611: 'Góry',
+    615: 'Agroturystyka',
+    617: 'Uzdrowiska',
+    620: 'Łamigłówki',
+    666: 'Krzyżówka',
+    667: 'Horoskop',
+    700: 'NBP, GPW',
+    701: 'NBP',
+    702: 'GPW',
+    850: 'Lotto',
+    860: 'Rozrywka',
+    861: 'Łamigłówki słowne',
+    866: 'Łamigłówki logiczne',
+    870: 'Quiz',
+    899: 'Quiz',
+  };
+
+  // TVP2 Telegazeta (Polonia) – status.json
+  final Map<int, String> tvp2Descriptions = {
+    100: 'Index',
+    110: 'Z kraju',
+    125: 'Z zagranicy',
+    140: 'Gospodarka',
+    141: 'Aktualności',
+    153: 'Indeksy światowe',
+    160: 'Pogoda',
+    180: 'Rząd',
+    185: 'Parlament',
+    200: 'Magazyn Kultury',
+    230: 'Dla Pań',
+    245: 'Dla Panów',
+    265: 'Horoskop',
+    270: 'Różności',
+    300: 'Program TV',
+    301: 'TVP1 Dziś',
+    305: 'Omówienia',
+    310: 'Hit TVP1',
+    311: 'TVP2 Dziś',
+    315: 'Omówienia',
+    320: 'Hit TVP2',
+    340: 'Weekend TVP',
+    341: 'TVP Sport',
+    349: 'Nadajniki',
+    350: 'Abonament',
+    356: 'TVP Info',
+    429: 'Alarm',
+    450: 'Ogłoszenia',
+    600: 'Turystyka',
+    701: 'NBP',
+    702: 'GPW',
+    860: 'Rozrywka',
+  };
+
+  // TVP3 Telegazeta (Polonia) – telegazeta regionalna
+  final Map<int, String> tvp3Descriptions = {
+    100: 'Index',
+    160: 'Pogoda',
+  };
+
+  // TVP Kultura Telegazeta (Polonia)
+  final Map<int, String> tvpKulturaDescriptions = {
+    100: 'Index',
+    110: 'Z kraju',
+    125: 'Z zagranicy',
+    160: 'Pogoda',
+    200: 'Magazyn Kultury',
+    300: 'Program TV',
+    301: 'Dziś',
+    311: 'Jutro',
+    321: 'Pojutrze',
+    330: 'Dalsze dni',
+    350: 'Abonament',
+    356: 'TVP Info',
+    450: 'Ogłoszenia',
+    600: 'Turystyka',
+  };
+
+  // TVP Historia Telegazeta (Polonia)
+  final Map<int, String> tvpHistoriaDescriptions = {
+    100: 'Index',
+    160: 'Pogoda',
+    301: 'Dziś',
+    311: 'Jutro',
+    450: 'Ogłoszenia',
+    600: 'Turystyka',
+  };
+
+  // TVP Sport Telegazeta (Polonia)
+  final Map<int, String> tvpSportDescriptions = {
+    100: 'Index',
+    101: 'Indeks',
+    160: 'Pogoda',
+    200: 'Sport',
+    301: 'Dziś',
+    311: 'Jutro',
+    450: 'Ogłoszenia',
+    600: 'Turystyka',
+  };
+
+  // TVP Polonia Telegazeta (Polonia)
+  final Map<int, String> tvpPoloniaDescriptions = {
+    100: 'Index',
+    110: 'Z kraju',
+    125: 'Z zagranicy',
+    140: 'Gospodarka',
+    141: 'Aktualności',
+    153: 'Indeksy światowe',
+    160: 'Pogoda',
+    180: 'Rząd',
+    185: 'Parlament',
+    200: 'Sport',
+    300: 'TV Guide',
+    301: 'Dziś',
+    311: 'Jutro',
+    400: 'Magazyn Kultury',
+    410: 'Książki',
+    440: 'Horoskop',
+    450: 'Ogłoszenia',
+    600: 'Turystyka',
+    701: 'NBP',
+    702: 'GPW',
+    860: 'Rozrywka',
   };
   
   // Descrizioni Croatian Teletext (Croazia - HRT)
@@ -3594,6 +3772,29 @@ class PageDescriptionsService {
     // Polsat Teletekst
     if (channelId == 'polsat_telegazeta') {
       return polsatDescriptions;
+    }
+
+    // TVP Telegazeta (Polonia)
+    if (channelId == 'tvp1_telegazeta') {
+      return tvp1Descriptions;
+    }
+    if (channelId == 'tvp2_telegazeta') {
+      return tvp2Descriptions;
+    }
+    if (channelId == 'tvp3_telegazeta') {
+      return tvp3Descriptions;
+    }
+    if (channelId == 'tvp_kultura_telegazeta') {
+      return tvpKulturaDescriptions;
+    }
+    if (channelId == 'tvp_historia_telegazeta') {
+      return tvpHistoriaDescriptions;
+    }
+    if (channelId == 'tvp_sport_telegazeta') {
+      return tvpSportDescriptions;
+    }
+    if (channelId == 'tvp_polonia_telegazeta') {
+      return tvpPoloniaDescriptions;
     }
     
     // Croatian Teletext (HRT)

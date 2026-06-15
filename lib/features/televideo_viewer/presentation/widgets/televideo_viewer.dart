@@ -16,6 +16,7 @@ import 'package:cursor_televideo/shared/models/region.dart';
 import 'package:cursor_televideo/features/televideo_viewer/bloc/region_bloc.dart';
 import 'package:cursor_televideo/shared/widgets/error_page_view.dart';
 import 'package:cursor_televideo/core/analytics/analytics_service.dart';
+import 'package:cursor_televideo/core/ocr/lazy_mlkit_ocr_coordinator.dart';
 import 'package:cursor_televideo/features/televideo_viewer/presentation/widgets/auto_refresh_overlay.dart';
 import 'package:cursor_televideo/core/l10n/app_localizations.dart';
 import 'package:cursor_televideo/features/televideo_viewer/presentation/widgets/ard_html_teletext_viewer.dart';
@@ -65,6 +66,10 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
   Timer? _overlayTimer;
   DateTime? _timerStartTime;  // Quando è partito il timer corrente
   Duration _remainingTime = Duration.zero;  // Tempo rimanente quando in pausa
+  int _lazyOcrGeneration = 0;
+  List<ClickableArea>? _lazyClickableAreas;
+  String? _cachedImageBaseUrl;
+  String? _cachedTimestampedImageUrl;
 
   /// Aggiunge un timestamp unico all'URL per disabilitare completamente la cache
   /// Funziona per TUTTI i provider con immagini (RAI, MTVA, CT, YLE, SVT, ecc.)
@@ -74,6 +79,29 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
     final urlWithTimestamp = '$url${separator}_t=$timestamp';
     print('[TelevideoViewer] 🔄 URL con timestamp (cache disabilitata): $urlWithTimestamp');
     return urlWithTimestamp;
+  }
+
+  String _stableTimestampedImageUrl(String baseUrl) {
+    if (_cachedImageBaseUrl != baseUrl || _cachedTimestampedImageUrl == null) {
+      _cachedImageBaseUrl = baseUrl;
+      _cachedTimestampedImageUrl = _addTimestampToUrl(baseUrl);
+    }
+    return _cachedTimestampedImageUrl!;
+  }
+
+  void _resetPageVisualState(TelevideoPage page) {
+    _lazyClickableAreas = null;
+    _cachedImageBaseUrl = null;
+    _cachedTimestampedImageUrl = null;
+    _stableTimestampedImageUrl(page.imageUrl);
+  }
+
+  List<ClickableArea> _effectiveClickableAreas(TelevideoPage page) {
+    return _lazyClickableAreas ?? page.clickableAreas;
+  }
+
+  String _pageContentKey(TelevideoPage page, int currentSubPage) {
+    return '${page.pageNumber}_${currentSubPage}_${page.imageUrl}';
   }
 
   @override
@@ -113,19 +141,79 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
 
     // Avvia il timer per il Live Show se abilitato
     _startLiveShowTimer();
+    _resetPageVisualState(widget.page);
+    _maybeStartLazyOcr();
+  }
+
+  void _maybeStartLazyOcr() {
+    final page = widget.page;
+    if (page.metadata?['lazyOcrPending'] != true) {
+      return;
+    }
+
+    final engine =
+        lazyOcrEngineFromMetadata(page.metadata) ?? LazyOcrEngine.polsat;
+
+    final generation = ++_lazyOcrGeneration;
+    final pageNumber = page.pageNumber;
+    final subPage = page.subPage;
+    final imageUrl = page.imageUrl;
+    final existingAreas = page.clickableAreas;
+
+    print(
+      '[TelevideoViewer] Scheduling lazy ${engine.name} OCR for '
+      '${page.providerId} page $pageNumber/$subPage',
+    );
+
+    LazyMlkitOcrCoordinator.instance
+        .enrich(
+          engine: engine,
+          providerId: page.providerId,
+          existingAreas: existingAreas,
+          imageUrl: imageUrl,
+          pageNumber: pageNumber,
+          subPage: subPage,
+        )
+        .then((areas) {
+      if (!mounted || generation != _lazyOcrGeneration) {
+        return;
+      }
+      if (widget.page.pageNumber != pageNumber || widget.page.subPage != subPage) {
+        return;
+      }
+      if (widget.page.metadata?['lazyOcrPending'] != true) {
+        return;
+      }
+
+      setState(() {
+        _lazyClickableAreas = areas;
+      });
+      print(
+        '[TelevideoViewer] Lazy OCR ready for page $pageNumber/$subPage: '
+        '${areas.length} clickable areas',
+      );
+    }).catchError((Object error) {
+      print('[TelevideoViewer] Lazy OCR failed: $error');
+    });
   }
 
   @override
   void didUpdateWidget(TelevideoViewer oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.page != widget.page) {
+
+    final pageChanged = oldWidget.page.pageNumber != widget.page.pageNumber ||
+        oldWidget.page.subPage != widget.page.subPage ||
+        oldWidget.page.imageUrl != widget.page.imageUrl;
+
+    if (pageChanged) {
+      _resetPageVisualState(widget.page);
       setState(() {
         _maxSubPages = widget.page.maxSubPages;
       });
-      // Riavvia il timer quando cambia la pagina
       if (!_adService.isShowingAd) {
         _startLiveShowTimer();
       }
+      _maybeStartLazyOcr();
     }
   }
 
@@ -240,9 +328,42 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
       }
     }
     
+    // ČT Teletext: WebP dall'API (URL già con ?t=timestamp, come nel browser)
+    if (page.providerId == 'ct_teletext') {
+      return CachedNetworkImage(
+        imageUrl: page.imageUrl,
+        httpHeaders: const {
+          'Referer': 'https://teletext.ceskatelevize.cz/',
+          'Accept': 'image/webp,image/*,*/*',
+          'User-Agent':
+              'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36',
+        },
+        fit: BoxFit.fill,
+        fadeInDuration: const Duration(milliseconds: 100),
+        fadeOutDuration: const Duration(milliseconds: 100),
+        placeholder: (context, url) => Container(
+          color: Colors.black,
+          child: const Center(
+            child: CircularProgressIndicator(color: Colors.white),
+          ),
+        ),
+        errorWidget: (context, url, error) {
+          print('[TeletextViewer] Error loading CT teletext image: $error url=$url');
+          return ErrorPageView(
+            message: AppLocalizations.of(context)!.pageUnavailable,
+            onRetry: () {
+              context.read<TelevideoBloc>().add(
+                TelevideoEvent.loadNationalPage(page.pageNumber),
+              );
+            },
+          );
+        },
+      );
+    }
+
     // Per MTVA usa il provider personalizzato che gestisce certificati self-signed
     if (page.providerId == 'mtva_teletext') {
-      final imageUrlWithTimestamp = _addTimestampToUrl(page.imageUrl);
+      final imageUrlWithTimestamp = _stableTimestampedImageUrl(page.imageUrl);
       return Image(
         image: MTVAImageProvider(imageUrlWithTimestamp),
         fit: BoxFit.fill,
@@ -262,7 +383,7 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
     
     // Per Intertext usa il provider personalizzato con headers per bypassare 403
     if (page.providerId == 'intertext') {
-      final imageUrlWithTimestamp = _addTimestampToUrl(page.imageUrl);
+      final imageUrlWithTimestamp = _stableTimestampedImageUrl(page.imageUrl);
       return Image(
         image: IntertextImageProvider(imageUrlWithTimestamp),
         fit: BoxFit.fill,
@@ -282,8 +403,9 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
     
     // URL normale - usa CachedNetworkImage con timestamp per disabilitare cache
     // Funziona per TUTTI i provider (RAI, MTVA, CT, YLE, SVT, HRT, Spanish, ORF, Swiss, DR, ecc.)
-    final imageUrlWithTimestamp = _addTimestampToUrl(page.imageUrl);
+    final imageUrlWithTimestamp = _stableTimestampedImageUrl(page.imageUrl);
     return CachedNetworkImage(
+      key: ValueKey(imageUrlWithTimestamp),
       imageUrl: imageUrlWithTimestamp,
       httpHeaders: {
         'Cache-Control': 'no-cache',
@@ -693,9 +815,10 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
       originalWidth = 520.0;
       originalHeight = 400.0;
     } else if (widget.page.providerId != null && widget.page.providerId!.startsWith('som_')) {
-      // SOM Teletextviewer (DE/AT/CH): 400x288 (dimensioni standard)
-      originalWidth = 400.0;
-      originalHeight = 288.0;
+      // SOM Teletextviewer (DE/AT/CH): 600x432 (API /api/page)
+      final meta = widget.page.metadata;
+      originalWidth = (meta?['width'] as num?)?.toDouble() ?? 600.0;
+      originalHeight = (meta?['height'] as num?)?.toDouble() ?? 432.0;
     } else if (widget.page.providerId == 'dr1' || widget.page.providerId == 'dr2') {
       // DR Text TV (DK): 320x375 (dimensioni reali dell'immagine GIF)
       originalWidth = 320.0;
@@ -712,8 +835,11 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
       // Omroep Zeeland (NL): 400x300
       originalWidth = 400.0;
       originalHeight = 300.0;
-    } else if (widget.page.providerId == 'polsat_telegazeta') {
-      // Polsat Telegazeta (PL): 480x336 (come definito nel JavaScript della pagina)
+    } else if (widget.page.providerId == 'polsat_telegazeta' ||
+               (widget.page.providerId != null &&
+                widget.page.providerId!.startsWith('tvp') &&
+                widget.page.providerId!.endsWith('_telegazeta'))) {
+      // Polsat / TVP Telegazeta (PL): 480x336
       originalWidth = 480.0;
       originalHeight = 336.0;
     } else if (widget.page.providerId == 'kika_text') {
@@ -754,9 +880,10 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
     print('[TeletextViewer] Image coords: X=$imageX, Y=$imageY');
     
     // Verifica se il tap è su un'area cliccabile
-    print('[TeletextViewer] Checking ${widget.page.clickableAreas.length} clickable areas...');
+    final clickableAreas = _effectiveClickableAreas(widget.page);
+    print('[TeletextViewer] Checking ${clickableAreas.length} clickable areas...');
     
-    for (final area in widget.page.clickableAreas) {
+    for (final area in clickableAreas) {
       final bool isInArea = imageX >= area.x &&
           imageX <= (area.x + area.width) &&
           imageY >= area.y &&
@@ -967,6 +1094,7 @@ class _TelevideoViewerState extends State<TelevideoViewer> with SingleTickerProv
                             }
 
                             return AnimatedPageTransition(
+                              contentKey: _pageContentKey(page, currentSubPage),
                               type: transitionType,
                               forward: forward,
                               child: page.isHtmlContent

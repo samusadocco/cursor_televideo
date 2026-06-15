@@ -1,8 +1,11 @@
 import 'dart:async';
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
+import 'package:cursor_televideo/core/network/connectivity_utils.dart';
 import 'package:cursor_televideo/core/teletext/teletext_channels.dart';
 import 'package:cursor_televideo/core/teletext/providers/provider_factory.dart';
+import 'package:cursor_televideo/core/teletext/providers/telegazeta_provider.dart';
+import 'package:cursor_televideo/core/teletext/providers/ct_provider.dart';
+import 'package:cursor_televideo/core/teletext/providers/som_provider.dart';
 import 'package:cursor_televideo/core/network/televideo_repository.dart';
 import 'package:cursor_televideo/shared/models/region.dart';
 
@@ -28,12 +31,8 @@ class ChannelCheckService {
   /// Restituisce il risultato appropriato per mostrare il messaggio corretto.
   Future<ChannelCheckResult> checkChannel(TeletextChannel? channel) async {
     // 1. Verifica connettività (modalità aereo, nessuna rete)
-    // connectivity_plus 6.x: checkConnectivity() restituisce List<ConnectivityResult>
-    final results = await Connectivity().checkConnectivity();
-    final hasConnectivity = results.contains(ConnectivityResult.wifi) ||
-        results.contains(ConnectivityResult.mobile) ||
-        results.contains(ConnectivityResult.ethernet);
-    if (!hasConnectivity || results.contains(ConnectivityResult.none)) {
+    final results = await getConnectivityResults();
+    if (isNetworkUnavailable(results)) {
       return ChannelCheckResult.noConnectivity;
     }
 
@@ -69,8 +68,8 @@ class ChannelCheckService {
         final region = Region.fromCode(channel.regions!.first);
         await _checkRaiRegionalPage100(region.code);
       } else {
-        // Altri canali: usa il provider (HTML e/o JPG secondo il canale)
-        await _checkProviderPage100(channel);
+        // Altri canali: verifica leggera quando possibile
+        await _checkProviderChannel(channel);
       }
       return ChannelCheckResult.ok;
     } catch (_) {
@@ -87,10 +86,41 @@ class ChannelCheckService {
     await _repository.getRegionalPage(regionCode, pageNumber: 300, subPage: 1).timeout(_timeout);
   }
 
-  Future<void> _checkProviderPage100(TeletextChannel channel) async {
+  Future<void> _checkProviderChannel(TeletextChannel channel) async {
     if (!TeletextProviderFactory.isProviderAvailable(channel)) {
       throw Exception('Provider not available');
     }
+
+    // TVP/Polsat Telegazeta: status.json (evita fetch pagina 100 + OCR all'avvio)
+    if (channel.id.endsWith('_telegazeta')) {
+      final provider = TeletextProviderFactory.getProvider(channel);
+      if (provider is TelegazetaProvider) {
+        final available = await provider.checkAvailability().timeout(_timeout);
+        if (!available) throw Exception('Telegazeta channel not available');
+        return;
+      }
+    }
+
+    // ČT Teletext: GET sull'API JSON (HEAD non supportato, restituisce 403)
+    if (channel.id == 'ct_teletext') {
+      final provider = TeletextProviderFactory.getProvider(channel);
+      if (provider is CTProvider) {
+        final available = await provider.checkAvailability().timeout(_timeout);
+        if (!available) throw Exception('CT teletext channel not available');
+        return;
+      }
+    }
+
+    // SOM Teletextviewer: GET su /api/page (desk.php non contiene più l'immagine)
+    if (channel.id.startsWith('som_')) {
+      final provider = TeletextProviderFactory.getProvider(channel);
+      if (provider is SOMProvider) {
+        final available = await provider.checkAvailability().timeout(_timeout);
+        if (!available) throw Exception('SOM teletext channel not available');
+        return;
+      }
+    }
+
     final provider = TeletextProviderFactory.getProvider(channel);
     await provider.fetchNationalPage(100).timeout(_timeout);
   }

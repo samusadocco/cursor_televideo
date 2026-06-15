@@ -2,6 +2,7 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:network_info_plus/network_info_plus.dart';
+import 'package:cursor_televideo/core/network/connectivity_utils.dart';
 
 class AnalyticsService {
   static AnalyticsService? _instance;
@@ -175,8 +176,7 @@ class AnalyticsService {
   // Eventi di performance
   Future<void> logLoadTime(String pageNumber, {String? subPage, String? channelId, required int durationMillis, bool isError = false}) async {
     await _safeLogEvent('logLoadTime', () async {
-      // Ottieni il tipo di connessione (connectivity_plus 6.x: checkConnectivity restituisce List)
-      final connectivity = await Connectivity().checkConnectivity();
+      final connectivity = await getConnectivityResults();
       final networkInfo = NetworkInfo();
       String connectionType;
       Map<String, dynamic> parameters = {

@@ -8,24 +8,36 @@ echo "🚀 Attivando versione ML Kit (device fisici)..."
 echo ""
 
 # 1. Copia provider Polsat ML Kit
-echo "📄 [1/5] Copiando polsat_provider.mlkit.dart..."
+echo "📄 [1/7] Copiando polsat_provider.mlkit.dart..."
 cp lib/core/teletext/providers/_versions/polsat_provider.mlkit.dart \
    lib/core/teletext/providers/polsat_provider.dart
 echo "   ✅ Polsat Provider ML Kit attivato"
 
 # 1b. Copia servizio OCR Zattoo ML Kit
-echo "📄 [1b/5] Copiando zattoo_ocr_service.mlkit.dart..."
+echo "📄 [1b/7] Copiando zattoo_ocr_service.mlkit.dart..."
 cp lib/core/ocr/_versions/zattoo_ocr_service.mlkit.dart \
    lib/core/ocr/google_vision_ocr_service.dart
 echo "   ✅ Zattoo OCR ML Kit attivato"
 
+# 1c. Copia OCR Polsat/Telegazeta ML Kit
+echo "📄 [1c/7] Copiando mlkit_polsat_ocr_service.mlkit.dart..."
+cp lib/core/ocr/_versions/mlkit_polsat_ocr_service.mlkit.dart \
+   lib/core/ocr/mlkit_polsat_ocr_service.dart
+echo "   ✅ OCR ML Kit attivato"
+
+# 1d. Copia IAP completo (in_app_purchase)
+echo "📄 [1d/7] Copiando iap_service.store.dart..."
+cp lib/core/iap/_versions/iap_service.store.dart \
+   lib/core/iap/iap_service.dart
+echo "   ✅ IAP store attivato"
+
 # 2. Copia pubspec.yaml con ML Kit
-echo "📦 [2/5] Copiando pubspec.yaml con ML Kit..."
+echo "📦 [2/7] Copiando pubspec.yaml con ML Kit..."
 cp _config_versions/pubspec.mlkit.yaml pubspec.yaml
 echo "   ✅ pubspec.yaml ML Kit attivato"
 
 # 3. Flutter pub get
-echo "🔄 [3/5] Eseguendo flutter pub get..."
+echo "🔄 [3/7] Eseguendo flutter pub get..."
 flutter pub get > /dev/null 2>&1 || {
   echo "   ⚠️  Errore durante flutter pub get"
   flutter pub get
@@ -35,7 +47,7 @@ echo "   ✅ flutter pub get completato"
 
 # 4. Pod install (solo iOS)
 if [ -d "ios" ]; then
-  echo "🍎 [4/5] Eseguendo pod install..."
+  echo "🍎 [4/7] Eseguendo pod install..."
   cd ios
   pod install > /dev/null 2>&1 || {
     echo "   ⚠️  Errore durante pod install"

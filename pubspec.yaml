@@ -17,13 +17,13 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
 # version: 1.0.8+10
-version: 2.1.1+26
+version: 2.1.2+27
 environment:
   sdk: '>=3.2.3 <4.0.0'
 
 ios:
   bundleId: it.codebysam.teleretroitalia
-  buildNumber: 26
+  buildNumber: 27
   displayName: Teletext Europe
   deploymentTarget: 12.0
 
@@ -54,10 +54,6 @@ dependencies:
   package_info_plus: ^8.3.0
   device_info_plus: ^10.1.0
   in_app_review: ^2.0.8
-  # In-App Purchases
-  in_app_purchase: ^3.2.0
-  in_app_purchase_android: ^0.3.5
-  in_app_purchase_storekit: ^0.3.18
   app_tracking_transparency: ^2.0.4
   # Firebase
   firebase_core: ^2.27.1
@@ -78,6 +74,8 @@ dependencies:
   image: ^4.0.17
   # ML Kit per OCR on-device (veloce e gratuito) - DEVICE FISICI
   google_mlkit_text_recognition: ^0.13.0
+  # In-App Purchase (non disponibile in build WebView/simulatore)
+  in_app_purchase: ^3.2.0
 
 dev_dependencies:
   flutter_test:
@@ -130,8 +128,6 @@ flutter:
     - lib/core/version_history_sl.json
     - lib/core/version_history_is.json
     - lib/core/version_history_hu.json
-    - lib/core/version_history_pl.json
-    - lib/core/version_history_uk.json
     - lib/core/version_history_bs.json
 
   # An image asset can refer to one or more resolution-specific "variants", see

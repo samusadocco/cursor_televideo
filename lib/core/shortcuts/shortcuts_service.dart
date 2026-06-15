@@ -575,6 +575,100 @@ class ShortcutsService {
     const ShortcutPage(pageNumber: 500, title: 'Ogłoszenia'),
     const ShortcutPage(pageNumber: 715, title: 'Rozrywka'),
   ];
+
+  // TVP1 Telegazeta (Polonia)
+  final List<ShortcutPage> _tvp1Shortcuts = [
+    const ShortcutPage(pageNumber: 100, title: 'Index'),
+    const ShortcutPage(pageNumber: 110, title: 'Z kraju'),
+    const ShortcutPage(pageNumber: 125, title: 'Z zagranicy'),
+    const ShortcutPage(pageNumber: 140, title: 'Gospodarka'),
+    const ShortcutPage(pageNumber: 160, title: 'Pogoda'),
+    const ShortcutPage(pageNumber: 180, title: 'Rząd'),
+    const ShortcutPage(pageNumber: 185, title: 'Parlament'),
+    const ShortcutPage(pageNumber: 200, title: 'Sport'),
+    const ShortcutPage(pageNumber: 300, title: 'Program'),
+    const ShortcutPage(pageNumber: 450, title: 'Ogłoszenia'),
+    const ShortcutPage(pageNumber: 500, title: 'Auto-giełda'),
+    const ShortcutPage(pageNumber: 590, title: 'Nieruchomości'),
+    const ShortcutPage(pageNumber: 600, title: 'Turystyka'),
+    const ShortcutPage(pageNumber: 701, title: 'NBP'),
+    const ShortcutPage(pageNumber: 850, title: 'Lotto'),
+    const ShortcutPage(pageNumber: 860, title: 'Rozrywka'),
+  ];
+
+  // TVP2 Telegazeta (Polonia)
+  final List<ShortcutPage> _tvp2Shortcuts = [
+    const ShortcutPage(pageNumber: 100, title: 'Index'),
+    const ShortcutPage(pageNumber: 110, title: 'Z kraju'),
+    const ShortcutPage(pageNumber: 125, title: 'Z zagranicy'),
+    const ShortcutPage(pageNumber: 140, title: 'Gospodarka'),
+    const ShortcutPage(pageNumber: 160, title: 'Pogoda'),
+    const ShortcutPage(pageNumber: 180, title: 'Rząd'),
+    const ShortcutPage(pageNumber: 185, title: 'Parlament'),
+    const ShortcutPage(pageNumber: 200, title: 'Mag. Kultury'),
+    const ShortcutPage(pageNumber: 300, title: 'Program TV'),
+    const ShortcutPage(pageNumber: 450, title: 'Ogłoszenia'),
+    const ShortcutPage(pageNumber: 600, title: 'Turystyka'),
+    const ShortcutPage(pageNumber: 701, title: 'NBP'),
+    const ShortcutPage(pageNumber: 860, title: 'Rozrywka'),
+  ];
+
+  // TVP3 Telegazeta (Polonia) – telegazeta regionalna
+  final List<ShortcutPage> _tvp3Shortcuts = [
+    const ShortcutPage(pageNumber: 100, title: 'Index'),
+    const ShortcutPage(pageNumber: 160, title: 'Pogoda'),
+  ];
+
+  // TVP Kultura Telegazeta (Polonia)
+  final List<ShortcutPage> _tvpKulturaShortcuts = [
+    const ShortcutPage(pageNumber: 100, title: 'Index'),
+    const ShortcutPage(pageNumber: 110, title: 'Z kraju'),
+    const ShortcutPage(pageNumber: 125, title: 'Z zagranicy'),
+    const ShortcutPage(pageNumber: 160, title: 'Pogoda'),
+    const ShortcutPage(pageNumber: 200, title: 'Mag. Kultury'),
+    const ShortcutPage(pageNumber: 300, title: 'Program TV'),
+    const ShortcutPage(pageNumber: 301, title: 'Dziś'),
+    const ShortcutPage(pageNumber: 450, title: 'Ogłoszenia'),
+    const ShortcutPage(pageNumber: 600, title: 'Turystyka'),
+  ];
+
+  // TVP Historia Telegazeta (Polonia)
+  final List<ShortcutPage> _tvpHistoriaShortcuts = [
+    const ShortcutPage(pageNumber: 100, title: 'Index'),
+    const ShortcutPage(pageNumber: 160, title: 'Pogoda'),
+    const ShortcutPage(pageNumber: 301, title: 'Dziś'),
+    const ShortcutPage(pageNumber: 311, title: 'Jutro'),
+    const ShortcutPage(pageNumber: 450, title: 'Ogłoszenia'),
+    const ShortcutPage(pageNumber: 600, title: 'Turystyka'),
+  ];
+
+  // TVP Sport Telegazeta (Polonia)
+  final List<ShortcutPage> _tvpSportShortcuts = [
+    const ShortcutPage(pageNumber: 100, title: 'Index'),
+    const ShortcutPage(pageNumber: 101, title: 'Indeks'),
+    const ShortcutPage(pageNumber: 160, title: 'Pogoda'),
+    const ShortcutPage(pageNumber: 200, title: 'Sport'),
+    const ShortcutPage(pageNumber: 301, title: 'Dziś'),
+    const ShortcutPage(pageNumber: 311, title: 'Jutro'),
+    const ShortcutPage(pageNumber: 450, title: 'Ogłoszenia'),
+    const ShortcutPage(pageNumber: 600, title: 'Turystyka'),
+  ];
+
+  // TVP Polonia Telegazeta (Polonia)
+  final List<ShortcutPage> _tvpPoloniaShortcuts = [
+    const ShortcutPage(pageNumber: 100, title: 'Index'),
+    const ShortcutPage(pageNumber: 110, title: 'Z kraju'),
+    const ShortcutPage(pageNumber: 125, title: 'Z zagranicy'),
+    const ShortcutPage(pageNumber: 140, title: 'Gospodarka'),
+    const ShortcutPage(pageNumber: 160, title: 'Pogoda'),
+    const ShortcutPage(pageNumber: 180, title: 'Rząd'),
+    const ShortcutPage(pageNumber: 200, title: 'Sport'),
+    const ShortcutPage(pageNumber: 300, title: 'TV Guide'),
+    const ShortcutPage(pageNumber: 450, title: 'Ogłoszenia'),
+    const ShortcutPage(pageNumber: 600, title: 'Turystyka'),
+    const ShortcutPage(pageNumber: 701, title: 'NBP'),
+    const ShortcutPage(pageNumber: 860, title: 'Rozrywka'),
+  ];
   
   // Croatian Teletext (Croazia - HRT)
   final List<ShortcutPage> _croatianShortcuts = [
@@ -873,6 +967,29 @@ class ShortcutsService {
     // Polsat Teletekst
     if (channelId == 'polsat_telegazeta') {
       return _polsatShortcuts;
+    }
+
+    // TVP Telegazeta (Polonia)
+    if (channelId == 'tvp1_telegazeta') {
+      return _tvp1Shortcuts;
+    }
+    if (channelId == 'tvp2_telegazeta') {
+      return _tvp2Shortcuts;
+    }
+    if (channelId == 'tvp3_telegazeta') {
+      return _tvp3Shortcuts;
+    }
+    if (channelId == 'tvp_kultura_telegazeta') {
+      return _tvpKulturaShortcuts;
+    }
+    if (channelId == 'tvp_historia_telegazeta') {
+      return _tvpHistoriaShortcuts;
+    }
+    if (channelId == 'tvp_sport_telegazeta') {
+      return _tvpSportShortcuts;
+    }
+    if (channelId == 'tvp_polonia_telegazeta') {
+      return _tvpPoloniaShortcuts;
     }
     
     // Croatian Teletext (HRT)
