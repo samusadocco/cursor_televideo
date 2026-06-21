@@ -1,6 +1,12 @@
 {
   "versions": [
     {
+      "version": "2.1.3",
+      "changes": [
+        "Загальні оптимізації та виправлення помилок"
+      ]
+    },
+    {
       "version": "2.1.2",
       "changes": [
         "7 нових каналів з Польщі (TVP1, TVP2, TVP3, TVP Kultura, TVP Sport, TVP Polonia, TVP Historia)"
